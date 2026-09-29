@@ -85,6 +85,7 @@ class Config:
     max_stake_pct: float = 0.02
     bankroll: float = 1000.0
     odds_api_key_env: str = "ODDS_API_KEY"
+    use_espn: bool = True          # ESPN same-day injuries (weekly run) and scoreboard lines (line watch)
     # opening/closing line history for the line-movement model (see nflmodel/movement.py)
     line_history_path: str = "data_cache/line_history.xlsx"
 

@@ -18,6 +18,8 @@ public/
 # Artifacts: keep the small files the model learns from, ignore the rest
 artifacts/*
 !artifacts/odds_snapshots/
+!artifacts/lines/
+!artifacts/tracker/
 !artifacts/calibration.json
 !artifacts/tuned_config.json
 !artifacts/backtest_oos.csv
@@ -32,3 +34,9 @@ Thumbs.db
 desktop.ini
 .vscode/
 .idea/
+
+# live scoreboard is rebuilt every line-watch run and deployed, not committed
+site_data/live.json
+
+# local tool settings
+.claude/

@@ -46,6 +46,8 @@ class LineModel:
         self.imputer = SimpleImputer(strategy="median", keep_empty_features=True).fit(X)
         Xi = self.imputer.transform(X)
         self.scaler = StandardScaler().fit(Xi)
+        # near-constant columns (floating-point noise around a constant) would be blown up to huge values
+        self.scaler.scale_[self.scaler.scale_ < 1e-8] = 1.0
         Xs = self.scaler.transform(Xi)
         self.ridge = RidgeCV(alphas=self.cfg.ridge_alphas).fit(Xs, y, sample_weight=w)
         if self.use_gbm and len(d) >= 800:

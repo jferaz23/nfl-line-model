@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NFL Line Model</title>
+<meta name="description" content="Weekly NFL spreads, totals and moneylines priced by a model and compared with DraftKings.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='32' cy='32' rx='27' ry='17' fill='%232d7a4c' transform='rotate(-35 32 32)'/%3E%3Cpath d='M22 42 42 22M27 33l4 4M31 29l4 4M35 25l4 4' stroke='%23fff' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="title-row"><h1>NFL Line Model</h1><button class="theme-btn" id="theme" type="button">Theme</button></div>
+    <p class="updated" id="updated"></p>
+    <nav class="tabs" aria-label="Sections">
+      <div class="tgroup"><span class="gl">This week</span><div class="items">
+        <a href="#games">Games</a><a href="#picks">Picks</a><a href="#breakdown">Breakdown</a></div></div>
+      <div class="tgroup"><span class="gl">Season</span><div class="items">
+        <a href="#futures">Futures</a><a href="#teams">Teams</a><a href="#players">Players</a></div></div>
+      <div class="tgroup"><span class="gl">Model</span><div class="items">
+        <a href="#backtest">Backtest</a><a href="#bets">Bets</a><a href="#info">Info</a></div></div>
+    </nav>
+  </header>
+  <section class="kpis" id="kpis" aria-label="Record"></section>
+  <main id="view"></main>
+  <footer class="site">For information only, not financial advice. NFL betting markets are efficient and edges are small; confirm every price in the DraftKings app. If betting stops being fun, call 1-800-GAMBLER.</footer>
+</div>
+<script src="data/site.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

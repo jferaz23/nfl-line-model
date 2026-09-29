@@ -23,10 +23,19 @@ DraftKings (the user's only sportsbook) to flag +EV bets. Full context, research
 - User-facing text: plain language, honest about small edges, "information only, not financial advice".
 
 ## Status (Sept 29, 2026)
-First real-data run done (backtest 2022-2026, 1187 games): spread MAE model 9.78 vs close 9.57
-(blend weight 1%), total 10.30 vs 10.23 (blend 10.21, weight 28%); no groups pruned.
-Automated on GitHub (jferaz23/nfl-line-model): `.github/workflows/weekly.yml` runs `run_week.py`
-Tue/Thu/Fri/Sun/Mon, commits odds snapshots + `site_archive/`, deploys `publish_site.py` output to
-Pages (https://jferaz23.github.io/nfl-line-model/); `optimize.yml` recalibrates Tuesdays.
-`ODDS_API_KEY` is an Actions secret. Locally, `config.json` (gitignored) puts the data cache outside
-OneDrive; run with `--config config.json`. Next: generate the v3 site design from pipeline output.
+Real-data backtest 2022-2026 (1187 games): spread MAE model 9.75 vs close 9.57 (blend weight 3%),
+total 10.29 vs 10.23 (blend 10.21, weight 28%). Roster continuity (nflmodel/continuity.py, weeks 1-8)
+earned its place (held-out spread MAE 10.93 -> 10.79); early_down and big_plays groups are marginal.
+
+Automation (GitHub jferaz23/nfl-line-model, Pages https://jferaz23.github.io/nfl-line-model/):
+- `weekly.yml`: run_week.py (Tue/Thu/Fri/Sun/Mon) -> line_watch.py -> build_site.py -> deploy.
+  run_week writes site_data/week_*.json, schedule_*.json, season_*.json (season sim) and appends
+  artifacts/tracker/model_picks.csv. ESPN same-day injuries are merged for the target week.
+- `line_watch.yml` (every 20 min): ESPN scoreboard -> artifacts/lines/espn_lines.csv (DraftKings line
+  history + opening lines) and site_data/live.json (not committed) -> build_site.py -> deploy.
+- `optimize.yml`: recalibrates Tuesdays. `ODDS_API_KEY` is an Actions secret.
+- Site: web/ (index.html, app.js, style.css, no build step) + public/data/site.js from build_site.py.
+  Tabs: Games, Picks (bet ranking, history %, teasers, PDF), Breakdown, Futures, Teams, Players,
+  Backtest, Bets (graded tracker, CLV), Info (health checks).
+Local: `config.json` (gitignored) keeps the data cache outside OneDrive; use `--config config.json`.
+`run_week.py --odds-snapshot latest` re-prices from a saved snapshot without spending credits.

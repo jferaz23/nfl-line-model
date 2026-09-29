@@ -68,8 +68,10 @@ def load_real(cfg, refresh=False, target_season=None, need_current=True):
     pbp = ds.pbp(seasons)
     snaps = ds.snap_counts(seasons)
     inj = ds.injuries([current]) if need_current else pd.DataFrame()
-    rost = ds.rosters_weekly([current]) if need_current else pd.DataFrame()
-    return dict(schedules=sched, pbp=pbp, snaps=snaps, injuries=inj, rosters=rost), ds
+    # weekly rosters for every season (roster continuity); the current season's also drive availability
+    rost_all = ds.rosters_weekly(seasons)
+    rost = rost_all[rost_all["season"] == current].copy() if need_current and len(rost_all) else pd.DataFrame()
+    return dict(schedules=sched, pbp=pbp, snaps=snaps, injuries=inj, rosters=rost, rosters_all=rost_all), ds
 
 
 def attach_pfr(cfg, sched, notes):

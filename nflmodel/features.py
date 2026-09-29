@@ -19,6 +19,7 @@ import numpy as np
 import pandas as pd
 
 from .availability import DEF_GROUPS, GROUPS, OFF_GROUPS, compute_availability
+from .continuity import compute_continuity
 from .ratings import Elo, RatingEngine, build_qb_games, build_team_games, qb_values_asof, time_index
 from .venues import (home_venue, haversine_miles, is_indoor, is_turf, kickoff_utc, local_hour,
                      resolve_venue, utc_offset_hours)
@@ -48,6 +49,9 @@ MARGIN_GROUPS = {
                     "d_fum_luck", "d_to_margin", "d_press", "d_sack_luck", "d_3rd_luck"],
     "drive_efficiency": ["d_ppd_net"],
     "motivation": ["d_elim", "d_rest_risk"],
+    "early_down": ["d_early_net"],
+    "big_plays": ["d_big_net"],
+    "roster_continuity": ["d_cont_early"],
 }
 TOTAL_GROUPS = {
     "scoring_env": ["sum_press", "sum_3rd_luck", "sum_ou_form", "sum_post_intl", "lg_pts_level", "early_season", "playoff", "div_game"],
@@ -66,13 +70,17 @@ TOTAL_GROUPS = {
     "coaching": ["coach_aggr_sum", "sum_new_coach"],
     "officials": ["ref_total_resid", "ref_pen_rate"],
     "history": ["h2h_total_resid"],
+    "early_down": ["sum_early"],
+    "big_plays": ["sum_big"],
+    "roster_continuity": ["sum_offcont_early", "sum_defcont_early"],
 }
 MARGIN_FEATURES = [f for fs in MARGIN_GROUPS.values() for f in fs]
 TOTAL_FEATURES = list(dict.fromkeys(f for fs in TOTAL_GROUPS.values() for f in fs))
 
 RATING_COLS = ["off_ppd", "def_ppd", "off_drv", "def_drv", "off_wepao", "def_wepao", "off_wepad", "def_wepad", "off_pts", "def_pts", "off_pass", "def_pass", "off_rush", "def_rush", "off_sr", "def_sr",
                "off_pace", "def_pace", "off_proe", "def_proe", "off_nh", "def_nh", "lg_pts", "lg_pass",
-               "lg_rush", "lg_pace", "hfa_pts", "rating_weight", "qb_base"]
+               "lg_rush", "lg_pace", "hfa_pts", "rating_weight", "qb_base",
+               "off_early", "def_early", "off_big", "def_big"]
 MARKET_COLS = ["spread_line", "total_line", "home_moneyline", "away_moneyline", "home_spread_odds",
                "away_spread_odds", "over_odds", "under_odds"]
 RAIN_WORDS = re.compile(r"rain|shower|drizzle|storm|thunder|precip", re.I)
@@ -658,6 +666,12 @@ def build_games(data: dict, cfg, target_season=None, target_week=None, forecasts
                                 "miss_names": f"{side}_miss_names"})
         out = out.merge(a2, on=["game_id", col], how="left")
 
+    # ---------------- roster continuity (share of last season's snaps still on the roster) ----------------
+    cont = compute_continuity(data.get("snaps"), data.get("rosters_all", data.get("rosters")), out)
+    for side, col in (("h", "home_team"), ("a", "away_team")):
+        c2 = cont.rename(columns={"team": col, "off_cont": f"{side}_off_cont", "def_cont": f"{side}_def_cont"})
+        out = out.merge(c2, on=["game_id", col], how="left")
+
     # ---------------- sequential context + venue/weather ----------------
     _, pbp_wx, _ = _pbp_game_extras(pbp) if len(pbp) else ({}, {}, {})
     cx, elo_now = _context(ctx, pbp if len(pbp) else None)
@@ -683,6 +697,7 @@ def build_games(data: dict, cfg, target_season=None, target_week=None, forecasts
     info = {"notes": notes, "starters": proj}
     if len(target):
         info["power"] = _power_table(ratings, target_season, target_week, qb_lookup, proj, elo_now)
+        info["qbs"] = _qb_table(qg, target_season, target_week, cfg)
     return games, info
 
 
@@ -723,6 +738,21 @@ def _assemble_inner(o: pd.DataFrame, cfg) -> pd.DataFrame:
     g["pts_total_pred"] = g["h_off_pts"] + g["a_def_pts"] + g["a_off_pts"] + g["h_def_pts"]
     g["d_wepa_net"] = ((g["h_off_wepao"] - g["h_def_wepad"]) - (g["a_off_wepao"] - g["a_def_wepad"])) * 10
     g["d_ppd_net"] = (g["h_off_ppd"] - g["h_def_ppd"]) - (g["a_off_ppd"] - g["a_def_ppd"])
+    g["d_early_net"] = ((g["h_off_early"] - g["h_def_early"]) - (g["a_off_early"] - g["a_def_early"])) * 10
+    g["sum_early"] = (g["h_off_early"] + g["a_def_early"] + g["a_off_early"] + g["h_def_early"]) * 10
+    g["d_big_net"] = ((g["h_off_big"] - g["h_def_big"]) - (g["a_off_big"] - g["a_def_big"])) * 100
+    g["sum_big"] = (g["h_off_big"] + g["a_def_big"] + g["a_off_big"] + g["h_def_big"]) * 100
+    # roster continuity, weeks 1-8 only (fades out as this season's games replace last season's in the ratings)
+    reg_ = g["game_type"].eq("REG") if "game_type" in g.columns else pd.Series(True, index=g.index)
+    ew = ((9 - g["week"]) / 8).clip(0, 1) * reg_.astype(float)
+    # unknown continuity (no roster data) -> league average, so the feature is 0 rather than missing
+    cont = {c: g[c].fillna(g[c].mean()).fillna(0.6) if c in g.columns else pd.Series(0.6, index=g.index)
+            for c in ("h_off_cont", "h_def_cont", "a_off_cont", "a_def_cont")}
+    g["d_cont_early"] = ew * ((cont["h_off_cont"] + cont["h_def_cont"]) - (cont["a_off_cont"] + cont["a_def_cont"])) * 10
+    lg_o = pd.concat([cont["h_off_cont"], cont["a_off_cont"]]).mean()
+    lg_d = pd.concat([cont["h_def_cont"], cont["a_def_cont"]]).mean()
+    g["sum_offcont_early"] = ew * (cont["h_off_cont"] + cont["a_off_cont"] - 2 * lg_o) * 10
+    g["sum_defcont_early"] = ew * (cont["h_def_cont"] + cont["a_def_cont"] - 2 * lg_d) * 10
     g["ppd_total_pred"] = g["h_off_ppd"] + g["a_def_ppd"] + g["a_off_ppd"] + g["h_def_ppd"]
     g["drives_total"] = g["h_off_drv"] + g["a_def_drv"] + g["a_off_drv"] + g["h_def_drv"]
     # scoring calendar: points sag in November and in cold-weather December/January games
@@ -996,6 +1026,20 @@ def _add_qb_cpoe(out, pbp, half_life=26.0, prior_att=150.0):
         val = (mm["s"] * d) / (mm["n"] * d + prior_att)
         out.loc[mm["index"].to_numpy(), f"{side}_qb_cpoe"] = val.fillna(0.0).to_numpy()
     return out
+
+
+def _qb_table(qg, season, week, cfg):
+    """QB values going into the target week, in points per game vs league average, with each QB's latest team."""
+    qv, lg, prior = qb_values_asof(qg, season, week, cfg)
+    if qv.empty:
+        return qv
+    last = qg.sort_values("t").groupby("qb_id").agg(team=("team", "last"), last_season=("season", "last"),
+                                                    games=("game_id", "nunique"))
+    qv = qv.merge(last, left_on="qb_id", right_index=True, how="left")
+    qv = qv[(qv["last_season"] >= season - 1) & (qv["wplays"] >= 50)].copy()
+    qv["pts_vs_avg"] = (qv["value"] - lg) * cfg.qb_plays_per_game
+    return qv.sort_values("pts_vs_avg", ascending=False)[
+        ["qb_id", "qb_name", "team", "pts_vs_avg", "value", "wplays", "games", "last_season"]].reset_index(drop=True)
 
 
 def _power_table(ratings, season, week, qb_lookup, proj, elo_now):

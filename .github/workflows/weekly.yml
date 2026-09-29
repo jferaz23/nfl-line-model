@@ -1,4 +1,4 @@
-# Runs the weekly model, saves the odds snapshot, and publishes the site to GitHub Pages.
+# Runs the weekly model, logs the picks, and publishes the site to GitHub Pages.
 # Times are UTC. Eastern is UTC-4 until Nov 1, 2026, then UTC-5 (runs land an hour earlier ET).
 name: Weekly lines
 
@@ -56,14 +56,17 @@ jobs:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: python run_week.py ${{ inputs.refresh && '--refresh' || '' }}
 
-      - name: Build site
-        run: python publish_site.py
+      - name: Line watch (scores, DraftKings line history)
+        run: python line_watch.py
 
-      - name: Save odds snapshots and line sheet to the repo
+      - name: Build site
+        run: python build_site.py
+
+      - name: Save picks, odds and line history to the repo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add artifacts site_archive
+          git add artifacts site_data
           if git diff --cached --quiet; then echo "Nothing new to commit"; exit 0; fi
           git commit -m "Weekly run $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase

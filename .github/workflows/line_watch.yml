@@ -1,0 +1,61 @@
+# Every 20 minutes: log DraftKings' line from ESPN's scoreboard, update live scores and grades,
+# and redeploy the site. No model run and no Odds API credits.
+name: Line watch
+
+on:
+  schedule:
+    - cron: "*/20 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: nfl-model
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install pandas numpy requests
+
+      - name: Line watch
+        run: python line_watch.py
+
+      - name: Build site
+        run: python build_site.py
+
+      - name: Save line history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add artifacts/lines
+          if git diff --cached --quiet; then echo "No line changes"; exit 0; fi
+          git commit -m "Line watch $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase
+          git push
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: watch
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

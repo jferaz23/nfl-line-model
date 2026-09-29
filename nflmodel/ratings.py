@@ -33,7 +33,7 @@ def build_team_games(sched: pd.DataFrame, pbp: pd.DataFrame) -> pd.DataFrame:
     tg["t"] = time_index(tg["season"], tg["week"])
 
     stat_cols = ["plays", "pass_plays", "rush_plays", "epa_pass", "epa_rush", "sr", "proe",
-                 "nohuddle", "shotgun", "wepa_o", "wepa_d", "drives", "ppd"]
+                 "nohuddle", "shotgun", "wepa_o", "wepa_d", "drives", "ppd", "epa_early", "early_plays", "bigplay"]
     if pbp is not None and len(pbp):
         p = pbp[pbp["play_type"].isin(["pass", "run"]) & pbp["epa"].notna() & pbp["posteam"].notna()].copy()
         p["is_pass"] = ((p["pass"] == 1) | (p["qb_dropback"] == 1)).astype(float)
@@ -50,6 +50,11 @@ def build_team_games(sched: pd.DataFrame, pbp: pd.DataFrame) -> pd.DataFrame:
         agg["rush_plays"] = agg["plays"] - agg["pass_plays"]
         agg["epa_pass"] = p[p["is_pass"] == 1].groupby(["game_id", "posteam"])["epa"].mean()
         agg["epa_rush"] = p[p["is_pass"] == 0].groupby(["game_id", "posteam"])["epa"].mean()
+        # early downs (1st/2nd): the stable part of offense; third-down results regress heavily
+        ed = p[p["down"].isin([1, 2])].groupby(["game_id", "posteam"])["epa"]
+        agg["epa_early"], agg["early_plays"] = ed.mean(), ed.size()
+        # big-play rate: share of plays worth 1.75+ expected points (a yardage-free explosive-play proxy)
+        agg["bigplay"] = (p["epa"] >= 1.75).groupby([p["game_id"], p["posteam"]]).mean()
         # Weighted EPA (after nfelo's WEPA): close-game plays count more than lopsided ones, lost
         # fumbles (recovery is a coin flip) count less, and interceptions count less for the defense
         # than for the offense, since they say more about the passer than the coverage.
@@ -91,6 +96,8 @@ RATING_TARGETS = [
     ("wepa_d", "plays", "wepad"),      # weighted EPA, defense-side weights
     ("ppd", "drives", "ppd"),          # points per drive: the drive is the natural unit of offense
     ("drives", None, "drv"),           # possessions per game (pace in drives)
+    ("epa_early", "early_plays", "early"),  # EPA/play on first and second down
+    ("bigplay", "plays", "big"),       # big-play rate
 ]
 
 

@@ -39,6 +39,8 @@ def parse_args(argv=None):
     ap.add_argument("--refresh", action="store_true", help="force re-download of current-season data")
     ap.add_argument("--no-odds", action="store_true", help="skip odds; report model lines only")
     ap.add_argument("--lines-file", help="CSV of lines instead of The Odds API (see overrides/manual_lines.csv)")
+    ap.add_argument("--odds-snapshot", help="re-price from a saved Odds API snapshot (artifacts/odds_snapshots/*.json); "
+                                            "'latest' = newest one. Spends no credits and logs no picks")
     ap.add_argument("--config", help="JSON file of setting overrides")
     ap.add_argument("--bankroll", type=float)
     ap.add_argument("--min-ev", type=float, help="minimum edge to flag, e.g. 0.02 for +2%%")
@@ -83,6 +85,13 @@ def main(argv=None):
         sys.exit(f"No unplayed games in {season} week {week}. Use backtest.py for past weeks.")
     log.info("Target: %s week %s (%d unplayed games)", season, week, len(target_sched))
 
+    # same-day injury news: ESPN's page, laid over nflverse's (lagging) report for the target week
+    if not args.demo and cfg.use_espn:
+        from nflmodel import espn
+        einj, enotes = espn.injuries(season, week)
+        notes += enotes
+        data["injuries"] = espn.merge_injuries(data.get("injuries"), einj, season, week)
+
     # weather
     if args.demo:
         forecasts = demo_fc
@@ -124,6 +133,12 @@ def main(argv=None):
             notes.append("Model weight varies by game with each team's recent model-vs-market accuracy (nfelo-style).")
 
     dm, dt = fit_distributions(sched[sched["season"] >= cfg.first_season], cfg)
+    if args.odds_snapshot and not args.demo:
+        import json as _json
+        snap = (max((cfg.path("artifacts_dir") / "odds_snapshots").glob("odds_*.json"))
+                if args.odds_snapshot == "latest" else Path(args.odds_snapshot))
+        events = _json.loads(Path(snap).read_text())
+        notes.append(f"Odds re-priced from saved snapshot {Path(snap).name}.")
     try:
         odds, onotes = get_week_odds(cfg, target, lines_file=args.lines_file, no_odds=args.no_odds, events=events)
     except Exception as e:
@@ -170,6 +185,31 @@ def main(argv=None):
             "a_qb_name_used", "temp_used", "wind_used", "indoor"]
     target[cols].merge(summary, on="game_id", how="left", suffixes=("", "_s")).to_csv(
         out_dir / f"projections_{stem}.csv", index=False)
+    from nflmodel.export import append_pick_log, week_payload, write_payload
+    payload = week_payload(season, week, target, summary, board, odds, exp_m, exp_t, info, cfg, weights, notes,
+                           dm, dt, demo=args.demo)
+    site_dir = (out_dir / "site_data") if args.demo else Path("site_data")
+    write_payload(payload, site_dir)
+    from nflmodel.export import schedule_payload
+    (site_dir / f"schedule_{season}.json").write_text(
+        __import__("json").dumps(schedule_payload(sched, season, target), separators=(",", ":")), encoding="utf-8")
+    power = info.get("power")
+    if power is not None and len(power):
+        import json as _json
+        from nflmodel.export import _clean
+        from nflmodel.season import market_ratings, simulate_season
+        fair = dict(zip(summary["game_id"], summary["fair_margin"]))
+        mkt, mkt_hfa = market_ratings(sched, season, week, fair)
+        # season ratings: the market-implied rating, nudged by the model by its spread blend weight
+        model_net = dict(zip(power["team"], power["net_pts"]))
+        rat = {t: (1 - weights[0]) * mkt[t] + weights[0] * model_net.get(t, mkt[t]) for t in mkt}
+        sim = simulate_season(sched, season, rat, fair, hfa=mkt_hfa)
+        for r in sim["teams"]:
+            r["market_rating"], r["model_rating"] = mkt[r["team"]], model_net.get(r["team"])
+        sim.update(week=week, generated=payload["generated"], demo=args.demo)
+        (site_dir / f"season_{season}.json").write_text(_json.dumps(_clean(sim), separators=(",", ":")), encoding="utf-8")
+    if not args.demo and not args.no_odds and not args.odds_snapshot and not args.lines_file:
+        append_pick_log(payload, cfg.path("artifacts_dir") / "tracker" / "model_picks.csv")
     mm.coefficients().to_csv(cfg.path("artifacts_dir") / "margin_coefficients.csv", index=False)
     mt.coefficients().to_csv(cfg.path("artifacts_dir") / "total_coefficients.csv", index=False)
 
