@@ -160,7 +160,7 @@ def build_tracker(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict,
     p = ART / "tracker" / "model_picks.csv"
     if not p.exists():
         return dict(picks=[], records={})
-    df = pd.read_csv(p)
+    df = pd.read_csv(p, on_bad_lines="skip")
     df["t"] = pd.to_datetime(df["run_at"], utc=True, errors="coerce")
     df["ko"] = df["game_id"].map(lambda g: kickoffs.get(g))
     df["ko"] = pd.to_datetime(df["ko"], utc=True, errors="coerce")

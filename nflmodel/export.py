@@ -182,6 +182,11 @@ def append_pick_log(p: dict, path: Path):
     df.insert(1, "season", p["season"])
     df.insert(2, "week", p["week"])
     path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        old = pd.read_csv(path, on_bad_lines="skip")
+        if list(old.columns) != list(df.columns):          # columns added since the log started: rewrite once
+            pd.concat([old, df], ignore_index=True).to_csv(path, index=False)
+            return len(df)
     df.to_csv(path, mode="a", header=not path.exists(), index=False)
     return len(df)
 
