@@ -22,6 +22,7 @@ from .venues import norm_team
 
 log = logging.getLogger("nflmodel")
 BASE = "https://site.api.espn.com/apis/site/v2/sports/football/nfl"
+HEADERS = {"Accept": "application/json"}   # requests' default user agent; ESPN blocks browser-like ones
 STATUS = {"ACTIVE": "ACTIVE", "QUESTIONABLE": "QUESTIONABLE", "DOUBTFUL": "DOUBTFUL", "OUT": "OUT",
           "INJURED RESERVE": "IR", "PHYSICALLY UNABLE TO PERFORM": "PUP", "SUSPENSION": "SUSPENDED",
           "SUSPENDED": "SUSPENDED", "DAY-TO-DAY": "QUESTIONABLE", "PROBABLE": "PROBABLE"}
@@ -31,8 +32,7 @@ def _get(path: str, params: dict | None = None, tries: int = 3) -> dict:
     import requests
     for attempt in range(tries):
         try:
-            r = requests.get(f"{BASE}/{path}", params=params or {}, timeout=30,
-                             headers={"User-Agent": "nfl-line-model (personal research)"})
+            r = requests.get(f"{BASE}/{path}", params=params or {}, timeout=30, headers=HEADERS)
             r.raise_for_status()
             return r.json()
         except requests.RequestException:
