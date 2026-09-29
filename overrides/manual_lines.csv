@@ -1,0 +1,8 @@
+# Lines typed in by hand, used with:  python run_week.py --lines-file overrides/manual_lines.csv
+# Teams can be abbreviations (KC) or full names (Kansas City Chiefs). home_spread is the home
+# team's handicap (home favored by 3 -> -3). Prices are American odds. Leave a cell blank if not offered.
+# Add one row per book; include at least one sharp book (pinnacle, lowvig, betonlineag...) for a consensus.
+# Example (remove the leading # to use):
+# MIA,CLE,draftkings,-2.5,-110,-110,44.5,-110,-110,-135,+114
+# MIA,CLE,pinnacle,-2.5,-104,-106,44.5,-103,-107,-131,+120
+home_team,away_team,book,home_spread,home_spread_price,away_spread_price,total,over_price,under_price,home_ml,away_ml

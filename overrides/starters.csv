@@ -1,0 +1,6 @@
+# Force the starting QB for a team in a given week (the model otherwise projects the
+# last starter, adjusted by the injury report and roster status).
+# qb_name can be "Patrick Mahomes", "P.Mahomes" or "Mahomes" style; unknown/rookie QBs get a replacement-level prior.
+# Example (remove the leading # to use):
+# 2026,4,NYJ,Tyrod Taylor
+season,week,team,qb_name

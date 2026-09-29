@@ -1,0 +1,11 @@
+{
+  "bankroll": 1000,
+  "kelly_fraction": 0.25,
+  "max_stake_pct": 0.02,
+  "min_ev": 0.02,
+  "target_book": "draftkings",
+  "sharp_books": ["pinnacle", "lowvig", "betonlineag", "novig", "prophetx"],
+  "extra_books": ["fanduel", "betmgm"],
+  "first_season": 2012,
+  "use_gbm": true
+}

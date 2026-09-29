@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Secrets and personal settings
+.env
+config.json
+
+# Downloaded data (large; re-downloaded or cached by GitHub Actions)
+data_cache/
+
+# Generated outputs (rebuilt on every run)
+reports/
+
+# Artifacts: keep the small files the model learns from, ignore the rest
+artifacts/*
+!artifacts/odds_snapshots/
+!artifacts/calibration.json
+!artifacts/tuned_config.json
+artifacts/forecasts/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

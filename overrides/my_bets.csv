@@ -1,0 +1,7 @@
+# Log every bet you place; `python clv_report.py` scores it against the closing line.
+# market: spread | total | moneyline.  side: home | away | over | under.
+# line: your handicap for that side (away +2.5 -> 2.5, home -3 -> -3), or the total; blank for moneyline.
+# Examples (remove the leading # to use):
+# 2026,4,MIA,CLE,spread,away,2.5,-110,20,draftkings
+# 2026,4,MIA,CLE,total,over,44.5,-108,15,draftkings
+season,week,home_team,away_team,market,side,line,price,stake,book

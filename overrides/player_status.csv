@@ -1,0 +1,7 @@
+# Manual availability for any player, overriding the official injury report.
+# status: OUT, DOUBTFUL, QUESTIONABLE, PROBABLE, IN, or a play probability 0-1.
+# Use this after Friday injury reports and again ~90 minutes before kickoff when inactives post.
+# Examples (remove the leading # to use):
+# 2026,4,KC,Travis Kelce,OUT
+# 2026,4,BUF,Dion Dawkins,0.6
+season,week,team,player,status
