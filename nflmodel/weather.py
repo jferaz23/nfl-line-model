@@ -7,6 +7,7 @@ games; if a roof will be open in bad weather, the market will know before you).
 from __future__ import annotations
 
 import logging
+import time
 from datetime import datetime, timedelta, timezone
 
 import numpy as np
@@ -23,9 +24,15 @@ def _fetch(lat, lon):
               "hourly": "temperature_2m,precipitation,snowfall,wind_speed_10m,wind_gusts_10m",
               "temperature_unit": "fahrenheit", "wind_speed_unit": "mph", "precipitation_unit": "inch",
               "timezone": "UTC", "forecast_days": 16}
-    r = requests.get(URL, params=params, timeout=30)
-    r.raise_for_status()
-    return r.json()
+    for attempt in range(3):  # Open-Meteo occasionally times out; retry before giving up
+        try:
+            r = requests.get(URL, params=params, timeout=30)
+            r.raise_for_status()
+            return r.json()
+        except requests.RequestException:
+            if attempt == 2:
+                raise
+            time.sleep(5 * (attempt + 1))
 
 
 def summarize(hourly: dict, kickoff: datetime) -> dict | None:
