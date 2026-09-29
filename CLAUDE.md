@@ -23,5 +23,10 @@ DraftKings (the user's only sportsbook) to flag +EV bets. Full context, research
 - User-facing text: plain language, honest about small edges, "information only, not financial advice".
 
 ## Status (Sept 29, 2026)
-Built and tested on synthetic data only; never run on real NFL data. First task: run
-`python optimize.py` on real data and review model-vs-closing-line MAE and the pruning log.
+First real-data run done (backtest 2022-2026, 1187 games): spread MAE model 9.78 vs close 9.57
+(blend weight 1%), total 10.30 vs 10.23 (blend 10.21, weight 28%); no groups pruned.
+Automated on GitHub (jferaz23/nfl-line-model): `.github/workflows/weekly.yml` runs `run_week.py`
+Tue/Thu/Fri/Sun/Mon, commits odds snapshots + `site_archive/`, deploys `publish_site.py` output to
+Pages (https://jferaz23.github.io/nfl-line-model/); `optimize.yml` recalibrates Tuesdays.
+`ODDS_API_KEY` is an Actions secret. Locally, `config.json` (gitignored) puts the data cache outside
+OneDrive; run with `--config config.json`. Next: generate the v3 site design from pipeline output.
