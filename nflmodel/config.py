@@ -47,7 +47,8 @@ class Config:
     })
 
     # ------------- game model -------------
-    min_train_season: int = 2014        # first season used to fit the game model
+    min_train_season: int = 2013        # first season used to fit the game model (2012 warms up the ratings)
+    backtest_start: int = 2015          # first season the walk-forward backtest predicts
     train_recency_decay: float = 0.9    # weight per season back in time when fitting
     ridge_alphas: list = field(default_factory=lambda: [1, 3, 10, 30, 100, 300, 1000, 3000, 10000, 30000])
     use_gbm: bool = True                # add gradient boosting for non-linear effects
@@ -57,8 +58,9 @@ class Config:
     target_book: str = "draftkings"
     sharp_books: list = field(default_factory=lambda: [
         "pinnacle", "lowvig", "betonlineag", "novig", "prophetx"])
-    extra_books: list = field(default_factory=lambda: [
-        "fanduel", "betmgm", "williamhill_us", "fanatics", "espnbet", "betrivers", "hardrockbet"])
+    # 5 sharp + DraftKings + these 4 = 10 books = one Odds API "region" (3 credits a call). Caesars and Fanatics
+    # never returned prices through the API, and ESPN BET closed, so they are left out.
+    extra_books: list = field(default_factory=lambda: ["fanduel", "betmgm", "hardrockbet", "betrivers"])
     # How much weight the fair line puts on the model vs the sharp market.
     # backtest.py estimates these from history and writes artifacts/calibration.json,
     # which overrides the defaults below.

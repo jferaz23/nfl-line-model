@@ -1,0 +1,465 @@
+{
+ "built": "2026-09-29T23:24:36+00:00",
+ "scores": {
+  "ok": true,
+  "games": 3076,
+  "matched": 3076,
+  "mismatches": [],
+  "n_mismatch": 0,
+  "unmatched": [],
+  "n_unmatched": 0,
+  "seasons": "2015-2026"
+ },
+ "lines": {
+  "ok": true,
+  "games": 3076,
+  "missing_spread": 0,
+  "missing_total": 0,
+  "out_of_range": [],
+  "favorite_disagree": [],
+  "n_favorite_disagree": 0,
+  "spread_result_corr": 0.438,
+  "moneyline_entry_errors": [
+   "2015_01_KC_HOU",
+   "2015_15_TB_STL",
+   "2015_15_MIA_SD",
+   "2016_07_WAS_DET",
+   "2016_08_SEA_NO",
+   "2017_07_DEN_LAC",
+   "2017_15_LA_SEA",
+   "2018_01_CIN_IND",
+   "2018_06_LAC_CLE",
+   "2019_02_PHI_ATL",
+   "2019_12_SEA_PHI",
+   "2022_12_CIN_TEN",
+   "2023_02_IND_HOU",
+   "2023_03_LAC_MIN",
+   "2024_11_CIN_LAC",
+   "2025_10_PHI_GB"
+  ],
+  "n_moneyline_entry_errors": 16,
+  "note": "nflverse closing lines; spread sign = home favored when positive"
+ },
+ "venues": {
+  "ok": true,
+  "stadiums": 32,
+  "issues": [],
+  "n_issues": 0,
+  "table": [
+   {
+    "team": "ARI",
+    "stadium": "State Farm Stadium",
+    "ours_surface": "grass",
+    "ours_roof": "retractable",
+    "espn_venue": "State Farm Stadium",
+    "espn_grass": true,
+    "espn_indoor": true,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "ATL",
+    "stadium": "Mercedes-Benz Stadium",
+    "ours_surface": "turf",
+    "ours_roof": "retractable",
+    "espn_venue": "Mercedes-Benz Stadium",
+    "espn_grass": false,
+    "espn_indoor": true,
+    "nflverse_surface": "fieldturf",
+    "espn_current": true
+   },
+   {
+    "team": "BAL",
+    "stadium": "M&T Bank Stadium",
+    "ours_surface": "grass",
+    "ours_roof": "outdoors",
+    "espn_venue": "M&T Bank Stadium",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "BUF",
+    "stadium": "Highmark Stadium",
+    "ours_surface": "grass",
+    "ours_roof": "outdoors",
+    "espn_venue": "Highmark Stadium",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "a_turf,grass",
+    "espn_current": true
+   },
+   {
+    "team": "CAR",
+    "stadium": "Bank of America Stadium",
+    "ours_surface": "turf",
+    "ours_roof": "outdoors",
+    "espn_venue": "Bank of America Stadium",
+    "espn_grass": false,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "CHI",
+    "stadium": "Soldier Field",
+    "ours_surface": "grass",
+    "ours_roof": "outdoors",
+    "espn_venue": "Soldier Field",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "CIN",
+    "stadium": "Paycor Stadium",
+    "ours_surface": "turf",
+    "ours_roof": "outdoors",
+    "espn_venue": "Paycor Stadium",
+    "espn_grass": false,
+    "espn_indoor": false,
+    "nflverse_surface": "fieldturf",
+    "espn_current": true
+   },
+   {
+    "team": "CLE",
+    "stadium": "Huntington Bank Field",
+    "ours_surface": "grass",
+    "ours_roof": "outdoors",
+    "espn_venue": "Huntington Bank Field",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "DAL",
+    "stadium": "AT&T Stadium",
+    "ours_surface": "turf",
+    "ours_roof": "retractable",
+    "espn_venue": "AT&T Stadium",
+    "espn_grass": false,
+    "espn_indoor": true,
+    "nflverse_surface": "matrixturf",
+    "espn_current": true
+   },
+   {
+    "team": "DEN",
+    "stadium": "Empower Field at Mile High",
+    "ours_surface": "grass",
+    "ours_roof": "outdoors",
+    "espn_venue": "Empower Field at Mile High",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "DET",
+    "stadium": "Ford Field",
+    "ours_surface": "turf",
+    "ours_roof": "dome",
+    "espn_venue": "Ford Field",
+    "espn_grass": false,
+    "espn_indoor": true,
+    "nflverse_surface": "fieldturf",
+    "espn_current": true
+   },
+   {
+    "team": "GB",
+    "stadium": "Lambeau Field",
+    "ours_surface": "grass",
+    "ours_roof": "outdoors",
+    "espn_venue": "Lambeau Field",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "HOU",
+    "stadium": "NRG Stadium",
+    "ours_surface": "turf",
+    "ours_roof": "retractable",
+    "espn_venue": "Reliant Stadium",
+    "espn_grass": false,
+    "espn_indoor": true,
+    "nflverse_surface": "astroturf",
+    "espn_current": true
+   },
+   {
+    "team": "IND",
+    "stadium": "Lucas Oil Stadium",
+    "ours_surface": "turf",
+    "ours_roof": "retractable",
+    "espn_venue": "Lucas Oil Stadium",
+    "espn_grass": false,
+    "espn_indoor": true,
+    "nflverse_surface": "fieldturf",
+    "espn_current": true
+   },
+   {
+    "team": "JAX",
+    "stadium": "EverBank Stadium",
+    "ours_surface": "grass",
+    "ours_roof": "outdoors",
+    "espn_venue": "EverBank Stadium",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "KC",
+    "stadium": "GEHA Field at Arrowhead",
+    "ours_surface": "grass",
+    "ours_roof": "outdoors",
+    "espn_venue": "Arrowhead Stadium",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "LV",
+    "stadium": "Allegiant Stadium",
+    "ours_surface": "grass",
+    "ours_roof": "dome",
+    "espn_venue": "Allegiant Stadium",
+    "espn_grass": true,
+    "espn_indoor": true,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "LAC",
+    "stadium": "SoFi Stadium",
+    "ours_surface": "turf",
+    "ours_roof": "dome",
+    "espn_venue": "Dignity Health Sports Park",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "matrixturf",
+    "espn_current": false
+   },
+   {
+    "team": "LA",
+    "stadium": "SoFi Stadium",
+    "ours_surface": "turf",
+    "ours_roof": "dome",
+    "espn_venue": "Los Angeles Memorial Coliseum",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "matrixturf",
+    "espn_current": false
+   },
+   {
+    "team": "MIA",
+    "stadium": "Hard Rock Stadium",
+    "ours_surface": "grass",
+    "ours_roof": "outdoors",
+    "espn_venue": "Hard Rock Stadium",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "MIN",
+    "stadium": "U.S. Bank Stadium",
+    "ours_surface": "turf",
+    "ours_roof": "dome",
+    "espn_venue": "U.S. Bank Stadium",
+    "espn_grass": false,
+    "espn_indoor": true,
+    "nflverse_surface": "sportturf",
+    "espn_current": true
+   },
+   {
+    "team": "NE",
+    "stadium": "Gillette Stadium",
+    "ours_surface": "turf",
+    "ours_roof": "outdoors",
+    "espn_venue": "Gillette Stadium",
+    "espn_grass": false,
+    "espn_indoor": false,
+    "nflverse_surface": "fieldturf",
+    "espn_current": true
+   },
+   {
+    "team": "NO",
+    "stadium": "Caesars Superdome",
+    "ours_surface": "turf",
+    "ours_roof": "dome",
+    "espn_venue": "Caesars Superdome",
+    "espn_grass": false,
+    "espn_indoor": true,
+    "nflverse_surface": "sportturf",
+    "espn_current": true
+   },
+   {
+    "team": "NYG",
+    "stadium": "MetLife Stadium",
+    "ours_surface": "turf",
+    "ours_roof": "outdoors",
+    "espn_venue": "MetLife Stadium",
+    "espn_grass": false,
+    "espn_indoor": false,
+    "nflverse_surface": "fieldturf",
+    "espn_current": true
+   },
+   {
+    "team": "NYJ",
+    "stadium": "MetLife Stadium",
+    "ours_surface": "turf",
+    "ours_roof": "outdoors",
+    "espn_venue": "MetLife Stadium",
+    "espn_grass": false,
+    "espn_indoor": false,
+    "nflverse_surface": "fieldturf",
+    "espn_current": true
+   },
+   {
+    "team": "PHI",
+    "stadium": "Lincoln Financial Field",
+    "ours_surface": "grass",
+    "ours_roof": "outdoors",
+    "espn_venue": "Lincoln Financial Field",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "PIT",
+    "stadium": "Acrisure Stadium",
+    "ours_surface": "grass",
+    "ours_roof": "outdoors",
+    "espn_venue": "Acrisure Stadium",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "SF",
+    "stadium": "Levi's Stadium",
+    "ours_surface": "grass",
+    "ours_roof": "outdoors",
+    "espn_venue": "Levi's Stadium",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "SEA",
+    "stadium": "Lumen Field",
+    "ours_surface": "turf",
+    "ours_roof": "outdoors",
+    "espn_venue": "Lumen Field",
+    "espn_grass": false,
+    "espn_indoor": false,
+    "nflverse_surface": "fieldturf",
+    "espn_current": true
+   },
+   {
+    "team": "TB",
+    "stadium": "Raymond James Stadium",
+    "ours_surface": "grass",
+    "ours_roof": "outdoors",
+    "espn_venue": "Raymond James Stadium",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "TEN",
+    "stadium": "Nissan Stadium",
+    "ours_surface": "turf",
+    "ours_roof": "outdoors",
+    "espn_venue": "Nissan Stadium",
+    "espn_grass": false,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   },
+   {
+    "team": "WAS",
+    "stadium": "Northwest Stadium",
+    "ours_surface": "grass",
+    "ours_roof": "outdoors",
+    "espn_venue": "Northwest Stadium",
+    "espn_grass": true,
+    "espn_indoor": false,
+    "nflverse_surface": "grass",
+    "espn_current": true
+   }
+  ]
+ },
+ "injuries": {
+  "ok": true,
+  "listings": 800,
+  "not_active": 169,
+  "matched_share": 0.994,
+  "unmatched": [
+   {
+    "team": "ATL",
+    "full_name": "Keshawn Banks",
+    "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Mike Danna",
+    "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CIN",
+    "full_name": "Mitchell Tinsley",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CIN",
+    "full_name": "Isaiah Nwokobia",
+    "position": "S",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "MIA",
+    "full_name": "James Ester",
+    "position": "G",
+    "report_status": "ACTIVE"
+   }
+  ],
+  "n_unmatched": 5,
+  "status_disagreements": [],
+  "n_status_disagree": 0,
+  "qb_flags": [],
+  "checked": "2026-09-29T23:26:11+00:00"
+ },
+ "books": {
+  "ok": true,
+  "snapshot": "odds_20260929T221601Z.json",
+  "games": 31,
+  "books_seen": {
+   "draftkings": 31,
+   "fanduel": 31,
+   "betonlineag": 31,
+   "lowvig": 31,
+   "betrivers": 16,
+   "novig": 31,
+   "betmgm": 16,
+   "prophetx": 16,
+   "espnbet": 16,
+   "hardrockbet": 16,
+   "pinnacle": 16
+  },
+  "configured_missing": []
+ }
+}

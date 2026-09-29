@@ -56,6 +56,9 @@ jobs:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: python run_week.py ${{ inputs.refresh && '--refresh' || '' }}
 
+      - name: Data audit (scores, lines, venues, injuries, books vs independent sources)
+        run: python audit_data.py || echo "audit failed; the site shows the last audit"
+
       - name: Line watch (scores, DraftKings line history)
         run: python line_watch.py
 

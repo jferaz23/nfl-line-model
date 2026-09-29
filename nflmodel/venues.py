@@ -53,7 +53,8 @@ HOME = {
     "ARI": V(33.5276, -112.2626, "America/Phoenix", 1070, "retractable", "grass", "State Farm Stadium"),
     "ATL": V(33.7554, -84.4008, "America/New_York", 1050, "retractable", "turf", "Mercedes-Benz Stadium"),
     "BAL": V(39.2780, -76.6227, "America/New_York", 30, "outdoors", "grass", "M&T Bank Stadium"),
-    "BUF": V(42.7738, -78.7870, "America/New_York", 600, "outdoors", "turf", "Highmark Stadium"),
+    # new Highmark Stadium (2026): open-air, natural grass (ESPN venue data and the league game feed agree)
+    "BUF": V(42.7746, -78.7856, "America/New_York", 600, "outdoors", "grass", "Highmark Stadium"),
     "CAR": V(35.2258, -80.8528, "America/New_York", 750, "outdoors", "turf", "Bank of America Stadium"),
     "CHI": V(41.8623, -87.6167, "America/Chicago", 600, "outdoors", "grass", "Soldier Field"),
     "CIN": V(39.0955, -84.5161, "America/New_York", 490, "outdoors", "turf", "Paycor Stadium"),
@@ -92,6 +93,7 @@ ERA = {
     "LAC": [(2016, V(32.7831, -117.1196, "America/Los_Angeles", 80, "outdoors", "grass", "Qualcomm Stadium")),
             (2019, V(33.8644, -118.2611, "America/Los_Angeles", 60, "outdoors", "grass", "StubHub Center"))],
     "LV": [(2019, V(37.7516, -122.2005, "America/Los_Angeles", 20, "outdoors", "grass", "Oakland Coliseum"))],
+    "BUF": [(2025, V(42.7738, -78.7870, "America/New_York", 600, "outdoors", "turf", "Highmark Stadium (old, artificial turf)"))],
 }
 
 # International / neutral venues matched by keywords in the nflverse stadium name.

@@ -231,15 +231,19 @@ def main(argv=None):
     games = games[games["has_ratings"] & games["result"].notna()]
     seasons_all = sorted(games["season"].unique())
     end = args.end or int(seasons_all[-1])
-    start = args.start or max(int(seasons_all[0]) + 3, end - 4)
+    start = args.start or (max(int(seasons_all[0]) + 1, cfg.backtest_start) if not args.demo
+                           else max(int(seasons_all[0]) + 3, end - 4))
     seasons = [s for s in seasons_all if start <= s <= end]
     if not seasons or games[games["season"] < seasons[0]].empty:
         sys.exit("Not enough seasons before --start to train on. Lower cfg.min_train_season or raise --start.")
     log.info("Walk-forward over %s-%s (%d games)", seasons[0], seasons[-1], int(games["season"].isin(seasons).sum()))
 
     # ---------------- optimization: prune groups -> choose boosting weights -> final walk-forward -------------
-    sel = seasons[:-1] if len(seasons) >= 3 else seasons           # choose settings on these seasons...
-    hold = seasons[-1:] if len(seasons) >= 3 else []                # ...and confirm them on the last one
+    # choose settings on the earlier seasons and confirm them on the most recent ones (the last two when
+    # there are enough seasons, so the check is not just the current season's few weeks)
+    n_hold = 2 if len(seasons) >= 6 else (1 if len(seasons) >= 3 else 0)
+    sel = seasons[:-n_hold] if n_hold else seasons
+    hold = seasons[-n_hold:] if n_hold else []
     res = dict(start=seasons[0], end=seasons[-1])
     drop_m, drop_t = [], []
     if not args.no_optimize:

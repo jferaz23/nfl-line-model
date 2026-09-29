@@ -48,7 +48,14 @@
   const dec = a => a > 0 ? 1 + a / 100 : 1 + 100 / -a;
   const favLine = (h, a, m) => !fin(m) ? "–" : Math.abs(m) < 0.05 ? "Pick'em" : (m > 0 ? h : a) + " −" + trim(Math.abs(m));
   const logistic = (b, e) => 1 / (1 + Math.exp(-b * e));
-  const byId = {};
+  const TIER = { 3: ["★★★", "Best bet"], 2: ["★★", "Value"], 1: ["★", "Lean"] };
+  const tierOf = b => (b && b.tier) || (b && b.is_play ? 3 : b && b.ev >= 0.01 ? 2 : 1);
+  const tierBadge = (b, force) => { if (!b) return ""; const k = tierOf(b); if (k === 1 && !force) return ""; return `<span class="tier t${k}" title="${esc(TIER_HELP[k])}"><span class="st">${TIER[k][0]}</span>${TIER[k][1]}</span>`; };
+  const TIER_HELP = {
+    3: "Best bet: at least a 2% edge at DraftKings' price, and the model's own number agrees with the side.",
+    2: "Value: a 1-2% edge at DraftKings' price, or a bigger edge the model alone does not back. Smaller or less certain.",
+    1: "Lean: the likelier side, but DraftKings' price is about fair or worse. Not a bet."
+  };
 
   // ------------------------------------------------------------------ data prep
   const weekKeys = Object.keys(S.weeks || {}).sort();
@@ -139,21 +146,18 @@
       <div class="kpi"><div class="kl">Spread</div><div class="kv">${rec("spread")}</div><div class="ks">${sub("spread")}</div></div>
       <div class="kpi"><div class="kl">Totals</div><div class="kv">${rec("total")}</div><div class="ks">${sub("total")}</div></div>
       <div class="kpi"><div class="kl">Winners</div><div class="kv">${rec("winner")}</div><div class="ks">${sub("winner")}</div></div>
-      <div class="kpi"><div class="kl">Bets</div><div class="kv">${rec("bets")}</div><div class="ks">${sub("bets")}</div></div>`;
+      <div class="kpi"><div class="kl">★★★ Best bets</div><div class="kv">${rec("tier3")}</div><div class="ks">${sub("tier3")}</div></div>`;
   }
 
   const THEME_KEY = "nflmodel-theme";
   function theme() {
-    const btn = document.getElementById("theme");
-    let t = null; try { t = localStorage.getItem(THEME_KEY); } catch (e) { }
-    if (t) document.documentElement.dataset.theme = t;
-    const label = () => { const cur = document.documentElement.dataset.theme; btn.textContent = cur === "dark" ? "Dark" : cur === "light" ? "Light" : "Auto"; };
+    const btn = document.getElementById("theme"), root = document.documentElement;
+    const label = () => { btn.textContent = root.dataset.theme === "light" ? "☀ Light" : "☾ Dark"; btn.setAttribute("aria-label", "Switch to " + (root.dataset.theme === "light" ? "dark" : "light") + " mode"); };
+    if (!root.dataset.theme) root.dataset.theme = "dark";
     label();
     btn.onclick = () => {
-      const cur = document.documentElement.dataset.theme;
-      const nxt = !cur ? "light" : cur === "light" ? "dark" : "";
-      if (nxt) document.documentElement.dataset.theme = nxt; else delete document.documentElement.dataset.theme;
-      try { nxt ? localStorage.setItem(THEME_KEY, nxt) : localStorage.removeItem(THEME_KEY); } catch (e) { }
+      root.dataset.theme = root.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem(THEME_KEY, root.dataset.theme); } catch (e) { }
       label();
     };
   }
@@ -212,10 +216,43 @@
       <tr><td>Model</td><td class="m">${esc(favLine(h, a, g.model_margin))}</td><td class="m">${num(g.model_total)}</td><td class="m">${fin(g.p_home_win_model) ? esc((g.p_home_win_model >= .5 ? h : a) + " " + pct(Math.max(g.p_home_win_model, 1 - g.p_home_win_model))) : "–"}</td></tr>
       <tr><td>Fair (blend)</td><td>${esc(favLine(h, a, g.fair_margin))}</td><td>${num(g.fair_total)}</td><td>${fin(d.pHome) ? esc(d.winner + " " + pct(Math.max(d.pHome, 1 - d.pHome))) : "–"}</td></tr>
       <tr><td>DraftKings</td><td class="v">${esc(dkSp)}</td><td class="v">${fin(g.dk_total) ? trim(g.dk_total) : "–"}</td><td class="v">${fin(d.pHomeMkt) ? esc((d.pHomeMkt >= .5 ? h : a) + " " + pct(Math.max(d.pHomeMkt, 1 - d.pHomeMkt))) : "–"}</td></tr>
-      <tr class="edge"><td>Pick</td><td>${d.sp ? esc(d.sp.bet) + (d.sp.is_play ? '<span class="chip">BET</span>' : "") + `<div class="small muted">${pct(d.pr(d.sp))} · edge ${sgn(d.spEdge)} pts</div>` : "–"}</td>
-        <td>${d.tt ? esc(d.tt.bet) + (d.tt.is_play ? '<span class="chip">BET</span>' : "") + `<div class="small muted">${pct(d.pr(d.tt))} · edge ${sgn(d.ttEdge)} pts</div>` : "–"}</td>
-        <td>${d.ml ? esc(d.ml.bet.replace(" to win", "")) + ` ${am(d.ml.price)}` + (d.ml.is_play ? '<span class="chip">BET</span>' : "") : "–"}</td></tr>
+      <tr class="edge"><td>Pick</td><td>${d.sp ? esc(d.sp.bet) + tierBadge(d.sp) + `<div class="small muted">${pct(d.pr(d.sp))} · edge ${sgn(d.spEdge)} pts</div>` : "–"}</td>
+        <td>${d.tt ? esc(d.tt.bet) + tierBadge(d.tt) + `<div class="small muted">${pct(d.pr(d.tt))} · edge ${sgn(d.ttEdge)} pts</div>` : "–"}</td>
+        <td>${d.ml ? esc(d.ml.bet.replace(" to win", "")) + ` ${am(d.ml.price)}` + tierBadge(d.ml) : "–"}</td></tr>
     </tbody></table></div>`;
+  }
+
+  // ------------------------------------------------------------------ best picks of the week
+  function weekPicks(W) {
+    // per game and market, the strongest DraftKings offer: highest tier, then highest expected value
+    const out = [];
+    const games = {}; W.games.forEach(g => games[g.game_id] = g);
+    const groups = {};
+    (W.board || []).forEach(b => { const k = b.game_id + "|" + b.market; (groups[k] = groups[k] || []).push(b); });
+    Object.values(groups).forEach(list => {
+      const b = list.slice().sort((x, y) => tierOf(y) - tierOf(x) || y.ev - x.ev)[0];
+      const g = games[b.game_id]; if (!g) return;
+      out.push({ b, g, d: derive(W, g), p: b.p_win / Math.max(b.p_win + b.p_lose, 1e-9) });
+    });
+    return out.sort((x, y) => tierOf(y.b) - tierOf(x.b) || y.b.ev - x.b.ev);
+  }
+  function bestPanel(W, compact) {
+    const all = weekPicks(W);
+    const top = all.filter(x => tierOf(x.b) >= 2), leans = all.filter(x => tierOf(x.b) === 1 && x.b.market !== "moneyline");
+    const n3 = top.filter(x => tierOf(x.b) === 3).length, n2 = top.length - n3;
+    const card = x => { const b = x.b, g = x.g, r = x.d.graded[b.bet], k = tierOf(b);
+      return `<a class="bp t${k}" href="#breakdown/${esc(g.game_id)}"><div class="top">${tierBadge(b)}<span class="small muted">${esc(fmtDay(dt(g.kickoff_utc)))} ${esc(fmtTime(dt(g.kickoff_utc)))}</span></div>
+        <div class="pick">${esc(b.bet)} <span class="muted" style="font-weight:500">${am(b.price)}</span>${r ? ` <span class="chip ${r}">${r}</span>` : ""}</div>
+        <div class="small muted">${esc(g.away_team)} @ ${esc(g.home_team)} · ${b.market}</div>
+        <div class="conf" title="Chance to hit ${pct(x.p)}"><i style="width:${Math.round(100 * x.p)}%"></i></div>
+        <div class="meta"><span>Chance <b>${pct(x.p)}</b></span><span>Edge <b class="${b.ev > 0 ? "w" : ""}">${sgn(100 * b.ev, 1)}%</b></span>${fin(b.model_edge) && b.market !== "moneyline" ? `<span>Model <b>${sgn(b.model_edge)}</b> pts</span>` : ""}${b.timing ? `<span>${esc(b.timing)}</span>` : ""}</div></a>`; };
+    const leanRows = leans.sort((x, y) => y.p - x.p).map(x => `<tr><td>${tierBadge(x.b, true)}</td><td><strong>${esc(x.b.bet)}</strong> ${am(x.b.price)}</td><td>${esc(x.g.away_team)} @ ${esc(x.g.home_team)}</td><td class="num">${pct(x.p)}</td><td class="num muted">${sgn(100 * x.b.ev, 1)}%</td></tr>`).join("");
+    return `<div class="panel"><div class="toolbar" style="justify-content:space-between;margin:0 0 10px"><div><h2>Best picks this week</h2>
+      <p class="lede" style="margin:0">Strongest first: ${n3} best bet${n3 === 1 ? "" : "s"} and ${n2} value play${n2 === 1 ? "" : "s"}. Everything else is a lean: the likelier side at about a fair price or worse.</p></div>
+      ${compact ? `<a class="btn" href="#picks">All picks</a>` : ""}</div>
+      ${top.length ? `<div class="best-grid">${top.map(card).join("")}</div>` : `<p class="empty">No DraftKings price is better than fair this run. Check back after the next update.</p>`}
+      <div class="tier-legend"><span>${tierBadge({ tier: 3 })} ${esc(TIER_HELP[3].split(": ")[1])}</span><span>${tierBadge({ tier: 2 })} ${esc(TIER_HELP[2].split(": ")[1])}</span><span>${tierBadge({ tier: 1 }, true)} ${esc(TIER_HELP[1].split(": ")[1])}</span></div>
+      ${!compact && leanRows ? `<details class="leans"><summary>${leans.length} leans (not bets): spreads and totals near or below a fair price</summary><div class="tablewrap"><table><thead><tr><th>Tier</th><th>Pick</th><th>Game</th><th class="num">Chance</th><th class="num">Edge</th></tr></thead><tbody>${leanRows}</tbody></table></div></details>` : ""}</div>`;
   }
 
   // ------------------------------------------------------------------ Games
@@ -229,7 +266,8 @@
       const hs = lv && lv.state !== "pre" ? lv.home_score : null, as = lv && lv.state !== "pre" ? lv.away_score : null;
       const status = !lv || lv.state === "pre" ? `<b>${esc(fmtDay(dt(g.kickoff_utc)))} ${esc(fmtTime(dt(g.kickoff_utc)))}</b>` :
         lv.completed ? `<b>Final</b>` : `<span class="live">${esc(lv.detail || "Live")}</span>`;
-      const pk = (b, label) => { if (!b) return ""; const r = d.graded[b.bet]; return `<span class="pk${r ? " " + r : b.is_play ? " bet" : ""}">${esc(label || b.bet)}${r ? " · " + r : ""}</span>`; };
+      const pk = (b, label) => { if (!b) return ""; const r = d.graded[b.bet], k = tierOf(b);
+        return `<span class="pk${r ? " " + r : k === 3 ? " bet" : ""}" title="${esc(TIER[k][1])}">${k >= 2 ? TIER[k][0] + " " : ""}${esc(label || b.bet)}${r ? " · " + r : ""}</span>`; };
       const scoreCls = (mine, other) => mine != null && other != null && mine < other ? "score lose" : "score";
       return `<button class="gcard" type="button" data-g="${esc(g.game_id)}" aria-expanded="${openGame === g.game_id}">
         <div class="row">${team(g.away_team, ` <span class="rec">${recText(g.away_team)}</span>`)}${as != null ? `<span class="${scoreCls(as, hs)}">${as}</span>` : ""}</div>
@@ -237,33 +275,37 @@
         <div class="picks">${pk(d.sp)}${pk(d.tt)}${d.ml ? pk(d.ml, d.ml.bet.replace(" to win", " ML")) : ""}</div>
         <div class="foot">${status}<span class="muted">${esc((lv && lv.broadcast) || "")}</span></div></button>`;
     };
-    let detail = "";
-    if (openGame) {
-      const g = games.find(x => x.game_id === openGame);
-      if (g) {
-        const d = derive(W, g);
-        const tabs = [["model", "Model"], ["win", "Win chance"], ["line", "Line history"], ["books", "All books"], ["news", "Injuries and context"]];
-        let body = "";
-        if (gameTab === "model") body = modelTable(W, g);
-        else if (gameTab === "win") body = `<div class="bars"><span class="lab">Fair</span>${bar("model", g.away_team, fin(d.pHome) ? 1 - d.pHome : NaN, g.home_team)}
-          <span class="lab">Model</span>${bar("hist", g.away_team, fin(g.p_home_win_model) ? 1 - g.p_home_win_model : NaN, g.home_team)}
-          <span class="lab">DK</span>${bar("vegas", g.away_team, fin(d.pHomeMkt) ? 1 - d.pHomeMkt : NaN, g.home_team)}</div>
-          <p class="note">Fair = the blended line the picks use. Model = the model alone. DK = DraftKings' moneyline with the margin removed.</p>`;
-        else if (gameTab === "line") body = `<div class="two"><div><h3>Spread</h3>${lineChart(g.game_id, g, "spread")}</div><div><h3>Total</h3>${lineChart(g.game_id, g, "total")}</div></div>`;
-        else if (gameTab === "books") body = booksTable(W, g);
-        else body = contextBlock(W, g);
-        detail = `<div class="gdetail" id="gdetail">
-          <div class="gd-head">${team(g.away_team, "", true)}<span class="at">at</span>${team(g.home_team, "", true)}
-            ${d.lv && d.lv.state !== "pre" ? `<strong class="cond" style="font-size:20px">${d.lv.away_score}–${d.lv.home_score}</strong> <span class="${d.lv.completed ? "muted" : "live"}">${esc(d.lv.detail || "")}</span>` : ""}
-            <button class="btn close" type="button" data-close>Close</button></div>
-          <p class="gd-sub">${esc(fmtLong(dt(g.kickoff_utc)))} · ${esc(fmtTime(dt(g.kickoff_utc)))} ET${d.lv && d.lv.broadcast ? " · " + esc(d.lv.broadcast) : ""} · <a href="#breakdown/${esc(g.game_id)}">Full breakdown</a></p>
-          <div class="subtabs">${tabs.map(([k, l]) => `<button type="button" data-gt="${k}" aria-pressed="${gameTab === k}">${l}</button>`).join("")}</div>${body}</div>`;
-      }
-    }
-    view.innerHTML = detail + `<p class="section-label">Coming up · Week ${W.week}</p><div class="ggrid">${games.map(card).join("")}</div>`;
-    view.querySelectorAll(".gcard").forEach(b => b.onclick = () => { openGame = openGame === b.dataset.g ? null : b.dataset.g; renderGames(); if (openGame) document.getElementById("gdetail").scrollIntoView({ block: "nearest" }); });
-    view.querySelectorAll("[data-gt]").forEach(b => b.onclick = () => { gameTab = b.dataset.gt; renderGames(); });
-    const c = view.querySelector("[data-close]"); if (c) c.onclick = () => { openGame = null; renderGames(); };
+    view.innerHTML = `<div id="gdetail-slot"></div>${bestPanel(W, true)}<p class="section-label">Week ${W.week} · all games</p><div class="ggrid">${games.map(card).join("")}</div>`;
+    const slot = view.querySelector("#gdetail-slot");
+    const drawDetail = () => {
+      view.querySelectorAll(".gcard").forEach(c => c.setAttribute("aria-expanded", String(c.dataset.g === openGame)));
+      const g = openGame && games.find(x => x.game_id === openGame);
+      if (!g) { slot.innerHTML = ""; return; }
+      const d = derive(W, g);
+      const tabs = [["model", "Model"], ["win", "Win chance"], ["line", "Line history"], ["books", "All books"], ["news", "Injuries and context"]];
+      let body = "";
+      if (gameTab === "model") body = modelTable(W, g);
+      else if (gameTab === "win") body = `<div class="bars"><span class="lab">Fair</span>${bar("model", g.away_team, fin(d.pHome) ? 1 - d.pHome : NaN, g.home_team)}
+        <span class="lab">Model</span>${bar("hist", g.away_team, fin(g.p_home_win_model) ? 1 - g.p_home_win_model : NaN, g.home_team)}
+        <span class="lab">DK</span>${bar("vegas", g.away_team, fin(d.pHomeMkt) ? 1 - d.pHomeMkt : NaN, g.home_team)}</div>
+        <p class="note">Fair = the blended line the picks use. Model = the model alone. DK = DraftKings' moneyline with the margin removed.</p>`;
+      else if (gameTab === "line") body = `<div class="two"><div><h3>Spread</h3>${lineChart(g.game_id, g, "spread")}</div><div><h3>Total</h3>${lineChart(g.game_id, g, "total")}</div></div>`;
+      else if (gameTab === "books") body = booksTable(W, g);
+      else body = contextBlock(W, g);
+      slot.innerHTML = `<div class="gdetail" id="gdetail">
+        <div class="gd-head">${team(g.away_team, "", true)}<span class="at">at</span>${team(g.home_team, "", true)}
+          ${d.lv && d.lv.state !== "pre" ? `<strong class="cond" style="font-size:20px">${d.lv.away_score}–${d.lv.home_score}</strong> <span class="${d.lv.completed ? "muted" : "live"}">${esc(d.lv.detail || "")}</span>` : ""}
+          <button class="btn close" type="button" data-close>Close</button></div>
+        <p class="gd-sub">${esc(fmtLong(dt(g.kickoff_utc)))} · ${esc(fmtTime(dt(g.kickoff_utc)))} ET${d.lv && d.lv.broadcast ? " · " + esc(d.lv.broadcast) : ""} · <a href="#breakdown/${esc(g.game_id)}">Full breakdown</a></p>
+        <div class="subtabs">${tabs.map(([k, l]) => `<button type="button" data-gt="${k}" aria-pressed="${gameTab === k}">${l}</button>`).join("")}</div>${body}</div>`;
+      slot.querySelectorAll("[data-gt]").forEach(b => b.onclick = () => { gameTab = b.dataset.gt; drawDetail(); });
+      slot.querySelector("[data-close]").onclick = () => { openGame = null; drawDetail(); };
+    };
+    view.querySelectorAll(".gcard").forEach(b => b.onclick = () => {
+      openGame = openGame === b.dataset.g ? null : b.dataset.g; drawDetail();
+      if (openGame) slot.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+    drawDetail();
   }
 
   function contextBlock(W, g) {
@@ -292,12 +334,12 @@
     const res = (d, b) => { const r = b && d.graded[b.bet]; return r ? `<span class="chip ${r}">${r}</span>` : ""; };
     const rows = games.map(g => {
       const d = derive(W, g);
-      const cell = (b, p) => b ? `<strong>${esc(b.bet.replace(" to win", ""))}</strong>${b.is_play ? '<span class="chip">BET</span>' : ""}${res(d, b)}<div class="small muted">${pct(p)}</div>` : "–";
+      const cell = (b, p) => b ? `<strong>${esc(b.bet.replace(" to win", ""))}</strong>${tierBadge(b)}${res(d, b)}<div class="small muted">${pct(p)}</div>` : "–";
       const fscore = d.final ? `${d.final[1]}–${d.final[0]}` : "";
-      return `<tr${[d.sp, d.tt, d.ml].some(b => b && b.is_play) ? ' class="hl"' : ""}>
+      return `<tr${[d.sp, d.tt, d.ml].some(b => b && tierOf(b) === 3) ? ' class="t3row"' : ""}>
         <td>${team(g.away_team)} <span class="muted">@</span> ${team(g.home_team)}<div class="small muted">${esc(fmtDay(dt(g.kickoff_utc)))} ${esc(fmtTime(dt(g.kickoff_utc)))}</div></td>
         <td>${cell(d.sp, d.sp && d.pr(d.sp))}</td><td>${cell(d.tt, d.tt && d.pr(d.tt))}</td>
-        <td>${d.winner ? `<strong>${esc(d.winner)}</strong>${d.ml && d.ml.is_play ? '<span class="chip">BET</span>' : ""}${res(d, d.ml)}<div class="small muted">${pct(Math.max(d.pHome, 1 - d.pHome))}</div>` : "–"}</td>
+        <td>${d.winner ? `<strong>${esc(d.winner)}</strong>${d.ml && d.ml.bet.startsWith(d.winner + " ") ? tierBadge(d.ml) : ""}${res(d, d.ml)}<div class="small muted">${pct(Math.max(d.pHome, 1 - d.pHome))}</div>` : "–"}</td>
         <td class="num">${esc(g.away_team)} ${num(d.ma)}<br>${esc(g.home_team)} ${num(d.mh)}</td>
         <td class="num">${fin(d.va) ? num(d.va) + "<br>" + num(d.vh) : "–"}</td>
         <td class="num">${esc(fscore)}</td></tr>`;
@@ -308,7 +350,7 @@
       if (d.sp) rank.push({ g, d, b: d.sp, m: "Spread", edge: d.spEdge, hist: d.spHist, p: d.pr(d.sp) });
       if (d.tt) rank.push({ g, d, b: d.tt, m: "Total", edge: d.ttEdge, hist: d.ttHist, p: d.pr(d.tt) }); });
     const rsel = rank.filter(r => rankMarket === "all" || r.m === rankMarket).sort((x, y) => y.p - x.p);
-    const rankRows = rsel.map((r, i) => `<tr${r.b.is_play ? ' class="hl"' : ""}><td class="num">${i + 1}</td><td><strong>${esc(r.b.bet)}</strong>${r.b.is_play ? '<span class="chip">BET</span>' : ""}${res(r.d, r.b)}</td>
+    const rankRows = rsel.map((r, i) => `<tr${tierOf(r.b) === 3 ? ' class="t3row"' : ""}><td class="num">${i + 1}</td><td><strong>${esc(r.b.bet)}</strong>${tierBadge(r.b)}${res(r.d, r.b)}</td>
       <td>${esc(r.g.away_team)} @ ${esc(r.g.home_team)}</td><td class="muted">${esc(fmtDay(dt(r.g.kickoff_utc)))} ${esc(fmtTime(dt(r.g.kickoff_utc)))}</td><td>${r.m}</td>
       <td class="num">${am(r.b.price)}</td><td class="num"><strong>${pct(r.p, 1)}</strong>${r.b.p_push > 0.005 ? `<div class="small muted">+${pct(r.b.p_push)} push</div>` : ""}</td>
       <td class="num">${pct(r.hist)}</td><td class="num">${sgn(r.edge)}</td><td class="num">${pct(1 / dec(r.b.price), 1)}</td>
@@ -316,8 +358,9 @@
     view.innerHTML = `
       <div class="toolbar noprint"><select id="wk" aria-label="Week">${weekKeys.map(k => `<option value="${k}"${k === key ? " selected" : ""}>Week ${+k.split("-")[1]}, ${k.split("-")[0]}</option>`).join("")}</select>
         <button class="btn primary" type="button" id="pdf">Download PDF</button><span class="small muted">Run ${esc(fmtStamp(dt(W.generated)))}</span></div>
-      <div class="panel"><div class="tablewrap"><table><thead><tr><th>Game</th><th>Spread</th><th>Total</th><th>Winner</th><th class="num">Model score</th><th class="num">Vegas score</th><th class="num">Final</th></tr></thead><tbody>${rows}</tbody></table></div>
-      <p class="note">Each pick is the side of DraftKings' number with the higher chance to hit on the fair line (the model blended with the sharp-book consensus, weighted by backtest). BET = expected value of at least ${pct(W.min_ev)} at DraftKings' price.</p></div>
+      ${bestPanel(W, false)}
+      <div class="panel"><h2>Every game</h2><div class="tablewrap"><table><thead><tr><th>Game</th><th>Spread</th><th>Total</th><th>Winner</th><th class="num">Model score</th><th class="num">Vegas score</th><th class="num">Final</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <p class="note">Each pick is the side of DraftKings' number with the higher chance to hit on the fair line (the model blended with the sharp-book consensus, weighted by the backtest). Stars mark how strong the pick is: ★★★ best bet, ★★ value, ★ lean.</p></div>
       <div class="panel"><div class="toolbar" style="justify-content:space-between"><h2>Bet ranking: spreads and totals by chance of hitting</h2>
         <div class="seg noprint" role="group" aria-label="Market">${["all", "Spread", "Total"].map(m => `<button type="button" data-rm="${m}" aria-pressed="${rankMarket === m}">${m === "all" ? "All" : m + "s"}</button>`).join("")}</div></div>
         <div class="tablewrap"><table><thead><tr><th class="num">#</th><th>Pick</th><th>Game</th><th>Kickoff</th><th>Market</th><th class="num">DK price</th><th class="num">Chance</th><th class="num">History</th><th class="num">Edge pts</th><th class="num">Break-even</th><th class="num">EV</th><th>When</th></tr></thead><tbody>${rankRows}</tbody></table></div>
@@ -380,10 +423,10 @@
     const games = W.games.slice().sort((x, y) => (x.kickoff_utc || "").localeCompare(y.kickoff_utc || ""));
     bdGame = sel || bdGame || games[0].game_id;
     const g = games.find(x => x.game_id === bdGame) || games[0], d = derive(W, g), h = d.h, a = d.a;
-    const chips = games.map(x => { const dx = derive(W, x), bet = [dx.sp, dx.tt, dx.ml].some(b => b && b.is_play);
+    const chips = games.map(x => { const dx = derive(W, x), bet = (W.board || []).some(b => b.game_id === x.game_id && tierOf(b) === 3);
       return `<button type="button" data-bd="${esc(x.game_id)}" class="${bet ? "bet" : ""}" aria-pressed="${x.game_id === g.game_id}">${esc(x.away_team)} @ ${esc(x.home_team)}</button>`; }).join("");
     const wx = g.indoor ? "Indoors" : [fin(g.temp_used) ? Math.round(g.temp_used) + "°F" : null, fin(g.wind_used) ? "wind " + Math.round(g.wind_used) + " mph" : null].filter(Boolean).join(", ");
-    const edgeBox = (b, e) => b ? `<div class="edgebox${b.is_play ? "" : " none"}"><span class="el">${b.is_play ? "BET" : "PICK"}</span><span>${esc(b.bet)} ${am(b.price)}</span><span class="small">${sgn(100 * b.ev, 1)}% EV · model ${sgn(e)} pts</span></div>` : `<div class="edgebox none">No DraftKings price</div>`;
+    const edgeBox = (b, e) => b ? `<div class="edgebox${tierOf(b) === 3 ? "" : " none"}"><span class="el">${TIER[tierOf(b)][0]} ${TIER[tierOf(b)][1].toUpperCase()}</span><span>${esc(b.bet)} ${am(b.price)}</span><span class="small">${sgn(100 * b.ev, 1)}% EV · model ${sgn(e)} pts</span></div>` : `<div class="edgebox none">No DraftKings price</div>`;
     const spCard = `<div class="bd-card"><h3>Spread</h3><dl class="kv"><dt>Model</dt><dd class="m">${esc(favLine(h, a, g.model_margin))}</dd><dt>Fair</dt><dd>${esc(favLine(h, a, g.fair_margin))}</dd><dt>DK</dt><dd class="v">${fin(d.dkMargin) ? esc(favLine(h, a, d.dkMargin)) : "–"}</dd></dl>
       ${edgeBox(d.sp, d.spEdge)}
       ${d.sp ? `<div class="bars"><span class="lab">Fair</span>${bar("model", d.sp.bet, d.pr(d.sp), "other side")}<span class="lab">History</span>${bar("hist", d.sp.bet, d.spHist, "other side")}<span class="lab">DK</span>${bar("vegas", d.sp.bet, d.spVegas, "other side")}</div>` : ""}
@@ -555,21 +598,31 @@
   }
 
   // ------------------------------------------------------------------ Bets
-  let betsFilter = "bets";
+  let betsFilter = "tier3";
   function renderBets() {
     const T = S.tracker || {}, R = T.records || {};
     const all = (T.picks || []).slice().sort((x, y) => (y.run_at || "").localeCompare(x.run_at || ""));
-    const list = betsFilter === "bets" ? all.filter(p => p.is_play) : all;
-    const recCard = (k, l) => { const r = (R[k] || {}).season || {};
-      return `<div class="kpi"><div class="kl">${l}</div><div class="kv">${r.graded ? `<span class="w">${r.w}</span>-<span class="l">${r.l}</span>${r.p ? "-" + r.p : ""}` : '<span class="dash">0-0</span>'}</div>
-        <div class="ks">${r.graded ? `${sgn(r.units, 2)} units` : "none graded"}${fin(r.clv_avg) ? ` · CLV ${sgn(r.clv_avg, 2)} pts, ${pct(r.clv_pos)} beat the close` : ""}</div></div>`; };
+    const list = betsFilter === "all" ? all : all.filter(p => String(p.tier) === betsFilter.slice(-1));
+    const recTxt = r => r && r.graded ? `<span class="w">${r.w}</span>-<span class="l">${r.l}</span>${r.p ? "-" + r.p : ""}` : '<span class="dash">0-0</span>';
+    const winPct = r => r && r.w + r.l ? pct(r.w / (r.w + r.l), 1) : "–";
+    const recCard = (k, l, help) => { const r = (R[k] || {}).season || {};
+      return `<div class="kpi"><div class="kl">${l}</div><div class="kv">${recTxt(r)}</div>
+        <div class="ks">${r.graded ? `${winPct(r)} · ${sgn(r.units, 2)} units` : "none graded yet"}${fin(r.clv_avg) ? ` · CLV ${sgn(r.clv_avg, 2)}` : ""}</div>${help ? `<div class="ks">${help}</div>` : ""}</div>`; };
+    const weeks = new Set(); Object.values(R).forEach(v => Object.keys(v).forEach(k => { if (k[0] === "w") weeks.add(+k.slice(1)); }));
+    const wk = [...weeks].sort((a, b) => b - a);
+    const cols = [["tier3", "★★★ Best bets"], ["tier2", "★★ Value"], ["tier1", "★ Leans"], ["spread", "All spreads"], ["total", "All totals"], ["winner", "Winners"]];
+    const weekRows = wk.map(w => `<tr><td>Week ${w}</td>${cols.map(([k]) => { const r = (R[k] || {})["w" + w]; return `<td class="num">${recTxt(r)}${r && r.graded ? ` <span class="small muted">${sgn(r.units, 1)}u</span>` : ""}</td>`; }).join("")}</tr>`).join("");
     const mine = S.my_bets || [];
     const myTot = mine.reduce((s, b) => s + (b.profit || 0), 0);
-    view.innerHTML = `<div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:0">${recCard("bets", "Flagged bets")}${recCard("spread", "All spread picks")}${recCard("total", "All total picks")}${recCard("winner", "Winners")}</div>
-      <div class="panel"><div class="toolbar" style="justify-content:space-between"><div><h2>Pick tracker</h2><p class="lede">Every pick as the page showed it at the last run before kickoff, graded at that DraftKings price. CLV = points better than DraftKings' closing line (the best test of whether an edge is real).</p></div>
-        <div class="seg" role="group" aria-label="Filter">${[["bets", "Flagged bets"], ["all", "All picks"]].map(([k, l]) => `<button type="button" data-bf="${k}" aria-pressed="${betsFilter === k}">${l}</button>`).join("")}</div></div>
-      ${list.length ? `<div class="tablewrap"><table><thead><tr><th>Week</th><th>Game</th><th>Pick</th><th class="num">Price</th><th class="num">Chance</th><th class="num">EV</th><th class="num">CLV</th><th class="num">Result</th><th class="num">Units</th></tr></thead><tbody>
-      ${list.map(p => `<tr${p.is_play ? ' class="hl"' : ""}><td>${p.week}</td><td>${esc(p.matchup)}</td><td><strong>${esc(p.bet)}</strong>${p.is_play ? '<span class="chip">BET</span>' : ""}</td><td class="num">${am(p.price)}</td><td class="num">${pct(p.p_win / Math.max(p.p_win + (1 - p.p_win - p.p_push), 1e-9))}</td><td class="num">${sgn(100 * p.ev, 1)}%</td><td class="num">${fin(p.clv) ? sgn(p.clv) : "–"}</td><td class="num">${p.result ? `<span class="chip ${p.result}">${p.result}</span>` : '<span class="muted">pending</span>'}</td><td class="num">${fin(p.units) ? sgn(p.units, 2) : ""}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">Picks are logged from the first scheduled weekly run and graded after each game.</p>`}</div>
+    view.innerHTML = `<div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-top:0">
+        ${recCard("tier3", "★★★ Best bets", "2%+ edge and the model agrees")}${recCard("tier2", "★★ Value", "price at least fair")}${recCard("tier1", "★ Leans", "spreads and totals, not bets")}</div>
+      <div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-top:0">${recCard("spread", "Every spread pick")}${recCard("total", "Every total pick")}${recCard("winner", "Straight-up winners")}</div>
+      <div class="panel"><h2>Record by week</h2><p class="lede">Graded at DraftKings' price from the last run before each kickoff. Units are 1-unit flat bets.</p>
+        ${weekRows ? `<div class="tablewrap"><table class="rec-table"><thead><tr><th>Week</th>${cols.map(([, l]) => `<th class="num">${l}</th>`).join("")}</tr></thead><tbody>${weekRows}</tbody></table></div>` : `<p class="empty">The first picks are graded after Thursday night's game.</p>`}</div>
+      <div class="panel"><div class="toolbar" style="justify-content:space-between"><div><h2>Pick tracker</h2><p class="lede">Every pick as the page showed it at the last run before kickoff. CLV = points better than DraftKings' closing line, the best test of whether an edge is real.</p></div>
+        <div class="seg" role="group" aria-label="Filter">${[["tier3", "★★★"], ["tier2", "★★"], ["tier1", "★"], ["all", "All"]].map(([k, l]) => `<button type="button" data-bf="${k}" aria-pressed="${betsFilter === k}">${l}</button>`).join("")}</div></div>
+      ${list.length ? `<div class="tablewrap"><table><thead><tr><th>Week</th><th>Game</th><th>Pick</th><th class="num">Price</th><th class="num">Chance</th><th class="num">Edge</th><th class="num">CLV</th><th class="num">Result</th><th class="num">Units</th></tr></thead><tbody>
+      ${list.map(p => `<tr${p.tier === 3 ? ' class="t3row"' : ""}><td>${p.week}</td><td>${esc(p.matchup)}</td><td><strong>${esc(p.bet)}</strong>${tierBadge(p, true)}</td><td class="num">${am(p.price)}</td><td class="num">${pct(p.p_win / Math.max(1 - p.p_push, 1e-9))}</td><td class="num">${sgn(100 * p.ev, 1)}%</td><td class="num">${fin(p.clv) ? sgn(p.clv) : "–"}</td><td class="num">${p.result ? `<span class="chip ${p.result}">${p.result}</span>` : '<span class="muted">pending</span>'}</td><td class="num">${fin(p.units) ? sgn(p.units, 2) : ""}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">No picks in this tier yet.</p>`}</div>
       <div class="panel"><h2>My bets</h2><p class="lede">From overrides/my_bets.csv in the repo (add a row per bet you place at DraftKings).</p>
       ${mine.length ? `<div class="tablewrap"><table><thead><tr><th>Week</th><th>Game</th><th>Bet</th><th class="num">Price</th><th class="num">Stake</th><th class="num">Result</th><th class="num">Profit</th></tr></thead><tbody>
       ${mine.map(b => `<tr><td>${b.week}</td><td>${esc(b.matchup)}</td><td>${esc(b.market)} ${esc(b.side)} ${b.market === "moneyline" ? "" : esc(trim(b.line))}</td><td class="num">${am(b.price)}</td><td class="num">$${num(b.stake, 0)}</td><td class="num">${b.result ? `<span class="chip ${b.result}">${b.result}</span>` : "pending"}</td><td class="num">${fin(b.profit) ? (b.profit >= 0 ? "+$" : "−$") + Math.abs(b.profit).toFixed(2) : ""}</td></tr>`).join("")}</tbody></table></div><p class="note">Total: ${myTot >= 0 ? "+$" : "−$"}${Math.abs(myTot).toFixed(2)}</p>` : `<p class="empty">No bets logged yet.</p>`}</div>`;
@@ -577,15 +630,35 @@
   }
 
   // ------------------------------------------------------------------ Info
+  function auditPanel() {
+    const A = S.audit;
+    if (!A) return "";
+    const ok = x => x && x.ok ? '<span class="w">✓ verified</span>' : x && x.note ? '<span class="muted">not run</span>' : '<span class="l">✗ check</span>';
+    const sc = A.scores || {}, ln = A.lines || {}, vn = A.venues || {}, ij = A.injuries || {}, bk = A.books || {};
+    const rows = [
+      ["Final scores", "nflverse vs ESPN scoreboard", sc.games ? `${(sc.matched || 0) - (sc.n_mismatch || 0)} of ${sc.games} games match exactly (${esc(sc.seasons || "")})` : esc(sc.note || "not run"), sc],
+      ["Closing lines", "nflverse, internal consistency", ln.games ? `${ln.games} games: ${ln.missing_spread} missing spreads, ${ln.missing_total} missing totals, ${ln.n_favorite_disagree} spread/moneyline favorite conflicts; spread vs result correlation ${num(ln.spread_result_corr, 2)}${ln.n_moneyline_entry_errors ? `; ${ln.n_moneyline_entry_errors} games with a moneyline entry error in the source (not used by the model)` : ""}` : "", ln],
+      ["Stadiums", "our table vs ESPN venue data", `${vn.stadiums || 0} home stadiums, ${vn.n_issues || 0} roof or surface conflicts`, vn],
+      ["Injuries", "ESPN same-day page vs rosters and the league report", ij.listings ? `${ij.listings} listings, ${pct(ij.matched_share, 1)} matched to a rostered player; ${ij.n_status_disagree} status conflicts with the league report; ${ij.qb_flags && ij.qb_flags.length ? ij.qb_flags.length + " projected starting QB(s) listed out" : "no projected starting QB listed out"}` : esc(ij.note || ""), ij],
+      ["Sportsbooks", "The Odds API, latest snapshot", bk.books_seen ? `${Object.keys(bk.books_seen).length} books returned prices: ${Object.keys(bk.books_seen).map(b => BOOKS[b] || b).join(", ")}` : esc(bk.note || ""), bk]
+    ];
+    return `<div class="panel"><h2>Data audit</h2><p class="lede">Every source checked against an independent one, ${esc(fmtStamp(dt(A.built)))}.</p>
+      <div class="tablewrap"><table><thead><tr><th>Data</th><th>Checked against</th><th>Result</th><th></th></tr></thead><tbody>
+      ${rows.map(([a, b, c, x]) => `<tr><td><strong>${a}</strong></td><td class="muted">${b}</td><td>${c}</td><td class="num">${ok(x)}</td></tr>`).join("")}</tbody></table></div>
+      ${ij.unmatched && ij.unmatched.length ? `<details class="leans"><summary>${ij.unmatched.length} injury listings not on a roster (usually practice-squad players)</summary><p class="small muted">${ij.unmatched.map(u => esc(`${u.full_name} (${u.team} ${u.position}, ${u.report_status})`)).join(" · ")}</p></details>` : ""}
+      <p class="note">nflverse's own surface field lists some turf stadiums as grass, so the model uses its own stadium table, checked here against ESPN.</p></div>`;
+  }
+
   function renderInfo() {
     const W = S.weeks[curKey] || {};
     view.innerHTML = `<div class="panel"><h2>Checks</h2><p class="lede">Run on every site build. ${(S.checks || []).filter(c => c[1]).length} of ${(S.checks || []).length} pass.</p>
       <ul class="checks">${(S.checks || []).map(c => `<li><span class="${c[1] ? "ok" : "bad"}">${c[1] ? "✓" : "✗"}</span>${esc(c[0])}${c[2] ? ` <span class="muted small">${esc(c[2])}</span>` : ""}</li>`).join("")}</ul></div>
+      ${auditPanel()}
       <div class="panel prose"><h2>How the model works</h2>
       <p>Every week the model sets its own spread and total for each game from about 140 inputs: opponent-adjusted team ratings from play-by-play (weighted EPA, early downs, big plays, points per drive, pass and run efficiency), the projected starting quarterback, missing starters by position, offseason roster turnover, rest, travel, time zones, kickoff time, weather forecasts, surface, altitude, coaching, officials and more. Each factor group has to earn its place in a walk-forward backtest; groups that make out-of-sample predictions worse are dropped.</p>
       <p>The model's number is then blended with the sharp-book consensus (Pinnacle and other low-margin books) using the weight the backtest found (${pct(W.weights && W.weights.spread)} model for spreads, ${pct(W.weights && W.weights.total)} for totals). That fair line is turned into a probability for every DraftKings price, using how often NFL games land on each margin (3 and 7 most of all). A pick is the likelier side; a <strong>BET</strong> is a pick whose expected value at DraftKings' price is at least ${pct(W.min_ev)}.</p>
       <h3>Schedule</h3><p>The model runs Tuesday morning, Thursday and Friday afternoon, twice on Sunday before kickoff and Monday afternoon. The line watch logs DraftKings' line from ESPN and live scores every 20 minutes. Calibration re-runs every Tuesday after Monday night.</p>
-      <h3>Sources</h3><p>Play-by-play, schedules, rosters, snap counts and injuries: nflverse. Same-day injury reports, scores and the line history: ESPN's public scoreboard and injury feeds. DraftKings and other sportsbook prices: The Odds API. Weather: Open-Meteo. Team logos: ESPN.</p>
+      <h3>Sources</h3><p>Play-by-play, schedules, closing lines, rosters, snap counts and the league injury report: nflverse (the open NFL data project behind nflfastR). Same-day injury reports, live scores, venues and the DraftKings line history: ESPN. DraftKings and other sportsbook prices for betting decisions: The Odds API. Weather forecasts: Open-Meteo (national weather-service models). Every source is cross-checked above on each weekly run.</p>
       <h3>Read this before betting</h3><p>NFL closing lines miss the final margin by about 10 points on average, and the model does not beat them on its own; it adds a small amount when blended. Break-even at −110 is 52.4%. Judge the model by closing-line value over a full season, not by a weekend's record. For information only, not financial advice. If betting stops being fun, call 1-800-GAMBLER.</p>
       ${W.notes && W.notes.length ? `<h3>Notes from the latest run</h3><ul>${W.notes.map(n => `<li class="small">${esc(n)}</li>`).join("")}</ul>` : ""}</div>`;
   }

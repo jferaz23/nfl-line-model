@@ -89,6 +89,7 @@ def main(argv=None):
     if not args.demo and cfg.use_espn:
         from nflmodel import espn
         einj, enotes = espn.injuries(season, week)
+        einj = espn.align_names(einj, data.get("rosters"))
         notes += enotes
         data["injuries"] = espn.merge_injuries(data.get("injuries"), einj, season, week)
 

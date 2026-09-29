@@ -65,6 +65,35 @@ def injuries(season: int, week: int) -> tuple[pd.DataFrame, list[str]]:
                 if len(df) else ["ESPN injury page returned no listings."])
 
 
+def align_names(espn: pd.DataFrame, rosters: pd.DataFrame | None) -> pd.DataFrame:
+    """ESPN sometimes lists a player by nickname ("Hollywood Brown" for Marquise Brown). Where ESPN's name is
+    not on the team's roster but exactly one rostered player on that team shares the last name and position
+    group, use the roster's name so the injury status reaches the model."""
+    if espn is None or espn.empty or rosters is None or rosters.empty:
+        return espn
+    from .availability import POS_GROUP, name_key
+    r = rosters.dropna(subset=["team", "full_name"])
+    r = r[r["season"] == r["season"].max()]
+    r = r[r["week"] == r["week"].max()]
+    have = set(zip(r["team"], r["full_name"].map(name_key)))
+    by_last = {}
+    for t_, n, pos in zip(r["team"], r["full_name"], r["position"]):
+        k = name_key(n).split()
+        if k:
+            by_last.setdefault((t_, k[-1]), []).append((n, POS_GROUP.get(str(pos).upper(), str(pos).upper())))
+    out = espn.copy()
+    for i, row in out.iterrows():
+        k = name_key(row["full_name"])
+        if (row["team"], k) in have or not k:
+            continue
+        grp = POS_GROUP.get(str(row["position"]).upper(), str(row["position"]).upper())
+        cands = [n for n, g in by_last.get((row["team"], k.split()[-1]), []) if g == grp]
+        if len(set(cands)) == 1:
+            out.loc[i, "espn_name"] = row["full_name"]
+            out.loc[i, "full_name"] = cands[0]
+    return out
+
+
 def merge_injuries(nflverse: pd.DataFrame, espn: pd.DataFrame, season: int, week: int) -> pd.DataFrame:
     """For the target week, ESPN's newer status wins wherever both list the same player."""
     if espn is None or espn.empty:

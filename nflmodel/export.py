@@ -54,6 +54,52 @@ def _records(df: pd.DataFrame | None, cols=None) -> list[dict]:
     return _clean(d.to_dict("records"))
 
 
+TIERS = {3: "Best bet", 2: "Value", 1: "Lean"}
+
+
+def _side(bet: str, home: str, away: str):
+    bet = str(bet)
+    if bet.startswith("Over "):
+        return "over"
+    if bet.startswith("Under "):
+        return "under"
+    return "home" if bet.startswith(home + " ") else "away"
+
+
+def add_tiers(board: pd.DataFrame, target: pd.DataFrame, min_ev: float) -> pd.DataFrame:
+    """Confidence tier for every DraftKings offer:
+      3 Best bet  expected value >= min_ev at DraftKings AND the model's own number agrees with the side
+      2 Value     expected value >= min_ev / 2 (1% by default), or >= min_ev with the model alone disagreeing
+      1 Lean      everything else: the likelier side at a price near or worse than fair; not a bet
+    model_edge = points by which the model alone favors the side (for moneylines, its projected margin)."""
+    if board is None or board.empty:
+        return board
+    tg = target.set_index("game_id")
+    edges, tiers = [], []
+    for b in board.to_dict("records"):
+        g = tg.loc[b["game_id"]]
+        side = _side(b["bet"], g["home_team"], g["away_team"])
+        e = np.nan
+        if b["market"] == "spread":
+            hc = float(str(b["bet"]).split(" ")[-1].replace("−", "-").replace("pk", "0"))
+            margin = g["model_margin"] if side == "home" else -g["model_margin"]
+            e = margin + hc
+        elif b["market"] == "total":
+            line = float(str(b["bet"]).split(" ")[-1])
+            e = (g["model_total"] - line) * (1 if side == "over" else -1)
+        elif b["market"] == "moneyline":
+            e = g["model_margin"] if side == "home" else -g["model_margin"]
+        ev = b.get("ev", np.nan)
+        agree = (not np.isfinite(e)) or e > 0
+        tier = 3 if (ev >= min_ev and agree and not b.get("check_news")) else (2 if ev >= min_ev / 2 else 1)
+        edges.append(e)
+        tiers.append(tier)
+    out = board.copy()
+    out["model_edge"], out["tier"] = edges, tiers
+    out["tier_label"] = out["tier"].map(TIERS)
+    return out
+
+
 def week_payload(season, week, target, summary, board, odds, exp_m, exp_t, info, cfg, weights, notes,
                  dm, dt, demo=False, generated=None) -> dict:
     sm = summary.set_index("game_id")
@@ -96,7 +142,7 @@ def week_payload(season, week, target, summary, board, odds, exp_m, exp_t, info,
         generated=(generated or datetime.now(timezone.utc)).isoformat(),
         weights=dict(spread=weights[0], total=weights[1]), min_ev=cfg.min_ev, bankroll=cfg.bankroll,
         notes=list(dict.fromkeys(n for n in notes if n)), games=games,
-        board=_records(board), books=books,
+        board=_records(add_tiers(board, target, cfg.min_ev)), books=books,
         power=_records(power) if power is not None else [],
         qbs=_records(info.get("qbs")),
     ))
@@ -117,11 +163,13 @@ def picks_from_payload(p: dict) -> list[dict]:
             best = max(opts, key=lambda o: (o["p_win"] / max(o["p_win"] + o["p_lose"], 1e-9)))
             out.append(dict(game_id=gid, market=market, bet=best["bet"], price=best["price"],
                             p_win=best["p_win"], p_push=best["p_push"], ev=best["ev"],
-                            is_play=bool(best.get("is_play")), stake=best.get("stake", 0.0)))
+                            is_play=bool(best.get("is_play")), stake=best.get("stake", 0.0),
+                            tier=best.get("tier"), model_edge=best.get("model_edge")))
         for o in offers:   # a flagged bet on the less likely side (e.g. a plus-money underdog) is still logged
             if o.get("is_play") and not any(x["bet"] == o["bet"] for x in out if x["game_id"] == gid):
                 out.append(dict(game_id=gid, market=o["market"], bet=o["bet"], price=o["price"], p_win=o["p_win"],
-                                p_push=o["p_push"], ev=o["ev"], is_play=True, stake=o.get("stake", 0.0)))
+                                p_push=o["p_push"], ev=o["ev"], is_play=True, stake=o.get("stake", 0.0),
+                                tier=o.get("tier"), model_edge=o.get("model_edge")))
     return out
 
 

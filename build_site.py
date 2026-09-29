@@ -140,6 +140,22 @@ def clv(market, side, line, close):
     return None
 
 
+def _f(x):
+    try:
+        x = float(x)
+        return x if math.isfinite(x) else None
+    except (TypeError, ValueError):
+        return None
+
+
+def _tier(r) -> int:
+    """Logged tier. Rows from before tiers existed cannot show the model agreed, so they top out at Value."""
+    t = _f(getattr(r, "tier", None))
+    if t is not None:
+        return int(t)
+    return 2 if (bool(r.is_play) or float(r.ev) >= 0.01) else 1
+
+
 def build_tracker(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict, teams: dict) -> dict:
     p = ART / "tracker" / "model_picks.csv"
     if not p.exists():
@@ -163,6 +179,7 @@ def build_tracker(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict,
                          price=float(r.price), p_win=float(r.p_win),
                          p_push=float(r.p_push) if pd.notna(r.p_push) else 0.0, ev=float(r.ev),
                          is_play=bool(r.is_play), stake=float(r.stake) if pd.notna(r.stake) else 0.0,
+                         tier=_tier(r), model_edge=_f(getattr(r, "model_edge", None)),
                          result=res, units=units(res, float(r.price)) if res else None,
                          clv=clv(market, side, line, closes.get(r.game_id)),
                          final=list(f) if f else None))
@@ -178,8 +195,11 @@ def build_tracker(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict,
                         clv_pos=float((c > 0).mean()) if len(c) else None)
         # the page's picks are the likelier side of each market (not every logged flag)
         main = picks.sort_values("p_win", ascending=False).drop_duplicates(["game_id", "market"])
+        uniq = picks.drop_duplicates(["game_id", "market", "bet"])
         for label, sub in (("spread", main[main["market"] == "spread"]), ("total", main[main["market"] == "total"]),
-                           ("winner", main[main["market"] == "moneyline"]), ("bets", picks[picks["is_play"]])):
+                           ("winner", main[main["market"] == "moneyline"]), ("bets", picks[picks["is_play"]]),
+                           ("tier3", uniq[uniq["tier"] == 3]), ("tier2", uniq[uniq["tier"] == 2]),
+                           ("tier1", uniq[(uniq["tier"] == 1) & uniq["market"].isin(["spread", "total"])])):
             recs[label] = {"season": rec(sub)}
             for wk, s2 in sub.groupby("week"):
                 recs[label][f"w{int(wk)}"] = rec(s2)
@@ -301,6 +321,23 @@ def health(week, live, season, bt, tracker) -> list:
         add("Backtest: model within 0.5 pts of the closing spread", o["spread_model"] - o["spread_market"] < 0.5,
             f"{o['spread_model']:.2f} vs {o['spread_market']:.2f}")
     add("Pick log readable", isinstance(tracker.get("picks"), list), f"{len(tracker.get('picks', []))} graded or pending")
+    a = _load(ART / "data_audit.json")
+    if a:
+        if "scores" in a and a["scores"].get("games"):
+            s = a["scores"]
+            add("Final scores match ESPN", s.get("ok"), f"{s['matched'] - s['n_mismatch']} of {s['games']} games, {s['seasons']}")
+        if "lines" in a:
+            l = a["lines"]
+            add("Closing lines complete and consistent", l.get("ok"),
+                f"{l['games']} games; {l['n_favorite_disagree']} favorite conflicts")
+        if "venues" in a:
+            add("Stadium roof and surface match ESPN", a["venues"].get("ok"), f"{a['venues'].get('stadiums', 0)} stadiums")
+        if "injuries" in a and a["injuries"].get("listings"):
+            i = a["injuries"]
+            add("Injury listings matched to rostered players", i.get("ok"),
+                f"{100 * i['matched_share']:.1f}% of {i['listings']}; starting QBs checked")
+        if "books" in a:
+            add("DraftKings and sharp books returned prices", a["books"].get("ok"), f"{len(a['books'].get('books_seen', {}))} books")
     return c
 
 
@@ -369,7 +406,7 @@ def main() -> int:
         weeks={f"{w['season']}-{w['week']:02d}": w for w in weeks},
         live=live, schedule=sched, season_sim=sim, tracker=tracker, backtest=bt,
         lines=line_history(lines, cur), my_bets=my_bets(finals_by_key),
-        checks=checks, checks_ok=all(c[1] for c in checks),
+        checks=checks, checks_ok=all(c[1] for c in checks), audit=_load(ART / "data_audit.json"),
     )
     if PUBLIC.exists():
         shutil.rmtree(PUBLIC)

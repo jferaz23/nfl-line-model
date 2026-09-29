@@ -219,3 +219,47 @@ footer.site { margin: 26px 0 36px; color: var(--muted); font-size: 12.5px; borde
   .panel { border: 0; box-shadow: none; padding: 0; }
   tr.hl td { background: #eee !important; }
 }
+
+/* ---------------------------------------------------------------- polish */
+:root[data-theme="dark"] { --bg: #0f1113; --card: #171a1d; --card2: #1d2024; --line: #2a2e33; --line2: #22262a; }
+header.top { position: sticky; top: 0; z-index: 20; background: var(--bg); padding-top: 14px; }
+header.top::after { content: ""; position: absolute; left: -16px; right: -16px; bottom: 0; height: 1px; background: var(--line); }
+nav.tabs { border-bottom: 0; margin-top: 10px; }
+.tgroup a { transition: color .15s, border-color .15s; }
+#view > * { animation: rise .22s ease-out both; }
+@keyframes rise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { #view > * { animation: none; } * { transition: none !important; } }
+.gcard { transition: border-color .15s, box-shadow .15s, transform .15s; }
+.gcard:hover { transform: translateY(-1px); }
+.gdetail { animation: rise .2s ease-out both; }
+.panel, .gcard, .kpi, .gdetail { border-color: var(--line); }
+td { border-bottom-color: var(--line2); }
+tbody tr { transition: background .12s; }
+tbody tr:hover td { background: var(--card2); }
+tr.hl:hover td { background: var(--accent-soft); }
+
+/* confidence tiers */
+.tier { display: inline-flex; align-items: center; gap: 4px; font: 600 11px/1.6 "IBM Plex Sans Condensed", sans-serif; letter-spacing: .03em;
+  padding: 0 7px; border-radius: 999px; white-space: nowrap; vertical-align: 1px; margin-left: 5px; }
+.tier .st { letter-spacing: -1px; font-size: 10px; }
+.tier.t3 { background: var(--accent); color: #fff; }
+.tier.t2 { background: var(--model-soft); color: var(--model); }
+.tier.t1 { background: var(--card2); color: var(--faint); border: 1px solid var(--line); }
+:root[data-theme="dark"] .tier.t3 { color: #0f1113; }
+tr.t3row td { background: color-mix(in srgb, var(--accent-soft) 70%, transparent); }
+.best-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+.bp { border: 1px solid var(--line); border-radius: var(--radius); padding: 11px 12px; background: var(--card2); display: flex; flex-direction: column; gap: 6px;
+  text-decoration: none; transition: border-color .15s, transform .15s; }
+.bp:hover { border-color: var(--faint); transform: translateY(-1px); }
+.bp.t3 { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); background: color-mix(in srgb, var(--accent-soft) 55%, var(--card)); }
+.bp .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.bp .pick { font: 600 18px/1.2 "IBM Plex Sans Condensed", sans-serif; }
+.bp .meta { font-size: 12.5px; color: var(--muted); display: flex; gap: 10px; flex-wrap: wrap; }
+.bp .meta b { color: var(--ink); font-weight: 600; }
+.conf { height: 5px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.conf i { display: block; height: 100%; background: var(--accent); border-radius: 3px; }
+.bp.t2 .conf i { background: var(--model); }
+.tier-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); margin: 10px 0 0; }
+.tier-legend span { display: inline-flex; align-items: center; gap: 2px; }
+details.leans > summary { cursor: pointer; color: var(--muted); font-size: 13px; margin-top: 10px; }
+.rec-table td.num strong { font-weight: 600; }
