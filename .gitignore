@@ -11,14 +11,19 @@ config.json
 # Downloaded data (large; re-downloaded or cached by GitHub Actions)
 data_cache/
 
-# Generated outputs (rebuilt on every run)
+# Generated outputs (rebuilt on every run; weekly sheets are kept in site_archive/)
 reports/
+public/
 
 # Artifacts: keep the small files the model learns from, ignore the rest
 artifacts/*
 !artifacts/odds_snapshots/
 !artifacts/calibration.json
 !artifacts/tuned_config.json
+!artifacts/backtest_oos.csv
+!artifacts/movement.json
+!artifacts/margin_coefficients.csv
+!artifacts/total_coefficients.csv
 artifacts/forecasts/
 
 # OS / editor

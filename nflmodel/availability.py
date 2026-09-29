@@ -89,12 +89,15 @@ def compute_availability(snaps, games, rosters, injuries, overrides, cfg):
              .agg(group=("group", "last"), name=("player", "last")))
 
     # ---- roster membership / status (optional data) ----
+    # Members are matched by pfr_id, or by name when the roster lacks one (2026 nflverse rosters
+    # have no pfr_id for any offensive lineman, which otherwise zeroes miss_OL).
     roster_members, roster_status_latest, gsis_to_pfr = {}, {}, {}
     have_rosters = rosters is not None and not rosters.empty and rosters["pfr_id"].notna().any()
     if have_rosters:
-        r = rosters.dropna(subset=["pfr_id", "team", "season", "week"])
+        r = rosters.dropna(subset=["team", "season", "week"])
         for (se, wk, tm), grp in r.groupby(["season", "week", "team"]):
-            roster_members[(int(se), int(wk), tm)] = set(grp["pfr_id"])
+            roster_members[(int(se), int(wk), tm)] = (set(grp["pfr_id"].dropna())
+                                                      | {"name:" + name_key(n) for n in grp["full_name"]})
         gsis_to_pfr = dict(zip(rosters["gsis_id"].dropna(), rosters.loc[rosters["gsis_id"].notna(), "pfr_id"]))
     elif rosters is not None and not rosters.empty:
         gsis_to_pfr = {}
@@ -143,6 +146,7 @@ def compute_availability(snaps, games, rosters, injuries, overrides, cfg):
             roll_s[blk] = pd.DataFrame(filled[blk]).rolling(W, min_periods=1).mean().shift(1).to_numpy()
         roll_x, roll_s = np.nan_to_num(roll_x), np.nan_to_num(roll_s)
         roll = roll_s.copy()
+        pid_names = np.array(["name:" + name_key(n) for n in pinfo.reindex(pids)["name"]], dtype=object)
         if have_rosters:
             for i in range(len(gids)):
                 members = roster_members.get((int(seasons[i]), int(weeks[i]), team))
@@ -151,7 +155,8 @@ def compute_availability(snaps, games, rosters, injuries, overrides, cfg):
                     if wk_avail:
                         members = roster_members[(int(seasons[i]), max(wk_avail), team)]
                 if members is not None:
-                    roll[i] = roll_x[i] * np.isin(pids, list(members))
+                    mem = list(members)
+                    roll[i] = roll_x[i] * (np.isin(pids, mem) | np.isin(pid_names, mem))
         regular = roll >= thr
         groups = pinfo.reindex(pids)["group"].to_numpy()
         names = pinfo.reindex(pids)["name"].to_numpy()
@@ -180,7 +185,7 @@ def compute_availability(snaps, games, rosters, injuries, overrides, cfg):
                 if have_rosters:
                     latest = _latest_roster_status(rosters, key)
                     for j in np.where(regular[i])[0]:
-                        stt = latest.get(pids[j])
+                        stt = latest.get(pids[j], latest.get(pid_names[j]))
                         if stt is not None and stt not in ACTIVE_ROSTER and (key + (name_key(names[j]),)) not in ov:
                             p_play[j] = 0.0
                             status_txt[j] = f"roster: {stt}"
@@ -199,7 +204,7 @@ _ROSTER_CACHE: dict = {}
 
 
 def _latest_roster_status(rosters: pd.DataFrame, key) -> dict:
-    """pfr_id -> status on the most recent roster snapshot at or before the target week."""
+    """pfr_id (and "name:<name_key>") -> status on the most recent roster snapshot at or before the target week."""
     if key in _ROSTER_CACHE:
         return _ROSTER_CACHE[key]
     season, week, team = key
@@ -208,6 +213,7 @@ def _latest_roster_status(rosters: pd.DataFrame, key) -> dict:
         _ROSTER_CACHE[key] = {}
         return {}
     r = r[r["week"] == r["week"].max()]
-    res = dict(zip(r["pfr_id"], r["status"]))
+    res = {"name:" + name_key(n): st for n, st in zip(r["full_name"], r["status"])}
+    res.update((p, st) for p, st in zip(r["pfr_id"], r["status"]) if isinstance(p, str))
     _ROSTER_CACHE[key] = res
     return res

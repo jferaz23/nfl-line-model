@@ -180,7 +180,7 @@ def main(argv=None):
         print(f"  {g.away_team:>3} @ {g.home_team:<3}  model {spread_text(g.home_team, g.away_team, g.model_margin):>10}"
               f"  total {g.model_total:5.1f}   market {spread_text(g.home_team, g.away_team, s['market_margin']):>10}"
               f"  total {s['market_total']:5.1f}")
-    plays = board[board["is_play"]].sort_values("ev", ascending=False)
+    plays = board[board["is_play"]].sort_values("ev", ascending=False) if len(board) else board
     print(f"\nPlays at {cfg.target_book} with edge >= {cfg.min_ev:.1%}: {len(plays)}")
     for b in plays.itertuples():
         print(f"  {b.matchup:<11} {b.bet:<16} {fmt_american(b.price):>5}  fair {fmt_american(b.fair_price):>5}"

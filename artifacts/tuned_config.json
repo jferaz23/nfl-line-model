@@ -1,0 +1,6 @@
+{
+  "rating_half_life_weeks": 5,
+  "offseason_decay": 0.75,
+  "qb_half_life_weeks": 16,
+  "qb_prior_plays": 120
+}
