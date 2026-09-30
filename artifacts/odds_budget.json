@@ -1,12 +1,15 @@
 {
- "remaining": 464,
+ "remaining": 461,
  "first_seen": "2026-09-29T17:24:00-04:00",
- "remaining_at": "2026-09-30T10:37:53-04:00",
- "last_api_run": "2026-09-30T14:34:36+00:00",
- "last_model_run": "2026-09-30T19:06:09+00:00",
+ "remaining_at": "2026-09-30T16:44:25-04:00",
+ "last_api_run": "2026-09-30T20:43:05+00:00",
+ "last_model_run": "2026-09-30T20:43:05+00:00",
  "last_decision": {
-  "at": "2026-09-30T19:06:09+00:00",
-  "mode": "espn",
-  "reason": "manual run"
- }
+  "at": "2026-09-30T20:43:05+00:00",
+  "mode": "api",
+  "reason": "mandatory: Wednesday injury report"
+ },
+ "done": [
+  "injury-2026-09-30"
+ ]
 }

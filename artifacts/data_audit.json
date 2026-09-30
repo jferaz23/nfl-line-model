@@ -1,5 +1,5 @@
 {
- "built": "2026-09-30T14:38:02+00:00",
+ "built": "2026-09-30T20:44:33+00:00",
  "scores": {
   "ok": true,
   "games": 3076,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 800,
-  "not_active": 168,
+  "not_active": 197,
   "matched_share": 0.999,
   "unmatched": [
    {
@@ -417,11 +417,11 @@
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-09-30T14:39:38+00:00"
+  "checked": "2026-09-30T20:46:09+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20260930T143753Z.json",
+  "snapshot": "odds_20260930T204425Z.json",
   "games": 31,
   "books_seen": {
    "draftkings": 31,
