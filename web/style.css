@@ -163,9 +163,9 @@ select, input[type="number"] { font: inherit; font-size: 13px; padding: 5px 8px;
 .chips button[aria-pressed="true"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
 .bd-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .bd-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; background: var(--card2); min-width: 0; }
-.kv { display: grid; grid-template-columns: 60px 1fr; gap: 3px 8px; font-size: 13.5px; margin: 0 0 10px; }
-.kv dt { color: var(--muted); } .kv dd { margin: 0; font-weight: 600; }
-.kv .m { color: var(--model); } .kv .v { color: var(--vegas); }
+dl.kv { display: grid; grid-template-columns: 60px 1fr; gap: 3px 8px; font-size: 13.5px; margin: 0 0 10px; }
+dl.kv dt { color: var(--muted); } dl.kv dd { margin: 0; font-weight: 600; }
+dl.kv .m { color: var(--model); } dl.kv .v { color: var(--vegas); }
 .edgebox { background: var(--accent-soft); color: var(--accent-ink); border-radius: 7px; padding: 8px 10px; margin: 0 0 10px; font-weight: 600;
   display: flex; gap: 10px; align-items: baseline; }
 .edgebox .el { font: 600 10.5px/1 "IBM Plex Sans Condensed", sans-serif; letter-spacing: .07em; }
@@ -204,10 +204,11 @@ footer.site { margin: 26px 0 36px; color: var(--muted); font-size: 12.5px; borde
 }
 @media (max-width: 640px) {
   .ggrid, .bd-grid, .two { grid-template-columns: minmax(0, 1fr); }
-  .kpis { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+  .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .kpi .kv { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .kpi { padding: 7px 7px; border-left-width: 2px; }
   .kpi .kl { font-size: 9.5px; letter-spacing: .04em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .kpi .kv { font-size: 17px; margin-top: 4px; }
+  .kpi .kv { font-size: 15px; margin-top: 4px; }
   .kpi .ks { display: none; }
   .checks { columns: 1; }
   h1 { font-size: 24px; }
@@ -263,3 +264,34 @@ tr.t3row td { background: color-mix(in srgb, var(--accent-soft) 70%, transparent
 .tier-legend span { display: inline-flex; align-items: center; gap: 2px; }
 details.leans > summary { cursor: pointer; color: var(--muted); font-size: 13px; margin-top: 10px; }
 .rec-table td.num strong { font-weight: 600; }
+
+/* ---------------------------------------------------------------- green = best value */
+:root { --green-bg: #e2f2e7; --green-line: #8fcaa3; --green-ink: #1c6b3f; }
+:root[data-theme="dark"] { --green-bg: #173323; --green-line: #2f7a4d; --green-ink: #7fdca3; }
+a.kpi { text-decoration: none; color: inherit; transition: border-color .15s; }
+a.kpi:hover { border-color: var(--faint); }
+.kpi-green { background: var(--green-bg); border-color: var(--green-line); }
+.gcell { background: var(--green-bg); border: 1px solid var(--green-line); border-radius: 7px; padding: 5px 8px; margin: -4px -6px; }
+.gcell .small { color: var(--green-ink); font-weight: 600; }
+tr.grow td { background: var(--green-bg); }
+tr.grow:hover td { background: var(--green-bg); filter: brightness(1.04); }
+td.gcol, th.gcol { background: color-mix(in srgb, var(--green-bg) 55%, transparent); }
+.pk.green { background: var(--green-bg); border-color: var(--green-line); color: var(--green-ink); font-weight: 600; }
+.gcard.has-green { border-color: var(--green-line); }
+.chips button.green { border-color: var(--green-line); color: var(--green-ink); background: var(--green-bg); }
+.chips button.green[aria-pressed="true"] { background: var(--ink); color: var(--card); }
+.bd-card.green, .bp.green { background: var(--green-bg); border-color: var(--green-line); }
+.bp .rank { font: 600 13px/1 "IBM Plex Sans Condensed", sans-serif; color: var(--green-ink); }
+.conf { position: relative; height: 7px; }
+.conf i { background: var(--accent); }
+.conf b { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); opacity: .7; }
+.edgebox { background: var(--green-bg); color: var(--green-ink); border: 1px solid var(--green-line); }
+
+/* top picks: the strongest green */
+:root { --top-bg: #cfead8; --top-line: #2d7a4c; }
+:root[data-theme="dark"] { --top-bg: #1d4630; --top-line: #4fb67a; }
+.chip.top { background: var(--top-line); color: #fff; letter-spacing: .06em; }
+:root[data-theme="dark"] .chip.top { color: #0f1113; }
+.gcell.top, tr.grow.top td, .bp.topcard { background: var(--top-bg); border-color: var(--top-line); }
+.bp.topcard { box-shadow: 0 0 0 1px var(--top-line) inset; }
+.pk.top { background: var(--top-bg); border-color: var(--top-line); }

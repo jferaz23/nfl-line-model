@@ -47,8 +47,9 @@ def walk_forward(games, cfg, seasons, drop_groups=(), use_gbm=None, drop_m=None,
             continue
         mm = LineModel(cfg, "margin", drop_groups=dm_, use_gbm=use_gbm).fit(train)
         mt = LineModel(cfg, "total", drop_groups=dt_, use_gbm=use_gbm).fit(train)
-        t = test[["game_id", "season", "week", "home_team", "away_team", "result", "total", "spread_line",
-                  "total_line"]].copy()
+        keep = ["game_id", "season", "week", "home_team", "away_team", "result", "total", "spread_line", "total_line",
+                "home_spread_odds", "away_spread_odds", "over_odds", "under_odds", "home_moneyline", "away_moneyline"]
+        t = test[[c for c in keep if c in test.columns]].copy()     # closing prices grade the track record
         t["model_margin"], t["model_total"] = mm.predict(test), mt.predict(test)
         t["ridge_margin"], t["gbm_margin"] = mm.predict_parts(test)
         t["ridge_total"], t["gbm_total"] = mt.predict_parts(test)
@@ -112,7 +113,8 @@ def choose_gbm_weights(oos, sel, hold, grid=(0.0, 0.1, 0.2, 0.35, 0.5, 0.7)):
     out = {}
     for kind, y in (("margin", "result"), ("total", "total")):
         r, g = oos[f"ridge_{kind}"], oos[f"gbm_{kind}"]
-        if g.isna().all():
+        g = g.fillna(r)          # seasons with too little history for boosting (2015) use the linear model alone
+        if (g == r).all():
             out[kind] = 0.0
             continue
         ms, mh = oos["season"].isin(sel), oos["season"].isin(hold)

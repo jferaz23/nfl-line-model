@@ -186,10 +186,16 @@ def main(argv=None):
             "a_qb_name_used", "temp_used", "wind_used", "indoor"]
     target[cols].merge(summary, on="game_id", how="left", suffixes=("", "_s")).to_csv(
         out_dir / f"projections_{stem}.csv", index=False)
-    from nflmodel.export import append_pick_log, week_payload, write_payload
+    from nflmodel.export import week_payload, write_payload
     payload = week_payload(season, week, target, summary, board, odds, exp_m, exp_t, info, cfg, weights, notes,
                            dm, dt, demo=args.demo)
     site_dir = (out_dir / "site_data") if args.demo else Path("site_data")
+    # the page's picks: the model's side of DraftKings' number, chance from the backtest's hit-rate curve
+    from nflmodel.picks import curves_from_oos, week_picks
+    oos_path = cfg.path("artifacts_dir") / "backtest_oos.csv"
+    curves = curves_from_oos(pd.read_csv(oos_path)) if oos_path.exists() else {"spread": 0.03, "total": 0.03}
+    payload["curves"] = curves
+    payload["picks"] = week_picks(payload["games"], curves)
     write_payload(payload, site_dir)
     from nflmodel.export import schedule_payload
     (site_dir / f"schedule_{season}.json").write_text(
@@ -210,7 +216,12 @@ def main(argv=None):
         sim.update(week=week, generated=payload["generated"], demo=args.demo)
         (site_dir / f"season_{season}.json").write_text(_json.dumps(_clean(sim), separators=(",", ":")), encoding="utf-8")
     if not args.demo and not args.no_odds and not args.odds_snapshot and not args.lines_file:
-        append_pick_log(payload, cfg.path("artifacts_dir") / "tracker" / "model_picks.csv")
+        log_path = cfg.path("artifacts_dir") / "tracker" / "picks_log.csv"      # graded by build_site.py
+        rows = pd.DataFrame(payload["picks"])
+        if len(rows):
+            rows.insert(0, "run_at", payload["generated"])
+            log_path.parent.mkdir(parents=True, exist_ok=True)
+            rows.to_csv(log_path, mode="a", header=not log_path.exists(), index=False)
     mm.coefficients().to_csv(cfg.path("artifacts_dir") / "margin_coefficients.csv", index=False)
     mt.coefficients().to_csv(cfg.path("artifacts_dir") / "total_coefficients.csv", index=False)
 

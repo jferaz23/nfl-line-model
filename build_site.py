@@ -206,6 +206,79 @@ def build_tracker(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict,
     return dict(picks=_clean(picks.to_dict("records")) if len(picks) else [], records=recs)
 
 
+
+# ----------------------------------------------------------------------------- track record
+def build_record(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict) -> dict:
+    """One pick rule, graded two ways and combined:
+    backtest   every game 2015 on, picks at the closing line and price (walk-forward model and curves)
+    live       the weekly runs' logged picks (last run before kickoff) at DraftKings' price, for games
+               the backtest has not covered
+    """
+    from nflmodel.picks import grade as pgrade, history_rows, profit, rows_summary
+    frames = []
+    oos_p = ART / "backtest_oos.csv"
+    covered = set()
+    if oos_p.exists():
+        oos = pd.read_csv(oos_p)
+        if "home_spread_odds" in oos.columns:
+            h = history_rows(oos)
+            frames.append(h)
+            covered = set(oos["game_id"])
+    live_rows = []
+    lp = ART / "tracker" / "picks_log.csv"
+    if lp.exists():
+        lg = pd.read_csv(lp, on_bad_lines="skip")
+        lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce")
+        lg["ko"] = pd.to_datetime(lg["game_id"].map(kickoffs), utc=True, errors="coerce")
+        lg = lg[lg["t"] < lg["ko"]].sort_values("t").groupby(["game_id", "market"]).tail(1)
+        for r in lg.itertuples(index=False):
+            f = finals.get(r.game_id)
+            res = pgrade(r.market, r.side, float(r.line), *(f if f else (None, None))) if f else None
+            c = clv(r.market, r.side, float(r.line), closes.get(r.game_id)) if r.market in ("spread", "total") else None
+            live_rows.append(dict(season=int(r.season), week=int(r.week), game_id=r.game_id, market=r.market,
+                                  bet=r.bet, edge=_f(r.edge), chance=_f(r.chance), price=_f(r.price), value=_f(r.value),
+                                  breakeven=_f(r.breakeven), highlight=bool(r.highlight),
+                                  top=bool(getattr(r, "top", False)) if str(getattr(r, "top", "")) not in ("", "nan") else False, result=res,
+                                  units=profit(res, r.price) if res and _f(r.price) else None, clv=c,
+                                  matchup=f"{r.away_team} @ {r.home_team}", run_at=r.run_at,
+                                  source="backtest-covered" if r.game_id in covered else "live"))
+    live = pd.DataFrame(live_rows)
+    if len(live):
+        frames.append(live[live["source"] == "live"])
+    allr = pd.concat([f for f in frames if len(f)], ignore_index=True) if frames else pd.DataFrame()
+    cur = weeks[-1]["season"]
+    out = dict(all=rows_summary(allr) if len(allr) else {}, since=int(allr["season"].min()) if len(allr) else None,
+               current_season=cur,
+               season=rows_summary(allr[allr["season"] == cur]) if len(allr) else {},
+               live=_clean(live.to_dict("records")) if len(live) else [])
+    # this season, week by week
+    by_week = []
+    if len(allr):
+        s = allr[allr["season"] == cur]
+        for wk, d in s.groupby("week"):
+            by_week.append(dict(week=int(wk), **rows_summary(d)["total"]))
+    out["by_week"] = by_week
+    return _clean(out)
+
+
+def fill_started(weeks: list[dict], kickoffs: dict):
+    """Games already under way drop out of the odds feed; show their last pre-kickoff pick instead."""
+    lp = ART / "tracker" / "picks_log.csv"
+    if not lp.exists():
+        return
+    lg = pd.read_csv(lp, on_bad_lines="skip")
+    lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce")
+    lg["ko"] = pd.to_datetime(lg["game_id"].map(kickoffs), utc=True, errors="coerce")
+    lg = lg[lg["t"] < lg["ko"]].sort_values("t").groupby(["game_id", "market"]).tail(1)
+    for w in weeks:
+        have = {(p["game_id"], p["market"]) for p in w.get("picks", [])}
+        ids = {g["game_id"] for g in w["games"]}
+        add = lg[lg["game_id"].isin(ids)]
+        extra = [r for r in _clean(add.drop(columns=["t", "ko"]).to_dict("records")) if (r["game_id"], r["market"]) not in have]
+        for r in extra:
+            r["from_log"] = True
+        w["picks"] = w.get("picks", []) + extra
+
 # ----------------------------------------------------------------------------- backtest
 def backtest_summary() -> dict:
     p = ART / "backtest_oos.csv"
@@ -397,14 +470,16 @@ def main() -> int:
                 if gid:
                     finals[gid] = (x["home_score"], x["away_score"])
     closes = closing_lines(lines, games)
-    tracker = build_tracker(weeks, finals, closes, kickoffs, teams)
+    fill_started(weeks, kickoffs)
+    record = build_record(weeks, finals, closes, kickoffs)
+    tracker = dict(picks=record.get("live", []))
     bt = backtest_summary()
     checks = health(cur, live, sim, bt, tracker)
 
     site = dict(
         built=NOW.isoformat(), season=season, week=cur["week"],
         weeks={f"{w['season']}-{w['week']:02d}": w for w in weeks},
-        live=live, schedule=sched, season_sim=sim, tracker=tracker, backtest=bt,
+        live=live, schedule=sched, season_sim=sim, record=record, backtest=bt,
         lines=line_history(lines, cur), my_bets=my_bets(finals_by_key),
         checks=checks, checks_ok=all(c[1] for c in checks), audit=_load(ART / "data_audit.json"),
     )
@@ -423,6 +498,9 @@ def main() -> int:
         html = html.replace(f'"{f}"', f'"{f}?v={v}"')
     idx.write_text(html, encoding="utf-8")
     n_ok = sum(c[1] for c in checks)
+    rt = (record.get("all") or {}).get("total", {}).get("green", {})
+    print(f"record since {record.get('since')}: green picks {rt.get('w')}-{rt.get('l')}-{rt.get('p')}, "
+          f"{rt.get('units') or 0:+.1f} units")
     print(f"public/ built: {season} week {cur['week']}, {len(weeks)} week(s), {len(tracker['picks'])} logged picks, "
           f"checks {n_ok}/{len(checks)}")
     return 0

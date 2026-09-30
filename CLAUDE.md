@@ -23,15 +23,16 @@ DraftKings (the user's only sportsbook) to flag +EV bets. Full context, research
 - User-facing text: plain language, honest about small edges, "information only, not financial advice".
 
 ## Status (Sept 29, 2026)
-Backtest 2015-2026 (3076 games, walk-forward, selection 2015-2024, held out 2025-26): spread MAE model
-9.97 vs close 9.79, blend 9.78 (model weight 9%); total model 10.60 vs 10.45 (weight 0%: the 2022-26
-totals edge did not hold over 12 seasons). ATS at 4+ pts disagreement 57.2% (n=376). Roster continuity
-(nflmodel/continuity.py) earned its place. Totals drop time_of_day and scoring_env.
-Data audit (audit_data.py -> artifacts/data_audit.json, shown on Info): all 3076 scores match ESPN;
-lines complete (16 nflverse moneyline entry errors, unused); stadiums match ESPN (nflverse's surface
-field is stale for CAR/TEN; Buffalo's new 2026 stadium is grass); ESPN injuries 99%+ matched to rosters
-(nicknames aligned via espn.align_names). Pick tiers (export.add_tiers): 3 Best bet = EV >= min_ev and
-the model agrees; 2 Value = EV >= min_ev/2; 1 Lean. Odds API books trimmed to 10 (3 credits a call).
+Backtest 2015-2026 (3076 games; 2015 uses ridge only, too little history for boosting): spread MAE
+model 9.98 vs close 9.82, blend 9.81 (weight 10%); totals 10.59 vs 10.45 (weight 2%). ATS at 4+ pts
+disagreement 57.6% (n=415). Widened tuning (tune.py --first 2019 --last 2024) found gains of ~0.005:
+kept the validated settings in artifacts/tuned_config.json.
+Picks (nflmodel/picks.py, one rule for live and history): model's side of the number; chance = walk-
+forward hit rate by disagreement band (0-2, 2-4, 4+), shrunk to 50%, monotone; green = chance >=
+break-even + 1pt and chance >= 51%; Top pick = green spread with 4+ pt edge. Track record since 2015
+at closing prices: Top 150-112-7 (57.3%), green 277-228-12 (54.9%, +43.7u), all spreads 51.8%.
+Live picks logged to artifacts/tracker/picks_log.csv; build_site.build_record merges them.
+Data audit (audit_data.py) runs weekly; see Info tab.
 
 Automation (GitHub jferaz23/nfl-line-model, Pages https://jferaz23.github.io/nfl-line-model/):
 - `weekly.yml`: run_week.py (Tue/Thu/Fri/Sun/Mon) -> line_watch.py -> build_site.py -> deploy.

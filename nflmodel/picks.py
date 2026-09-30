@@ -1,0 +1,259 @@
+"""The page's picks, one rule for the live week and for the 2015-to-now track record.
+
+Spread / total pick
+    the model's side of the line: its own number vs the posted spread or total.
+Chance
+    how often picks with that much disagreement actually won against the closing line (pushes
+    excluded), by disagreement band (0-2, 2-4, 4+ points), shrunk toward 50% with a prior of SHRINK games
+    and never falling as disagreement grows (adjacent bands pooled), so thin bands cannot overstate. For the track record, each season's bands use only
+    earlier seasons (2015, with nothing earlier, is all 50%: no green picks).
+Value ("bang for your buck")
+    chance minus the break-even rate of the actual price (-110 needs 52.4%, -120 needs 54.5%).
+    Picks with value >= HIGHLIGHT are highlighted green and ranked by value.
+    A pick only turns green when its band's own hit rate is at least MIN_SKILL, so a plus-money
+    price alone never makes a coin flip green.
+Top pick
+    a green spread pick where the model disagrees with the line by TOP_EDGE+ points: the band with
+    the strongest record in both halves of the 2015-2026 backtest. Tracked separately.
+Winner pick
+    the side the model alone makes more likely to win straight up (shown, not highlighted).
+Only needs numpy/pandas, so build_site.py can import it.
+"""
+from __future__ import annotations
+
+import math
+
+import numpy as np
+import pandas as pd
+
+HIGHLIGHT = 0.01          # chance at least 1 point above the price's break-even...
+MIN_SKILL = 0.51          # ...and the model's side itself has won at least 51% in that band (not price alone)
+TOP_EDGE = 4.0            # Top picks: green spread picks where the model disagrees by 4+ points
+BANDS = (0.0, 2.0, 4.0, 99.0)
+SHRINK = 200.0            # prior games at 50% in each band
+
+
+def breakeven(price) -> float:
+    try:
+        a = float(price)
+    except (TypeError, ValueError):
+        return float("nan")
+    if not math.isfinite(a) or abs(a) < 100:
+        return float("nan")
+    return -a / (-a + 100.0) if a < 0 else 100.0 / (a + 100.0)
+
+
+def profit(result: str | None, price) -> float | None:
+    if result is None:
+        return None
+    if result == "P":
+        return 0.0
+    if result == "L":
+        return -1.0
+    a = float(price)
+    return a / 100.0 if a > 0 else 100.0 / -a
+
+
+def fit_curve(edge, hit) -> list[list[float]]:
+    """[[lo, hi, chance, n], ...] per disagreement band, shrunk toward 50%."""
+    edge, hit = np.asarray(edge, float), np.asarray(hit, float)
+    blocks = []
+    for lo, hi in zip(BANDS[:-1], BANDS[1:]):
+        m = (edge >= lo) & (edge < hi)
+        blocks.append([[(lo, hi)], float(hit[m].sum()) + 0.5 * SHRINK, float(m.sum()) + SHRINK, float(m.sum())])
+    # pool adjacent violators: a bigger disagreement is never rated less likely to win
+    i = 0
+    while i < len(blocks) - 1:
+        if blocks[i][1] / blocks[i][2] > blocks[i + 1][1] / blocks[i + 1][2]:
+            a, b = blocks[i], blocks.pop(i + 1)
+            blocks[i] = [a[0] + b[0], a[1] + b[1], a[2] + b[2], a[3] + b[3]]
+            i = max(i - 1, 0)
+        else:
+            i += 1
+    out = []
+    for spans, w, n, raw in blocks:
+        for lo, hi in spans:
+            out.append([lo, hi, w / n, raw])
+    return out
+
+
+def chance(curve, edge: float) -> float:
+    e = abs(edge)
+    for lo, hi, c, _ in curve:
+        if lo <= e < hi:
+            return float(c)
+    return 0.5
+
+
+def _lab(team: str, h: float) -> str:
+    return f"{team} pk" if abs(h) < 1e-9 else f"{team} {h:+g}".replace("-", "−")
+
+
+def spread_pick(home, away, model_margin, line_margin, home_price, away_price, b):
+    """line_margin = the posted spread as the expected home margin (home -3 -> +3)."""
+    if not all(np.isfinite([model_margin, line_margin])):
+        return None
+    e = model_margin - line_margin
+    if abs(e) < 1e-9:
+        return None
+    home_side = e > 0
+    h = -line_margin if home_side else line_margin
+    price = home_price if home_side else away_price
+    c, be = chance(b, e), breakeven(price)
+    return dict(market="spread", side="home" if home_side else "away", team=home if home_side else away,
+                bet=_lab(home if home_side else away, h), line=h, price=price, edge=abs(e), chance=c,
+                breakeven=be, value=c - be if np.isfinite(be) else float("nan"))
+
+
+def total_pick(model_total, line, over_price, under_price, b):
+    if not all(np.isfinite([model_total, line])):
+        return None
+    e = model_total - line
+    if abs(e) < 1e-9:
+        return None
+    over = e > 0
+    price = over_price if over else under_price
+    c, be = chance(b, e), breakeven(price)
+    return dict(market="total", side="over" if over else "under", team=None,
+                bet=f"{'Over' if over else 'Under'} {line:g}", line=line, price=price, edge=abs(e), chance=c,
+                breakeven=be, value=c - be if np.isfinite(be) else float("nan"))
+
+
+def winner_pick(home, away, p_home, home_ml, away_ml):
+    if p_home is None or not np.isfinite(p_home):
+        return None
+    home_side = p_home >= 0.5
+    price = home_ml if home_side else away_ml
+    c, be = (p_home if home_side else 1 - p_home), breakeven(price)
+    return dict(market="winner", side="home" if home_side else "away", team=home if home_side else away,
+                bet=f"{home if home_side else away} to win", line=0.0, price=price, edge=float("nan"), chance=c,
+                breakeven=be, value=c - be if np.isfinite(be) else float("nan"))
+
+
+def is_green(p: dict) -> bool:
+    return bool(p["market"] != "winner" and np.isfinite(p["value"]) and p["value"] >= HIGHLIGHT
+                and p["chance"] >= MIN_SKILL)
+
+
+def is_top(p: dict) -> bool:
+    return bool(is_green(p) and p["market"] == "spread" and p["edge"] >= TOP_EDGE)
+
+
+def grade(market, side, line, home_score, away_score):
+    if home_score is None or away_score is None or not np.isfinite([home_score, away_score]).all():
+        return None
+    if market == "total":
+        d = (home_score + away_score - line) * (1 if side == "over" else -1)
+    else:
+        m = home_score - away_score if side == "home" else away_score - home_score
+        d = m + (line if market == "spread" else 0.0)
+    return "W" if d > 1e-9 else ("L" if d < -1e-9 else "P")
+
+
+def curves_from_oos(oos: pd.DataFrame, before_season: int | None = None) -> dict:
+    """Slopes for spreads and totals from backtest rows (seasons < before_season when given)."""
+    o = oos if before_season is None else oos[oos["season"] < before_season]
+    out = {}
+    for mk, pred, line, act in (("spread", "model_margin", "spread_line", "result"),
+                                ("total", "model_total", "total_line", "total")):
+        d = o.dropna(subset=[pred, line, act])
+        e = d[pred] - d[line]
+        r = (d[act] - d[line]) * np.sign(e)
+        m = (r != 0) & (e != 0)
+        out[mk] = fit_curve(e[m].abs().to_numpy(), (r[m] > 0).to_numpy(float))
+    return out
+
+
+def week_picks(games: list[dict], curves: dict) -> list[dict]:
+    """Picks for a weekly payload's games at DraftKings' current prices."""
+    out = []
+    for g in games:
+        base = dict(game_id=g["game_id"], season=g["season"], week=g["week"], home_team=g["home_team"],
+                    away_team=g["away_team"], kickoff_utc=g.get("kickoff_utc"))
+        hs = g.get("dk_home_spread")
+        f = lambda k: float(g[k]) if g.get(k) is not None else float("nan")
+        sp = spread_pick(g["home_team"], g["away_team"], f("model_margin"), -float(hs) if hs is not None else float("nan"),
+                         f("dk_home_spread_price"), f("dk_away_spread_price"), curves["spread"])
+        tt = total_pick(f("model_total"), f("dk_total"), f("dk_over_price"), f("dk_under_price"), curves["total"])
+        wn = winner_pick(g["home_team"], g["away_team"], g.get("p_home_win_model"), f("dk_home_ml"), f("dk_away_ml"))
+        for p in (sp, tt, wn):
+            if p:
+                p.update(base)
+                p["highlight"], p["top"] = is_green(p), is_top(p)
+                out.append(p)
+    return out
+
+
+def history(oos: pd.DataFrame) -> dict:
+    return rows_summary(history_rows(oos))
+
+
+def history_rows(oos: pd.DataFrame) -> pd.DataFrame:
+    """Every backtest game's picks graded at the closing line and price; curves fit walk-forward."""
+    o = oos.dropna(subset=["result", "spread_line", "total_line"]).copy()
+    rows = []
+    for s in sorted(o["season"].unique()):
+        cv = curves_from_oos(o, before_season=int(s))
+        for r in o[o["season"] == s].itertuples(index=False):
+            ln = float(r.spread_line)
+            hsc = (float(r.result) + float(r.total)) / 2.0          # scores from margin and total
+            asc = (float(r.total) - float(r.result)) / 2.0
+            picks = [spread_pick(r.home_team, r.away_team, float(r.model_margin), ln,
+                                 getattr(r, "home_spread_odds", -110.0), getattr(r, "away_spread_odds", -110.0), cv["spread"]),
+                     total_pick(float(r.model_total), float(r.total_line), getattr(r, "over_odds", -110.0),
+                                getattr(r, "under_odds", -110.0), cv["total"])]
+            ph = 1.0 / (1.0 + math.exp(-float(r.model_margin) / 7.0))       # only its side is used
+            picks.append(winner_pick(r.home_team, r.away_team, ph, getattr(r, "home_moneyline", np.nan),
+                                     getattr(r, "away_moneyline", np.nan)))
+            for p in picks:
+                if not p:
+                    continue
+                price = p["price"] if p["price"] is not None and np.isfinite(p["price"]) else -110.0
+                res = grade(p["market"], p["side"], p["line"], hsc, asc)
+                rows.append(dict(season=int(s), week=int(r.week), game_id=r.game_id, market=p["market"], bet=p["bet"],
+                                 edge=p["edge"], chance=p["chance"], price=price, value=p["value"],
+                                 highlight=is_green(p), top=is_top(p),
+                                 result=res, units=profit(res, price) if p["market"] != "winner" or np.isfinite(p["price"]) else None,
+                                 source="backtest"))
+    return pd.DataFrame(rows)
+
+
+def _rec(d: pd.DataFrame) -> dict:
+    g = d[d["result"].notna()]
+    w, l, p = int((g["result"] == "W").sum()), int((g["result"] == "L").sum()), int((g["result"] == "P").sum())
+    u = g["units"].dropna()
+    return dict(w=w, l=l, p=p, n=w + l + p, pct=(w / (w + l)) if w + l else None,
+                units=float(u.sum()) if len(u) else None, roi=float(u.sum() / len(u)) if len(u) else None)
+
+
+def rows_summary(df: pd.DataFrame) -> dict:
+    if df.empty:
+        return dict(seasons=[], total={}, cum=[])
+    groups = (("spread", df["market"] == "spread"), ("total", df["market"] == "total"),
+              ("winner", df["market"] == "winner"), ("green", df["highlight"]),
+              ("green_spread", df["highlight"] & (df["market"] == "spread")),
+              ("green_total", df["highlight"] & (df["market"] == "total")),
+              ("top", df["top"].fillna(False).astype(bool) if "top" in df.columns else df["highlight"] & False))
+    seasons = []
+    for s, d in df.groupby("season"):
+        seasons.append(dict(season=int(s), **{k: _rec(d[m.loc[d.index]]) for k, m in groups}))
+    total = {k: _rec(df[m]) for k, m in groups}
+    def cumulative(mask):
+        g = df[mask & df["result"].notna()].sort_values(["season", "week"])
+        out, run = [], 0.0
+        for (s, w), d in g.groupby(["season", "week"], sort=True):
+            run += float(d["units"].fillna(0).sum())
+            out.append([f"{int(s)}-{int(w):02d}", round(run, 2)])
+        return out
+    cum = cumulative(df["highlight"])
+    top_mask = df["top"].fillna(False).astype(bool) if "top" in df.columns else df["highlight"] & False
+    cum_top = cumulative(top_mask)
+    # by chance band: does a stated chance hold up?
+    bands = []
+    ats = df[df["market"].isin(["spread", "total"]) & df["result"].isin(["W", "L"])]
+    for lo, hi in ((0.50, 0.52), (0.52, 0.54), (0.54, 0.56), (0.56, 0.60), (0.60, 1.0)):
+        m = (ats["chance"] >= lo) & (ats["chance"] < hi)
+        if m.sum():
+            bands.append(dict(lo=lo, hi=hi, n=int(m.sum()), said=float(ats.loc[m, "chance"].mean()),
+                              won=float((ats.loc[m, "result"] == "W").mean())))
+    return dict(seasons=seasons, total=total, cum=cum, cum_top=cum_top, bands=bands)

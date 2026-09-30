@@ -88,7 +88,8 @@ def attach_pfr(cfg, sched, notes):
     return sched
 
 
-TUNED_KEYS = ("rating_half_life_weeks", "offseason_decay", "qb_half_life_weeks", "qb_prior_plays")
+TUNED_KEYS = ("rating_half_life_weeks", "offseason_decay", "qb_half_life_weeks", "qb_prior_plays",
+              "ridge_lambda", "rating_lookback_seasons", "train_recency_decay")
 
 
 def apply_tuned(cfg):

@@ -30,10 +30,13 @@ from nflmodel.pipeline import apply_demo, demo_data, load_real, setup_logging
 log = logging.getLogger("nflmodel")
 
 GRID = {
-    "rating_half_life_weeks": [5, 8, 12],
-    "offseason_decay": [0.45, 0.6, 0.75],
-    "qb_half_life_weeks": [16, 26, 40],
-    "qb_prior_plays": [120, 200, 320],
+    "rating_half_life_weeks": [4, 5, 6, 8],
+    "offseason_decay": [0.6, 0.75, 0.85],
+    "qb_half_life_weeks": [12, 16, 26],
+    "qb_prior_plays": [80, 120, 200],
+    "ridge_lambda": [2.0, 4.0, 8.0],               # how hard team ratings are pulled toward average
+    "rating_lookback_seasons": [2, 3, 4],
+    "train_recency_decay": [0.8, 0.9, 1.0],        # weight of older seasons when fitting the game model
 }
 QUICK = {"rating_half_life_weeks": [6, 10], "offseason_decay": [0.5, 0.7]}
 
@@ -52,6 +55,8 @@ def main(argv=None):
     ap.add_argument("--demo", action="store_true")
     ap.add_argument("--quick", action="store_true", help="small grid (for testing)")
     ap.add_argument("--seasons", type=int, default=3, help="most recent seasons to score on")
+    ap.add_argument("--first", type=int, help="first season to score on (with --last)")
+    ap.add_argument("--last", type=int, help="last season to score on; later seasons stay unseen for the backtest")
     ap.add_argument("--config")
     args = ap.parse_args(argv)
     setup_logging()
@@ -65,7 +70,11 @@ def main(argv=None):
         except DataUnavailable as e:
             sys.exit(f"Could not load nflverse data: {e}")
     done = data["schedules"].dropna(subset=["result"])
-    seasons = sorted(done["season"].unique())[-args.seasons:]
+    seasons = sorted(done["season"].unique())
+    if args.first and args.last:
+        seasons = [s for s in seasons if args.first <= s <= args.last]
+    else:
+        seasons = seasons[-args.seasons:]
     grid = QUICK if args.quick else GRID
     best_cfg = copy.deepcopy(base)
     t0 = time.time()
