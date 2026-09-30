@@ -170,8 +170,15 @@ def curves_from_oos(oos: pd.DataFrame, before_season: int | None = None) -> dict
         d = o.dropna(subset=[pred, line, act])
         e = d[pred] - d[line]
         r = (d[act] - d[line]) * np.sign(e)
-        m = (r != 0) & (e != 0)
-        out[mk] = fit_curve(e[m].abs().to_numpy(), (r[m] > 0).to_numpy(float))
+        m = ((r != 0) & (e != 0)).to_numpy()
+        # rate spread picks from comparable history: leave out QB-caution games (coin flips that would drag
+        # the chance of clean picks down). Backtest: green 55.0%, +51.3u vs 55.2%, +43.6u; both halves up.
+        if mk == "spread" and len(d) and "h_qb_delta" in d.columns:
+            side = np.where(e > 0, "home", "away")
+            caut = np.array([qb_caution(s, a, b, c, q) for s, a, b, c, q in
+                             zip(side, d["h_qb_new"], d["a_qb_new"], d["h_qb_delta"], d["a_qb_delta"])], dtype=bool)
+            m = m & ~caut
+        out[mk] = fit_curve(e.abs().to_numpy()[m], (r > 0).to_numpy(float)[m])
     return out
 
 
