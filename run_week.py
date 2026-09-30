@@ -143,7 +143,7 @@ def main(argv=None):
                      home_spread_price=r.home_spread_price, away_spread_price=r.away_spread_price, total=r.total,
                      over_price=r.over_price, under_price=r.under_price, home_ml=r.home_ml, away_ml=r.away_ml)
                 for r in sb.itertuples(index=False) if r.state == "pre" and r.home_spread is not None]
-        lf = out_dir / "espn_lines.csv"
+        lf = cfg.path("reports_dir") / "espn_lines.csv"
         pd.DataFrame(rows).to_csv(lf, index=False)
         args.lines_file = str(lf)
         notes.append("DraftKings lines from ESPN's scoreboard (model refresh between Odds API runs).")
