@@ -29,6 +29,9 @@ import pandas as pd
 HIGHLIGHT = 0.01          # chance at least 1 point above the price's break-even...
 MIN_SKILL = 0.51          # ...and the model's side itself has won at least 51% in that band (not price alone)
 TOP_EDGE = 4.0            # Top picks: green spread picks where the model disagrees by 4+ points
+QB_DOWN = -2.0            # QB caution: the picked team's projected QB is new (<100 plays) or 2+ pts/game worse
+                          # than its usual starter. Such 2+ pt spread picks went 49.6% (2015-20) and 50.0%
+                          # (2021-26) vs 54-55% with no QB change, so they are not green below the Top line.
 BANDS = (0.0, 2.0, 4.0, 99.0)
 SHRINK = 200.0            # prior games at 50% in each band
 
@@ -130,9 +133,17 @@ def winner_pick(home, away, p_home, home_ml, away_ml):
                 breakeven=be, value=c - be if np.isfinite(be) else float("nan"))
 
 
+def qb_caution(side: str, h_new, a_new, h_delta, a_delta) -> bool:
+    new, delta = (h_new, h_delta) if side == "home" else (a_new, a_delta)
+    try:
+        return bool((new is not None and float(new) >= 1) or (delta is not None and float(delta) < QB_DOWN))
+    except (TypeError, ValueError):
+        return False
+
+
 def is_green(p: dict) -> bool:
     return bool(p["market"] != "winner" and np.isfinite(p["value"]) and p["value"] >= HIGHLIGHT
-                and p["chance"] >= MIN_SKILL)
+                and p["chance"] >= MIN_SKILL and not (p.get("qb_caution") and p["edge"] < TOP_EDGE))
 
 
 def is_top(p: dict) -> bool:
@@ -176,6 +187,8 @@ def week_picks(games: list[dict], curves: dict) -> list[dict]:
                          f("dk_home_spread_price"), f("dk_away_spread_price"), curves["spread"])
         tt = total_pick(f("model_total"), f("dk_total"), f("dk_over_price"), f("dk_under_price"), curves["total"])
         wn = winner_pick(g["home_team"], g["away_team"], g.get("p_home_win_model"), f("dk_home_ml"), f("dk_away_ml"))
+        if sp:
+            sp["qb_caution"] = qb_caution(sp["side"], g.get("h_qb_new"), g.get("a_qb_new"), g.get("h_qb_delta"), g.get("a_qb_delta"))
         for p in (sp, tt, wn):
             if p:
                 p.update(base)
@@ -205,6 +218,9 @@ def history_rows(oos: pd.DataFrame) -> pd.DataFrame:
             ph = 1.0 / (1.0 + math.exp(-float(r.model_margin) / 7.0))       # only its side is used
             picks.append(winner_pick(r.home_team, r.away_team, ph, getattr(r, "home_moneyline", np.nan),
                                      getattr(r, "away_moneyline", np.nan)))
+            if picks[0]:
+                picks[0]["qb_caution"] = qb_caution(picks[0]["side"], getattr(r, "h_qb_new", None), getattr(r, "a_qb_new", None),
+                                                    getattr(r, "h_qb_delta", None), getattr(r, "a_qb_delta", None))
             for p in picks:
                 if not p:
                     continue

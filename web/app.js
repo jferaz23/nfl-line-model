@@ -234,7 +234,8 @@
       `</tbody></table></div>`;
   }
 
-  const topTag = p => p && p.top ? '<span class="chip top">TOP PICK</span>' : "";
+  const topTag = p => (p && p.top ? '<span class="chip top">TOP PICK</span>' : "") +
+    (p && p.qb_caution ? '<span class="chip warn" title="The picked team’s quarterback is new or clearly worse than its usual starter. Picks like this broke even historically, so they are not green unless the model is 4+ points off.">QB CAUTION</span>' : "");
   const pickCell = (d, p) => p ? `<div class="${p.top ? "gcell top" : p.highlight ? "gcell" : ""}"><strong>${esc(p.bet.replace(" to win", ""))}</strong> <span class="muted">${am(p.price)}</span>${topTag(p)}${resChip(d.res(p))}${d.status(p)}
     <div class="small ${p.highlight ? "" : "muted"}">${pct(p.chance, 1)} to win${p.market !== "winner" ? ` · ${val(p)}` : ""}</div></div>` : "–";
 

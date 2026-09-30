@@ -33,6 +33,12 @@ break-even + 1pt and chance >= 51%; Top pick = green spread with 4+ pt edge. Tra
 at closing prices: Top 150-112-7 (57.3%), green 277-228-12 (54.9%, +43.7u), all spreads 51.8%.
 Live picks logged to artifacts/tracker/picks_log.csv; build_site.build_record merges them.
 Data audit (audit_data.py) runs weekly; see Info tab.
+QB caution (picks.qb_caution): a green pick under the Top line that backs a team with a new (<100 plays) or
+2+ pts/game downgraded QB is not green (such picks went ~50% in both halves). QB downgrade *features* were
+tested and rejected (no gain). Win totals (nflmodel/wintotals.py, group "win_totals"): read only from pages
+the user saves into win_totals/ (Sports Odds History / Genius Sports; no scraping), exported to
+win_totals/win_totals.csv; inert until then, and must pass the backtest before it counts.
+Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).
 
 Automation (GitHub jferaz23/nfl-line-model, Pages https://jferaz23.github.io/nfl-line-model/):
 - `update.yml` every 15 min: scheduler.py picks the mode. api = run_week.py with The Odds API

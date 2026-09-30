@@ -52,6 +52,7 @@ MARGIN_GROUPS = {
     "early_down": ["d_early_net"],
     "big_plays": ["d_big_net"],
     "roster_continuity": ["d_cont_early"],
+    "win_totals": ["d_wt_early"],
 }
 TOTAL_GROUPS = {
     "scoring_env": ["sum_press", "sum_3rd_luck", "sum_ou_form", "sum_post_intl", "lg_pts_level", "early_season", "playoff", "div_game"],
@@ -73,6 +74,7 @@ TOTAL_GROUPS = {
     "early_down": ["sum_early"],
     "big_plays": ["sum_big"],
     "roster_continuity": ["sum_offcont_early", "sum_defcont_early"],
+    "win_totals": ["sum_wt_early"],
 }
 MARGIN_FEATURES = [f for fs in MARGIN_GROUPS.values() for f in fs]
 TOTAL_FEATURES = list(dict.fromkeys(f for fs in TOTAL_GROUPS.values() for f in fs))
@@ -672,6 +674,18 @@ def build_games(data: dict, cfg, target_season=None, target_week=None, forecasts
         c2 = cont.rename(columns={"team": col, "off_cont": f"{side}_off_cont", "def_cont": f"{side}_def_cont"})
         out = out.merge(c2, on=["game_id", col], how="left")
 
+    # ---------------- preseason win totals (pages you saved into win_totals/; inert without them) ----------------
+    from .wintotals import load_win_totals
+    wt, wt_notes = load_win_totals(getattr(cfg, "win_totals_dir", "win_totals"))
+    for side, col in (("h", "home_team"), ("a", "away_team")):
+        if len(wt):
+            w2 = wt.rename(columns={"team": col, "wt_rating": f"{side}_wt_rating"})[["season", col, f"{side}_wt_rating"]]
+            out = out.merge(w2, on=["season", col], how="left")
+        else:
+            out[f"{side}_wt_rating"] = np.nan
+    if len(wt) and target_season is not None and not (wt["season"] == target_season).any():
+        notes.append(f"No {target_season} win totals in win_totals/: the preseason prior is off this season.")
+
     # ---------------- sequential context + venue/weather ----------------
     _, pbp_wx, _ = _pbp_game_extras(pbp) if len(pbp) else ({}, {}, {})
     cx, elo_now = _context(ctx, pbp if len(pbp) else None)
@@ -753,6 +767,11 @@ def _assemble_inner(o: pd.DataFrame, cfg) -> pd.DataFrame:
     lg_d = pd.concat([cont["h_def_cont"], cont["a_def_cont"]]).mean()
     g["sum_offcont_early"] = ew * (cont["h_off_cont"] + cont["a_off_cont"] - 2 * lg_o) * 10
     g["sum_defcont_early"] = ew * (cont["h_def_cont"] + cont["a_def_cont"] - 2 * lg_d) * 10
+    # preseason market prior from win totals, same early-season fade (0 where no total was saved)
+    hw = g["h_wt_rating"].fillna(0.0) if "h_wt_rating" in g.columns else 0.0
+    aw = g["a_wt_rating"].fillna(0.0) if "a_wt_rating" in g.columns else 0.0
+    g["d_wt_early"] = ew * (hw - aw)
+    g["sum_wt_early"] = ew * (hw + aw)
     g["ppd_total_pred"] = g["h_off_ppd"] + g["a_def_ppd"] + g["a_off_ppd"] + g["h_def_ppd"]
     g["drives_total"] = g["h_off_drv"] + g["a_def_drv"] + g["a_off_drv"] + g["h_def_drv"]
     # scoring calendar: points sag in November and in cold-weather December/January games

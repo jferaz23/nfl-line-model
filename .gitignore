@@ -42,3 +42,6 @@ site_data/live.json
 
 # local tool settings
 .claude/
+
+# saved win-total pages stay local; only the extracted numbers (win_totals.csv) are committed
+win_totals/*.htm*
