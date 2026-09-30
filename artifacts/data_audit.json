@@ -1,5 +1,5 @@
 {
- "built": "2026-09-30T02:06:23+00:00",
+ "built": "2026-09-30T08:17:44+00:00",
  "scores": {
   "ok": true,
   "games": 3076,
@@ -404,30 +404,24 @@
   "ok": true,
   "listings": 800,
   "not_active": 167,
-  "matched_share": 0.998,
+  "matched_share": 0.999,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
     "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Mitchell Tinsley",
-    "position": "WR",
-    "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 2,
+  "n_unmatched": 1,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-09-30T02:08:11+00:00"
+  "checked": "2026-09-30T08:19:28+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20260930T020615Z.json",
+  "snapshot": "odds_20260930T081738Z.json",
   "games": 31,
   "books_seen": {
    "draftkings": 31,
