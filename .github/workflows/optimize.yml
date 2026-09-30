@@ -54,5 +54,5 @@ jobs:
           git add artifacts
           if git diff --cached --quiet; then echo "Nothing new to commit"; exit 0; fi
           git commit -m "Recalibrate $(date -u +'%Y-%m-%d')"
-          git pull --rebase
+          git -c rebase.autoStash=true pull --rebase -X theirs
           git push

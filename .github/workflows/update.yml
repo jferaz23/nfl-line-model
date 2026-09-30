@@ -97,6 +97,7 @@ jobs:
         run: python build_site.py
 
       - name: Save to the repo
+        continue-on-error: true            # never block the deploy over a commit race
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -104,7 +105,7 @@ jobs:
           if [ "${{ steps.plan.outputs.mode }}" != "reprice" ]; then git add site_data; fi
           if git diff --cached --quiet; then echo "Nothing new to commit"; exit 0; fi
           git commit -m "${{ steps.plan.outputs.mode }}: ${{ steps.plan.outputs.reason }} ($(date -u +'%Y-%m-%d %H:%M UTC'))"
-          git pull --rebase -X theirs || (git rebase --abort; git pull --no-rebase -X ours)
+          git -c rebase.autoStash=true pull --rebase -X theirs || (git rebase --abort; git -c rebase.autoStash=true pull --no-rebase -X ours)
           git push
 
       - uses: actions/upload-pages-artifact@v3
