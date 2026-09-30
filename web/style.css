@@ -66,7 +66,7 @@ nav.tabs::-webkit-scrollbar { display: none; }
 .tgroup a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
 
 /* KPI strip */
-.kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin: 16px 0 14px; }
+.kpis { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin: 16px 0 14px; }
 .kpi { background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: var(--radius);
   padding: 10px 12px; box-shadow: var(--shadow); min-width: 0; }
 .kpi .kl { font: 600 10.5px/1 "IBM Plex Sans Condensed", sans-serif; letter-spacing: .08em; color: var(--faint); text-transform: uppercase; }
@@ -295,3 +295,19 @@ td.gcol, th.gcol { background: color-mix(in srgb, var(--green-bg) 55%, transpare
 .gcell.top, tr.grow.top td, .bp.topcard { background: var(--top-bg); border-color: var(--top-line); }
 .bp.topcard { box-shadow: 0 0 0 1px var(--top-line) inset; }
 .pk.top { background: var(--top-bg); border-color: var(--top-line); }
+
+/* card, live status, gamecast */
+.bp.teaser .leg { font-size: 13.5px; }
+.lstat { display: inline-block; margin-left: 6px; font-size: 11.5px; font-weight: 600; padding: 0 6px; border-radius: 4px; background: var(--card2); }
+.lstat.up { color: var(--win); background: var(--green-bg); } .lstat.dn { color: var(--loss); background: var(--vegas-soft); }
+.chips button.livechip { border-color: var(--loss); }
+.gamecast .gc-score { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; }
+.gc-team { display: flex; align-items: center; gap: 12px; } .gc-team.right { justify-content: flex-end; }
+.gc-pts { font: 600 34px/1 "IBM Plex Sans Condensed", sans-serif; }
+.gc-mid { text-align: center; }
+.sit { margin-top: 10px; padding: 8px 10px; border-radius: 8px; background: var(--card2); border: 1px solid var(--line); font-size: 13.5px; }
+.poss { color: var(--vegas); font-weight: 600; }
+ol.plays { margin: 0; padding-left: 18px; font-size: 13px; } ol.plays li { margin: 0 0 6px; }
+ul.scoring { margin: 0; padding-left: 18px; font-size: 13px; } ul.scoring li { margin: 0 0 5px; }
+table.gcstats td { padding: 5px 8px; }
+@media (max-width: 640px) { .gc-pts { font-size: 26px; } .gamecast .gc-score { gap: 6px; } }

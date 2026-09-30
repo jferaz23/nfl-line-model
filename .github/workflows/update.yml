@@ -1,0 +1,122 @@
+# Every 15 minutes: scheduler.py decides between
+#   api      full model run priced with The Odds API (mandatory: injury reports Wed-Fri ~4:30 PM ET and
+#            ~80 min before every kickoff; otherwise paced so the monthly credits last)
+#   espn     full model run priced with DraftKings' line from ESPN (free), every 3 hours
+#   reprice  reprice picks with DraftKings' current line from ESPN (free)
+# then logs the line and scores, rebuilds the site and deploys it. Live scores during games update in the
+# browser every 15 seconds (web/app.js polls ESPN directly).
+# GitHub starts scheduled runs on a best-effort basis; runs can start a few minutes late when busy.
+name: Update
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Force a mode (api, espn, reprice); blank = let the scheduler decide"
+        required: false
+        default: ""
+      refresh:
+        description: "Force re-download of current-season data (model runs)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: nfl-model
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Decide what to run
+        id: plan
+        env:
+          FORCE_MODE: ${{ inputs.mode }}
+        run: python scheduler.py
+
+      - name: Install (light)
+        if: steps.plan.outputs.mode == 'reprice'
+        run: pip install pandas numpy requests
+
+      - name: Install (model)
+        if: steps.plan.outputs.mode != 'reprice'
+        run: pip install -r requirements.txt
+
+      - name: Cache key (one per ISO week)
+        if: steps.plan.outputs.mode != 'reprice'
+        id: wk
+        run: echo "week=$(date -u +%G-%V)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore nflverse data cache
+        if: steps.plan.outputs.mode != 'reprice'
+        uses: actions/cache@v4
+        with:
+          path: data_cache
+          key: nflverse-${{ steps.wk.outputs.week }}
+          restore-keys: nflverse-
+
+      - name: Model run (The Odds API)
+        if: steps.plan.outputs.mode == 'api'
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: |
+          python run_week.py ${{ inputs.refresh && '--refresh' || '' }} || \
+          (echo "Odds API run failed; falling back to ESPN lines" && python run_week.py --espn-lines)
+
+      - name: Model run (ESPN lines, free)
+        if: steps.plan.outputs.mode == 'espn'
+        run: python run_week.py --espn-lines ${{ inputs.refresh && '--refresh' || '' }}
+
+      - name: Data audit
+        if: steps.plan.outputs.mode == 'api'
+        run: python audit_data.py || echo "audit failed; the site shows the last audit"
+
+      - name: Line watch (scores, DraftKings line history)
+        run: python line_watch.py
+
+      - name: Reprice with DraftKings' current line
+        if: steps.plan.outputs.mode == 'reprice'
+        run: python reprice.py
+
+      - name: Build site
+        run: python build_site.py
+
+      - name: Save to the repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add artifacts
+          if [ "${{ steps.plan.outputs.mode }}" != "reprice" ]; then git add site_data; fi
+          if git diff --cached --quiet; then echo "Nothing new to commit"; exit 0; fi
+          git commit -m "${{ steps.plan.outputs.mode }}: ${{ steps.plan.outputs.reason }} ($(date -u +'%Y-%m-%d %H:%M UTC'))"
+          git pull --rebase -X theirs || (git rebase --abort; git pull --no-rebase -X ours)
+          git push
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: run
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

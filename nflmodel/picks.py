@@ -257,3 +257,134 @@ def rows_summary(df: pd.DataFrame) -> dict:
             bands.append(dict(lo=lo, hi=hi, n=int(m.sum()), said=float(ats.loc[m, "chance"].mean()),
                               won=float((ats.loc[m, "result"] == "W").mean())))
     return dict(seasons=seasons, total=total, cum=cum, cum_top=cum_top, bands=bands)
+
+
+# ----------------------------------------------------------------------------- teasers
+# 6-point teaser legs on underdogs of +1.5 to +2.5 (teased through 3 and 7 to +7.5 to +8.5). In the
+# 2015-2026 backtest these legs won 77.8% (2015-20) and 77.2% (2021-26); a 2-team teaser at -120 needs
+# 73.9% per leg. Favorite legs (-7.5 to -8.5) fell to 68% in 2021-26 and are left out.
+TEASE_POINTS = 6.0
+TEASE_DOG_RANGE = (1.5, 2.5)
+TEASER_PRICE = -120.0      # DraftKings' usual 2-team 6-point NFL teaser price; editable on the site
+TEASE_PRIOR = 0.74         # leg rate the chance is shrunk toward (about break-even at -120)
+
+
+def teaser_leg_rate(oos: pd.DataFrame, before_season: int | None = None) -> tuple[float, int]:
+    """Historical win rate of qualifying underdog legs (pushes excluded), shrunk toward TEASE_PRIOR."""
+    o = oos if before_season is None else oos[oos["season"] < before_season]
+    o = o.dropna(subset=["spread_line", "result"])
+    w = n = 0
+    for sl, res in zip(o["spread_line"], o["result"]):
+        for h, m in ((-sl, res), (sl, -res)):            # (handicap, margin) for home then away
+            if TEASE_DOG_RANGE[0] <= h <= TEASE_DOG_RANGE[1]:
+                d = m + h + TEASE_POINTS
+                if d != 0:
+                    n += 1
+                    w += d > 0
+    k = 200.0
+    return (w + TEASE_PRIOR * k) / (n + k), n
+
+
+def teaser_legs(games: list[dict], rate: float) -> list[dict]:
+    """Qualifying legs this week at DraftKings' current spreads."""
+    out = []
+    for g in games:
+        hs = g.get("dk_home_spread")
+        if hs is None:
+            continue
+        for team, h in ((g["home_team"], float(hs)), (g["away_team"], -float(hs))):
+            if TEASE_DOG_RANGE[0] <= h <= TEASE_DOG_RANGE[1]:
+                out.append(dict(game_id=g["game_id"], season=g["season"], week=g["week"], team=team,
+                                side="home" if team == g["home_team"] else "away", line=h,
+                                teased=h + TEASE_POINTS, bet=_lab(team, h + TEASE_POINTS), chance=rate,
+                                kickoff_utc=g.get("kickoff_utc"), home_team=g["home_team"], away_team=g["away_team"]))
+    return sorted(out, key=lambda x: (x.get("kickoff_utc") or "", x["game_id"]))
+
+
+def pair_teasers(legs: list[dict]) -> list[list[dict]]:
+    """2-team teasers from the week's legs in kickoff order (legs from the same game are never paired)."""
+    pairs, pool = [], list(legs)
+    while len(pool) >= 2:
+        a = pool.pop(0)
+        j = next((i for i, b in enumerate(pool) if b["game_id"] != a["game_id"]), None)
+        if j is None:
+            break
+        pairs.append([a, pool.pop(j)])
+    return pairs
+
+
+def teaser_history(oos: pd.DataFrame) -> dict:
+    """Leg and 2-team records since the first season, pairs formed in schedule order each week."""
+    o = oos.dropna(subset=["spread_line", "result"]).sort_values(["season", "week", "game_id"])
+    legs = []
+    for r in o.itertuples(index=False):
+        for side, h, m in (("home", -r.spread_line, r.result), ("away", r.spread_line, -r.result)):
+            if TEASE_DOG_RANGE[0] <= h <= TEASE_DOG_RANGE[1]:
+                d = m + h + TEASE_POINTS
+                legs.append(dict(season=int(r.season), week=int(r.week), game_id=r.game_id,
+                                 res="W" if d > 0 else ("L" if d < 0 else "P")))
+    L = pd.DataFrame(legs)
+    if L.empty:
+        return {}
+    seasons = []
+    win = 100.0 / -TEASER_PRICE if TEASER_PRICE < 0 else TEASER_PRICE / 100.0
+    all_pairs = []
+    for (s, w), g in L.groupby(["season", "week"], sort=True):
+        rows = g[g["res"] != "P"].to_dict("records")
+        for a, b in pair_teasers(rows):
+            r = "W" if a["res"] == "W" and b["res"] == "W" else "L"
+            all_pairs.append(dict(season=s, week=w, res=r, units=win if r == "W" else -1.0))
+    P = pd.DataFrame(all_pairs)
+    for s in sorted(L["season"].unique()):
+        l = L[(L["season"] == s) & (L["res"] != "P")]
+        p = P[P["season"] == s] if len(P) else P
+        seasons.append(dict(season=int(s), legs_w=int((l.res == "W").sum()), legs_l=int((l.res == "L").sum()),
+                            w=int((p.res == "W").sum()) if len(p) else 0, l=int((p.res == "L").sum()) if len(p) else 0,
+                            units=float(p.units.sum()) if len(p) else 0.0))
+    lg = L[L["res"] != "P"]
+    cum, run = [], 0.0
+    for (s, w), g in (P.groupby(["season", "week"], sort=True) if len(P) else []):
+        run += float(g.units.sum())
+        cum.append([f"{int(s)}-{int(w):02d}", round(run, 2)])
+    return dict(price=TEASER_PRICE, points=TEASE_POINTS, dog_range=list(TEASE_DOG_RANGE),
+                legs=dict(w=int((lg.res == "W").sum()), l=int((lg.res == "L").sum()), pct=float((lg.res == "W").mean())),
+                teasers=dict(w=int((P.res == "W").sum()), l=int((P.res == "L").sum()),
+                             pct=float((P.res == "W").mean()), units=float(P.units.sum()), n=int(len(P))),
+                need_leg=float((1.0 / (1.0 + win)) ** 0.5), seasons=seasons, cum=cum)
+
+
+# ----------------------------------------------------------------------------- rule explorer
+def explorer(oos: pd.DataFrame, split: int = 2020) -> list[dict]:
+    """Spread and total picks by minimum model disagreement: seasons <= split (where rules were chosen)
+    vs later seasons (the check), at closing prices."""
+    o = oos.dropna(subset=["model_margin", "spread_line", "result", "model_total", "total_line"])
+    rows = []
+    for r in o.itertuples(index=False):
+        hs, as_ = (r.result + r.total) / 2.0, (r.total - r.result) / 2.0
+        e = r.model_margin - r.spread_line
+        if e:
+            home = e > 0
+            line = -r.spread_line if home else r.spread_line
+            price = r.home_spread_odds if home else r.away_spread_odds
+            res = grade("spread", "home" if home else "away", line, hs, as_)
+            rows.append(("spread", r.season, r.week, abs(e), res, profit(res, price)))
+        et = r.model_total - r.total_line
+        if et:
+            over = et > 0
+            price = r.over_odds if over else r.under_odds
+            res = grade("total", "over" if over else "under", r.total_line, hs, as_)
+            rows.append(("total", r.season, r.week, abs(et), res, profit(res, price)))
+    d = pd.DataFrame(rows, columns=["market", "season", "week", "edge", "res", "units"])
+    n_weeks = {k: d[m].groupby(["season", "week"]).ngroups for k, m in (("a", d.season <= split), ("b", d.season > split))}
+    out = []
+    for mk in ("spread", "total"):
+        for k in (0, 1, 2, 2.5, 3, 3.5, 4, 5):
+            row = dict(market=mk, min_edge=k)
+            for tag, m in (("a", d.season <= split), ("b", d.season > split)):
+                x = d[m & (d.market == mk) & (d.edge >= k)]
+                g = x[x.res.isin(["W", "L"])]
+                w, l = int((g.res == "W").sum()), int((g.res == "L").sum())
+                row[tag] = dict(w=w, l=l, pct=w / max(w + l, 1), units=float(x.units.sum()),
+                                per_week=len(x) / max(n_weeks[tag], 1))
+            out.append(row)
+    return out

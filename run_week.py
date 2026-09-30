@@ -41,6 +41,8 @@ def parse_args(argv=None):
     ap.add_argument("--lines-file", help="CSV of lines instead of The Odds API (see overrides/manual_lines.csv)")
     ap.add_argument("--odds-snapshot", help="re-price from a saved Odds API snapshot (artifacts/odds_snapshots/*.json); "
                                             "'latest' = newest one. Spends no credits and logs no picks")
+    ap.add_argument("--espn-lines", action="store_true",
+                    help="price with DraftKings' line from ESPN's scoreboard instead of The Odds API (no credits)")
     ap.add_argument("--config", help="JSON file of setting overrides")
     ap.add_argument("--bankroll", type=float)
     ap.add_argument("--min-ev", type=float, help="minimum edge to flag, e.g. 0.02 for +2%%")
@@ -134,6 +136,17 @@ def main(argv=None):
             notes.append("Model weight varies by game with each team's recent model-vs-market accuracy (nfelo-style).")
 
     dm, dt = fit_distributions(sched[sched["season"] >= cfg.first_season], cfg)
+    if args.espn_lines and not args.demo:
+        from nflmodel import espn
+        sb = espn.scoreboard(season, week)
+        rows = [dict(home_team=r.home_team, away_team=r.away_team, book="draftkings", home_spread=r.home_spread,
+                     home_spread_price=r.home_spread_price, away_spread_price=r.away_spread_price, total=r.total,
+                     over_price=r.over_price, under_price=r.under_price, home_ml=r.home_ml, away_ml=r.away_ml)
+                for r in sb.itertuples(index=False) if r.state == "pre" and r.home_spread is not None]
+        lf = out_dir / "espn_lines.csv"
+        pd.DataFrame(rows).to_csv(lf, index=False)
+        args.lines_file = str(lf)
+        notes.append("DraftKings lines from ESPN's scoreboard (model refresh between Odds API runs).")
     if args.odds_snapshot and not args.demo:
         import json as _json
         snap = (max((cfg.path("artifacts_dir") / "odds_snapshots").glob("odds_*.json"))
@@ -147,6 +160,24 @@ def main(argv=None):
         odds, onotes = get_week_odds(cfg, target, no_odds=True)
         onotes = [f"Odds unavailable ({e}); model lines only."]
     notes += onotes
+    # record the Odds API balance for scheduler.py (paces the month's credits)
+    import re as _re
+    cred = [n for n in onotes if "credits remaining" in n]
+    if cred and not args.demo:
+        m = _re.search(r"(\d+)", cred[-1])
+        if m:
+            bp = cfg.path("artifacts_dir") / "odds_budget.json"
+            try:
+                b = __import__("json").loads(bp.read_text()) if bp.exists() else {}
+            except Exception:
+                b = {}
+            now_s = datetime.now(ET).isoformat(timespec="seconds")
+            new_rem = int(m.group(1))
+            if b.get("remaining") is not None and new_rem > int(b["remaining"]) + 5:
+                b["reset_at"] = now_s                       # the monthly quota refilled: learn the reset day
+            b.setdefault("first_seen", now_s)
+            b["remaining"], b["remaining_at"] = new_rem, now_s
+            bp.write_text(__import__("json").dumps(b, indent=1))
     summary, board = price_games(target, odds, cfg, dm, dt, weights)
     if board.empty:
         board = pd.DataFrame(columns=["game_id", "matchup", "market", "bet", "price", "p_win", "p_push", "p_lose",
@@ -196,6 +227,14 @@ def main(argv=None):
     curves = curves_from_oos(pd.read_csv(oos_path)) if oos_path.exists() else {"spread": 0.03, "total": 0.03}
     payload["curves"] = curves
     payload["picks"] = week_picks(payload["games"], curves)
+    from nflmodel.picks import TEASER_PRICE, pair_teasers, teaser_leg_rate, teaser_legs
+    rate = teaser_leg_rate(pd.read_csv(oos_path))[0] if oos_path.exists() else 0.74
+    legs = teaser_legs(payload["games"], rate)
+    payload["teasers"] = dict(legs=legs, pairs=pair_teasers(legs), leg_rate=rate, price=TEASER_PRICE)
+    payload["priced_at"] = payload["generated"]
+    payload["price_source"] = ("ESPN scoreboard (DraftKings)" if args.espn_lines else
+                               "saved Odds API snapshot" if args.odds_snapshot else
+                               "your lines file" if args.lines_file else "The Odds API (DraftKings)")
     write_payload(payload, site_dir)
     from nflmodel.export import schedule_payload
     (site_dir / f"schedule_{season}.json").write_text(
@@ -215,7 +254,7 @@ def main(argv=None):
             r["market_rating"], r["model_rating"] = mkt[r["team"]], model_net.get(r["team"])
         sim.update(week=week, generated=payload["generated"], demo=args.demo)
         (site_dir / f"season_{season}.json").write_text(_json.dumps(_clean(sim), separators=(",", ":")), encoding="utf-8")
-    if not args.demo and not args.no_odds and not args.odds_snapshot and not args.lines_file:
+    if not args.demo and not args.no_odds and not args.odds_snapshot and (not args.lines_file or args.espn_lines):
         log_path = cfg.path("artifacts_dir") / "tracker" / "picks_log.csv"      # graded by build_site.py
         rows = pd.DataFrame(payload["picks"])
         if len(rows):

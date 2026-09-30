@@ -61,6 +61,40 @@
   const live = {};
   ((S.live || {}).games || []).forEach(x => { live[`${x.season}-${x.week}-${x.home_team}-${x.away_team}`] = x; });
   const liveFor = g => live[`${g.season}-${g.week}-${g.home_team}-${g.away_team}`];
+  const ESPN = "https://site.api.espn.com/apis/site/v2/sports/football/nfl";
+  const normTeam = a => ({ WSH: "WAS", LAR: "LA", JAC: "JAX" }[a] || a);
+  let lastLive = S.live && S.live.checked ? new Date(S.live.checked) : null, pollTimer = null;
+  function parseEvent(ev, season, week) {
+    const c = (ev.competitions || [{}])[0], comp = {};
+    (c.competitors || []).forEach(x => comp[x.homeAway] = x);
+    const st = (ev.status || {}).type || {}, sit = c.situation || {};
+    const idTeam = {}; (c.competitors || []).forEach(x => idTeam[x.team && x.team.id] = normTeam(x.team && x.team.abbreviation));
+    return { espn_id: ev.id, season, week, home_team: normTeam(comp.home && comp.home.team.abbreviation), away_team: normTeam(comp.away && comp.away.team.abbreviation),
+      state: st.state, completed: !!st.completed, detail: st.shortDetail, period: (ev.status || {}).period, clock: (ev.status || {}).displayClock,
+      home_score: comp.home ? +comp.home.score : null, away_score: comp.away ? +comp.away.score : null,
+      broadcast: (c.broadcasts || []).map(b => (b.names || []).join(", ")).join(", "),
+      possession: sit.possession ? idTeam[sit.possession] : null, down: sit.downDistanceText || sit.shortDownDistanceText || "",
+      redzone: !!sit.isRedZone, last_play: sit.lastPlay && sit.lastPlay.text, kickoff_utc: ev.date };
+  }
+  async function pollScores() {
+    const W = S.weeks[curKey]; if (!W) return;
+    try {
+      const d = await fetch(`${ESPN}/scoreboard?dates=${W.season}&seasontype=2&week=${W.week}`, { cache: "no-store" }).then(r => r.json());
+      (d.events || []).forEach(ev => { const x = parseEvent(ev, W.season, W.week); live[`${x.season}-${x.week}-${x.home_team}-${x.away_team}`] = Object.assign(live[`${x.season}-${x.week}-${x.home_team}-${x.away_team}`] || {}, x); });
+      lastLive = new Date();
+      W.games.forEach(g => { delete g._d; });
+      onLive();
+    } catch (e) { /* keep the last scores; try again next tick */ }
+    schedulePoll();
+  }
+  function schedulePoll() {
+    clearTimeout(pollTimer);
+    const W = S.weeks[curKey]; if (!W) return;
+    const now = Date.now(), gs = W.games.map(g => ({ g, l: liveFor(g) }));
+    const inPlay = gs.some(x => x.l && x.l.state === "in");
+    const soon = gs.some(x => { const k = +new Date(x.g.kickoff_utc); return k - now < 3 * 3600e3 && k - now > -5 * 3600e3 && !(x.l && x.l.completed); });
+    pollTimer = setTimeout(pollScores, inPlay ? 15000 : soon ? 60000 : 300000);
+  }
   const REC = S.record || {};
   const graded = {};
   (REC.live || []).forEach(p => { if (p.result) graded[p.game_id + "|" + p.market] = p.result; });
@@ -98,28 +132,45 @@
     if (fin(g.dk_total) && fin(d.dkMargin)) { d.vh = (g.dk_total + d.dkMargin) / 2; d.va = (g.dk_total - d.dkMargin) / 2; }
     d.lv = liveFor(g);
     d.final = d.lv && d.lv.completed ? [d.lv.home_score, d.lv.away_score] : null;
-    d.res = p => p ? graded[g.game_id + "|" + p.market] : null;
+    d.res = p => { if (!p) return null; const r = graded[g.game_id + "|" + p.market]; if (r) return r;
+      return d.final ? gradePick(p, d.final[0], d.final[1]) : null; };
+    d.status = p => p && d.lv && d.lv.state === "in" ? liveStatus(p, d.lv.home_score, d.lv.away_score) : "";
     g._d = d;
     return d;
   }
   const resChip = r => r ? `<span class="chip ${r}">${r}</span>` : "";
+  function pickMargin(p, hs, as) {
+    if (p.market === "total") return (hs + as - p.line) * (p.side === "over" ? 1 : -1);
+    const m = p.side === "home" ? hs - as : as - hs;
+    return m + (p.market === "spread" || p.teased != null ? (p.teased != null ? p.teased : p.line) : 0);
+  }
+  const gradePick = (p, hs, as) => { const x = pickMargin(p, hs, as); return x > 1e-9 ? "W" : x < -1e-9 ? "L" : "P"; };
+  function liveStatus(p, hs, as) {
+    const x = pickMargin(p, hs, as);
+    return x > 0 ? `<span class="lstat up">winning by ${trim(x)}</span>` : x < 0 ? `<span class="lstat dn">behind by ${trim(-x)}</span>` : `<span class="lstat">even</span>`;
+  }
 
   // ------------------------------------------------------------------ chrome
   function header() {
     const built = dt(S.built);
     const nBad = (S.checks || []).filter(c => !c[1]).length;
+    const Wk = S.weeks[curKey] || {};
+    const ago = x => { if (!x) return "–"; const m = Math.round((Date.now() - x) / 60000); return m < 1 ? "just now" : m < 60 ? m + " min ago" : Math.round(m / 60) + " h ago"; };
     document.getElementById("updated").innerHTML =
-      `Updated ${esc(fmtStamp(built))} ` +
+      `Prices ${esc(ago(dt(Wk.priced_at || Wk.generated)))} <span class="muted small">(${esc(Wk.price_source || "")})</span> · Model ${esc(ago(dt(Wk.generated)))} · Scores ${esc(ago(lastLive))} ` +
       (nBad ? `<a class="badge bad" href="#info">! ${nBad} check${nBad > 1 ? "s" : ""} failing</a>` : `<a class="badge" href="#info">✓ Checks pass</a>`) +
       (S.weeks && S.weeks[curKey] && S.weeks[curKey].demo ? ` <span class="badge bad">Synthetic demo data</span>` : "");
     const A = (REC.all || {}).total || {}, C = (REC.season || {}).total || {};
+    const TZ = Object.assign({ p: 0 }, (REC.teasers || {}).teasers || {});
     const W = S.weeks[curKey];
     const nFinal = W ? W.games.filter(g => { const l = liveFor(g); return l && l.completed; }).length : 0;
     const k = (key, label) => `<a class="kpi" href="#record"><div class="kl">${label}</div><div class="kv">${recTxt(A[key])}</div>
       <div class="ks">${recSub(A[key])}</div><div class="ks">${esc(String(REC.current_season || ""))}: ${C[key] && C[key].n ? `${C[key].w}-${C[key].l}${C[key].p ? "-" + C[key].p : ""}` : "0-0"}</div></a>`;
     document.getElementById("kpis").innerHTML = `
       <div class="kpi"><div class="kl">Week ${W ? W.week : ""}</div><div class="kv">${nFinal}/${W ? W.games.length : 0}</div><div class="ks">games final</div><div class="ks">record since ${esc(String(REC.since || ""))} →</div></div>
-      ${k("top", "Top picks")}${k("green", "Green picks")}${k("spread", "All spreads")}${k("winner", "Winners")}`;
+      <a class="kpi kpi-green" href="#record"><div class="kl">Weekly card</div><div class="kv">${recTxt(REC.card)}</div><div class="ks">${recSub(REC.card)}</div><div class="ks">Top picks + teasers</div></a>
+      ${k("top", "Top picks")}<a class="kpi" href="#record"><div class="kl">Teasers</div><div class="kv">${recTxt(TZ)}</div><div class="ks">${TZ && TZ.n ? pct(TZ.pct, 1) + " · " + sgn(TZ.units, 1) + "u" : ""}</div><div class="ks">2-team, 6 points</div></a>
+      ${k("green", "Green picks")}${k("winner", "Winners")}`;
   }
 
   const THEME_KEY = "nflmodel-theme";
@@ -184,7 +235,7 @@
   }
 
   const topTag = p => p && p.top ? '<span class="chip top">TOP PICK</span>' : "";
-  const pickCell = (d, p) => p ? `<div class="${p.top ? "gcell top" : p.highlight ? "gcell" : ""}"><strong>${esc(p.bet.replace(" to win", ""))}</strong> <span class="muted">${am(p.price)}</span>${topTag(p)}${resChip(d.res(p))}
+  const pickCell = (d, p) => p ? `<div class="${p.top ? "gcell top" : p.highlight ? "gcell" : ""}"><strong>${esc(p.bet.replace(" to win", ""))}</strong> <span class="muted">${am(p.price)}</span>${topTag(p)}${resChip(d.res(p))}${d.status(p)}
     <div class="small ${p.highlight ? "" : "muted"}">${pct(p.chance, 1)} to win${p.market !== "winner" ? ` · ${val(p)}` : ""}</div></div>` : "–";
 
   function modelTable(W, g) {
@@ -197,6 +248,23 @@
   }
 
   // ------------------------------------------------------------------ best picks of the week
+  function teaserBlock(W) {
+    const T = W.teasers || {}, pairs = T.pairs || [], legs = T.legs || [];
+    const price = T.price || -120, need = Math.sqrt(1 / dec(price));
+    const H = (REC.teasers || {}).teasers || {};
+    const games = {}; W.games.forEach(g => games[g.game_id] = g);
+    const legTxt = l => { const g = games[l.game_id], d = g && derive(W, g); const r = d && d.final ? gradePick(l, d.final[0], d.final[1]) : null;
+      return `<div class="leg"><strong>${esc(l.bet)}</strong> <span class="muted small">(${esc(l.team)} ${hcap(l.line)} → ${hcap(l.teased)}) · ${g ? esc(g.away_team + " @ " + g.home_team + " · " + kick(g)) : ""}</span>${resChip(r)}${d ? d.status(l) : ""}</div>`; };
+    const card = (pr, i) => { const pw = pr.reduce((a, l) => a * l.chance, 1);
+      return `<div class="bp green teaser"><div class="top"><span class="rank">Teaser ${i + 1}</span><span class="small muted">2 teams, 6 points, ${am(price)}</span></div>
+        ${pr.map(legTxt).join("")}<div class="meta"><span>Both hit <b>${pct(pw, 1)}</b></span><span>Needs <b>${pct(1 / dec(price), 1)}</b></span><span>Each leg ${pct(pr[0].chance, 1)} (needs ${pct(need, 1)})</span></div></div>`; };
+    const extra = legs.length % 2 === 1 ? legs[legs.length - 1] : null;
+    return `<h3 style="margin-top:14px">Teasers: underdogs +1.5 to +2.5, teased to +7.5 to +8.5</h3>
+      ${pairs.length ? `<div class="best-grid">${pairs.map(card).join("")}</div>` : `<p class="note">No underdogs at +1.5 to +2.5 on DraftKings right now.</p>`}
+      ${extra ? `<p class="note">Unpaired leg: ${esc(extra.bet)} (pair it with a leg from another game, or wait for the line to settle).</p>` : ""}
+      <p class="note">Since 2015 these legs won ${pct(((REC.teasers || {}).legs || {}).pct, 1)}; 2-team teasers went ${H.w || 0}-${H.l || 0} (${pct(H.pct, 1)}, ${sgn(H.units, 1)} units at ${am(price)}). A 2-team teaser at ${am(price)} needs ${pct(1 / dec(price), 1)}. Check DraftKings' teaser price before betting.</p>`;
+  }
+
   function bestPanel(W, compact) {
     const games = {}; W.games.forEach(g => games[g.game_id] = g);
     const all = (W.picks || []).filter(p => p.market !== "winner" && games[p.game_id]).sort((x, y) => (y.value || -1) - (x.value || -1));
@@ -211,11 +279,15 @@
     const rows = next.map(p => { const g = games[p.game_id];
       return `<tr><td><strong>${esc(p.bet)}</strong> ${am(p.price)}</td><td>${esc(g.away_team)} @ ${esc(g.home_team)}</td><td class="num">${pct(p.chance, 1)}</td><td class="num">${pct(p.breakeven, 1)}</td><td class="num muted">${val(p)}</td></tr>`; }).join("");
     const G = ((REC.all || {}).total || {}).green, TP = ((REC.all || {}).total || {}).top;
-    return `<div class="panel"><div class="toolbar" style="justify-content:space-between;margin:0 0 10px"><div><h2>Best picks this week</h2>
-      <p class="lede" style="margin:0">${top.length ? `${top.length} spread and total pick${top.length === 1 ? "" : "s"} where the chance to win beats what DraftKings' price needs, best value first.` : "No spread or total clears its break-even by a point at DraftKings' current prices."}
-      ${TP && TP.n ? ` Since ${esc(String(REC.since))}: Top picks <strong>${TP.w}-${TP.l}${TP.p ? "-" + TP.p : ""}</strong> (${pct(TP.pct, 1)}), green picks <strong>${G.w}-${G.l}${G.p ? "-" + G.p : ""}</strong> (${pct(G.pct, 1)}, ${sgn(G.units, 1)} units).` : ""}</p></div>
+    const tops = top.filter(p => p.top), greens = top.filter(p => !p.top), CR = REC.card || {};
+    return `<div class="panel"><div class="toolbar" style="justify-content:space-between;margin:0 0 10px"><div><h2>This week's card</h2>
+      <p class="lede" style="margin:0">Top picks and teasers make the card: since ${esc(String(REC.since || 2015))} it went <strong>${CR.w || 0}-${CR.l || 0}${CR.p ? "-" + CR.p : ""}</strong> (${pct(CR.pct, 1)}, ${sgn(CR.units, 1)} units). Green value picks follow.</p></div>
       ${compact ? `<a class="btn" href="#picks">All picks</a>` : ""}</div>
-      ${top.length ? `<div class="best-grid">${top.map(card).join("")}</div>` : ""}
+      <h3>Top picks: spreads where the model is 4+ points off DraftKings</h3>
+      ${tops.length ? `<div class="best-grid">${tops.map(card).join("")}</div>` : `<p class="note">None right now: no spread is 4+ points off DraftKings' line. Prices update every 15 minutes.</p>`}
+      ${teaserBlock(W)}
+      <h3 style="margin-top:14px">Green value picks</h3>
+      ${greens.length ? `<div class="best-grid">${greens.map((p, i) => card(p, i + tops.length)).join("")}</div>` : `<p class="note">None right now.</p>`}
       <p class="note">${GREEN_HELP} Chance = how often picks with this much model disagreement won from ${esc(String(REC.since || 2015))} on.</p>
       ${!compact && rows ? `<details class="leans"><summary>${next.length} other spread and total picks (below the green line)</summary><div class="tablewrap"><table><thead><tr><th>Pick</th><th>Game</th><th class="num">Chance</th><th class="num">Needs</th><th class="num">Value</th></tr></thead><tbody>${rows}</tbody></table></div></details>` : ""}</div>`;
   }
@@ -429,6 +501,27 @@
   }
 
   // ------------------------------------------------------------------ Record (2015 to now)
+  function teaserRecord() {
+    const T = REC.teasers || {}; if (!T.seasons) return "";
+    const L = T.legs || {}, P = T.teasers || {};
+    return `<div class="panel"><h2>Teasers since ${esc(String(REC.since || 2015))}</h2>
+      <p class="lede">Every underdog at +1.5 to +2.5 at the closing line, teased 6 points, paired in schedule order each week. A 2-team teaser at ${am(T.price)} needs ${pct(1 / dec(T.price), 1)} (each leg ${pct(T.need_leg, 1)}).</p>
+      <div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 10px">
+        <div class="kpi kpi-green"><div class="kl">2-team teasers</div><div class="kv">${recTxt(Object.assign({ p: 0, n: P.n }, P))}</div><div class="ks">${pct(P.pct, 1)} · ${sgn(P.units, 1)} units</div></div>
+        <div class="kpi"><div class="kl">Legs</div><div class="kv">${recTxt(Object.assign({ p: 0, n: (L.w || 0) + (L.l || 0) }, L))}</div><div class="ks">${pct(L.pct, 1)} won</div></div>
+        <div class="kpi"><div class="kl">Card (Top picks + teasers)</div><div class="kv">${recTxt(Object.assign({ n: (REC.card || {}).w }, REC.card))}</div><div class="ks">${recSub(Object.assign({ n: 1 }, REC.card))}</div></div></div>
+      <div class="tablewrap"><table><thead><tr><th>Season</th><th class="num">Legs</th><th class="num">Teasers</th><th class="num">Units</th></tr></thead><tbody>
+      ${T.seasons.slice().reverse().map(s => `<tr><td>${s.season}</td><td class="num">${s.legs_w}-${s.legs_l}</td><td class="num">${s.w}-${s.l}</td><td class="num ${s.units >= 0 ? "w" : "l"}">${sgn(s.units, 1)}</td></tr>`).join("")}</tbody></table></div></div>`;
+  }
+  function explorerPanel() {
+    const E = REC.explorer || []; if (!E.length) return "";
+    const row = r => `<tr><td>${r.market === "spread" ? "Spreads" : "Totals"} ${r.min_edge ? r.min_edge + "+ pts" : "(every game)"}</td>
+      <td class="num">${r.a.w}-${r.a.l} <span class="small ${r.a.pct > 0.524 ? "w" : "muted"}">${pct(r.a.pct, 1)}</span></td><td class="num ${r.a.units >= 0 ? "w" : "l"}">${sgn(r.a.units, 1)}</td><td class="num muted">${num(r.a.per_week, 1)}</td>
+      <td class="num">${r.b.w}-${r.b.l} <span class="small ${r.b.pct > 0.524 ? "w" : "muted"}">${pct(r.b.pct, 1)}</span></td><td class="num ${r.b.units >= 0 ? "w" : "l"}">${sgn(r.b.units, 1)}</td><td class="num muted">${num(r.b.per_week, 1)}</td></tr>`;
+    return `<div class="panel"><h2>More picks or better picks?</h2><p class="lede">Every threshold for the model's disagreement with the closing line: fewer picks win more often. Rules were chosen on 2015-2020; 2021-2026 is the check they never saw. Units at the closing price.</p>
+      <div class="tablewrap"><table><thead><tr><th>Bet when the model is off by</th><th class="num">2015-20</th><th class="num">Units</th><th class="num">Per week</th><th class="num">2021-26</th><th class="num">Units</th><th class="num">Per week</th></tr></thead><tbody>${E.map(row).join("")}</tbody></table></div>
+      <p class="note">Spreads profit in both halves from about 2 points up; totals do not hold up, so they stay off the card. Top picks use 4+ points.</p></div>`;
+  }
   function renderRecord() {
     const A = REC.all || {}, T = A.total || {}, seasons = A.seasons || [];
     if (!seasons.length) { view.innerHTML = `<p class="empty">Run optimize.py to build the track record.</p>`; return; }
@@ -460,6 +553,8 @@
         ${card("top", "Top picks", "green spreads, model 4+ pts off the line")}${card("green", "Green picks", "chance beat the price's break-even")}${card("spread", "Every spread pick", "the model's side, every game")}${card("winner", "Straight-up winners", "the model's likelier winner")}</div>
       <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin:10px 0 0">${card("green_spread", "Green spreads", "")}${card("green_total", "Green totals", "")}${card("total", "Every total pick", "the model's side, every game")}
         <div class="kpi"><div class="kl">Break-even</div><div class="kv">52.4%</div><div class="ks">win rate a −110 bet needs</div></div></div></div>
+      ${teaserRecord()}
+      ${explorerPanel()}
       <div class="panel"><h2>Season by season</h2><div class="tablewrap"><table class="rec-table"><thead><tr><th>Season</th><th class="num gcol">Top picks</th><th class="num gcol">Green picks</th><th class="num">Green totals</th><th class="num">All spreads</th><th class="num">All totals</th><th class="num">Winners</th></tr></thead><tbody>${rows}</tbody></table></div>
       <p class="note">Win % excludes pushes. Units are 1-unit bets at the closing price (spreads and totals; winners at the closing moneyline). Break-even at −110 is 52.4%.</p></div>
       <div class="two"><div class="panel"><h2>Top picks: units won over time</h2>${unitsChart(A.cum_top, "var(--green-ink)", "Top picks")}</div>
@@ -616,12 +711,94 @@
       ${W.notes && W.notes.length ? `<h3>Notes from the latest run</h3><ul>${W.notes.map(n => `<li class="small">${esc(n)}</li>`).join("")}</ul>` : ""}</div>`;
   }
 
+  // ------------------------------------------------------------------ Gamecast
+  let gcGame = null, gcData = null, gcTimer = null, gcErr = "";
+  async function loadSummary(id) {
+    try { gcData = await fetch(`${ESPN}/summary?event=${id}`, { cache: "no-store" }).then(r => r.json()); gcErr = ""; }
+    catch (e) { gcErr = "ESPN's game feed did not respond; retrying."; }
+  }
+  function renderLive(sel) {
+    const W = S.weeks[curKey];
+    if (!W) { view.innerHTML = `<p class="empty">No weekly run yet.</p>`; return; }
+    const games = W.games.slice().sort((x, y) => { const a = liveFor(x) || {}, b = liveFor(y) || {};
+      const rank = l => l.state === "in" ? 0 : l.state === "pre" ? 1 : 2; return rank(a) - rank(b) || (x.kickoff_utc || "").localeCompare(y.kickoff_utc || ""); });
+    if (sel) gcGame = sel;
+    if (!gcGame) { const lv = games.find(g => (liveFor(g) || {}).state === "in"); gcGame = (lv || games[0]).game_id; }
+    const g = games.find(x => x.game_id === gcGame) || games[0], lv = liveFor(g) || {};
+    const chips = games.map(x => { const l = liveFor(x) || {};
+      return `<button type="button" data-gc="${esc(x.game_id)}" aria-pressed="${x.game_id === g.game_id}" class="${l.state === "in" ? "livechip" : ""}">${esc(x.away_team)} ${l.state !== "pre" && l.away_score != null ? l.away_score : ""} @ ${esc(x.home_team)} ${l.state !== "pre" && l.home_score != null ? l.home_score : ""}${l.state === "in" ? ` · ${esc(l.detail || "")}` : l.completed ? " · F" : ""}</button>`; }).join("");
+    const d = derive(W, g);
+    const S_ = gcData && gcData.header && gcData.header.id === String(lv.espn_id) ? gcData : null;
+    const picks = [d.sp, d.tt, d.wn].filter(Boolean).concat(((W.teasers || {}).legs || []).filter(l => l.game_id === g.game_id));
+    const pickRows = picks.map(p => `<tr${p.top ? ' class="grow top"' : p.highlight ? ' class="grow"' : ""}><td><strong>${esc(p.bet)}</strong>${p.teased != null ? ' <span class="muted small">teaser leg</span>' : ""}${topTag(p)}</td><td class="num">${p.price != null ? am(p.price) : ""}</td><td>${d.lv && d.lv.state === "in" ? liveStatus(p, d.lv.home_score, d.lv.away_score) : resChip(d.res(p)) || '<span class="muted">not started</span>'}</td></tr>`).join("");
+    let body = `<p class="note">Loading ESPN's game feed…</p>`;
+    if (S_) {
+      const comp = (S_.header.competitions || [{}])[0], teamsById = {};
+      (comp.competitors || []).forEach(c => teamsById[c.id || (c.team && c.team.id)] = normTeam(c.team && c.team.abbreviation));
+      const started = lv.state === "in" || lv.completed || lv.state === "post";
+      const drives = ((S_.drives || {}).previous || []).slice().reverse();
+      const cur = (S_.drives || {}).current;
+      const allDrives = cur ? [cur].concat(drives) : drives;
+      const plays = allDrives.length ? (allDrives[0].plays || []).slice().reverse().slice(0, 10) : [];
+      const wp = (S_.winprobability || []).map(x => x.homeWinPercentage).filter(fin);
+      let wpChart = "";
+      if (wp.length > 1) {
+        const W_ = 600, H_ = 130, pl = 36, pr = 8, pt = 8, pb = 18, x = i => pl + (W_ - pl - pr) * i / (wp.length - 1), y = v => pt + (H_ - pt - pb) * (1 - v);
+        wpChart = `<svg class="chart" viewBox="0 0 ${W_} ${H_}" role="img" aria-label="Win probability"><line x1="${pl}" x2="${W_ - pr}" y1="${y(0.5)}" y2="${y(0.5)}" stroke="var(--line)" stroke-dasharray="3 3"/>
+          <polyline fill="none" stroke="var(--model)" stroke-width="2" points="${wp.map((v, i) => `${x(i)},${y(v)}`).join(" ")}"/>
+          <text x="${pl - 4}" y="${y(1) + 8}" text-anchor="end">${esc(g.home_team)}</text><text x="${pl - 4}" y="${y(0)}" text-anchor="end">${esc(g.away_team)}</text>
+          <text x="${W_ - pr}" y="${y(wp[wp.length - 1]) - 4}" text-anchor="end" style="fill:var(--model)">${esc(g.home_team)} ${pct(wp[wp.length - 1])}</text></svg>`;
+      }
+      const bx = ((S_.boxscore || {}).teams || []);
+      const want = ["Total Yards", "Passing", "Rushing", "Yards per Play", "3rd down efficiency", "4th down efficiency", "Turnovers", "Penalties", "Possession", "Red Zone (Made-Att)", "1st Downs", "Sacks-Yards Lost"];
+      const statOf = (tm, lab) => { const s = (tm.statistics || []).find(z => z.label === lab); return s ? s.displayValue : "–"; };
+      const aBx = bx.find(z => normTeam(z.team && z.team.abbreviation) === g.away_team) || bx[0] || {}, hBx = bx.find(z => normTeam(z.team && z.team.abbreviation) === g.home_team) || bx[1] || {};
+      const stats = want.filter(l => (aBx.statistics || []).some(z => z.label === l)).map(l => `<tr><td class="num">${esc(statOf(aBx, l))}</td><td style="text-align:center" class="muted">${esc(l)}</td><td class="num">${esc(statOf(hBx, l))}</td></tr>`).join("");
+      const leaders = (S_.leaders || []).map(tm => `<div><h3>${esc(normTeam(tm.team && tm.team.abbreviation))}</h3>${(tm.leaders || []).slice(0, 3).map(cat => { const L = (cat.leaders || [])[0]; return L ? `<div class="small"><span class="muted">${esc(cat.displayName)}:</span> <strong>${esc(L.athlete && L.athlete.displayName)}</strong> ${esc(L.displayValue)}</div>` : ""; }).join("")}</div>`).join("");
+      const scoring = (S_.scoringPlays || []).slice().reverse().map(sp => `<li><span class="muted small">Q${sp.period && sp.period.number} ${esc(sp.clock && sp.clock.displayValue)}</span> <strong>${esc(normTeam(sp.team && sp.team.abbreviation))}</strong> ${esc(sp.text)} <span class="muted small">(${sp.awayScore}-${sp.homeScore})</span></li>`).join("");
+      body = `<div class="two"><div><h3>${cur ? "Current drive" : "Last drive"}${allDrives[0] ? ` · ${esc(teamsById[allDrives[0].team && allDrives[0].team.id] || normTeam(allDrives[0].team && allDrives[0].team.abbreviation) || "")} ${esc(allDrives[0].description || "")}` : ""}</h3>
+          ${plays.length ? `<ol class="plays">${plays.map(pl => `<li><span class="muted small">${esc((pl.start && pl.start.downDistanceText) || "")}</span> ${esc(pl.text)}</li>`).join("")}</ol>` : '<p class="note">No plays yet.</p>'}</div>
+        <div><h3>Win probability (ESPN)</h3>${wpChart || '<p class="note">Starts at kickoff.</p>'}</div></div>
+        ${!started ? '<p class="note">Game stats and leaders appear at kickoff (until then ESPN reports season totals, which are not shown here).</p>' : ""}
+        ${started && stats ? `<h3 style="margin-top:12px">Team stats</h3><div class="tablewrap"><table class="gcstats"><thead><tr><th class="num">${esc(g.away_team)}</th><th></th><th class="num">${esc(g.home_team)}</th></tr></thead><tbody>${stats}</tbody></table></div>` : ""}
+        ${started && leaders ? `<div class="two" style="margin-top:12px">${leaders}</div>` : ""}
+        ${scoring ? `<h3 style="margin-top:12px">Scoring plays</h3><ul class="scoring">${scoring}</ul>` : ""}`;
+    }
+    const sit = lv.state === "in" ? `<div class="sit">${lv.possession ? `<span class="poss">● ${esc(lv.possession)} ball</span>` : ""}${lv.down ? ` <strong>${esc(lv.down)}</strong>` : ""}${lv.redzone ? ' <span class="chip warn">RED ZONE</span>' : ""}${lv.last_play ? `<div class="small muted">Last play: ${esc(lv.last_play)}</div>` : ""}</div>` : "";
+    view.innerHTML = `<div class="chips" role="group" aria-label="Game">${chips}</div>
+      <article class="panel gamecast"><div class="gc-score">
+        <div class="gc-team">${team(g.away_team, "", true)}<span class="gc-pts">${lv.state && lv.state !== "pre" ? lv.away_score : ""}</span></div>
+        <div class="gc-mid">${lv.state === "in" ? `<span class="live">${esc(lv.detail || "")}</span>` : lv.completed ? "<strong>Final</strong>" : `<strong>${esc(kick(g))}</strong>`}<div class="small muted">${esc(lv.broadcast || "")}</div></div>
+        <div class="gc-team right"><span class="gc-pts">${lv.state && lv.state !== "pre" ? lv.home_score : ""}</span>${team(g.home_team, "", true)}</div></div>
+        ${sit}
+        ${pickRows ? `<h3 style="margin-top:12px">Our picks</h3><div class="tablewrap"><table><tbody>${pickRows}</tbody></table></div>` : ""}
+        ${gcErr ? `<p class="note">${esc(gcErr)}</p>` : ""}
+        <div style="margin-top:12px">${body}</div>
+        <p class="note">Live data from ESPN, refreshed every 15 seconds while the game is on.</p></article>`;
+    view.querySelectorAll("[data-gc]").forEach(b => b.onclick = () => { location.hash = "live/" + b.dataset.gc; });
+    clearTimeout(gcTimer);
+    if (lv.espn_id && (!S_ || lv.state === "in")) {
+      gcTimer = setTimeout(async () => { await loadSummary(lv.espn_id); if (currentRoute === "live") renderLive(); }, S_ ? 15000 : 0);
+    }
+  }
+
+  let currentRoute = "games";
+  function onLive() {
+    header();
+    if (["games", "live", "picks", "bets"].includes(currentRoute) && !document.querySelector("#view input:focus, #view select:focus")) {
+      const y = window.scrollY; ROUTES[currentRoute](); window.scrollTo({ top: y });
+    }
+  }
+
   // ------------------------------------------------------------------ router
   const ROUTES = { games: renderGames, picks: renderPicks, breakdown: renderBreakdown, futures: renderFutures, teams: renderTeams,
-    players: renderPlayers, record: renderRecord, backtest: renderRecord, bets: renderBets, info: renderInfo };
+    players: renderPlayers, record: renderRecord, backtest: renderRecord, bets: renderBets, info: renderInfo, live: renderLive };
   function route() {
     const [name, arg] = (location.hash.replace(/^#/, "") || "games").split("/");
     const r = ROUTES[name] ? (name === "backtest" ? "record" : name) : "games";
+    if (r !== "live") { clearTimeout(gcTimer); }
+    if (r === "live" && arg && arg !== gcGame) { gcData = null; }
+    currentRoute = r;
     document.querySelectorAll("nav.tabs a").forEach(a => a.getAttribute("href") === "#" + r ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
     ROUTES[r](arg ? decodeURIComponent(arg) : undefined);
     if (!arg) window.scrollTo({ top: 0 });
@@ -631,4 +808,6 @@
   header();
   window.addEventListener("hashchange", route);
   route();
+  pollScores();
+  setInterval(header, 60000);              // keep the "updated ... ago" labels honest
 })();

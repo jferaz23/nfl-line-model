@@ -247,7 +247,14 @@ def build_record(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict) 
         frames.append(live[live["source"] == "live"])
     allr = pd.concat([f for f in frames if len(f)], ignore_index=True) if frames else pd.DataFrame()
     cur = weeks[-1]["season"]
-    out = dict(all=rows_summary(allr) if len(allr) else {}, since=int(allr["season"].min()) if len(allr) else None,
+    teas, expl = {}, []
+    if oos_p.exists():
+        from nflmodel.picks import explorer, teaser_history
+        o2 = pd.read_csv(oos_p)
+        if "home_spread_odds" in o2.columns:
+            teas, expl = teaser_history(o2), explorer(o2)
+    out = dict(teasers=teas, explorer=expl)
+    out.update(all=rows_summary(allr) if len(allr) else {}, since=int(allr["season"].min()) if len(allr) else None,
                current_season=cur,
                season=rows_summary(allr[allr["season"] == cur]) if len(allr) else {},
                live=_clean(live.to_dict("records")) if len(live) else [])
@@ -258,6 +265,12 @@ def build_record(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict) 
         for wk, d in s.groupby("week"):
             by_week.append(dict(week=int(wk), **rows_summary(d)["total"]))
     out["by_week"] = by_week
+    # the weekly card = Top picks + 2-team underdog teasers
+    top = ((out.get("all") or {}).get("total") or {}).get("top") or {}
+    tz = (teas or {}).get("teasers") or {}
+    w, l = int(top.get("w") or 0) + int(tz.get("w") or 0), int(top.get("l") or 0) + int(tz.get("l") or 0)
+    out["card"] = dict(w=w, l=l, p=int(top.get("p") or 0), n=w + l + int(top.get("p") or 0), pct=w / max(w + l, 1),
+                       units=float(top.get("units") or 0) + float(tz.get("units") or 0))
     return _clean(out)
 
 
@@ -379,9 +392,13 @@ def health(week, live, season, bt, tracker) -> list:
         add("Win chances between 0 and 1", all(g.get("p_home_win") is None or 0 <= g["p_home_win"] <= 1 for g in gs))
     else:
         add("Weekly model run found", False)
+    if week and week.get("priced_at"):
+        pt = _ts(week["priced_at"])
+        add("DraftKings prices updated in the last hour", pt and NOW - pt < timedelta(hours=1),
+            f"{week.get('price_source', '')}, {pt:%b %d %H:%M UTC}" if pt else "")
     if live:
         t = _ts(live.get("checked"))
-        add("Line watch in the last 3 hours", t and NOW - t < timedelta(hours=3),
+        add("Line watch in the last hour", t and NOW - t < timedelta(hours=1),
             t.strftime("%b %d %H:%M UTC") if t else "never")
     else:
         add("Line watch has run", False)
@@ -482,6 +499,7 @@ def main() -> int:
         live=live, schedule=sched, season_sim=sim, record=record, backtest=bt,
         lines=line_history(lines, cur), my_bets=my_bets(finals_by_key),
         checks=checks, checks_ok=all(c[1] for c in checks), audit=_load(ART / "data_audit.json"),
+        budget=_load(ART / "odds_budget.json"),
     )
     if PUBLIC.exists():
         shutil.rmtree(PUBLIC)

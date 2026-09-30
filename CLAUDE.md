@@ -35,14 +35,13 @@ Live picks logged to artifacts/tracker/picks_log.csv; build_site.build_record me
 Data audit (audit_data.py) runs weekly; see Info tab.
 
 Automation (GitHub jferaz23/nfl-line-model, Pages https://jferaz23.github.io/nfl-line-model/):
-- `weekly.yml`: run_week.py (Tue/Thu/Fri/Sun/Mon) -> line_watch.py -> build_site.py -> deploy.
-  run_week writes site_data/week_*.json, schedule_*.json, season_*.json (season sim) and appends
-  artifacts/tracker/model_picks.csv. ESPN same-day injuries are merged for the target week.
-- `line_watch.yml` (every 20 min): ESPN scoreboard -> artifacts/lines/espn_lines.csv (DraftKings line
-  history + opening lines) and site_data/live.json (not committed) -> build_site.py -> deploy.
-- `optimize.yml`: recalibrates Tuesdays. `ODDS_API_KEY` is an Actions secret.
-- Site: web/ (index.html, app.js, style.css, no build step) + public/data/site.js from build_site.py.
-  Tabs: Games, Picks (bet ranking, history %, teasers, PDF), Breakdown, Futures, Teams, Players,
-  Backtest, Bets (graded tracker, CLV), Info (health checks).
+- `update.yml` every 15 min: scheduler.py picks the mode. api = run_week.py with The Odds API
+  (mandatory at injury reports Wed-Fri ~4:30 PM ET and ~80 min before every kickoff; otherwise paced
+  from artifacts/odds_budget.json so the credits last until the quota refills, reset date learned);
+  espn = run_week.py --espn-lines (free, every 3 h); reprice = reprice.py (DraftKings line from ESPN).
+  Then line_watch.py, build_site.py, commit, deploy. `optimize.yml` recalibrates Tuesdays.
+- Weekly card = Top picks + 2-team underdog teasers (+1.5..+2.5 teased 6; picks.teaser_*).
+- Site: web/ (no build step) + public/data/site.js. Live scores/Gamecast poll ESPN from the browser
+  every 15 s during games (display only; never touches the model or credits).
 Local: `config.json` (gitignored) keeps the data cache outside OneDrive; use `--config config.json`.
 `run_week.py --odds-snapshot latest` re-prices from a saved snapshot without spending credits.
