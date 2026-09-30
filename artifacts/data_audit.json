@@ -1,5 +1,5 @@
 {
- "built": "2026-09-30T00:41:30+00:00",
+ "built": "2026-09-30T02:06:23+00:00",
  "scores": {
   "ok": true,
   "games": 3076,
@@ -403,15 +403,9 @@
  "injuries": {
   "ok": true,
   "listings": 800,
-  "not_active": 168,
-  "matched_share": 0.994,
+  "not_active": 167,
+  "matched_share": 0.998,
   "unmatched": [
-   {
-    "team": "ATL",
-    "full_name": "Keshawn Banks",
-    "position": "DE",
-    "report_status": "ACTIVE"
-   },
    {
     "team": "BUF",
     "full_name": "Mike Danna",
@@ -423,29 +417,17 @@
     "full_name": "Mitchell Tinsley",
     "position": "WR",
     "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Isaiah Nwokobia",
-    "position": "S",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "MIA",
-    "full_name": "James Ester",
-    "position": "G",
-    "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 5,
+  "n_unmatched": 2,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-09-30T00:43:22+00:00"
+  "checked": "2026-09-30T02:08:11+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20260930T004121Z.json",
+  "snapshot": "odds_20260930T020615Z.json",
   "games": 31,
   "books_seen": {
    "draftkings": 31,
