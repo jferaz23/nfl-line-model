@@ -46,6 +46,8 @@ Open-Meteo's Historical Forecast API (wind/gust archive from 2018; 2016-17 null)
 excluded like live. Record 2018-26 225-166-4 (57.5%, +44.0u); 2018-21 (not used to choose the rule)
 103-88-2 (+9.9u); all outdoor unders 52.3%. Live pick is final at the ~80-min pre-kickoff run.
 optimize.yml runs `python -m nflmodel.wind --update` weekly.
+Missing skill-player value (WR/TE/RB EPA) was tested in the production backtest and rejected (Sept 30,
+2026): MAE -0.007 but Top -16.7u and green -23.9u; see docs/PROJECT_HANDOFF.md section 10.
 
 Automation (GitHub jferaz23/nfl-line-model, Pages https://jferaz23.github.io/nfl-line-model/):
 - `update.yml` every 15 min: scheduler.py picks the mode. api = run_week.py with The Odds API

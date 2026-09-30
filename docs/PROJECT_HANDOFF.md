@@ -431,6 +431,8 @@ venue_history. **These are synthetic and will be replaced by the first real run.
 | Venue history | team-specific home edges tend not to last (nfelo); Denver shows no durable edge; team HFA volatile (Open Source Football); books bake team HFA into spreads | `_add_venue_history`: team/coach/QB at stadium, QB dome/cold splits, stadium scoring |
 | Outcome spread vs total | same margin less certain when more scoring (Matter of Stats); distribution width varies game to game | `sd_total_alpha/beta` |
 | Error-weighted market regression | nfelo market regression article | `regress.py` |
+| Wind unders (Sept 30, 2026) | closing totals under-react to wind: outdoor unders with a kickoff forecast of 10+ mph wind or 20+ mph gusts went 225-166-4 (57.5%, +44.0u) 2018-26 at closing prices; 2018-21, not used to choose the rule, 103-88-2 (+9.9u); all outdoor unders 52.3% | `nflmodel/wind.py`, weekly card (not a model feature) |
+| Missing skill-player value (tested and rejected Sept 30, 2026) | regular WR/TE/RB (10%+ of targets+carries over 4 games) missing, weighted by EPA per touch above league x touches per game. Production backtest vs a fresh baseline: spread MAE -0.007 (95% CI -0.018 to +0.004), better in both halves, pruning kept it, but Top picks 170-122-7 +38.7u -> 138-110-7 +21.9u and green +51.3u -> +27.4u, so it failed the pass rule set beforehand (Top and green units not lower) | not in the model |
 
 ---
 
@@ -481,6 +483,8 @@ venue_history. **These are synthetic and will be replaced by the first real run.
 - Motivation proxies (elimination/clinch by win% after 11+ games) are crude; real playoff-odds or
   standings logic would be better.
 - The Week 4 site is market comparison plus small research adjustments, not model output.
+- nflverse snap counts have the two teams' rows swapped in three games (2014_21_NE_SEA, 2015_21_CAR_DEN,
+  2018_21_NE_LA: Super Bowls), which mislabels availability (`miss_*`) for those games. Not fixed yet.
 
 ---
 
