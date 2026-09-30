@@ -8,7 +8,8 @@ from the pick log).
 
 - rewrites site_data/week_<s>_<w>.json in the runner (not committed; the next run starts again
   from the committed model run)
-- appends to artifacts/tracker/picks_log.csv only when a pick's side, line or price changed
+- appends to artifacts/tracker/picks_log.csv only when a pick's side, line, price or green status changed
+  (wind unders included: same forecast as the model run, DraftKings' current total and price)
 
     python reprice.py
 """
@@ -31,6 +32,13 @@ LOG = ROOT / "artifacts" / "tracker" / "picks_log.csv"
 FIELDS = {"home_spread": "dk_home_spread", "home_spread_price": "dk_home_spread_price",
           "away_spread_price": "dk_away_spread_price", "total": "dk_total", "over_price": "dk_over_price",
           "under_price": "dk_under_price", "home_ml": "dk_home_ml", "away_ml": "dk_away_ml"}
+
+
+def _num(x) -> float:
+    try:
+        return float(x)
+    except (TypeError, ValueError):
+        return float("nan")
 
 
 def main() -> int:
@@ -68,11 +76,17 @@ def main() -> int:
     p["picks"] = picks + keep
     legs = teaser_legs([g for g in p["games"] if g["game_id"] in live_ids], p.get("teasers", {}).get("leg_rate", 0.74))
     p["teasers"] = dict(p.get("teasers", {}), legs=legs, pairs=pair_teasers(legs))
+    wind_rows = []
+    if "wind_rule" in p:
+        from nflmodel.wind import week_wind_unders
+        wu = {x["game_id"]: x for x in week_wind_unders([g for g in p["games"] if g["game_id"] in live_ids], p["wind_rule"]["chance"])}
+        p["wind_unders"] = [wu.get(x["game_id"], x) for x in p.get("wind_unders", [])]
+        wind_rows = list(wu.values())      # same forecast as the model run, DraftKings' current total and price
     p["priced_at"], p["price_source"] = now, "ESPN scoreboard (DraftKings), repriced every 15 minutes"
     path.write_text(json.dumps(p, separators=(",", ":")), encoding="utf-8")
 
     # log a pick only when it changed, so the last pre-kickoff pick is graded at its latest price
-    rows = pd.DataFrame(picks)
+    rows = pd.DataFrame(picks + wind_rows)
     if len(rows):
         rows.insert(0, "run_at", now)
         if LOG.exists():
@@ -85,7 +99,10 @@ def main() -> int:
                     keep_rows.append(True)
                     continue
                 o = last.loc[k]
-                keep_rows.append(str(o["bet"]) != str(r.bet) or abs(float(o["price"]) - float(r.price)) > 1e-9)
+                po, pn = _num(o["price"]), _num(r.price)
+                same_price = (po != po and pn != pn) or abs(po - pn) <= 1e-9
+                keep_rows.append(str(o["bet"]) != str(r.bet) or not same_price
+                                 or str(o.get("highlight")) != str(getattr(r, "highlight", None)))
             rows = rows[keep_rows]
             cols = list(old.columns)
             rows = rows.reindex(columns=cols + [c for c in rows.columns if c not in cols])

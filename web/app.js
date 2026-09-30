@@ -140,7 +140,7 @@
   }
   const resChip = r => r ? `<span class="chip ${r}">${r}</span>` : "";
   function pickMargin(p, hs, as) {
-    if (p.market === "total") return (hs + as - p.line) * (p.side === "over" ? 1 : -1);
+    if (p.market === "total" || p.market === "wind") return (hs + as - p.line) * (p.side === "over" ? 1 : -1);
     const m = p.side === "home" ? hs - as : as - hs;
     return m + (p.market === "spread" || p.teased != null ? (p.teased != null ? p.teased : p.line) : 0);
   }
@@ -168,7 +168,7 @@
       <div class="ks">${recSub(A[key])}</div><div class="ks">${esc(String(REC.current_season || ""))}: ${C[key] && C[key].n ? `${C[key].w}-${C[key].l}${C[key].p ? "-" + C[key].p : ""}` : "0-0"}</div></a>`;
     document.getElementById("kpis").innerHTML = `
       <div class="kpi"><div class="kl">Week ${W ? W.week : ""}</div><div class="kv">${nFinal}/${W ? W.games.length : 0}</div><div class="ks">games final</div><div class="ks">record since ${esc(String(REC.since || ""))} →</div></div>
-      <a class="kpi kpi-green" href="#record"><div class="kl">Weekly card</div><div class="kv">${recTxt(REC.card)}</div><div class="ks">${recSub(REC.card)}</div><div class="ks">Top picks + teasers</div></a>
+      <a class="kpi kpi-green" href="#record"><div class="kl">Weekly card</div><div class="kv">${recTxt(REC.card)}</div><div class="ks">${recSub(REC.card)}</div><div class="ks">Top picks, teasers, wind unders</div></a>
       ${k("top", "Top picks")}<a class="kpi" href="#record"><div class="kl">Teasers</div><div class="kv">${recTxt(TZ)}</div><div class="ks">${TZ && TZ.n ? pct(TZ.pct, 1) + " · " + sgn(TZ.units, 1) + "u" : ""}</div><div class="ks">2-team, 6 points</div></a>
       ${k("green", "Green picks")}${k("winner", "Winners")}`;
   }
@@ -266,6 +266,23 @@
       <p class="note">Since 2015 these legs won ${pct(((REC.teasers || {}).legs || {}).pct, 1)}; 2-team teasers went ${H.w || 0}-${H.l || 0} (${pct(H.pct, 1)}, ${sgn(H.units, 1)} units at ${am(price)}). A 2-team teaser at ${am(price)} needs ${pct(1 / dec(price), 1)}. Check DraftKings' teaser price before betting.</p>`;
   }
 
+  function windBlock(W) {
+    const R = W.wind_rule || {}, H = (REC.wind || {}), F = H.with_live || H.forecast || {};
+    const games = {}; W.games.forEach(g => games[g.game_id] = g);
+    const on = (W.wind_unders || []).filter(x => x.highlight && games[x.game_id]);
+    const hrs = x => (new Date(x.kickoff_utc) - Date.now()) / 3600e3;
+    const card = x => { const g = games[x.game_id], d = derive(W, g), r = d.final ? gradePick(x, d.final[0], d.final[1]) : null;
+      const soon = hrs(x) <= 3;
+      return `<a class="bp green" href="#breakdown/${esc(g.game_id)}"><div class="top"><span class="rank">WIND UNDER</span><span class="small muted">${esc(kick(g))}</span></div>
+        <div class="pick">${esc(x.bet)} <span class="muted" style="font-weight:500">${am(x.price)}</span>${resChip(r)}${d.status(x)}</div>
+        <div class="small muted">${esc(g.away_team)} @ ${esc(g.home_team)} · forecast wind ${num(x.wind, 0)} mph, gusts ${num(x.gust, 0)} mph</div>
+        <div class="conf" title="Chance ${pct(x.chance, 1)} vs break-even ${pct(x.breakeven, 1)}"><i style="width:${Math.round(100 * x.chance)}%"></i><b style="left:${(100 * x.breakeven).toFixed(1)}%"></b></div>
+        <div class="meta"><span>Chance <b>${pct(x.chance, 1)}</b></span><span>Needs <b>${pct(x.breakeven, 1)}</b></span><span>Value <b class="w">${val(x)}</b></span><span>${soon ? "final forecast" : "forecast can still change"}</span></div></a>`; };
+    return `<h3 style="margin-top:14px">Wind unders: outdoor games with a kickoff forecast of ${num(R.wind_mph, 0)}+ mph wind or ${num(R.gust_mph, 0)}+ mph gusts</h3>
+      ${on.length ? `<div class="best-grid">${on.map(card).join("")}</div>` : `<p class="note">None right now: no outdoor game's kickoff forecast reaches ${num(R.wind_mph, 0)} mph wind or ${num(R.gust_mph, 0)} mph gusts.</p>`}
+      <p class="note">Using archived kickoff forecasts, these unders went ${F.w || 0}-${F.l || 0}${F.p ? "-" + F.p : ""} (${pct(F.pct, 1)}, ${sgn(F.units, 1)} units) since ${esc(String(H.forecast_since || 2018))}. The record is built on short-range forecasts, so a pick is final at the run about 80 minutes before kickoff; earlier in the week the forecast can change.</p>`;
+  }
+
   function bestPanel(W, compact) {
     const games = {}; W.games.forEach(g => games[g.game_id] = g);
     const all = (W.picks || []).filter(p => p.market !== "winner" && games[p.game_id]).sort((x, y) => (y.value || -1) - (x.value || -1));
@@ -282,11 +299,12 @@
     const G = ((REC.all || {}).total || {}).green, TP = ((REC.all || {}).total || {}).top;
     const tops = top.filter(p => p.top), greens = top.filter(p => !p.top), CR = REC.card || {};
     return `<div class="panel"><div class="toolbar" style="justify-content:space-between;margin:0 0 10px"><div><h2>This week's card</h2>
-      <p class="lede" style="margin:0">Top picks and teasers make the card: since ${esc(String(REC.since || 2015))} it went <strong>${CR.w || 0}-${CR.l || 0}${CR.p ? "-" + CR.p : ""}</strong> (${pct(CR.pct, 1)}, ${sgn(CR.units, 1)} units). Green value picks follow.</p></div>
+      <p class="lede" style="margin:0">Top picks, teasers and wind unders make the card: together they went <strong>${CR.w || 0}-${CR.l || 0}${CR.p ? "-" + CR.p : ""}</strong> (${pct(CR.pct, 1)}, ${sgn(CR.units, 1)} units), Top picks and teasers since ${esc(String(REC.since || 2015))}, wind unders since ${esc(String((REC.wind || {}).forecast_since || 2018))}. Green value picks follow.</p></div>
       ${compact ? `<a class="btn" href="#picks">All picks</a>` : ""}</div>
       <h3>Top picks: spreads where the model is 4+ points off DraftKings</h3>
       ${tops.length ? `<div class="best-grid">${tops.map(card).join("")}</div>` : `<p class="note">None right now: no spread is 4+ points off DraftKings' line. Prices update every 15 minutes.</p>`}
       ${teaserBlock(W)}
+      ${windBlock(W)}
       <h3 style="margin-top:14px">Green value picks</h3>
       ${greens.length ? `<div class="best-grid">${greens.map((p, i) => card(p, i + tops.length)).join("")}</div>` : `<p class="note">None right now.</p>`}
       <p class="note">${GREEN_HELP} Chance = how often picks with this much model disagreement won from ${esc(String(REC.since || 2015))} on.</p>
@@ -309,7 +327,7 @@
       return `<button class="gcard${[d.sp, d.tt].some(p => p && p.highlight) ? " has-green" : ""}" type="button" data-g="${esc(g.game_id)}" aria-expanded="${openGame === g.game_id}">
         <div class="row">${team(g.away_team, ` <span class="rec">${recText(g.away_team)}</span>`)}${as != null ? `<span class="${scoreCls(as, hs)}">${as}</span>` : ""}</div>
         <div class="row">${team(g.home_team, ` <span class="rec">${recText(g.home_team)}</span>`)}${hs != null ? `<span class="${scoreCls(hs, as)}">${hs}</span>` : ""}</div>
-        <div class="picks">${pk(d.sp)}${pk(d.tt)}${d.wn ? pk(d.wn, d.wn.bet.replace(" to win", " ML")) : ""}</div>
+        <div class="picks">${pk(d.sp)}${pk(d.tt)}${d.wn ? pk(d.wn, d.wn.bet.replace(" to win", " ML")) : ""}${(W.wind_unders || []).filter(x => x.game_id === g.game_id && x.highlight).map(x => `<span class="pk green">WIND ${esc(x.bet)}</span>`).join("")}</div>
         <div class="foot">${status}<span class="muted">${esc((lv && lv.broadcast) || "")}</span></div></button>`;
     };
     view.innerHTML = `<div id="gdetail-slot"></div>${bestPanel(W, true)}<p class="section-label">Week ${W.week} · all games</p><div class="ggrid">${games.map(card).join("")}</div>`;
@@ -502,6 +520,24 @@
   }
 
   // ------------------------------------------------------------------ Record (2015 to now)
+  function windRecord(chart) {
+    const H = REC.wind || {}; if (!H.seasons) return "";
+    const r = x => x && x.n ? `${x.w}-${x.l}${x.p ? "-" + x.p : ""}` : "–";
+    const cell = x => x && x.n ? `${r(x)} <span class="small ${x.pct > 0.524 ? "w" : "muted"}">${pct(x.pct, 1)}</span> <span class="small muted">${sgn(x.units, 1)}u</span>` : "–";
+    const F = H.forecast || {}, A = H.forecast_2018_21 || {}, B = H.forecast_2022_on || {}, Rc = H.recorded || {}, All = H.all_outdoor_forecast_era || {};
+    return `<div class="panel"><h2>Wind unders</h2>
+      <p class="lede">Rule: ${esc(H.rule || "")}. Graded at the closing total and under price.</p>
+      <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin:0 0 10px">
+        <div class="kpi kpi-green"><div class="kl">Forecast rule, since ${esc(String(H.forecast_since))}</div><div class="kv">${recTxt(F)}</div><div class="ks">${pct(F.pct, 1)} · ${sgn(F.units, 1)} units</div><div class="ks">the rule exactly as used</div></div>
+        <div class="kpi"><div class="kl">2018-21 (independent check)</div><div class="kv">${recTxt(A)}</div><div class="ks">${pct(A.pct, 1)} · ${sgn(A.units, 1)}u</div><div class="ks">seasons not used to choose the rule</div></div>
+        <div class="kpi"><div class="kl">Recorded wind 10+ mph, since ${esc(String(H.recorded_since))}</div><div class="kv">${recTxt(Rc)}</div><div class="ks">${pct(Rc.pct, 1)} · ${sgn(Rc.units, 1)}u</div><div class="ks">wind measured at kickoff</div></div>
+        <div class="kpi"><div class="kl">All outdoor unders, same seasons</div><div class="kv">${recTxt(All)}</div><div class="ks">${pct(All.pct, 1)} · ${sgn(All.units, 1)}u</div><div class="ks">for comparison</div></div></div>
+      <div class="tablewrap"><table><thead><tr><th>Season</th><th class="num gcol">Forecast rule</th><th class="num">Recorded wind 10+</th><th class="num">All outdoor unders</th></tr></thead><tbody>
+      ${H.seasons.slice().reverse().map(s => `<tr><td>${s.season}</td><td class="num gcol">${s.forecast ? cell(s.forecast) : '<span class="muted">no archive</span>'}</td><td class="num">${cell(s.recorded)}</td><td class="num">${cell(s.all_outdoor)}</td></tr>`).join("")}</tbody></table></div>
+      <p class="note">Archived forecasts (Open-Meteo's historical forecast API) have wind and gust data from 2018. Forecast and recorded kickoff wind correlate at ${num(H.corr, 2)}. The 2018-21 forecasts were not looked at when the rule was chosen, so that record is the honest out-of-sample check: positive, but smaller than 2022-26 (${r(B)}, ${pct(B.pct, 1)}).</p>
+      <h3 style="margin-top:14px">Forecast rule: units won over time</h3>${chart(H.cum, "var(--accent)", "Wind unders")}</div>`;
+  }
+
   function teaserRecord() {
     const T = REC.teasers || {}; if (!T.seasons) return "";
     const L = T.legs || {}, P = T.teasers || {};
@@ -554,6 +590,7 @@
         ${card("top", "Top picks", "green spreads, model 4+ pts off the line")}${card("green", "Green picks", "chance beat the price's break-even")}${card("spread", "Every spread pick", "the model's side, every game")}${card("winner", "Straight-up winners", "the model's likelier winner")}</div>
       <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin:10px 0 0">${card("green_spread", "Green spreads", "")}${card("green_total", "Green totals", "")}${card("total", "Every total pick", "the model's side, every game")}
         <div class="kpi"><div class="kl">Break-even</div><div class="kv">52.4%</div><div class="ks">win rate a −110 bet needs</div></div></div></div>
+      ${windRecord(unitsChart)}
       ${teaserRecord()}
       ${explorerPanel()}
       <div class="panel"><h2>Season by season</h2><div class="tablewrap"><table class="rec-table"><thead><tr><th>Season</th><th class="num gcol">Top picks</th><th class="num gcol">Green picks</th><th class="num">Green totals</th><th class="num">All spreads</th><th class="num">All totals</th><th class="num">Winners</th></tr></thead><tbody>${rows}</tbody></table></div>
@@ -573,7 +610,7 @@
   let betsFilter = "top";
   function renderBets() {
     const all = (REC.live || []).slice().sort((x, y) => (y.run_at || "").localeCompare(x.run_at || ""));
-    const list = betsFilter === "top" ? all.filter(p => p.top) : betsFilter === "green" ? all.filter(p => p.highlight) : betsFilter === "all" ? all : all.filter(p => p.market === betsFilter);
+    const list = betsFilter === "top" ? all.filter(p => p.top) : betsFilter === "green" ? all.filter(p => p.highlight && p.market !== "wind") : betsFilter === "all" ? all : all.filter(p => p.market === betsFilter);
     const wk = (REC.by_week || []).slice().reverse();
     const c = r => r && r.n ? `${recTxt(r)} <span class="small muted">${pct(r.pct, 0)}${fin(r.units) ? " · " + sgn(r.units, 1) + "u" : ""}</span>` : '<span class="dash">–</span>';
     const mine = S.my_bets || [];
@@ -582,7 +619,7 @@
       ${wk.length ? `<div class="tablewrap"><table class="rec-table"><thead><tr><th>Week</th><th class="num gcol">Top picks</th><th class="num gcol">Green picks</th><th class="num">All spreads</th><th class="num">All totals</th><th class="num">Winners</th></tr></thead><tbody>
       ${wk.map(w => `<tr><td>Week ${w.week}</td><td class="num gcol">${c(w.top)}</td><td class="num gcol">${c(w.green)}</td><td class="num">${c(w.spread)}</td><td class="num">${c(w.total)}</td><td class="num">${c(w.winner)}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">No graded weeks yet.</p>`}</div>
       <div class="panel"><div class="toolbar" style="justify-content:space-between"><div><h2>Live pick tracker</h2><p class="lede">Every pick from the weekly runs as the page showed it before kickoff. CLV = points better than DraftKings' closing line, the best early test of whether the edge is real.</p></div>
-        <div class="seg" role="group" aria-label="Filter">${[["top", "Top"], ["green", "Green"], ["spread", "Spreads"], ["total", "Totals"], ["winner", "Winners"], ["all", "All"]].map(([k, l]) => `<button type="button" data-bf="${k}" aria-pressed="${betsFilter === k}">${l}</button>`).join("")}</div></div>
+        <div class="seg" role="group" aria-label="Filter">${[["top", "Top"], ["green", "Green"], ["wind", "Wind"], ["spread", "Spreads"], ["total", "Totals"], ["winner", "Winners"], ["all", "All"]].map(([k, l]) => `<button type="button" data-bf="${k}" aria-pressed="${betsFilter === k}">${l}</button>`).join("")}</div></div>
       ${list.length ? `<div class="tablewrap"><table><thead><tr><th>Week</th><th>Game</th><th>Pick</th><th class="num">Price</th><th class="num">Chance</th><th class="num">Value</th><th class="num">CLV</th><th class="num">Result</th><th class="num">Units</th></tr></thead><tbody>
       ${list.map(p => `<tr${p.highlight ? ' class="grow"' : ""}><td>${p.week}</td><td>${esc(p.matchup)}</td><td><strong>${esc(p.bet)}</strong>${topTag(p)}</td><td class="num">${am(p.price)}</td><td class="num">${pct(p.chance, 1)}</td><td class="num">${p.market === "winner" ? "" : val(p)}</td><td class="num">${fin(p.clv) ? sgn(p.clv) : "–"}</td><td class="num">${p.result ? resChip(p.result) : '<span class="muted">pending</span>'}</td><td class="num">${fin(p.units) ? sgn(p.units, 2) : ""}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">Picks are logged from the scheduled weekly runs and graded after each game.</p>`}</div>
       <div class="panel"><h2>My bets</h2><p class="lede">From overrides/my_bets.csv in the repo (one row per bet you place at DraftKings).</p>
@@ -730,7 +767,8 @@
       return `<button type="button" data-gc="${esc(x.game_id)}" aria-pressed="${x.game_id === g.game_id}" class="${l.state === "in" ? "livechip" : ""}">${esc(x.away_team)} ${l.state !== "pre" && l.away_score != null ? l.away_score : ""} @ ${esc(x.home_team)} ${l.state !== "pre" && l.home_score != null ? l.home_score : ""}${l.state === "in" ? ` · ${esc(l.detail || "")}` : l.completed ? " · F" : ""}</button>`; }).join("");
     const d = derive(W, g);
     const S_ = gcData && gcData.header && gcData.header.id === String(lv.espn_id) ? gcData : null;
-    const picks = [d.sp, d.tt, d.wn].filter(Boolean).concat(((W.teasers || {}).legs || []).filter(l => l.game_id === g.game_id));
+    const picks = [d.sp, d.tt, d.wn].filter(Boolean).concat(((W.teasers || {}).legs || []).filter(l => l.game_id === g.game_id))
+      .concat((W.wind_unders || []).filter(x => x.game_id === g.game_id && x.highlight).map(x => Object.assign({}, x, { bet: "Wind: " + x.bet })));
     const pickRows = picks.map(p => `<tr${p.top ? ' class="grow top"' : p.highlight ? ' class="grow"' : ""}><td><strong>${esc(p.bet)}</strong>${p.teased != null ? ' <span class="muted small">teaser leg</span>' : ""}${topTag(p)}</td><td class="num">${p.price != null ? am(p.price) : ""}</td><td>${d.lv && d.lv.state === "in" ? liveStatus(p, d.lv.home_score, d.lv.away_score) : resChip(d.res(p)) || '<span class="muted">not started</span>'}</td></tr>`).join("");
     let body = `<p class="note">Loading ESPN's game feed…</p>`;
     if (S_) {

@@ -21,6 +21,7 @@ artifacts/*
 !artifacts/lines/
 !artifacts/tracker/
 !artifacts/data_audit.json
+!artifacts/wind_history.csv
 !artifacts/odds_budget.json
 !artifacts/calibration.json
 !artifacts/tuned_config.json

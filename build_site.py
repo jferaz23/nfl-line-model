@@ -231,6 +231,8 @@ def build_record(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict) 
         lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce")
         lg["ko"] = pd.to_datetime(lg["game_id"].map(kickoffs), utc=True, errors="coerce")
         lg = lg[lg["t"] < lg["ko"]].sort_values("t").groupby(["game_id", "market"]).tail(1)
+        wind_log = lg[lg["market"] == "wind"]
+        lg = lg[lg["market"] != "wind"]
         for r in lg.itertuples(index=False):
             f = finals.get(r.game_id)
             res = pgrade(r.market, r.side, float(r.line), *(f if f else (None, None))) if f else None
@@ -242,9 +244,30 @@ def build_record(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict) 
                                   units=profit(res, r.price) if res and _f(r.price) else None, clv=c,
                                   matchup=f"{r.away_team} @ {r.home_team}", run_at=r.run_at,
                                   source="backtest-covered" if r.game_id in covered else "live"))
+    # wind unders: the last model run before kickoff decides (graded only if the rule was on then)
+    from nflmodel.wind import summary as wind_summary
+    wh = ART / "wind_history.csv"
+    wind_hist = pd.read_csv(wh) if wh.exists() else pd.DataFrame()
+    in_hist = set(wind_hist["game_id"]) if len(wind_hist) else set()
+    wind_live = []
+    if lp.exists() and len(wind_log):
+        for r in wind_log.itertuples(index=False):
+            on = str(getattr(r, "highlight", "")).lower() == "true" and _f(getattr(r, "line", None)) is not None
+            if not on:
+                continue
+            f = finals.get(r.game_id)
+            res = pgrade("total", "under", float(r.line), *f) if f else None
+            c = clv("total", "under", float(r.line), closes.get(r.game_id))
+            wind_live.append(dict(season=int(r.season), week=int(r.week), game_id=r.game_id, market="wind", bet=r.bet,
+                                  chance=_f(r.chance), price=_f(r.price), value=_f(r.value), breakeven=_f(r.breakeven),
+                                  wind=_f(getattr(r, "wind", None)), gust=_f(getattr(r, "gust", None)), highlight=True,
+                                  top=False, result=res, units=profit(res, r.price) if res and _f(r.price) else None, clv=c,
+                                  matchup=f"{r.away_team} @ {r.home_team}", run_at=r.run_at,
+                                  source="history-covered" if r.game_id in in_hist else "live"))
+    live_rows += wind_live
     live = pd.DataFrame(live_rows)
     if len(live):
-        frames.append(live[live["source"] == "live"])
+        frames.append(live[(live["source"] == "live") & (live["market"] != "wind")])
     allr = pd.concat([f for f in frames if len(f)], ignore_index=True) if frames else pd.DataFrame()
     cur = weeks[-1]["season"]
     teas, expl = {}, []
@@ -265,12 +288,28 @@ def build_record(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict) 
         for wk, d in s.groupby("week"):
             by_week.append(dict(week=int(wk), **rows_summary(d)["total"]))
     out["by_week"] = by_week
-    # the weekly card = Top picks + 2-team underdog teasers
+    # wind unders record: archived-forecast history (2018 on) + live picks for games not in it yet
+    ws = wind_summary(wind_hist) if len(wind_hist) else {}
+    wl = pd.DataFrame([x for x in wind_live if x["source"] == "live"])
+    wf = dict((ws.get("forecast") or {}))
+    if len(wl):
+        g_ = wl[wl["result"].isin(["W", "L", "P"])]
+        for k, v in (("w", (g_.result == "W").sum()), ("l", (g_.result == "L").sum()), ("p", (g_.result == "P").sum())):
+            wf[k] = int(wf.get(k) or 0) + int(v)
+        wf["units"] = float(wf.get("units") or 0) + float(pd.to_numeric(g_["units"], errors="coerce").fillna(0).sum())
+        wf["n"] = wf["w"] + wf["l"] + wf["p"]
+        wf["pct"] = wf["w"] / max(wf["w"] + wf["l"], 1)
+    ws["with_live"] = wf
+    out["wind"] = ws
+    # the weekly card = Top picks + 2-team underdog teasers + wind unders
     top = ((out.get("all") or {}).get("total") or {}).get("top") or {}
     tz = (teas or {}).get("teasers") or {}
-    w, l = int(top.get("w") or 0) + int(tz.get("w") or 0), int(top.get("l") or 0) + int(tz.get("l") or 0)
-    out["card"] = dict(w=w, l=l, p=int(top.get("p") or 0), n=w + l + int(top.get("p") or 0), pct=w / max(w + l, 1),
-                       units=float(top.get("units") or 0) + float(tz.get("units") or 0))
+    w = int(top.get("w") or 0) + int(tz.get("w") or 0) + int(wf.get("w") or 0)
+    l = int(top.get("l") or 0) + int(tz.get("l") or 0) + int(wf.get("l") or 0)
+    pu = int(top.get("p") or 0) + int(wf.get("p") or 0)
+    out["card"] = dict(w=w, l=l, p=pu, n=w + l + pu, pct=w / max(w + l, 1),
+                       units=float(top.get("units") or 0) + float(tz.get("units") or 0) + float(wf.get("units") or 0),
+                       parts=dict(top=top, teasers=tz, wind=wf))
     return _clean(out)
 
 
@@ -290,7 +329,17 @@ def fill_started(weeks: list[dict], kickoffs: dict):
         extra = [r for r in _clean(add.drop(columns=["t", "ko"]).to_dict("records")) if (r["game_id"], r["market"]) not in have]
         for r in extra:
             r["from_log"] = True
-        w["picks"] = w.get("picks", []) + extra
+        w["picks"] = w.get("picks", []) + [r for r in extra if r["market"] != "wind"]
+        # wind rows: once a game kicks off, show the last pre-kickoff decision (the odds feed drops the game)
+        wu = {x["game_id"]: x for x in w.get("wind_unders", [])}
+        for r in _clean(add[add["market"] == "wind"].drop(columns=["t", "ko"]).to_dict("records")):
+            cur_ = wu.get(r["game_id"])
+            if cur_ is None or (not cur_.get("active") and r.get("highlight") in (True, "True", "true")):
+                r["active"] = r.get("highlight") in (True, "True", "true")
+                r["highlight"] = r["active"]
+                r["from_log"] = True
+                wu[r["game_id"]] = r
+        w["wind_unders"] = list(wu.values())
 
 # ----------------------------------------------------------------------------- backtest
 def backtest_summary() -> dict:

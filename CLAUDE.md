@@ -39,6 +39,13 @@ tested and rejected (no gain). Win totals (nflmodel/wintotals.py, group "win_tot
 the user saves into win_totals/ (Sports Odds History / Genius Sports; no scraping), exported to
 win_totals/win_totals.csv; inert until then, and must pass the backtest before it counts.
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).
+Wind unders (nflmodel/wind.py, confirmed by the user Sept 30, 2026): outdoor game, kickoff forecast
+(kickoff to +3 h) wind 10+ mph or gusts 20+ mph -> under, if the price leaves 1+ pt of value (same test
+as green). Chance = forecast-rule record shrunk (SHRINK 200). History artifacts/wind_history.csv from
+Open-Meteo's Historical Forecast API (wind/gust archive from 2018; 2016-17 null); retractable roofs
+excluded like live. Record 2018-26 225-166-4 (57.5%, +44.0u); 2018-21 (not used to choose the rule)
+103-88-2 (+9.9u); all outdoor unders 52.3%. Live pick is final at the ~80-min pre-kickoff run.
+optimize.yml runs `python -m nflmodel.wind --update` weekly.
 
 Automation (GitHub jferaz23/nfl-line-model, Pages https://jferaz23.github.io/nfl-line-model/):
 - `update.yml` every 15 min: scheduler.py picks the mode. api = run_week.py with The Odds API
@@ -46,7 +53,7 @@ Automation (GitHub jferaz23/nfl-line-model, Pages https://jferaz23.github.io/nfl
   from artifacts/odds_budget.json so the credits last until the quota refills, reset date learned);
   espn = run_week.py --espn-lines (free, every 3 h); reprice = reprice.py (DraftKings line from ESPN).
   Then line_watch.py, build_site.py, commit, deploy. `optimize.yml` recalibrates Tuesdays.
-- Weekly card = Top picks + 2-team underdog teasers (+1.5..+2.5 teased 6; picks.teaser_*).
+- Weekly card = Top picks + 2-team underdog teasers (+1.5..+2.5 teased 6; picks.teaser_*) + wind unders.
 - Site: web/ (no build step) + public/data/site.js. Live scores/Gamecast poll ESPN from the browser
   every 15 s during games (display only; never touches the model or credits).
 Local: `config.json` (gitignored) keeps the data cache outside OneDrive; use `--config config.json`.

@@ -47,6 +47,10 @@ jobs:
       - name: Backtest and calibrate
         run: python optimize.py ${{ !inputs.full_tune && '--skip-tune' || '' }}
 
+      - name: Add last week's games to the wind-unders record
+        continue-on-error: true
+        run: python -m nflmodel.wind --update
+
       - name: Save calibration to the repo
         run: |
           git config user.name "github-actions[bot]"

@@ -541,12 +541,14 @@ def _venue_time_weather(ctx, pbp_wx, forecasts):
         f["home_lat"], f["away_lat"] = hv["lat"], av["lat"]
         # weather
         temp, wind, precip, snow, wx_src = np.nan, np.nan, 0.0, 0.0, ""
+        gust = np.nan                                   # forecast gusts only (wind unders rule)
         if indoor >= 0.5:
             temp, wind, wx_src = 70.0, 0.0, "indoors"
         else:
             fc = (forecasts or {}).get(r.game_id)
             if fc is not None and not np.isfinite(_fnum(r.result)):
                 temp, wind = _fnum(fc.get("temp_f")), _fnum(fc.get("wind_mph"))
+                gust = _fnum(fc.get("gust_mph"))
                 precip = float(_fnum(fc.get("precip_in"), 0.0) >= 0.03)
                 snow = float(_fnum(fc.get("snow_in"), 0.0) >= 0.05)
                 wx_src = "forecast"
@@ -561,7 +563,7 @@ def _venue_time_weather(ctx, pbp_wx, forecasts):
                 temp, wx_src = 60.0, (wx_src + " (temp assumed)").strip()
             if not np.isfinite(wind):
                 wind = 7.0
-        f.update(temp_used=temp, wind_used=wind, precip=precip, snow=snow, wx_source=wx_src)
+        f.update(temp_used=temp, wind_used=wind, gust_used=gust, precip=precip, snow=snow, wx_source=wx_src)
         rows.append(f)
     out = pd.DataFrame(rows)
     return out

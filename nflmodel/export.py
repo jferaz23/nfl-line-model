@@ -24,7 +24,8 @@ GAME_COLS = ["game_id", "season", "week", "game_type", "home_team", "away_team",
              "h_qb_name_used", "a_qb_name_used", "h_qb_source", "a_qb_source", "home_rest", "away_rest",
              "away_travel_kmi", "h_miss_names", "a_miss_names", "h_off_cont", "h_def_cont", "a_off_cont",
              "a_def_cont", "spread_line", "total_line", "div_game", "model_margin", "model_total",
-             "home_coach", "away_coach", "referee", "h_qb_new", "a_qb_new", "h_qb_delta", "a_qb_delta"]
+             "home_coach", "away_coach", "referee", "h_qb_new", "a_qb_new", "h_qb_delta", "a_qb_delta",
+             "gust_used", "wx_source"]
 
 
 def _clean(o):
@@ -214,3 +215,19 @@ def schedule_payload(sched: pd.DataFrame, season: int, target: pd.DataFrame, mee
                  & (done["home_team"] != done["away_team"])].tail(meetings)
         h2h[r.game_id] = _records(m.iloc[::-1], SCHED_COLS)
     return _clean(dict(season=season, games=_records(cur, SCHED_COLS), h2h=h2h))
+
+
+def append_log(path: Path, rows: pd.DataFrame) -> int:
+    """Append rows to a CSV log; when the columns differ from the file's, rewrite it once with the union
+    (appending mismatched rows would corrupt the file)."""
+    if rows is None or not len(rows):
+        return 0
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        old = pd.read_csv(path, on_bad_lines="skip")
+        if list(rows.columns) != list(old.columns):
+            cols = list(old.columns) + [c for c in rows.columns if c not in old.columns]
+            pd.concat([old, rows], ignore_index=True).reindex(columns=cols).to_csv(path, index=False)
+            return len(rows)
+    rows.to_csv(path, mode="a", header=not path.exists(), index=False)
+    return len(rows)
