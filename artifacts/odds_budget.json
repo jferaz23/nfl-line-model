@@ -3,10 +3,10 @@
  "first_seen": "2026-09-29T17:24:00-04:00",
  "remaining_at": "2026-09-30T10:37:53-04:00",
  "last_api_run": "2026-09-30T14:34:36+00:00",
- "last_model_run": "2026-09-30T17:43:22+00:00",
+ "last_model_run": "2026-09-30T19:06:09+00:00",
  "last_decision": {
-  "at": "2026-09-30T17:43:22+00:00",
+  "at": "2026-09-30T19:06:09+00:00",
   "mode": "espn",
-  "reason": "model refresh (every 3 h, free)"
+  "reason": "manual run"
  }
 }
