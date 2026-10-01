@@ -257,6 +257,36 @@ def clean_pbp(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def fix_snap_teams(snaps: pd.DataFrame, pbp: pd.DataFrame, rosters: pd.DataFrame) -> pd.DataFrame:
+    """Swap the team labels in games where the source lists each side's snap rows under the other team.
+
+    Seen in nflverse snap counts for the 2014, 2015 and 2018 Super Bowls. A game is swapped when, of the
+    passers and rushers in its play-by-play (gsis ids linked to snap-count pfr ids through weekly rosters),
+    at least 5 are found in the snap rows and more than 80% of them sit under the opponent."""
+    if snaps is None or snaps.empty or pbp is None or pbp.empty or rosters is None or rosters.empty:
+        return snaps
+    g2p = rosters.dropna(subset=["gsis_id", "pfr_id"]).drop_duplicates("gsis_id").set_index("gsis_id")["pfr_id"]
+    parts = [pbp[["game_id", "posteam", c]].rename(columns={c: "gsis"}) for c in ("passer_player_id", "rusher_player_id")
+             if c in pbp.columns]
+    pl = pd.concat(parts, ignore_index=True).dropna().drop_duplicates()
+    pl["pfr"] = pl["gsis"].map(g2p)
+    pl = pl.dropna(subset=["pfr"])
+    st = snaps[["game_id", "pfr_player_id", "team"]].dropna().drop_duplicates(["game_id", "pfr_player_id"])
+    m = pl.merge(st, left_on=["game_id", "pfr"], right_on=["game_id", "pfr_player_id"], how="inner")
+    if m.empty:
+        return snaps
+    m["other"] = m["team"] != m["posteam"]
+    s = m.groupby("game_id")["other"].agg(["mean", "size"])
+    bad = set(s.index[(s["size"] >= 5) & (s["mean"] > 0.8)])
+    if not bad:
+        return snaps
+    out = snaps.copy()
+    rows = out["game_id"].isin(bad)
+    out.loc[rows, ["team", "opponent"]] = out.loc[rows, ["opponent", "team"]].to_numpy()
+    log.info("Snap counts: swapped team labels in %s (source lists each side under the other team).", sorted(bad))
+    return out
+
+
 def clean_snaps(df: pd.DataFrame) -> pd.DataFrame:
     if df.empty:
         return df

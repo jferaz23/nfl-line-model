@@ -485,7 +485,8 @@ venue_history. **These are synthetic and will be replaced by the first real run.
   standings logic would be better.
 - The Week 4 site is market comparison plus small research adjustments, not model output.
 - nflverse snap counts have the two teams' rows swapped in three games (2014_21_NE_SEA, 2015_21_CAR_DEN,
-  2018_21_NE_LA: Super Bowls), which mislabels availability (`miss_*`) for those games. Not fixed yet.
+  2018_21_NE_LA: Super Bowls), which mislabeled availability (`miss_*`) for those games. Fixed Oct 1, 2026: `data.fix_snap_teams` detects
+  and swaps them at load time (backtest: spread MAE -0.002, totals -0.005; Top -2.0u, green -9.1u).
 
 ---
 

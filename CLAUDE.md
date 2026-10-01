@@ -30,7 +30,8 @@ kept the validated settings in artifacts/tuned_config.json.
 Picks (nflmodel/picks.py, one rule for live and history): model's side of the number; chance = walk-
 forward hit rate by disagreement band (0-2, 2-4, 4+), shrunk to 50%, monotone; green = chance >=
 break-even + 1pt and chance >= 51%; Top pick = green spread with 4+ pt edge. Track record since 2015
-at closing prices (chance rated on non-QB-caution games): Top 170-122-7 (58.2%), green 326-267-16 (55.0%, +51.3u), all spreads 51.8%.
+at closing prices (chance rated on non-QB-caution games): Top 169-123-7 (57.9%), green 328-278-17 (54.1%, +42.1u), all spreads 51.8%
+(after the Oct 1 snap-count fix; before it Top 170-122-7, green +51.3u: small data changes move these records by ~10u).
 Live picks logged to artifacts/tracker/picks_log.csv; build_site.build_record merges them.
 Data audit (audit_data.py) runs weekly; see Info tab.
 QB caution (picks.qb_caution): a green pick under the Top line that backs a team with a new (<100 plays) or

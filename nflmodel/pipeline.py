@@ -70,6 +70,8 @@ def load_real(cfg, refresh=False, target_season=None, need_current=True):
     inj = ds.injuries([current]) if need_current else pd.DataFrame()
     # weekly rosters for every season (roster continuity); the current season's also drive availability
     rost_all = ds.rosters_weekly(seasons)
+    from .data import fix_snap_teams
+    snaps = fix_snap_teams(snaps, pbp, rost_all)
     rost = rost_all[rost_all["season"] == current].copy() if need_current and len(rost_all) else pd.DataFrame()
     return dict(schedules=sched, pbp=pbp, snaps=snaps, injuries=inj, rosters=rost, rosters_all=rost_all), ds
 
