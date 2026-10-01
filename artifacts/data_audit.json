@@ -1,5 +1,5 @@
 {
- "built": "2026-10-01T03:01:19+00:00",
+ "built": "2026-10-01T09:19:33+00:00",
  "scores": {
   "ok": true,
   "games": 3076,
@@ -403,31 +403,25 @@
  "injuries": {
   "ok": true,
   "listings": 800,
-  "not_active": 240,
-  "matched_share": 0.998,
+  "not_active": 239,
+  "matched_share": 0.999,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
     "report_status": "ACTIVE"
-   },
-   {
-    "team": "GB",
-    "full_name": "Kevin Zeitler",
-    "position": "G",
-    "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 2,
+  "n_unmatched": 1,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-01T03:02:59+00:00"
+  "checked": "2026-10-01T09:21:16+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261001T030112Z.json",
+  "snapshot": "odds_20261001T091928Z.json",
   "games": 31,
   "books_seen": {
    "draftkings": 31,
