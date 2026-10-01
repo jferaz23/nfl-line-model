@@ -38,6 +38,9 @@ QB caution (picks.qb_caution): a green pick under the Top line that backs a team
 tested and rejected (no gain). Win totals (nflmodel/wintotals.py, group "win_totals"): read only from pages
 the user saves into win_totals/ (Sports Odds History / Genius Sports; no scraping), exported to
 win_totals/win_totals.csv; inert until then, and must pass the backtest before it counts.
+Alerts: build_site.alerts() -> site Alerts tab (pick green/Top/wind on-off with the reason, DraftKings line moves),
+badge + browser notifications while open (polls site.js every 5 min); notify.py pushes pick changes to ntfy only
+if the NTFY_TOPIC secret exists (state artifacts/alerts_sent.json).
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).

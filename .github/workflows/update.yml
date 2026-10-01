@@ -100,6 +100,12 @@ jobs:
       - name: Build site
         run: python build_site.py
 
+      - name: Phone notifications (only when the NTFY_TOPIC secret is set)
+        continue-on-error: true
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python notify.py
+
       - name: Save to the repo
         continue-on-error: true            # never block the deploy over a commit race
         run: |

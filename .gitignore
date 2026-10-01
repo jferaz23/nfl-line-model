@@ -20,6 +20,7 @@ artifacts/*
 !artifacts/odds_snapshots/
 !artifacts/lines/
 !artifacts/kalshi/
+!artifacts/alerts_sent.json
 !artifacts/tracker/
 !artifacts/data_audit.json
 !artifacts/wind_history.csv

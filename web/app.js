@@ -402,6 +402,7 @@
     view.innerHTML = `
       <div class="toolbar noprint"><select id="wk" aria-label="Week">${weekKeys.map(k => `<option value="${k}"${k === key ? " selected" : ""}>Week ${+k.split("-")[1]}, ${k.split("-")[0]}</option>`).join("")}</select>
         <button class="btn primary" type="button" id="pdf">Download PDF</button><span class="small muted">Prices from ${esc(fmtStamp(dt(W.generated)))}</span></div>
+      ${key === curKey && ALERTS.some(a => a.kind === "pick") ? `<div class="panel noprint"><div class="toolbar" style="justify-content:space-between;margin:0"><h2>Recent pick changes</h2><a href="#alerts">All alerts →</a></div>${alertList(ALERTS.filter(a => a.kind === "pick").slice(0, 4), lastSeen())}</div>` : ""}
       ${bestPanel(W, false)}
       <div class="panel"><h2>Every game</h2><div class="tablewrap"><table><thead><tr><th>Game</th><th>Spread</th><th>Total</th><th>Winner</th><th class="num">Model score</th><th class="num">Vegas score</th><th class="num">Final</th></tr></thead><tbody>${rows}</tbody></table></div>
       <p class="note">Spread and total picks take the model's side of DraftKings' number. The winner pick is the team the model makes more likely to win. Green cells are the best-value picks.</p></div>
@@ -829,8 +830,71 @@
     }
   }
 
+  // ------------------------------------------------------------------ alerts (pick status changes + DraftKings line moves)
+  const SEEN_KEY = "nflmodel-alerts-seen", NOTIFY_KEY = "nflmodel-notify";
+  const store = { get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } },
+                  set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* private mode */ } } };
+  const ALERTS = S.alerts || [];
+  const lastSeen = () => store.get(SEEN_KEY) || "";
+  const isLost = a => /^No longer/.test(a.title);
+  const unseen = () => ALERTS.filter(a => a.level === "high" && a.ts > lastSeen());
+  function alertBadge() {
+    const tab = document.getElementById("alerts-tab"); if (!tab) return;
+    const n = unseen().length;
+    tab.innerHTML = "Alerts" + (n ? `<span class="alert-count" title="${n} new pick change${n > 1 ? "s" : ""}">${n}</span>` : "");
+  }
+  let alertFilter = "pick";
+  function alertList(list, seenBefore) {
+    if (!list.length) return '<p class="empty">Nothing yet this week.</p>';
+    return `<ul class="alist">${list.map(a => `<li class="${a.level}${isLost(a) ? " lost" : ""}${a.level === "high" && a.ts > seenBefore ? " new" : ""}">
+      <div class="when">${esc(fmtDay(dt(a.ts)))} ${esc(fmtTime(dt(a.ts)))}</div>
+      <div><div><span class="ttl">${esc(a.title)}</span> · <a href="#breakdown/${esc(a.game_id)}">${esc(a.matchup)}</a></div><div class="small">${esc(a.text)}</div></div></li>`).join("")}</ul>`;
+  }
+  function renderAlerts() {
+    const seenBefore = lastSeen();
+    const list = alertFilter === "all" ? ALERTS : ALERTS.filter(a => a.kind === alertFilter);
+    const perm = "Notification" in window ? Notification.permission : "unsupported";
+    const on = store.get(NOTIFY_KEY) === "on" && perm === "granted";
+    view.innerHTML = `<div class="panel"><div class="toolbar" style="justify-content:space-between"><div><h2>Alerts this week</h2>
+      <p class="lede" style="margin:0">Every time a pick turns green or Top, stops being green or Top, or switches sides, and every DraftKings line move, with what changed. The pick that counts is the one from the last run before kickoff (about 80 minutes before).</p></div>
+      <div class="seg" role="group" aria-label="Filter">${[["pick", "Pick changes"], ["line", "Line moves"], ["all", "All"]].map(([k, l]) => `<button type="button" data-af="${k}" aria-pressed="${alertFilter === k}">${l}</button>`).join("")}</div></div>
+      ${alertList(list, seenBefore)}
+      <div class="toolbar" style="margin-top:12px">${perm === "unsupported" ? '<span class="small muted">This browser does not support notifications.</span>'
+        : on ? '<span class="small">Notifications are on for this browser.</span> <button class="btn" type="button" id="notify-off">Turn off</button>'
+        : perm === "denied" ? '<span class="small muted">Notifications are blocked for this site in your browser settings.</span>'
+        : '<button class="btn primary" type="button" id="notify-on">Notify me about pick changes</button>'}</div>
+      <p class="note">Browser notifications work while this page is open in a tab (it checks for updates every 5 minutes). New pick changes also show as a red count on the Alerts tab.</p></div>`;
+    view.querySelectorAll("[data-af]").forEach(b => b.onclick = () => { alertFilter = b.dataset.af; renderAlerts(); });
+    const bOn = document.getElementById("notify-on"), bOff = document.getElementById("notify-off");
+    if (bOn) bOn.onclick = async () => { const p = await Notification.requestPermission(); if (p === "granted") { store.set(NOTIFY_KEY, "on"); new Notification("NFL Line Model", { body: "Alerts are on. You'll hear about pick changes while this page is open." }); } renderAlerts(); };
+    if (bOff) bOff.onclick = () => { store.set(NOTIFY_KEY, "off"); renderAlerts(); };
+    if (ALERTS.length) store.set(SEEN_KEY, ALERTS.reduce((m, a) => a.ts > m ? a.ts : m, ""));
+    alertBadge();
+  }
+  // check for a newer build every 5 minutes; tell the viewer about new pick changes
+  function watchUpdates() {
+    const known = new Set(ALERTS.map(a => a.id)), told = new Set();
+    setInterval(async () => {
+      try {
+        const txt = await (await fetch("data/site.js?t=" + Date.now(), { cache: "no-store" })).text();
+        const N = JSON.parse(txt.slice(txt.indexOf("=") + 1).replace(/;\s*$/, ""));
+        if (!N.built || N.built === S.built) return;
+        const fresh = (N.alerts || []).filter(a => a.level === "high" && !known.has(a.id) && !told.has(a.id));
+        const ban = document.getElementById("update-banner");
+        ban.hidden = false;
+        ban.innerHTML = `<span><strong>${fresh.length ? `${fresh.length} new pick change${fresh.length > 1 ? "s" : ""}` : "New prices"}</strong>${fresh.length ? ": " + esc(fresh.slice(0, 2).map(a => `${a.matchup}, ${a.title.toLowerCase()}`).join("; ")) : " are available"}.</span> <button class="btn primary" type="button" id="reload-btn">Refresh</button>`;
+        document.getElementById("reload-btn").onclick = () => location.reload();
+        if (fresh.length && store.get(NOTIFY_KEY) === "on" && "Notification" in window && Notification.permission === "granted") {
+          fresh.slice(0, 3).forEach(a => new Notification(`${a.title}: ${a.matchup}`, { body: a.text, tag: a.id }));
+          if (fresh.length > 3) new Notification("NFL Line Model", { body: `${fresh.length - 3} more pick changes. Open the Alerts tab.` });
+        }
+        fresh.forEach(a => told.add(a.id));
+      } catch (e) { /* offline or mid-deploy: try again next time */ }
+    }, 300000);
+  }
+
   // ------------------------------------------------------------------ router
-  const ROUTES = { games: renderGames, picks: renderPicks, breakdown: renderBreakdown, futures: renderFutures, teams: renderTeams,
+  const ROUTES = { alerts: renderAlerts, games: renderGames, picks: renderPicks, breakdown: renderBreakdown, futures: renderFutures, teams: renderTeams,
     players: renderPlayers, record: renderRecord, backtest: renderRecord, bets: renderBets, info: renderInfo, live: renderLive };
   function route() {
     const [name, arg] = (location.hash.replace(/^#/, "") || "games").split("/");
@@ -849,4 +913,6 @@
   route();
   pollScores();
   setInterval(header, 60000);              // keep the "updated ... ago" labels honest
+  alertBadge();
+  watchUpdates();
 })();

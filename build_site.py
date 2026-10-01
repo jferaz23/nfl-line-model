@@ -419,6 +419,97 @@ def line_history(lines: pd.DataFrame, week: dict) -> dict:
     return out
 
 
+# ----------------------------------------------------------------------------- alerts
+def _am(x) -> str:
+    x = _f(x)
+    return "" if x is None else (f"+{x:.0f}" if x > 0 else f"−{abs(x):.0f}")
+
+
+def _num(x) -> str:
+    x = _f(x)
+    return "" if x is None else (f"{x:+g}".replace("-", "−") if x != 0 else "PK")
+
+
+def alerts(week: dict, lines: pd.DataFrame | None, kickoffs: dict) -> list:
+    """What changed this week, newest first.
+    pick: a spread/total turning green or Top (or losing it), a green pick switching sides, a wind under
+          turning on or off, each with what moved (DraftKings line, price, the model's number, the forecast)
+    line: DraftKings' spread or total moving (points, not price-only moves)"""
+    out = []
+    if not week:
+        return out
+    ids = {g["game_id"]: g for g in week["games"]}
+    mu = lambda gid: f"{ids[gid]['away_team']} @ {ids[gid]['home_team']}"
+    tb = lambda v: str(v).strip().lower() == "true"
+    lp = ART / "tracker" / "picks_log.csv"
+    if lp.exists():
+        lg = pd.read_csv(lp, on_bad_lines="skip")
+        lg = lg[lg["game_id"].isin(set(ids)) & lg["market"].isin(["spread", "total", "wind"])].copy()
+        lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce", format="ISO8601")
+        lg["ko"] = pd.to_datetime(lg["game_id"].map(kickoffs), utc=True, errors="coerce", format="ISO8601")
+        lg = lg[lg["t"] < lg["ko"]].sort_values("t")
+        for (gid, mkt), d in lg.groupby(["game_id", "market"], sort=False):
+            prev = None
+            for r in d.itertuples(index=False):
+                cur = dict(bet=str(r.bet), side=str(r.bet).rsplit(" ", 1)[0], green=tb(r.highlight),
+                           top=mkt == "spread" and tb(getattr(r, "top", False)), price=_f(r.price),
+                           edge=_f(getattr(r, "edge", None)), wind=_f(getattr(r, "wind", None)), gust=_f(getattr(r, "gust", None)))
+                name = "wind under" if mkt == "wind" else ("Top pick" if cur["top"] else "green pick")
+                ev = None
+                if prev is None:
+                    if cur["green"]:
+                        ev = ("New " + name, f"{cur['bet']} {_am(cur['price'])}")
+                else:
+                    why = []
+                    if cur["bet"] != prev["bet"]:
+                        why.append(f"DraftKings line {prev['bet']} → {cur['bet']}")
+                    if cur["price"] != prev["price"] and None not in (cur["price"], prev["price"]):
+                        why.append(f"price {_am(prev['price'])} → {_am(cur['price'])}")
+                    if mkt != "wind" and None not in (cur["edge"], prev["edge"]) and abs(cur["edge"] - prev["edge"]) >= 0.05                             and cur["side"] == prev["side"]:
+                        why.append(f"model gap {prev['edge']:.2f} → {cur['edge']:.2f} pts (model update)")
+                    if mkt == "wind" and (cur["wind"], cur["gust"]) != (prev["wind"], prev["gust"]) and None not in (cur["wind"], prev["wind"]):
+                        why.append(f"forecast wind {prev['wind']:.0f} → {cur['wind']:.0f} mph, gusts "
+                                   f"{(prev['gust'] or 0):.0f} → {(cur['gust'] or 0):.0f}")
+                    reason = "; ".join(why) or "update"
+                    if cur["top"] and not prev["top"]:
+                        ev = ("New Top pick", f"{cur['bet']} {_am(cur['price'])}: {reason}")
+                    elif prev["top"] and not cur["top"]:
+                        ev = ("No longer a Top pick" + ("" if cur["green"] else " or green"), f"{prev['bet']}: {reason}")
+                    elif cur["green"] and not prev["green"]:
+                        ev = ("New " + name, f"{cur['bet']} {_am(cur['price'])}: {reason}")
+                    elif prev["green"] and not cur["green"]:
+                        ev = ("No longer a " + ("wind under" if mkt == "wind" else "green pick"), f"{prev['bet']}: {reason}")
+                    elif cur["green"] and prev["green"] and cur["side"] != prev["side"]:
+                        ev = ("Green pick switched sides", f"{prev['bet']} → {cur['bet']}: {reason}")
+                if ev:
+                    out.append(dict(id=f"{gid}|{mkt}|{r.run_at}", ts=pd.Timestamp(r.t).isoformat(), game_id=gid, matchup=mu(gid),
+                                    kind="pick", level="high", market=mkt, title=ev[0], text=ev[1]))
+                prev = cur
+    if lines is not None and len(lines):
+        g = lines[(lines["season"] == week["season"]) & (lines["week"] == week["week"])].sort_values("ts")
+        for (h, a), sub in g.groupby(["home_team", "away_team"]):
+            gid = next((x for x, gg in ids.items() if gg["home_team"] == h and gg["away_team"] == a), None)
+            if not gid:
+                continue
+            ko = pd.to_datetime(kickoffs.get(gid), utc=True, errors="coerce")
+            ls, lt = None, None
+            for r in sub.itertuples(index=False):
+                if pd.notna(ko) and pd.to_datetime(r.ts, utc=True) >= ko:
+                    break
+                s_, t_ = _f(r.home_spread), _f(r.total)
+                parts = []
+                if s_ is not None and ls is not None and s_ != ls:
+                    parts.append(f"spread {h} {_num(ls)} → {_num(s_)}")
+                if t_ is not None and lt is not None and t_ != lt:
+                    parts.append(f"total {lt:g} → {t_:g}")
+                if parts:
+                    out.append(dict(id=f"{gid}|line|{r.ts}", ts=pd.Timestamp(r.ts).isoformat(), game_id=gid, matchup=mu(gid),
+                                    kind="line", level="info", market="line", title="DraftKings line moved", text="; ".join(parts)))
+                ls, lt = (s_ if s_ is not None else ls), (t_ if t_ is not None else lt)
+    out.sort(key=lambda x: x["ts"], reverse=True)
+    return out[:300]
+
+
 # ----------------------------------------------------------------------------- checks
 def health(week, live, season, bt, tracker) -> list:
     c = []
@@ -548,7 +639,7 @@ def main() -> int:
         live=live, schedule=sched, season_sim=sim, record=record, backtest=bt,
         lines=line_history(lines, cur), my_bets=my_bets(finals_by_key),
         checks=checks, checks_ok=all(c[1] for c in checks), audit=_load(ART / "data_audit.json"),
-        budget=_load(ART / "odds_budget.json"),
+        budget=_load(ART / "odds_budget.json"), alerts=alerts(cur, lines, kickoffs),
     )
     if PUBLIC.exists():
         shutil.rmtree(PUBLIC)

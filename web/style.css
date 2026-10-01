@@ -109,6 +109,20 @@ select, input[type="number"] { font: inherit; font-size: 13px; padding: 5px 8px;
 .btn { border: 1px solid var(--line); background: var(--card); border-radius: 7px; padding: 5px 11px; font-size: 13px; cursor: pointer; }
 .btn.primary { background: var(--accent-soft); color: var(--accent-ink); border-color: transparent; font-weight: 600; }
 .note { font-size: 12.5px; color: var(--muted); margin: 8px 0 0; }
+.alert-count { display: inline-block; min-width: 18px; padding: 0 5px; margin-left: 5px; border-radius: 9px; background: var(--loss);
+  color: #fff; font-size: 11px; font-weight: 700; line-height: 18px; text-align: center; }
+.alist { list-style: none; margin: 0; padding: 0; }
+.alist li { display: grid; grid-template-columns: 92px 1fr; gap: 10px; padding: 9px 0; border-top: 1px solid var(--line2); }
+.alist li:first-child { border-top: 0; }
+.alist .when { color: var(--muted); font-size: 12.5px; }
+.alist .ttl { font-weight: 600; }
+.alist li.high .ttl { color: var(--accent-ink); }
+.alist li.lost .ttl { color: var(--warn); }
+.alist li.new { background: var(--accent-soft); border-radius: 6px; padding-left: 6px; }
+.update-banner { margin: 8px 0; padding: 10px 12px; border-radius: var(--radius); background: var(--warn-soft); color: var(--ink);
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.update-banner[hidden] { display: none; }
+@media (max-width: 560px) { .alist li { grid-template-columns: 1fr; gap: 2px; } }
 .empty { color: var(--muted); padding: 18px 4px; text-align: center; }
 
 /* game grid */
