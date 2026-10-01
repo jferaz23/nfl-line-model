@@ -19,6 +19,7 @@ public/
 artifacts/*
 !artifacts/odds_snapshots/
 !artifacts/lines/
+!artifacts/kalshi/
 !artifacts/tracker/
 !artifacts/data_audit.json
 !artifacts/wind_history.csv

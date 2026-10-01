@@ -89,6 +89,10 @@ jobs:
       - name: Line watch (scores, DraftKings line history)
         run: python line_watch.py
 
+      - name: Kalshi prices (history for a future test; not used by the model)
+        continue-on-error: true
+        run: python kalshi_watch.py
+
       - name: Reprice with DraftKings' current line
         if: steps.plan.outputs.mode == 'reprice'
         run: python reprice.py

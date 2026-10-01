@@ -433,6 +433,7 @@ venue_history. **These are synthetic and will be replaced by the first real run.
 | Error-weighted market regression | nfelo market regression article | `regress.py` |
 | Wind unders (Sept 30, 2026) | closing totals under-react to wind: outdoor unders with a kickoff forecast of 10+ mph wind or 20+ mph gusts went 225-166-4 (57.5%, +44.0u) 2018-26 at closing prices; 2018-21, not used to choose the rule, 103-88-2 (+9.9u); all outdoor unders 52.3% | `nflmodel/wind.py`, weekly card (not a model feature) |
 | Missing skill-player value (tested and rejected Sept 30, 2026) | regular WR/TE/RB (10%+ of targets+carries over 4 games) missing, weighted by EPA per touch above league x touches per game. Production backtest vs a fresh baseline: spread MAE -0.007 (95% CI -0.018 to +0.004), better in both halves, pruning kept it, but Top picks 170-122-7 +38.7u -> 138-110-7 +21.9u and green +51.3u -> +27.4u, so it failed the pass rule set beforehand (Top and green units not lower) | not in the model |
+| Next Gen Stats team offense (tested and rejected Sept 30, 2026) | rushing yards over expected per carry (2018+), receiver separation, YAC over expected (2016+), team sums over the previous 8 games, shrunk to league. Spread MAE +0.007 (CI -0.012 to +0.024; worse 2015-20, better 2021-26), Top 170-122-7 +38.7u -> 174-136-7 +28.7u, green +51.3u -> +35.0u: failed | not in the model |
 
 ---
 

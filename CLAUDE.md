@@ -38,6 +38,8 @@ QB caution (picks.qb_caution): a green pick under the Top line that backs a team
 tested and rejected (no gain). Win totals (nflmodel/wintotals.py, group "win_totals"): read only from pages
 the user saves into win_totals/ (Sports Odds History / Genius Sports; no scraping), exported to
 win_totals/win_totals.csv; inert until then, and must pass the backtest before it counts.
+Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
+logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).
 Wind unders (nflmodel/wind.py, confirmed by the user Sept 30, 2026): outdoor game, kickoff forecast
 (kickoff to +3 h) wind 10+ mph or gusts 20+ mph -> under, if the price leaves 1+ pt of value (same test
@@ -48,6 +50,8 @@ excluded like live. Record 2018-26 225-166-4 (57.5%, +44.0u); 2018-21 (not used 
 optimize.yml runs `python -m nflmodel.wind --update` weekly.
 Missing skill-player value (WR/TE/RB EPA) was tested in the production backtest and rejected (Sept 30,
 2026): MAE -0.007 but Top -16.7u and green -23.9u; see docs/PROJECT_HANDOFF.md section 10.
+Next Gen Stats team offense (RYOE, separation, YAC over expected; last 8 games) rejected the same day:
+MAE +0.007, Top -9.9u, green -16.3u.
 
 Automation (GitHub jferaz23/nfl-line-model, Pages https://jferaz23.github.io/nfl-line-model/):
 - `update.yml` every 15 min: scheduler.py picks the mode. api = run_week.py with The Odds API
