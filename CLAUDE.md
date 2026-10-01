@@ -18,6 +18,12 @@ DraftKings (the user's only sportsbook) to flag +EV bets. Full context, research
 - Features must be as-of kickoff (no information from the game itself or later games).
 - New factors: shrink toward zero, put them in a feature group, and let `backtest.py` pruning judge
   them. Never prune the protected groups (team_strength, home_field, quarterback, injuries, weather).
+- Pass rule for model changes (user-approved Oct 2, 2026), vs a fresh baseline on the same data: pruning keeps
+  the group; spread MAE improves by more than the noise floor (0.006 pts) and in both halves (2015-20, 2021-26);
+  Top/green units no worse than the noise range (not "not lower"). Noise floor = 20 runs adding a pure random
+  factor: spread MAE change mean +0.002, sd 0.003, range -0.005..+0.006 (2 of 20 improved both halves by chance);
+  Top units fell in 19/20 runs (mean -8.6u, min -36u), green in 16/20 (mean -11.4u). Pick-rule changes are judged
+  on the pick record itself, with the same perturbation check.
 - pandas 2.x/3.x compatible: `.loc` assignments, no chained assignment, avoid `groupby.apply`.
 - Run the demo commands after changes; they exercise the whole pipeline on the synthetic league.
 - User-facing text: plain language, honest about small edges, "information only, not financial advice".
@@ -29,9 +35,14 @@ disagreement 57.6% (n=415). Widened tuning (tune.py --first 2019 --last 2024) fo
 kept the validated settings in artifacts/tuned_config.json.
 Picks (nflmodel/picks.py, one rule for live and history): model's side of the number; chance = walk-
 forward hit rate by disagreement band (0-2, 2-4, 4+), shrunk to 50%, monotone; green = chance >=
-break-even + 1pt and chance >= 51%; Top pick = green spread with 4+ pt edge. Track record since 2015
-at closing prices (chance rated on non-QB-caution games): Top 169-123-7 (57.9%), green 328-278-17 (54.1%, +42.1u), all spreads 51.8%
-(after the Oct 1 snap-count fix; before it Top 170-122-7, green +51.3u: small data changes move these records by ~10u).
+break-even + 1pt and chance >= 51%; Top pick = any spread with a 4+ pt edge, always shown green (since Oct 2, 2026;
+before, Top also had to pass the green test, which made it jumpy). Track record since 2015 at closing prices (chance rated
+on non-QB-caution games): Top 241-176-14 (57.8%, +49.7u), green incl. Top 400-331-24 (54.7%, +55.1u), all spreads 51.8%.
+Injury odds (config.status_play_prob, measured 2013-2025): QUESTIONABLE 0.66, DOUBTFUL 0.01; QUESTIONABLE by last practice
+on the final report DNP 0.42 / limited 0.68 / full 0.79 (availability.play_prob; midweek practice is not used).
+Early-week value (build_site.early_value, Picks tab, information only): the week's first model run, spreads 3+ pts off
+DraftKings, graded at that line/price; tracked from 2026 week 4 (backtest vs openers 56-59%, unproven at DK).
+Pick log: always read it with picks.read_log (it repairs 288 rows from Sept 30 written one column off).
 Live picks logged to artifacts/tracker/picks_log.csv; build_site.build_record merges them.
 Data audit (audit_data.py) runs weekly; see Info tab.
 QB caution (picks.qb_caution): a green pick under the Top line that backs a team with a new (<100 plays) or

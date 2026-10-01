@@ -13,8 +13,11 @@ Value ("bang for your buck")
     A pick only turns green when its band's own hit rate is at least MIN_SKILL, so a plus-money
     price alone never makes a coin flip green.
 Top pick
-    a green spread pick where the model disagrees with the line by TOP_EDGE+ points: the band with
-    the strongest record in both halves of the 2015-2026 backtest. Tracked separately.
+    any spread pick where the model disagrees with the line by TOP_EDGE+ points (always shown green).
+    Until Oct 2, 2026 a Top pick also had to pass the green test, which made the record jumpy: tiny model
+    changes pushed whole seasons' 4+ band below the green cutoff. Without it the 4+ picks went
+    241-176 (57.8%) at closing prices 2015-2026, 57.3% in 2015-20 and 58.3% in 2021-26, and stayed
+    55.8-57.0% when the model was perturbed (vs 50.8-56.6% for the old rule). Tracked separately.
 Winner pick
     the side the model alone makes more likely to win straight up (shown, not highlighted).
 Only needs numpy/pandas, so build_site.py can import it.
@@ -28,12 +31,37 @@ import pandas as pd
 
 HIGHLIGHT = 0.01          # chance at least 1 point above the price's break-even...
 MIN_SKILL = 0.51          # ...and the model's side itself has won at least 51% in that band (not price alone)
-TOP_EDGE = 4.0            # Top picks: green spread picks where the model disagrees by 4+ points
+TOP_EDGE = 4.0            # Top picks: spread picks where the model disagrees by 4+ points
 QB_DOWN = -2.0            # QB caution: the picked team's projected QB is new (<100 plays) or 2+ pts/game worse
                           # than its usual starter. Such 2+ pt spread picks went 49.6% (2015-20) and 50.0%
                           # (2021-26) vs 54-55% with no QB change, so they are not green below the Top line.
 BANDS = (0.0, 2.0, 4.0, 99.0)
 SHRINK = 200.0            # prior games at 50% in each band
+
+
+GAME_ID = r"^\d{4}_\d{2}_[A-Z]+_[A-Z]+$"
+_SHIFT_SRC = ["game_id", "season", "week", "home_team", "away_team", "kickoff_utc", "highlight", "top", "qb_caution"]
+_SHIFT_DST = ["qb_caution", "game_id", "season", "week", "home_team", "away_team", "kickoff_utc", "highlight", "top"]
+
+
+def read_log(path) -> pd.DataFrame:
+    """The live pick log (artifacts/tracker/picks_log.csv), typed. Rows written by the old logger before
+    Sept 30, 2026 had qb_caution one column early, which shifts everything from game_id on by one; they
+    are put back here (288 rows from the Sept 30 04:21-14:37 UTC runs)."""
+    lg = pd.read_csv(path, on_bad_lines="skip", dtype=str, keep_default_na=True)
+    if {"game_id", "season"} <= set(lg.columns) and all(c in lg.columns for c in _SHIFT_SRC):
+        sh = (~lg["game_id"].astype(str).str.match(GAME_ID) & lg["season"].astype(str).str.match(GAME_ID)).to_numpy()
+        if sh.any():
+            lg.loc[sh, _SHIFT_DST] = lg.loc[sh, _SHIFT_SRC].to_numpy()
+    for c in ("line", "price", "edge", "chance", "breakeven", "value", "season", "week", "wind", "gust"):
+        if c in lg.columns:
+            lg[c] = pd.to_numeric(lg[c], errors="coerce")
+    for c in ("highlight", "top", "qb_caution", "active"):
+        if c in lg.columns:
+            lg[c] = lg[c].map(lambda v: {"true": True, "false": False}.get(str(v).strip().lower(), np.nan))
+            if c in ("highlight", "top"):
+                lg[c] = lg[c].fillna(False).astype(bool)     # a blank flag means no (bool(NaN) would be True)
+    return lg
 
 
 def breakeven(price) -> float:
@@ -147,7 +175,13 @@ def is_green(p: dict) -> bool:
 
 
 def is_top(p: dict) -> bool:
-    return bool(is_green(p) and p["market"] == "spread" and p["edge"] >= TOP_EDGE)
+    e = p.get("edge")
+    return bool(p["market"] == "spread" and e is not None and np.isfinite(e) and e >= TOP_EDGE)
+
+
+def is_highlight(p: dict) -> bool:
+    """Shown green: passes the value test, or is a Top pick."""
+    return bool(is_green(p) or is_top(p))
 
 
 def grade(market, side, line, home_score, away_score):
@@ -199,7 +233,7 @@ def week_picks(games: list[dict], curves: dict) -> list[dict]:
         for p in (sp, tt, wn):
             if p:
                 p.update(base)
-                p["highlight"], p["top"] = is_green(p), is_top(p)
+                p["highlight"], p["top"] = is_highlight(p), is_top(p)
                 out.append(p)
     return out
 
@@ -235,7 +269,7 @@ def history_rows(oos: pd.DataFrame) -> pd.DataFrame:
                 res = grade(p["market"], p["side"], p["line"], hsc, asc)
                 rows.append(dict(season=int(s), week=int(r.week), game_id=r.game_id, market=p["market"], bet=p["bet"],
                                  edge=p["edge"], chance=p["chance"], price=price, value=p["value"],
-                                 highlight=is_green(p), top=is_top(p),
+                                 highlight=is_highlight(p), top=is_top(p),
                                  result=res, units=profit(res, price) if p["market"] != "winner" or np.isfinite(p["price"]) else None,
                                  source="backtest"))
     return pd.DataFrame(rows)

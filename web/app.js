@@ -53,7 +53,7 @@
   const edgeTxt = e => fin(e) ? "+" + (Math.floor(Math.abs(e) * 10) / 10).toFixed(1) : "–";
   const recTxt = r => r && r.n ? `<span class="w">${r.w}</span>-<span class="l">${r.l}</span>${r.p ? `<span class="p">-${r.p}</span>` : ""}` : '<span class="dash">0-0</span>';
   const recSub = r => r && r.n ? `${pct(r.pct, 1)}${fin(r.units) ? ` · ${sgn(r.units, 1)}u` : ""}` : "no graded picks yet";
-  const GREEN_HELP = "Green = the chance to win is at least 1 point above what DraftKings' price needs to break even (−110 needs 52.4%), and the model's side has won more than it lost in that range. Ranked by that margin: the best bang for your buck. Top pick = a green spread where the model is 4+ points off DraftKings' line.";
+  const GREEN_HELP = "Green = the chance to win is at least 1 point above what DraftKings' price needs to break even (−110 needs 52.4%), and the model's side has won more than it lost in that range. Ranked by that margin: the best bang for your buck. Top pick = any spread where the model is 4+ points off DraftKings' line (always shown green).";
 
   // ------------------------------------------------------------------ data prep
   const weekKeys = Object.keys(S.weeks || {}).sort();
@@ -402,6 +402,7 @@
     view.innerHTML = `
       <div class="toolbar noprint"><select id="wk" aria-label="Week">${weekKeys.map(k => `<option value="${k}"${k === key ? " selected" : ""}>Week ${+k.split("-")[1]}, ${k.split("-")[0]}</option>`).join("")}</select>
         <button class="btn primary" type="button" id="pdf">Download PDF</button><span class="small muted">Prices from ${esc(fmtStamp(dt(W.generated)))}</span></div>
+      ${key === curKey ? earlyPanel(W) : ""}
       ${key === curKey && ALERTS.some(a => a.kind === "pick") ? `<div class="panel noprint"><div class="toolbar" style="justify-content:space-between;margin:0"><h2>Recent pick changes</h2><a href="#alerts">All alerts →</a></div>${alertList(ALERTS.filter(a => a.kind === "pick").slice(0, 4), lastSeen())}</div>` : ""}
       ${bestPanel(W, false)}
       <div class="panel"><h2>Every game</h2><div class="tablewrap"><table><thead><tr><th>Game</th><th>Spread</th><th>Total</th><th>Winner</th><th class="num">Model score</th><th class="num">Vegas score</th><th class="num">Final</th></tr></thead><tbody>${rows}</tbody></table></div>
@@ -588,7 +589,7 @@
     view.innerHTML = `<div class="panel"><h2>Track record since ${esc(String(REC.since))}</h2>
       <p class="lede">Every game from ${esc(String(REC.since))} to today, picked with the same rule the page uses now and graded at the real closing line and price. Each season was predicted by a model trained only on earlier seasons, and each season's chance curve was fit only on earlier seasons. Some settings were chosen by looking at these same years (which factor groups to keep, how fast ratings react, and the 4-point line for Top picks), so expect live results to run somewhat below the backtest. This season's games after the last backtest run are graded live at DraftKings' price from the last run before kickoff, which is the truest test.</p>
       <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin:10px 0 0">
-        ${card("top", "Top picks", "green spreads, model 4+ pts off the line")}${card("green", "Green picks", "chance beat the price's break-even")}${card("spread", "Every spread pick", "the model's side, every game")}${card("winner", "Straight-up winners", "the model's likelier winner")}</div>
+        ${card("top", "Top picks", "spreads 4+ pts off the line")}${card("green", "Green picks", "chance beat the price's break-even")}${card("spread", "Every spread pick", "the model's side, every game")}${card("winner", "Straight-up winners", "the model's likelier winner")}</div>
       <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin:10px 0 0">${card("green_spread", "Green spreads", "")}${card("green_total", "Green totals", "")}${card("total", "Every total pick", "the model's side, every game")}
         <div class="kpi"><div class="kl">Break-even</div><div class="kv">52.4%</div><div class="ks">win rate a −110 bet needs</div></div></div></div>
       ${windRecord(unitsChart)}
@@ -743,7 +744,7 @@
       ${auditPanel()}
       <div class="panel prose"><h2>How the model works</h2>
       <p>Every week the model sets its own spread and total for each game from about 140 inputs: opponent-adjusted team ratings from play-by-play (weighted EPA, early downs, big plays, points per drive, pass and run efficiency), the projected starting quarterback, missing starters by position, offseason roster turnover, rest, travel, time zones, kickoff time, weather forecasts, surface, altitude, coaching, officials and more. Each factor group has to earn its place in a walk-forward backtest; groups that make out-of-sample predictions worse are dropped.</p>
-      <p><strong>Picks.</strong> For spreads and totals the pick is the model's side of DraftKings' number. Its chance comes from history: of every game since ${esc(String(REC.since || 2015))} where the model disagreed with the closing line by that many points, how often its side won. <strong>Green</strong> marks picks whose chance is at least 1 point above the win rate DraftKings' price needs to break even (and whose disagreement range has actually favored the model), ranked by that margin. <strong>Top picks</strong> are green spreads where the model is 4 or more points off the line, the range with the strongest record in both halves of the backtest. The same rule, applied to every past season with only earlier seasons' information, produces the track record on the Record tab.</p>
+      <p><strong>Picks.</strong> For spreads and totals the pick is the model's side of DraftKings' number. Its chance comes from history: of every game since ${esc(String(REC.since || 2015))} where the model disagreed with the closing line by that many points, how often its side won. <strong>Green</strong> marks picks whose chance is at least 1 point above the win rate DraftKings' price needs to break even (and whose disagreement range has actually favored the model), ranked by that margin. <strong>Top picks</strong> are spreads where the model is 4 or more points off the line (always shown green), the range with the strongest record in both halves of the backtest. Until Oct 2, 2026 they also had to pass the green test, which made the record jumpy: small model changes could switch a whole season's 4+ picks off. <strong>Injury report.</strong> A Questionable player counts as playing 66% of the time (42% if he missed his last practice, 68% if limited, 79% if full) and a Doubtful player 1%, the rates measured from 41,663 listings in 2013-2025. The same rule, applied to every past season with only earlier seasons' information, produces the track record on the Record tab.</p>
       <h3>Schedule</h3><p>The model runs Tuesday morning, Thursday and Friday afternoon, twice on Sunday before kickoff and Monday afternoon. The line watch logs DraftKings' line from ESPN and live scores every 20 minutes. Calibration re-runs every Tuesday after Monday night.</p>
       <h3>Sources</h3><p>Play-by-play, schedules, closing lines, rosters, snap counts and the league injury report: nflverse (the open NFL data project behind nflfastR). Same-day injury reports, live scores, venues and the DraftKings line history: ESPN. DraftKings and other sportsbook prices: The Odds API. Weather forecasts: Open-Meteo. Every source is cross-checked above on each weekly run.</p>
       <h3>Read this before betting</h3><p>NFL closing lines miss the final margin by about 10 points on average, and the model does not beat them on its own. Break-even at −110 is 52.4%, and a real edge is a few points above that at best. Judge the model over seasons, not weekends. For information only, not financial advice. If betting stops being fun, call 1-800-GAMBLER.</p>
@@ -891,6 +892,22 @@
         fresh.forEach(a => told.add(a.id));
       } catch (e) { /* offline or mid-deploy: try again next time */ }
     }, 300000);
+  }
+
+  // ------------------------------------------------------------------ early-week value (information only)
+  function earlyPanel(W) {
+    const E = S.early || {}; const R = E.record || {}; const rows = E.week || [];
+    const games = {}; W.games.forEach(g => games[g.game_id] = g);
+    const moved = x => !fin(x.moved) ? "–" : x.moved > 0 ? `<span class="w">${sgn(x.moved, 1)} for</span>` : x.moved < 0 ? `<span class="l">${sgn(x.moved, 1)} against</span>` : "no move";
+    const now = x => fin(x.line_now) ? (x.line_now > 0 ? "+" : x.line_now < 0 ? "−" : "") + trim(Math.abs(x.line_now)) : "–";
+    const body = rows.length ? `<div class="tablewrap"><table><thead><tr><th>Game</th><th>Early pick</th><th class="num">Edge</th><th>Logged</th><th class="num">DraftKings now</th><th class="num">Line since</th><th class="num">Result</th></tr></thead><tbody>
+      ${rows.map(x => { const g = games[x.game_id]; return `<tr><td>${g ? `<a href="#breakdown/${esc(x.game_id)}">${esc(x.matchup)}</a>` : esc(x.matchup)}</td><td><strong>${esc(x.bet)}</strong> ${am(x.price)}</td><td class="num">${edgeTxt(x.edge)}</td>
+        <td class="small muted">${esc(fmtDay(dt(x.run_at)))} ${esc(fmtTime(dt(x.run_at)))}</td><td class="num">${now(x)}</td><td class="num">${moved(x)}</td><td class="num">${x.result ? resChip(x.result) : '<span class="muted">pending</span>'}</td></tr>`; }).join("")}</tbody></table></div>`
+      : `<p class="note">None this week: the week's first model run had no spread ${num(E.edge, 0)}+ points off DraftKings.</p>`;
+    return `<div class="panel noprint"><h2>Early-week value <span class="small muted">(information only)</span></h2>
+      <p class="lede" style="margin:0">Spreads where the week's first model run was ${num(E.edge, 0)}+ points off DraftKings' early line, logged at that line and price. In the backtest these did better at early lines than the same bets at the close (56-59% at 3+ points against two sources' opening lines, 2015-2026), but that is not proven at DraftKings, so it is tracked here first. Early in the week the model does not know the final injury reports.</p>
+      ${body}
+      <p class="note">Tracked since ${esc(R.since || "2026 week 4")}: ${R.n ? `${R.w}-${R.l}${R.p ? "-" + R.p : ""} (${pct(R.pct, 1)}, ${sgn(R.units, 1)} units at the early price)` : "no graded games yet"}${fin(R.clv) && R.clv_n ? `; the line moved ${sgn(R.clv, 2)} points per pick in their favor by kickoff (${R.clv_n} games)` : ""}. "Line since" = points the early pick gained (+) or lost (−) vs DraftKings' line now.</p></div>`;
   }
 
   // ------------------------------------------------------------------ router

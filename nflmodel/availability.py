@@ -47,6 +47,29 @@ def _team_games(games: pd.DataFrame) -> pd.DataFrame:
     return pd.concat([h, a], ignore_index=True).sort_values(["team", "t", "game_id"])
 
 
+def practice_key(s) -> str | None:
+    """nflverse practice_status text -> DNP / LIMITED / FULL (None when unknown)."""
+    if not isinstance(s, str) or not s.strip():
+        return None
+    s = s.lower()
+    if "did not" in s or s.strip() == "dnp" or "out" == s.strip():
+        return "DNP"
+    if "limited" in s:
+        return "LIMITED"
+    if "full" in s:
+        return "FULL"
+    return None
+
+
+def play_prob(status, practice, cfg) -> float:
+    """Chance a listed player plays: by status, and for QUESTIONABLE by last practice when it is known."""
+    if status == "QUESTIONABLE":
+        k = practice_key(practice)
+        if k and k in getattr(cfg, "questionable_by_practice", {}):
+            return float(cfg.questionable_by_practice[k])
+    return float(cfg.status_play_prob.get(status, 1.0))
+
+
 def _override_probs(overrides: pd.DataFrame | None, cfg) -> dict:
     """(season, week, team, name_key) -> play probability."""
     out = {}
@@ -104,8 +127,8 @@ def compute_availability(snaps, games, rosters, injuries, overrides, cfg):
 
     # ---- injury report for target games ----
     target_keys = set(map(tuple, tgames.loc[tgames["is_target"], ["season", "week", "team"]].astype(object).to_numpy()))
-    inj_status = {}   # (season, week, team, pid) -> status
-    inj_by_name = {}  # (season, week, team, name_key) -> status
+    inj_status = {}   # (season, week, team, pid) -> (status, practice)
+    inj_by_name = {}  # (season, week, team, name_key) -> (status, practice)
     if injuries is not None and not injuries.empty and target_keys:
         inj = injuries[injuries["report_status"].notna()]
         for rr in inj.itertuples(index=False):
@@ -113,9 +136,10 @@ def compute_availability(snaps, games, rosters, injuries, overrides, cfg):
             if key not in target_keys:
                 continue
             pid = gsis_to_pfr.get(rr.gsis_id)
+            prac = getattr(rr, "practice_status", None)
             if pid:
-                inj_status[key + (pid,)] = rr.report_status
-            inj_by_name[key + (name_key(rr.full_name),)] = rr.report_status
+                inj_status[key + (pid,)] = (rr.report_status, prac)
+            inj_by_name[key + (name_key(rr.full_name),)] = (rr.report_status, prac)
     elif target_keys:
         notes.append("Injury report data unavailable: add statuses to overrides/player_status.csv.")
     ov = _override_probs(overrides, cfg)
@@ -175,10 +199,12 @@ def compute_availability(snaps, games, rosters, injuries, overrides, cfg):
                 status_txt = np.array([""] * len(pids), dtype=object)
                 for j in np.where(regular[i])[0]:
                     pid, nk = pids[j], name_key(names[j])
-                    st = inj_status.get(key + (pid,)) or inj_by_name.get(key + (nk,))
-                    if st:
-                        p_play[j] = cfg.status_play_prob.get(st, 1.0)
-                        status_txt[j] = st.title()
+                    hit = inj_status.get(key + (pid,)) or inj_by_name.get(key + (nk,))
+                    if hit:
+                        st, prac = hit
+                        p_play[j] = play_prob(st, prac, cfg)
+                        pk = practice_key(prac) if st == "QUESTIONABLE" else None
+                        status_txt[j] = st.title() + (f", {pk.lower()} practice" if pk else "")
                     if (key + (nk,)) in ov:
                         p_play[j] = ov[key + (nk,)]
                         status_txt[j] = f"override {p_play[j]:.0%}"

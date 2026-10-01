@@ -105,6 +105,16 @@ def merge_injuries(nflverse: pd.DataFrame, espn: pd.DataFrame, season: int, week
     ek = set(zip(espn["team"], espn["full_name"].map(name_key)))
     nk = list(zip(nflverse["team"], nflverse["full_name"].map(name_key)))
     drop = cur.to_numpy() & pd.Series([k in ek for k in nk], index=nflverse.index).to_numpy()
+    # ESPN has no practice participation: keep nflverse's last practice for the same player this week, but only
+    # from the final report (official game status set); midweek practice is a weaker signal than the
+    # final-report rates in config.questionable_by_practice
+    espn = espn.copy()
+    if "practice_status" in nflverse.columns:
+        rs = nflverse["report_status"] if "report_status" in nflverse.columns else pd.Series([None] * len(nflverse))
+        prac = {k: v for k, v, c, s in zip(nk, nflverse["practice_status"], cur, rs)
+                if c and isinstance(v, str) and v.strip() and isinstance(s, str) and s.strip()}
+        keys = list(zip(espn["team"], espn["full_name"].map(name_key)))
+        espn["practice_status"] = [prac.get(k, p) for k, p in zip(keys, espn.get("practice_status", [None] * len(espn)))]
     return pd.concat([nflverse[~drop], espn], ignore_index=True)
 
 

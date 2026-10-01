@@ -29,6 +29,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from nflmodel.picks import read_log
+
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "site_data"
 ART = ROOT / "artifacts"
@@ -227,7 +229,7 @@ def build_record(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict) 
     live_rows = []
     lp = ART / "tracker" / "picks_log.csv"
     if lp.exists():
-        lg = pd.read_csv(lp, on_bad_lines="skip")
+        lg = read_log(lp)
         lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce")
         lg["ko"] = pd.to_datetime(lg["game_id"].map(kickoffs), utc=True, errors="coerce")
         lg = lg[lg["t"] < lg["ko"]].sort_values("t").groupby(["game_id", "market"]).tail(1)
@@ -318,7 +320,7 @@ def fill_started(weeks: list[dict], kickoffs: dict):
     lp = ART / "tracker" / "picks_log.csv"
     if not lp.exists():
         return
-    lg = pd.read_csv(lp, on_bad_lines="skip")
+    lg = read_log(lp)
     lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce")
     lg["ko"] = pd.to_datetime(lg["game_id"].map(kickoffs), utc=True, errors="coerce")
     lg = lg[lg["t"] < lg["ko"]].sort_values("t").groupby(["game_id", "market"]).tail(1)
@@ -419,6 +421,64 @@ def line_history(lines: pd.DataFrame, week: dict) -> dict:
     return out
 
 
+# ----------------------------------------------------------------------------- early-week value
+EARLY_EDGE = 3.0
+
+
+def early_value(week: dict, sched: dict, lines: pd.DataFrame | None, finals: dict) -> dict:
+    """Information only: each week's FIRST model run vs DraftKings, spreads EARLY_EDGE+ points off, graded at the
+    line and price of that run. Backtest (opening-time model vs openers, 2015-2026): 3+ point gaps won 56.3%
+    against nfelo's openers and 56.2% against ESPN BET's (2024-26), vs ~54% for the same bets at the close.
+    Unproven at DraftKings, so it is tracked here from 2026 week 4 (when the pick log starts)."""
+    from nflmodel.picks import grade as pgrade, profit
+    from nflmodel.venues import kickoff_utc
+    out = dict(edge=EARLY_EDGE, week=[], record={})
+    lp = ART / "tracker" / "picks_log.csv"
+    if not lp.exists():
+        return out
+    sg = {g["game_id"]: g for g in sched.get("games", [])}
+    for g in (week or {}).get("games", []):
+        sg.setdefault(g["game_id"], g)
+    ko = {gid: (kickoff_utc(g.get("gameday"), g.get("gametime")) if g.get("gameday") else None) for gid, g in sg.items()}
+    for g in (week or {}).get("games", []):
+        if g.get("kickoff_utc"):
+            ko[g["game_id"]] = pd.Timestamp(g["kickoff_utc"]).to_pydatetime()
+    closes = closing_lines(lines, sg)
+    lg = read_log(lp)
+    lg = lg[(lg["market"] == "spread") & lg["game_id"].isin(set(sg))].copy()
+    lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce", format="ISO8601")
+    lg["ko"] = pd.to_datetime(lg["game_id"].map(lambda x: ko.get(x)), utc=True, errors="coerce")
+    lg = lg[lg["t"] < lg["ko"]].sort_values("t")
+    first = lg.groupby("game_id").head(1)
+    cur = {g["game_id"]: g for g in (week or {}).get("games", [])}
+    rows = []
+    for r in first.itertuples(index=False):
+        if not (_f(r.edge) is not None and r.edge >= EARLY_EDGE and _f(r.line) is not None):
+            continue
+        f = finals.get(r.game_id)
+        res = pgrade("spread", r.side, float(r.line), *f) if f else None
+        kicked = ko.get(r.game_id) is not None and pd.Timestamp(ko[r.game_id]).tz_convert("UTC") <= pd.Timestamp(NOW)
+        c = clv("spread", r.side, float(r.line), closes.get(r.game_id)) if kicked else None   # vs the close, once known
+        g = cur.get(r.game_id)
+        now = None
+        if g and g.get("dk_home_spread") is not None:
+            now = float(g["dk_home_spread"]) if r.side == "home" else -float(g["dk_home_spread"])
+        rows.append(dict(game_id=r.game_id, season=int(r.season), week=int(r.week), matchup=f"{r.away_team} @ {r.home_team}",
+                         bet=r.bet, side=r.side, team=r.team, line=float(r.line), price=_f(r.price), edge=_f(r.edge),
+                         chance=_f(r.chance), run_at=r.run_at, line_now=now,
+                         moved=(float(r.line) - now) if now is not None else None, clv=c, result=res,
+                         units=profit(res, r.price) if res and _f(r.price) else None))
+    graded = [x for x in rows if x["result"] in ("W", "L", "P")]
+    w = sum(x["result"] == "W" for x in graded); l = sum(x["result"] == "L" for x in graded); pu = sum(x["result"] == "P" for x in graded)
+    cl = [x["clv"] for x in rows if x["clv"] is not None]
+    out["record"] = dict(w=w, l=l, p=pu, n=w + l + pu, pct=w / max(w + l, 1),
+                         units=float(sum(x["units"] or 0 for x in graded)), clv=float(np.mean(cl)) if cl else None,
+                         clv_n=len(cl), since="2026 week 4")
+    out["week"] = [x for x in rows if week and x["season"] == week["season"] and x["week"] == week["week"]]
+    out["all"] = rows
+    return out
+
+
 # ----------------------------------------------------------------------------- alerts
 def _am(x) -> str:
     x = _f(x)
@@ -443,7 +503,7 @@ def alerts(week: dict, lines: pd.DataFrame | None, kickoffs: dict) -> list:
     tb = lambda v: str(v).strip().lower() == "true"
     lp = ART / "tracker" / "picks_log.csv"
     if lp.exists():
-        lg = pd.read_csv(lp, on_bad_lines="skip")
+        lg = read_log(lp)
         lg = lg[lg["game_id"].isin(set(ids)) & lg["market"].isin(["spread", "total", "wind"])].copy()
         lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce", format="ISO8601")
         lg["ko"] = pd.to_datetime(lg["game_id"].map(kickoffs), utc=True, errors="coerce", format="ISO8601")
@@ -640,6 +700,7 @@ def main() -> int:
         lines=line_history(lines, cur), my_bets=my_bets(finals_by_key),
         checks=checks, checks_ok=all(c[1] for c in checks), audit=_load(ART / "data_audit.json"),
         budget=_load(ART / "odds_budget.json"), alerts=alerts(cur, lines, kickoffs),
+        early=early_value(cur, sched, lines, finals),
     )
     if PUBLIC.exists():
         shutil.rmtree(PUBLIC)

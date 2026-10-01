@@ -40,11 +40,15 @@ class Config:
     # ------------- player availability -------------
     regular_window_games: int = 4       # "regular" = recent snap share over this many team games
     regular_min_share: float = 0.35
+    # chance a listed player plays, measured 2013-2025 (41,663 final injury-report listings vs that game's
+    # snap counts): QUESTIONABLE 65.7%, DOUBTFUL 0.7%, OUT 0.0%, PROBABLE (pre-2016) 94.8%
     status_play_prob: dict = field(default_factory=lambda: {
-        "OUT": 0.0, "DOUBTFUL": 0.12, "QUESTIONABLE": 0.75, "PROBABLE": 0.95,
+        "OUT": 0.0, "DOUBTFUL": 0.01, "QUESTIONABLE": 0.66, "PROBABLE": 0.95,
         "IR": 0.0, "PUP": 0.0, "NFI": 0.0, "SUSPENDED": 0.0, "INACTIVE": 0.0,
         "ACTIVE": 1.0, "IN": 1.0, "PLAYING": 1.0,
     })
+    # QUESTIONABLE players by last practice of the week (same data): did not practice 42%, limited 68%, full 79%
+    questionable_by_practice: dict = field(default_factory=lambda: {"DNP": 0.42, "LIMITED": 0.68, "FULL": 0.79})
 
     # ------------- game model -------------
     min_train_season: int = 2013        # first season used to fit the game model (2012 warms up the ratings)

@@ -224,7 +224,8 @@ def append_log(path: Path, rows: pd.DataFrame) -> int:
         return 0
     path.parent.mkdir(parents=True, exist_ok=True)
     if path.exists():
-        old = pd.read_csv(path, on_bad_lines="skip")
+        from .picks import read_log
+        old = read_log(path)
         if list(rows.columns) != list(old.columns):
             cols = list(old.columns) + [c for c in rows.columns if c not in old.columns]
             pd.concat([old, rows], ignore_index=True).reindex(columns=cols).to_csv(path, index=False)

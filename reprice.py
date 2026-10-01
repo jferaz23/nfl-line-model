@@ -90,7 +90,8 @@ def main() -> int:
     if len(rows):
         rows.insert(0, "run_at", now)
         if LOG.exists():
-            old = pd.read_csv(LOG, on_bad_lines="skip")
+            from nflmodel.picks import read_log
+            old = read_log(LOG)
             last = old.sort_values("run_at").groupby(["game_id", "market"]).tail(1).set_index(["game_id", "market"])
             keep_rows = []
             for r in rows.itertuples(index=False):

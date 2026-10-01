@@ -14,6 +14,7 @@ import json
 import logging
 import os
 import sys
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 log = logging.getLogger("nflmodel")
@@ -21,6 +22,7 @@ ROOT = Path(__file__).resolve().parent
 SITE = ROOT / "public" / "data" / "site.js"
 SENT = ROOT / "artifacts" / "alerts_sent.json"
 SITE_URL = "https://jferaz23.github.io/nfl-line-model/#alerts"
+FRESH = timedelta(hours=3)        # only push changes this recent (older ones, e.g. from a log repair, are just recorded)
 
 
 def main() -> int:
@@ -36,6 +38,14 @@ def main() -> int:
     first = not SENT.exists()
     sent = set(json.loads(SENT.read_text()) if SENT.exists() else [])
     new = [a for a in alerts if a["id"] not in sent]
+    cutoff = datetime.now(timezone.utc) - FRESH
+    def fresh(a):
+        try:
+            return datetime.fromisoformat(a["ts"].replace("Z", "+00:00")) >= cutoff
+        except Exception:
+            return False
+    stale = [a for a in new if not fresh(a)]
+    new = [a for a in new if fresh(a)]
     if not first:
         import requests
         for a in sorted(new, key=lambda x: x["ts"])[:10]:
@@ -46,7 +56,7 @@ def main() -> int:
             except Exception as e:
                 log.warning("ntfy send failed (%s); will retry next run.", e)
                 new = [x for x in new if x is not a]
-    keep = sorted(sent | {a["id"] for a in new} | ({a["id"] for a in alerts} if first else set()))[-2000:]
+    keep = sorted(sent | {a["id"] for a in new} | {a["id"] for a in stale} | ({a["id"] for a in alerts} if first else set()))[-4000:]
     SENT.parent.mkdir(parents=True, exist_ok=True)
     SENT.write_text(json.dumps(keep))
     log.info("Phone notifications: %s", "set up (existing alerts recorded, none sent)" if first else f"{len(new)} sent")
