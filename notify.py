@@ -28,7 +28,7 @@ FRESH = timedelta(hours=3)        # only push changes this recent (older ones, e
 
 def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", datefmt="%H:%M:%S")
-    topic = os.environ.get("NTFY_TOPIC", "").strip()
+    topic = os.environ.get("NTFY_TOPIC", "").replace("﻿", "").strip()      # drop a BOM / whitespace from the secret
     if not topic:
         log.info("Phone notifications off (no NTFY_TOPIC).")
         return 0
