@@ -21,7 +21,7 @@
     scheme_matchup: "Scheme matchup", venue_history: "Venue history", surface_altitude: "Surface and altitude", coaching: "Coaching",
     officials: "Officials", history: "Head-to-head and ATS history", situational: "Situational and luck", drive_efficiency: "Drive efficiency",
     motivation: "Motivation (late season)", early_down: "Early-down efficiency", big_plays: "Big plays",
-    roster_continuity: "Offseason roster turnover (weeks 1-8)", scoring_env: "Scoring environment", calendar: "Calendar"
+    roster_continuity: "Offseason roster turnover (weeks 1-8)", scoring_env: "Scoring environment", calendar: "Calendar", market_view: "Market's recent view of both teams (25% blend)"
   };
 
   // ------------------------------------------------------------------ helpers
@@ -194,13 +194,32 @@
       `<span class="b ${hiLeft ? "lo" : "hi"}" style="width:${100 - lw}%">${esc(rightLabel)} ${pct(1 - leftP)}</span></div>`;
   }
 
+  function lineMove(g) {
+    const L = (S.lines || {})[g.game_id];
+    const pts = L && L.points ? L.points.map(p => p[1]).filter(fin) : [];
+    const nowS = fin(g.dk_home_spread) ? g.dk_home_spread : pts.length ? pts[pts.length - 1] : NaN;
+    const openS = pts.length ? pts[0] : NaN;                      // this week's opening line (first one logged)
+    if (!fin(nowS) || !fin(openS)) return "";
+    const tPts = L && L.points ? L.points.map(p => p[2]).filter(fin) : [];
+    const nowT = fin(g.dk_total) ? g.dk_total : tPts.length ? tPts[tPts.length - 1] : NaN;
+    const openT = tPts.length ? tPts[0] : NaN;
+    const series = [openS].concat(pts, [nowS]);
+    const W_ = 70, H_ = 18, lo = Math.min(...series), hi = Math.max(...series), span = Math.max(hi - lo, 1);
+    const xy = series.map((v, i) => `${(W_ * i / Math.max(series.length - 1, 1)).toFixed(1)},${(2 + (H_ - 4) * (v - lo) / span).toFixed(1)}`).join(" ");
+    const d = nowS - openS, mv = Math.abs(d) < 1e-9 ? "no move" : `${d < 0 ? "toward" : "away from"} ${g.home_team} ${trim(Math.abs(d))}`;
+    return `<div class="lmove" title="DraftKings spread for ${esc(g.home_team)}: opened this week at ${hcap(openS)}, now ${hcap(nowS)}${L && fin(L.open_spread) && L.open_spread !== openS ? ` (first posted before the season at ${hcap(L.open_spread)})` : ""}">
+      <svg viewBox="0 0 ${W_} ${H_}" width="${W_}" height="${H_}" aria-hidden="true"><polyline points="${xy}" fill="none" stroke="var(--vegas)" stroke-width="1.6"/></svg>
+      <span>${esc(g.home_team)} opened ${hcap(openS)} → now ${hcap(nowS)} <span class="muted">(${mv})</span>${fin(openT) && fin(nowT) ? ` · total ${trim(openT)} → ${trim(nowT)}` : ""}</span></div>`;
+  }
+
   function lineChart(gid, g, kind) {
     const L = (S.lines || {})[gid];
     if (!L || !L.points || L.points.length < 1) return `<p class="note">Line history starts once the line watch has logged this game.</p>`;
     const pts = L.points.map(p => ({ t: +new Date(p[0]), v: kind === "total" ? p[2] : p[1] })).filter(p => fin(p.v));
     if (!pts.length) return `<p class="note">No line logged yet.</p>`;
-    const open = kind === "total" ? L.open_total : L.open_spread;
-    if (fin(open)) pts.unshift({ t: pts[0].t - 3600e3 * 12, v: open, open: true });
+    const open = pts[0].v;                                         // this week's opening line
+    const first = kind === "total" ? L.open_total : L.open_spread;  // DraftKings' first posted line (often months earlier)
+    pts[0].open = true;
     const model = kind === "total" ? g.model_total : -g.model_margin;
     const now = Date.now(), ko = +new Date(g.kickoff_utc);
     pts.push({ t: Math.max(Math.min(now, ko), pts[pts.length - 1].t), v: pts[pts.length - 1].v });
@@ -222,7 +241,7 @@
       <text x="${pl}" y="${H_ - 6}">${pts[0].open ? "Open" : esc(fmtStamp(new Date(t0)).replace(" ET", ""))}</text>
       ${pts[0].open && pts.length > 2 ? `<text x="${x(pts[1].t)}" y="${H_ - 6}" text-anchor="middle">${esc(fmtStamp(new Date(pts[1].t)).replace(" ET", ""))}</text>` : ""}
       <text x="${W_ - pr}" y="${H_ - 6}" text-anchor="end">${now < ko ? "now" : "kickoff"}</text>
-    </svg><div class="legend"><span><i style="background:var(--vegas)"></i>DraftKings line (via ESPN)</span><span><i style="background:var(--model)"></i>Model line</span>${fin(open) ? `<span>Opened ${esc(lbl(open))}</span>` : ""}</div>`;
+    </svg><div class="legend"><span><i style="background:var(--vegas)"></i>DraftKings line (via ESPN)</span><span><i style="background:var(--model)"></i>Model line</span>${fin(open) ? `<span>Opened this week ${esc(lbl(open))}</span>` : ""}${fin(first) && first !== open ? `<span class="muted">First posted before the season: ${esc(lbl(first))}</span>` : ""}</div>`;
   }
 
   function booksTable(W, g) {
@@ -328,6 +347,7 @@
         <div class="row">${team(g.away_team, ` <span class="rec">${recText(g.away_team)}</span>`)}${as != null ? `<span class="${scoreCls(as, hs)}">${as}</span>` : ""}</div>
         <div class="row">${team(g.home_team, ` <span class="rec">${recText(g.home_team)}</span>`)}${hs != null ? `<span class="${scoreCls(hs, as)}">${hs}</span>` : ""}</div>
         <div class="picks">${pk(d.sp)}${pk(d.tt)}${d.wn ? pk(d.wn, d.wn.bet.replace(" to win", " ML")) : ""}${(W.wind_unders || []).filter(x => x.game_id === g.game_id && x.highlight).map(x => `<span class="pk green">WIND ${esc(x.bet)}</span>`).join("")}</div>
+        ${lineMove(g)}
         <div class="foot">${status}<span class="muted">${esc((lv && lv.broadcast) || "")}</span></div></button>`;
     };
     view.innerHTML = `<div id="gdetail-slot"></div>${bestPanel(W, true)}<p class="section-label">Week ${W.week} · all games</p><div class="ggrid">${games.map(card).join("")}</div>`;
@@ -337,7 +357,7 @@
       const g = openGame && games.find(x => x.game_id === openGame);
       if (!g) { slot.innerHTML = ""; return; }
       const d = derive(W, g);
-      const tabs = [["model", "Model"], ["win", "Win chance"], ["line", "Line history"], ["books", "All books"], ["news", "Injuries and context"]];
+      const tabs = [["model", "Model"], ["win", "Win chance"], ["books", "All books"], ["news", "Injuries and context"]];
       let body = "";
       if (gameTab === "model") body = modelTable(W, g);
       else if (gameTab === "win") body = `<div class="bars"><span class="lab">Model</span>${bar("model", g.away_team, fin(g.p_home_win_model) ? 1 - g.p_home_win_model : NaN, g.home_team)}
@@ -351,6 +371,7 @@
           ${d.lv && d.lv.state !== "pre" ? `<strong class="cond" style="font-size:20px">${d.lv.away_score}–${d.lv.home_score}</strong> <span class="${d.lv.completed ? "muted" : "live"}">${esc(d.lv.detail || "")}</span>` : ""}
           <button class="btn close" type="button" data-close>Close</button></div>
         <p class="gd-sub">${esc(fmtLong(dt(g.kickoff_utc)))} · ${esc(fmtTime(dt(g.kickoff_utc)))} ET${d.lv && d.lv.broadcast ? " · " + esc(d.lv.broadcast) : ""} · <a href="#breakdown/${esc(g.game_id)}">Full breakdown</a></p>
+        <div class="two" style="margin:6px 0 10px"><div><h3>Spread: where it opened and where it is now</h3>${lineChart(g.game_id, g, "spread")}</div><div><h3>Total: where it opened and where it is now</h3>${lineChart(g.game_id, g, "total")}</div></div>
         <div class="subtabs">${tabs.map(([k, l]) => `<button type="button" data-gt="${k}" aria-pressed="${gameTab === k}">${l}</button>`).join("")}</div>${body}</div>`;
       slot.querySelectorAll("[data-gt]").forEach(b => b.onclick = () => { gameTab = b.dataset.gt; drawDetail(); });
       slot.querySelector("[data-close]").onclick = () => { openGame = null; drawDetail(); };
@@ -910,8 +931,49 @@
       <p class="note">Tracked since ${esc(R.since || "2026 week 4")}: ${R.n ? `${R.w}-${R.l}${R.p ? "-" + R.p : ""} (${pct(R.pct, 1)}, ${sgn(R.units, 1)} units at the early price)` : "no graded games yet"}${fin(R.clv) && R.clv_n ? `; the line moved ${sgn(R.clv, 2)} points per pick in their favor by kickoff (${R.clv_n} games)` : ""}. "Line since" = points the early pick gained (+) or lost (−) vs DraftKings' line now.</p></div>`;
   }
 
+  // ------------------------------------------------------------------ How it works
+  function renderHow() {
+    const A = (REC.all || {}).total || {}, T = A.top || {}, G = A.green || {}, SP = A.spread || {};
+    const WI = ((REC.wind || {}).with_live) || {}, TZ = ((REC.teasers || {}).teasers) || {}, CR = REC.card || {};
+    const B = (S.backtest || {}).overall || {};
+    const r = x => x && x.n ? `${x.w}-${x.l}${x.p ? "-" + x.p : ""} (${pct(x.pct, 1)}, ${sgn(x.units, 1)} units)` : "–";
+    const sec = (h, body) => `<div class="panel"><h2>${h}</h2>${body}</div>`;
+    const flow = `<svg viewBox="0 0 760 92" class="chart" role="img" aria-label="From data to picks">
+      ${[["Data", "games, plays, injuries, weather"], ["Team ratings", "and other factors"], ["Model line", "spread and total"],
+         ["vs DraftKings", "how many points off"], ["Chance and value", "from history"], ["Picks", "green, Top, card"]].map(([a, b], i) => {
+        const x = 6 + i * 126;
+        return `<rect x="${x}" y="14" width="112" height="56" rx="8" fill="var(--card2)" stroke="var(--line)"/>
+          <text x="${x + 56}" y="38" text-anchor="middle" style="font-weight:600;fill:var(--ink)">${a}</text>
+          <text x="${x + 56}" y="56" text-anchor="middle" style="font-size:10.5px">${b}</text>
+          ${i < 5 ? `<path d="M${x + 114} 42 h10" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#arr)"/>` : ""}`; }).join("")}
+      <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--muted)"/></marker></defs></svg>`;
+    view.innerHTML = `<div class="panel"><h2>How the numbers are made</h2>
+      <p class="lede">The model sets its own spread and total for every game, compares them with DraftKings, and uses history to say how often that much disagreement has actually won. Everything below is the same rule the site uses live and for the track record.</p>${flow}</div>
+      ${sec("1. Where the data comes from", `<ul>
+        <li><strong>nflverse</strong> (free, public NFL data): every play since 2012 with expected points (EPA), schedules, scores and closing lines, snap counts, weekly rosters and injury reports.</li>
+        <li><strong>DraftKings prices</strong>: from The Odds API (also 9 other books for comparison) and ESPN's scoreboard, which shows DraftKings' line. The site checks them every 15 minutes.</li>
+        <li><strong>ESPN</strong>: the newest injury designations and live scores. <strong>Open-Meteo</strong>: kickoff weather forecasts. <strong>Kalshi</strong>: prediction-market prices, saved for a future test only.</li></ul>`)}
+      ${sec("2. How the model sets a line", `<p>For each team it builds ratings from recent games, weighted toward the latest weeks and adjusted for opponents: passing and rushing efficiency on offense and defense, points per drive, special teams, and the market's own view of each team from earlier weeks' closing lines. It then adds the game's situation: the projected quarterbacks' value, which regular players are out, rest and travel, kickoff time, weather, venue, coaching and officials.</p>
+        <p>A statistical model (ridge regression with a small boosted-tree part) turns all of that into a predicted margin and total. It learns how much each factor is worth only from <em>earlier</em> seasons, and it never sees this game's betting line. The spread is then blended 75/25 with the market's recent view of both teams, which tested better than the model alone.</p>
+        <p><strong>Injuries:</strong> a Questionable player counts as playing 66% of the time (42% if he missed his last practice, 68% limited, 79% full) and Doubtful 1%, the rates measured from 41,663 past listings. A Questionable starting quarterback starts 57% of the time (37% / 53% / 85% by last practice), so his value is blended with the backup's.</p>`)}
+      ${sec("3. From the model's number to a pick", `<p><strong>The pick</strong> is the model's side of DraftKings' number. Example: the model has Tampa Bay by 0.5 and DraftKings has Tampa Bay +3.5, so the model is 4 points off and the pick is Tampa Bay +3.5.</p>
+        <p><strong>Chance</strong> comes from history, not the model's own confidence: of every past game where the model was that far off the closing line (0-2, 2-4 or 4+ points), how often its side won. It is pulled toward 50% so thin samples can't overstate it.</p>
+        <p><strong>Value</strong> = chance minus what the price needs to break even (-110 needs 52.4%). <strong>Green</strong> = at least 1 point of value. <strong>Top pick</strong> = any spread where the model is 4+ points off DraftKings (always green).</p>
+        <p><strong>Fair line</strong> (on the breakdown): about 90% the betting market and 10% the model, because the closing line is very hard to beat; the model's own error is ${num(B.spread_model, 2)} points per game vs ${num(B.spread_market, 2)} for the closing line.</p>`)}
+      ${sec("4. The weekly card and other picks", `<ul>
+        <li><strong>Top picks</strong>: ${esc(r(T))} since ${esc(String(REC.since || 2015))} at closing prices.</li>
+        <li><strong>Teasers</strong>: two underdogs of +1.5 to +2.5, teased 6 points past 3 and 7: ${esc(r(TZ))}.</li>
+        <li><strong>Wind unders</strong>: outdoor games with a kickoff forecast of 10+ mph wind or 20+ mph gusts: ${esc(r(WI))} since 2018.</li>
+        <li>All together the card went ${esc(r(CR))}. Green picks overall: ${esc(r(G))}. Every spread pick, no filter: ${esc(r(SP))}.</li>
+        <li><strong>Early-week value</strong> (information only): spreads 3+ points off at the week's first run, graded at that early line, to test whether betting early helps at DraftKings.</li></ul>`)}
+      ${sec("5. How the track record is built", `<p>Each season from ${esc(String(REC.since || 2015))} on was predicted by a model trained only on earlier seasons, and each season's chance numbers use only earlier seasons too. Picks are graded at the real closing line and price. This season's games are also graded live at DraftKings' price from the last update before kickoff, which is the truest test.</p>
+        <p><strong>Be realistic:</strong> some settings were chosen by looking at these same years, and a test with random noise showed the pick records swing by 10+ units from tiny changes. Expect live results somewhat below the backtest, and losing weeks are normal even at 57%.</p>`)}
+      ${sec("6. How new ideas get tested", `<p>Every idea is tested against a fresh copy of the model on the same data. It goes in only if it cuts the spread error by more than random noise does (0.006 points) in both 2015-20 and 2021-26, and the pick record stays within the range random changes produce. Most ideas fail: ESPN's FPI, about 60 public computer ratings, Next Gen Stats, skill-player injuries and 32 classic betting angles all did not help. You approve every change before it goes live.</p>`)}
+      ${sec("7. Limits", `<p>NFL betting markets are efficient and these edges are small; even the best group wins a bit under 60%. Lines and injuries change through the week, so a pick is final at the update about 80 minutes before kickoff. Confirm every price in the DraftKings app. Information only, not financial advice.</p>`)}`;
+  }
+
   // ------------------------------------------------------------------ router
-  const ROUTES = { alerts: renderAlerts, games: renderGames, picks: renderPicks, breakdown: renderBreakdown, futures: renderFutures, teams: renderTeams,
+  const ROUTES = { how: renderHow, alerts: renderAlerts, games: renderGames, picks: renderPicks, breakdown: renderBreakdown, futures: renderFutures, teams: renderTeams,
     players: renderPlayers, record: renderRecord, backtest: renderRecord, bets: renderBets, info: renderInfo, live: renderLive };
   function route() {
     const [name, arg] = (location.hash.replace(/^#/, "") || "games").split("/");

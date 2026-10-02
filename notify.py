@@ -1,10 +1,11 @@
 #!/usr/bin/env python
-"""Phone notifications for pick changes, through ntfy (https://ntfy.sh, free, no account).
+"""Phone notifications through ntfy (https://ntfy.sh, free, no account).
 
-Off unless the NTFY_TOPIC secret is set. Sends each new pick-change alert from the site build
-(public/data/site.js "alerts", level "high": green/Top on or off, green side switch, wind under on
-or off) once, then remembers it in artifacts/alerts_sent.json. The first run after switching on only
-records what is already there, so it never floods the phone with old alerts.
+Off unless the NTFY_TOPIC secret is set. From the site build's alerts (public/data/site.js):
+  pick changes (level "high": green/Top on or off, green side switch, wind under on or off): one push each
+  DraftKings line moves (kind "line", pregame spread/total moves): one combined push per run
+Each alert is sent once (remembered in artifacts/alerts_sent.json) and only if it is less than FRESH old;
+the first run after switching on only records what is already there.
 
     NTFY_TOPIC=<your topic> python notify.py
 """
@@ -34,7 +35,9 @@ def main() -> int:
     if not SITE.exists():
         return 0
     txt = SITE.read_text(encoding="utf-8")
-    alerts = [a for a in json.loads(txt[txt.index("=") + 1:].rstrip().rstrip(";")).get("alerts", []) if a.get("level") == "high"]
+    allx = json.loads(txt[txt.index("=") + 1:].rstrip().rstrip(";")).get("alerts", [])
+    alerts = [a for a in allx if a.get("level") == "high"]
+    moves = [a for a in allx if a.get("kind") == "line"]
     first = not SENT.exists()
     sent = set(json.loads(SENT.read_text()) if SENT.exists() else [])
     new = [a for a in alerts if a["id"] not in sent]
@@ -56,10 +59,29 @@ def main() -> int:
             except Exception as e:
                 log.warning("ntfy send failed (%s); will retry next run.", e)
                 new = [x for x in new if x is not a]
-    keep = sorted(sent | {a["id"] for a in new} | {a["id"] for a in stale} | ({a["id"] for a in alerts} if first else set()))[-4000:]
+    # line moves: one combined push per run (lower priority than pick changes)
+    mnew = [a for a in moves if a["id"] not in sent]
+    mfresh = [a for a in mnew if fresh(a)] if not first else []
+    msent = []
+    if mfresh:
+        import requests
+        mfresh = sorted(mfresh, key=lambda x: x["ts"])
+        body = "\n".join(f"{a['matchup']}: {a['text']}" for a in mfresh[:12])
+        if len(mfresh) > 12:
+            body += f"\n+{len(mfresh) - 12} more on the Alerts tab"
+        try:
+            requests.post(f"https://ntfy.sh/{topic}", data=body.encode("utf-8"), timeout=20,
+                          headers={"Title": f"DraftKings line move{'s' if len(mfresh) > 1 else ''} ({len(mfresh)})",
+                                   "Click": SITE_URL, "Tags": "chart_with_upwards_trend", "Priority": "low"}).raise_for_status()
+            msent = mfresh
+        except Exception as e:
+            log.warning("ntfy line-move send failed (%s); will retry next run.", e)
+    mdone = {a["id"] for a in msent} | {a["id"] for a in mnew if not fresh(a)} | ({a["id"] for a in moves} if first else set())
+    keep = sorted(sent | {a["id"] for a in new} | {a["id"] for a in stale} | mdone | ({a["id"] for a in alerts} if first else set()))[-4000:]
     SENT.parent.mkdir(parents=True, exist_ok=True)
     SENT.write_text(json.dumps(keep))
-    log.info("Phone notifications: %s", "set up (existing alerts recorded, none sent)" if first else f"{len(new)} sent")
+    log.info("Phone notifications: %s", "set up (existing alerts recorded, none sent)" if first
+             else f"{len(new)} pick changes, {len(msent)} line moves sent")
     return 0
 
 

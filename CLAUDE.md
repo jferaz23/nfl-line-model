@@ -37,7 +37,13 @@ Picks (nflmodel/picks.py, one rule for live and history): model's side of the nu
 forward hit rate by disagreement band (0-2, 2-4, 4+), shrunk to 50%, monotone; green = chance >=
 break-even + 1pt and chance >= 51%; Top pick = any spread with a 4+ pt edge, always shown green (since Oct 2, 2026;
 before, Top also had to pass the green test, which made it jumpy). Track record since 2015 at closing prices (chance rated
-on non-QB-caution games): Top 241-176-14 (57.8%, +49.7u), green incl. Top 400-331-24 (54.7%, +55.1u), all spreads 51.8%.
+on non-QB-caution games, with the market blend below): Top 212-164-12 (56.4%, +34.4u), green incl. Top 392-336-19
+(53.8%, +43.0u), all spreads 53.1% (+84.2u).
+Market blend (config.mkt_blend_margin 0.25, model.LineModel._blend, Oct 2, 2026): spread prediction = 75% model + 25% the
+market-implied ratings forecast (d_mkt_rating, earlier weeks' closes). Spread MAE 9.9816 -> 9.9649 (2015-20 -0.022, 2021-26
+-0.010); passed the noise-aware rule. Margin cap +/-28 also passed alone but failed combined (units beyond noise).
+Questionable starting QB (features.QB_Q_START): last week's starter listed Questionable starts 57% (DNP 37 / limited 53 /
+full 85%, 211 cases 2013-2025); his value is blended with the backup's at those odds (live only).
 Injury odds (config.status_play_prob, measured 2013-2025): QUESTIONABLE 0.66, DOUBTFUL 0.01; QUESTIONABLE by last practice
 on the final report DNP 0.42 / limited 0.68 / full 0.79 (availability.play_prob; midweek practice is not used).
 Early-week value (build_site.early_value, Picks tab, information only): the week's first model run, spreads 3+ pts off
@@ -52,7 +58,9 @@ the user saves into win_totals/ (Sports Odds History / Genius Sports; no scrapin
 win_totals/win_totals.csv; inert until then, and must pass the backtest before it counts.
 Alerts: build_site.alerts() -> site Alerts tab (pick green/Top/wind on-off with the reason, DraftKings line moves),
 badge + browser notifications while open (polls site.js every 5 min); notify.py pushes pick changes to ntfy only
-if the NTFY_TOPIC secret exists (state artifacts/alerts_sent.json).
+if the NTFY_TOPIC secret exists (state artifacts/alerts_sent.json); line moves go as one combined low-priority push per run.
+Site tabs: How it works (#how, web/app.js renderHow) explains the method with live numbers; game cards show the week's
+opening line -> now (the weekly opener = first logged line; ESPN's 'open' is the line first posted months earlier).
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).

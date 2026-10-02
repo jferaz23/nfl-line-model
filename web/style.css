@@ -325,3 +325,6 @@ ol.plays { margin: 0; padding-left: 18px; font-size: 13px; } ol.plays li { margi
 ul.scoring { margin: 0; padding-left: 18px; font-size: 13px; } ul.scoring li { margin: 0 0 5px; }
 table.gcstats td { padding: 5px 8px; }
 @media (max-width: 640px) { .gc-pts { font-size: 26px; } .gamecast .gc-score { gap: 6px; } }
+
+.lmove { display: flex; align-items: center; gap: 6px; font-size: 12px; margin-top: 6px; color: var(--ink); }
+.lmove svg { flex: none; }

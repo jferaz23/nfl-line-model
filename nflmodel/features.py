@@ -193,6 +193,26 @@ def _backup_qb(team, season, week, exclude, qg, rosters, wplays):
     return "UNKNOWN", "unknown QB"
 
 
+# When last week's starter is QUESTIONABLE on the injury report he started 57% of the time (211 cases 2013-2025):
+# 37% if he missed his last practice, 53% limited, 85% full. His value is blended with the backup's at these odds.
+QB_Q_START = {"DNP": 0.37, "LIMITED": 0.53, "FULL": 0.85}
+QB_Q_START_DEFAULT = 0.57
+
+
+def _qb_questionable(qid, qname, team, season, week, injuries):
+    """Chance a QUESTIONABLE starter starts (None if he is not listed Questionable)."""
+    if injuries is None or injuries.empty:
+        return None
+    from .availability import practice_key
+    inj = injuries[(injuries["season"] == season) & (injuries["week"] == week) & (injuries["team"] == team)]
+    hit = inj[(inj["gsis_id"] == qid) | (inj["full_name"].map(qb_key) == qb_key(qname))]
+    hit = hit[hit["report_status"].notna()]
+    if hit.empty or hit["report_status"].iloc[-1] != "QUESTIONABLE":
+        return None
+    prac = hit["practice_status"].iloc[-1] if "practice_status" in hit.columns else None
+    return QB_Q_START.get(practice_key(prac), QB_Q_START_DEFAULT)
+
+
 def project_starters(target, starters_hist, qg, injuries, rosters, qb_overrides, qmap_wplays):
     """Projected starting QB for each team in the target games.
     Order: your override -> last starter (unless Out/Doubtful/off roster) -> the team's
@@ -202,6 +222,7 @@ def project_starters(target, starters_hist, qg, injuries, rosters, qb_overrides,
     for g in target.itertuples(index=False):
         for side, team in (("home", g.home_team), ("away", g.away_team)):
             qid, qname, src = None, None, None
+            alt_id, p_start = None, 1.0
             if ov is not None:
                 o = ov[(ov["season"].astype(int) == g.season) & (ov["week"].astype(int) == g.week)
                        & (ov["team"].astype(str).str.upper() == team)]
@@ -219,11 +240,17 @@ def project_starters(target, starters_hist, qg, injuries, rosters, qb_overrides,
                 reason = _qb_unavailable(last_id, last_name, team, g.season, g.week, injuries, rosters) if last_id else "no history"
                 if last_id and reason is None:
                     qid, qname, src = last_id, last_name, "last starter"
+                    pq = _qb_questionable(last_id, last_name, team, g.season, g.week, injuries)
+                    if pq is not None:
+                        b_id, b_name = _backup_qb(team, g.season, g.week, last_id, qg, rosters, qmap_wplays)
+                        if b_id:
+                            alt_id, p_start = b_id, pq
+                            src = f"last starter, Questionable ({pq:.0%} to start; else {b_name})"
                 else:
                     qid, qname = _backup_qb(team, g.season, g.week, last_id, qg, rosters, qmap_wplays)
                     src = f"backup ({last_name}: {reason})" if last_id else "no recent starter found"
             rows.append({"game_id": g.game_id, "team": team, "side": side, "qb_id": qid,
-                         "qb_name": qname, "qb_source": src})
+                         "qb_name": qname, "qb_source": src, "qb_alt_id": alt_id, "qb_p": p_start})
     return pd.DataFrame(rows)
 
 
@@ -645,18 +672,24 @@ def build_games(data: dict, cfg, target_season=None, target_week=None, forecasts
         out = out.merge(rr[["season", "week", col] + [f"{side}_{c}" for c in RATING_COLS]],
                         on=["season", "week", col], how="left")
         s2 = all_st.rename(columns={"team": col, "qb_id": f"{side}_qb_id", "qb_name": f"{side}_qb_name_used",
-                                    "qb_source": f"{side}_qb_source"})
+                                    "qb_source": f"{side}_qb_source", "qb_alt_id": f"{side}_qb_alt_id",
+                                    "qb_p": f"{side}_qb_p"})
         out = out.merge(s2, on=["game_id", col], how="left")
 
     qv_h, qv_a, new_h, new_a, lgs = [], [], [], [], []
-    for r in out[["season", "week", "h_qb_id", "a_qb_id"]].itertuples(index=False):
+    for c in ("h_qb_alt_id", "a_qb_alt_id", "h_qb_p", "a_qb_p"):
+        if c not in out.columns:
+            out[c] = np.nan
+    for r in out[["season", "week", "h_qb_id", "a_qb_id", "h_qb_alt_id", "a_qb_alt_id", "h_qb_p", "a_qb_p"]].itertuples(index=False):
         qmap, wmap, lg, prior = qb_lookup[(r.season, r.week)]
-        vh = qmap.get(r.h_qb_id, prior) if isinstance(r.h_qb_id, str) else prior
-        va = qmap.get(r.a_qb_id, prior) if isinstance(r.a_qb_id, str) else prior
-        qv_h.append(vh)
-        qv_a.append(va)
-        new_h.append(float(wmap.get(r.h_qb_id, 0.0) < 100))
-        new_a.append(float(wmap.get(r.a_qb_id, 0.0) < 100))
+        for qid, alt, p, vals, news in ((r.h_qb_id, r.h_qb_alt_id, r.h_qb_p, qv_h, new_h), (r.a_qb_id, r.a_qb_alt_id, r.a_qb_p, qv_a, new_a)):
+            v = qmap.get(qid, prior) if isinstance(qid, str) else prior
+            nw = float(wmap.get(qid, 0.0) < 100)
+            if isinstance(alt, str) and p == p and p < 1:          # questionable starter: expected value over who starts
+                v = p * v + (1 - p) * qmap.get(alt, prior)
+                nw = p * nw + (1 - p) * float(wmap.get(alt, 0.0) < 100)
+            vals.append(v)
+            news.append(nw)
         lgs.append(lg)
     out["h_qb_value"], out["a_qb_value"], out["qb_lg"] = qv_h, qv_a, lgs
     out["h_qb_new"], out["a_qb_new"] = new_h, new_a

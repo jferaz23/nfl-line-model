@@ -33,6 +33,14 @@ class LineModel:
         # an explicit use_gbm=True fits the booster even at weight 0 (the backtest needs it to choose)
         self.use_gbm = (cfg.use_gbm and self.gw > 0) if use_gbm is None else use_gbm
         self.gbm = None
+        # spreads: blend in the market-implied ratings forecast (as-of: earlier weeks' closing lines)
+        self.mb = float(getattr(cfg, "mkt_blend_margin", 0.0) or 0.0) if kind == "margin" else 0.0
+
+    def _blend(self, df, p):
+        if self.mb <= 0 or "d_mkt_rating" not in df.columns:
+            return p
+        m = df["d_mkt_rating"].astype(float).fillna(0.0).to_numpy()
+        return (1 - self.mb) * p + self.mb * m
 
     def _xy(self, df):
         d = df[df["has_ratings"].astype(bool) & df[self.target].notna()]
@@ -67,14 +75,14 @@ class LineModel:
         p = self.ridge.predict(Xs)
         if self.gbm is not None and self.gw > 0:
             p = (1 - self.gw) * p + self.gw * self.gbm.predict(X)
-        return p
+        return self._blend(df, p)
 
     def predict_parts(self, df: pd.DataFrame):
         """(ridge prediction, boosting prediction or NaN) so the backtest can choose the blend."""
         X, Xs = self._xs(df)
         r = self.ridge.predict(Xs)
         g = self.gbm.predict(X) if self.gbm is not None else np.full(len(r), np.nan)
-        return r, g
+        return self._blend(df, r), self._blend(df, g)
 
     def explain(self, df: pd.DataFrame) -> pd.DataFrame:
         """Ridge contribution of each factor group, in points, relative to an average game."""
@@ -85,6 +93,9 @@ class LineModel:
         for g, fs in self.groups.items():
             out[g] = contrib[:, [pos[f] for f in dict.fromkeys(fs)]].sum(axis=1)
         out["baseline"] = self.ridge.intercept_
+        if self.mb > 0 and "d_mkt_rating" in df.columns:
+            out = out * (1 - self.mb)
+            out["market_view"] = self.mb * df["d_mkt_rating"].astype(float).fillna(0.0).to_numpy()
         return out
 
     def coefficients(self) -> pd.DataFrame:

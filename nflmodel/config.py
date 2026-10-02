@@ -85,6 +85,10 @@ class Config:
     # weight of the gradient-boosting component per market (-1 = use gbm_weight); set by backtest.py
     gbm_weight_margin: float = -1.0
     gbm_weight_total: float = -1.0
+    # share of the spread prediction taken from the market-implied ratings forecast (d_mkt_rating: earlier weeks'
+    # closing lines only). Ridge's shrinkage underweights it; blending 25% cut spread MAE 0.017 in the 2015-2026
+    # backtest (2015-20 -0.022, 2021-26 -0.010) with Top/green units inside the noise range (adopted Oct 2, 2026)
+    mkt_blend_margin: float = 0.25
     drop_groups_total: list = field(default_factory=list)
     news_gap_points: float = 4.0        # model vs market gap that usually means missing news
     kelly_fraction: float = 0.25
