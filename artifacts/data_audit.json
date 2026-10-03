@@ -1,5 +1,5 @@
 {
- "built": "2026-10-03T03:08:16+00:00",
+ "built": "2026-10-03T09:16:18+00:00",
  "scores": {
   "ok": true,
   "games": 3077,
@@ -420,14 +420,21 @@
    }
   ],
   "n_unmatched": 2,
-  "status_disagreements": [],
-  "n_status_disagree": 0,
+  "status_disagreements": [
+   {
+    "team": "LA",
+    "player": "Terrance Ferguson",
+    "espn": "IR",
+    "league": "OUT"
+   }
+  ],
+  "n_status_disagree": 1,
   "qb_flags": [],
-  "checked": "2026-10-03T03:10:01+00:00"
+  "checked": "2026-10-03T09:17:53+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261003T030810Z.json",
+  "snapshot": "odds_20261003T091609Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
