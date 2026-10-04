@@ -1,9 +1,9 @@
 {
- "built": "2026-10-04T17:52:35+00:00",
+ "built": "2026-10-04T22:57:58+00:00",
  "scores": {
   "ok": true,
-  "games": 3078,
-  "matched": 3078,
+  "games": 3086,
+  "matched": 3086,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3078,
+  "games": 3086,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -76,7 +76,7 @@
     "espn_venue": "M&T Bank Stadium",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": "grass",
+    "nflverse_surface": ",grass",
     "espn_current": true
    },
    {
@@ -87,7 +87,7 @@
     "espn_venue": "Highmark Stadium",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": "a_turf,grass",
+    "nflverse_surface": ",a_turf,grass",
     "espn_current": true
    },
    {
@@ -109,7 +109,7 @@
     "espn_venue": "Soldier Field",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": "grass",
+    "nflverse_surface": ",grass",
     "espn_current": true
    },
    {
@@ -120,7 +120,7 @@
     "espn_venue": "Paycor Stadium",
     "espn_grass": false,
     "espn_indoor": false,
-    "nflverse_surface": "fieldturf",
+    "nflverse_surface": ",fieldturf",
     "espn_current": true
    },
    {
@@ -186,7 +186,7 @@
     "espn_venue": "Reliant Stadium",
     "espn_grass": false,
     "espn_indoor": true,
-    "nflverse_surface": "astroturf",
+    "nflverse_surface": ",astroturf",
     "espn_current": true
    },
    {
@@ -307,7 +307,7 @@
     "espn_venue": "MetLife Stadium",
     "espn_grass": false,
     "espn_indoor": false,
-    "nflverse_surface": "fieldturf",
+    "nflverse_surface": ",fieldturf",
     "espn_current": true
    },
    {
@@ -329,7 +329,7 @@
     "espn_venue": "Lincoln Financial Field",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": "grass",
+    "nflverse_surface": ",grass",
     "espn_current": true
    },
    {
@@ -373,7 +373,7 @@
     "espn_venue": "Raymond James Stadium",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": "grass",
+    "nflverse_surface": ",grass",
     "espn_current": true
    },
    {
@@ -402,55 +402,12 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 700,
-  "not_active": 200,
-  "matched_share": 0.997,
-  "unmatched": [
-   {
-    "team": "BUF",
-    "full_name": "Mike Danna",
-    "position": "DE",
-    "report_status": "OUT"
-   },
-   {
-    "team": "DAL",
-    "full_name": "Joey Porter Jr.",
-    "position": "CB",
-    "report_status": "ACTIVE"
-   }
-  ],
-  "n_unmatched": 2,
+  "listings": 300,
+  "not_active": 100,
+  "matched_share": 1.0,
+  "unmatched": [],
+  "n_unmatched": 0,
   "status_disagreements": [
-   {
-    "team": "BAL",
-    "player": "Chris Moore",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "BAL",
-    "player": "Ethan Pocic",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "BAL",
-    "player": "Jovaughn Gwyn",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "BUF",
-    "player": "T.J. Sanders",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "BUF",
-    "player": "Christian Benford",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
    {
     "team": "CAR",
     "player": "Xavier Legette",
@@ -458,74 +415,32 @@
     "league": "OUT"
    },
    {
-    "team": "CHI",
-    "player": "Cam Lewis",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "CHI",
-    "player": "Braxton Jones",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "CIN",
-    "player": "Swayze Bozeman",
+    "team": "LV",
+    "player": "Aidan O'Connell",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
-    "team": "CIN",
-    "player": "B.J. Hill",
+    "team": "LAC",
+    "player": "Ladd McConkey",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
-    "team": "CIN",
-    "player": "Bryan Cook",
+    "team": "LAC",
+    "player": "Derwin James Jr.",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
-    "team": "GB",
-    "player": "Warren Brinson",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "JAX",
-    "player": "Christian Braswell",
+    "team": "SEA",
+    "player": "Chazz Surratt",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
-    "team": "JAX",
-    "player": "Montaric Brown",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "LA",
-    "player": "Colby Parkinson",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "LA",
-    "player": "Terrance Ferguson",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "NE",
-    "player": "Channing Canada",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "NYJ",
-    "player": "Kingsley Enagbare",
+    "team": "SEA",
+    "player": "Ty Okada",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
@@ -536,25 +451,25 @@
     "league": "OUT"
    }
   ],
-  "n_status_disagree": 19,
+  "n_status_disagree": 7,
   "qb_flags": [],
-  "checked": "2026-10-04T17:54:13+00:00"
+  "checked": "2026-10-04T22:59:41+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261004T175225Z.json",
-  "games": 14,
+  "snapshot": "odds_20261004T225751Z.json",
+  "games": 21,
   "books_seen": {
-   "draftkings": 14,
-   "fanduel": 14,
-   "betrivers": 14,
-   "novig": 14,
-   "betmgm": 14,
-   "hardrockbet": 14,
-   "prophetx": 14,
-   "pinnacle": 14,
-   "betonlineag": 6,
-   "lowvig": 6
+   "draftkings": 21,
+   "fanduel": 21,
+   "betrivers": 21,
+   "novig": 21,
+   "betmgm": 6,
+   "prophetx": 6,
+   "hardrockbet": 6,
+   "pinnacle": 6,
+   "lowvig": 2,
+   "betonlineag": 2
   },
   "configured_missing": []
  }
