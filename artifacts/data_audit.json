@@ -1,5 +1,5 @@
 {
- "built": "2026-10-04T02:33:31+00:00",
+ "built": "2026-10-04T10:52:42+00:00",
  "scores": {
   "ok": true,
   "games": 3077,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 750,
-  "not_active": 174,
+  "not_active": 175,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -474,21 +474,15 @@
     "player": "Jadarian Price",
     "espn": "IR",
     "league": "OUT"
-   },
-   {
-    "team": "WAS",
-    "player": "Terry McLaurin",
-    "espn": "DOUBTFUL",
-    "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 10,
+  "n_status_disagree": 9,
   "qb_flags": [],
-  "checked": "2026-10-04T02:35:15+00:00"
+  "checked": "2026-10-04T10:54:12+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261004T023325Z.json",
+  "snapshot": "odds_20261004T105233Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
