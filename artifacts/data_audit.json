@@ -1,9 +1,9 @@
 {
- "built": "2026-10-04T10:52:42+00:00",
+ "built": "2026-10-04T17:52:35+00:00",
  "scores": {
   "ok": true,
-  "games": 3077,
-  "matched": 3077,
+  "games": 3078,
+  "matched": 3078,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3077,
+  "games": 3078,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -402,15 +402,15 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 750,
-  "not_active": 175,
+  "listings": 700,
+  "not_active": 200,
   "matched_share": 0.997,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
-    "report_status": "ACTIVE"
+    "report_status": "OUT"
    },
    {
     "team": "DAL",
@@ -421,6 +421,12 @@
   ],
   "n_unmatched": 2,
   "status_disagreements": [
+   {
+    "team": "BAL",
+    "player": "Chris Moore",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
    {
     "team": "BAL",
     "player": "Ethan Pocic",
@@ -434,10 +440,28 @@
     "league": "OUT"
    },
    {
+    "team": "BUF",
+    "player": "T.J. Sanders",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "BUF",
+    "player": "Christian Benford",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "CAR",
     "player": "Xavier Legette",
     "espn": "IR",
     "league": "OUT"
+   },
+   {
+    "team": "CHI",
+    "player": "Cam Lewis",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
    },
    {
     "team": "CHI",
@@ -446,14 +470,44 @@
     "league": "OUT"
    },
    {
+    "team": "CIN",
+    "player": "Swayze Bozeman",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "CIN",
+    "player": "B.J. Hill",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "CIN",
+    "player": "Bryan Cook",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "GB",
     "player": "Warren Brinson",
     "espn": "IR",
     "league": "OUT"
    },
    {
-    "team": "IND",
-    "player": "Keenan Allen",
+    "team": "JAX",
+    "player": "Christian Braswell",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "JAX",
+    "player": "Montaric Brown",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LA",
+    "player": "Colby Parkinson",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
@@ -470,31 +524,37 @@
     "league": "QUESTIONABLE"
    },
    {
+    "team": "NYJ",
+    "player": "Kingsley Enagbare",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "SEA",
     "player": "Jadarian Price",
     "espn": "IR",
     "league": "OUT"
    }
   ],
-  "n_status_disagree": 9,
+  "n_status_disagree": 19,
   "qb_flags": [],
-  "checked": "2026-10-04T10:54:12+00:00"
+  "checked": "2026-10-04T17:54:13+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261004T105233Z.json",
-  "games": 28,
+  "snapshot": "odds_20261004T175225Z.json",
+  "games": 14,
   "books_seen": {
-   "draftkings": 28,
-   "fanduel": 28,
-   "betmgm": 15,
-   "lowvig": 28,
-   "betonlineag": 28,
-   "betrivers": 28,
-   "novig": 28,
-   "prophetx": 15,
-   "hardrockbet": 15,
-   "pinnacle": 15
+   "draftkings": 14,
+   "fanduel": 14,
+   "betrivers": 14,
+   "novig": 14,
+   "betmgm": 14,
+   "hardrockbet": 14,
+   "prophetx": 14,
+   "pinnacle": 14,
+   "betonlineag": 6,
+   "lowvig": 6
   },
   "configured_missing": []
  }
