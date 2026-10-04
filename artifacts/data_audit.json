@@ -1,5 +1,5 @@
 {
- "built": "2026-10-03T18:55:49+00:00",
+ "built": "2026-10-04T02:33:31+00:00",
  "scores": {
   "ok": true,
   "games": 3077,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 750,
-  "not_active": 180,
+  "not_active": 174,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -421,6 +421,30 @@
   ],
   "n_unmatched": 2,
   "status_disagreements": [
+   {
+    "team": "BAL",
+    "player": "Ethan Pocic",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "BAL",
+    "player": "Jovaughn Gwyn",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "CAR",
+    "player": "Xavier Legette",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "CHI",
+    "player": "Braxton Jones",
+    "espn": "IR",
+    "league": "OUT"
+   },
    {
     "team": "GB",
     "player": "Warren Brinson",
@@ -440,19 +464,31 @@
     "league": "OUT"
    },
    {
+    "team": "NE",
+    "player": "Channing Canada",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "SEA",
+    "player": "Jadarian Price",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
     "team": "WAS",
     "player": "Terry McLaurin",
     "espn": "DOUBTFUL",
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 4,
+  "n_status_disagree": 10,
   "qb_flags": [],
-  "checked": "2026-10-03T18:57:31+00:00"
+  "checked": "2026-10-04T02:35:15+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261003T185540Z.json",
+  "snapshot": "odds_20261004T023325Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
