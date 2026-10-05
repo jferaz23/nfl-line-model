@@ -652,6 +652,49 @@ def my_bets(finals_by_key) -> list:
     return out
 
 
+def my_pnl() -> dict:
+    """Your DraftKings slips (overrides/bet_slips.csv), as DraftKings settled them: per slip, by week, all time."""
+    p = ROOT / "overrides" / "bet_slips.csv"
+    out = dict(slips=[], weeks=[], total={})
+    if not p.exists():
+        return out
+    try:
+        df = pd.read_csv(p, comment="#")
+    except Exception:
+        return out
+    rows = []
+    for r in df.itertuples(index=False):
+        res = str(r.result).strip().upper() if isinstance(r.result, str) and r.result.strip() else None
+        stake = float(r.stake) if pd.notna(r.stake) else 0.0
+        pay = float(r.payout) if pd.notna(r.payout) else None
+        if res == "W":
+            profit = (pay - stake) if pay is not None else (units("W", float(r.price)) * stake if pd.notna(r.price) else None)
+        elif res == "L":
+            profit = -stake
+        elif res == "P":
+            profit = 0.0
+        else:
+            profit = None
+        rows.append(dict(date=str(r.date), season=int(r.season), week=int(r.week), type=str(r.type), bet=str(r.bet),
+                         price=_f(r.price), stake=stake, result=res, payout=pay, profit=profit))
+    def summ(d):
+        s = [x for x in d if x["result"]]
+        w, l, pu = sum(x["result"] == "W" for x in s), sum(x["result"] == "L" for x in s), sum(x["result"] == "P" for x in s)
+        staked = sum(x["stake"] for x in s); prof = sum(x["profit"] or 0 for x in s)
+        return dict(w=w, l=l, p=pu, n=len(s), staked=staked, profit=prof, roi=prof / staked if staked else None,
+                    open=sum(1 for x in d if not x["result"]), open_stake=sum(x["stake"] for x in d if not x["result"]))
+    keys = sorted({(x["season"], x["week"]) for x in rows})
+    run = 0.0
+    for k in keys:
+        s = summ([x for x in rows if (x["season"], x["week"]) == k])
+        run += s["profit"]
+        out["weeks"].append(dict(season=k[0], week=k[1], cum=run, **s))
+    out["slips"] = sorted(rows, key=lambda x: x["date"], reverse=True)
+    out["total"] = summ(rows)
+    out["singles"], out["parlays"] = summ([x for x in rows if x["type"] == "single"]), summ([x for x in rows if x["type"] == "parlay"])
+    return out
+
+
 # ----------------------------------------------------------------------------- main
 def main() -> int:
     weeks = [w for w in (_load(p) for p in sorted(DATA.glob("week_*.json"))) if w and not w.get("demo")]
@@ -700,7 +743,7 @@ def main() -> int:
         lines=line_history(lines, cur), my_bets=my_bets(finals_by_key),
         checks=checks, checks_ok=all(c[1] for c in checks), audit=_load(ART / "data_audit.json"),
         budget=_load(ART / "odds_budget.json"), alerts=alerts(cur, lines, kickoffs),
-        early=early_value(cur, sched, lines, finals),
+        early=early_value(cur, sched, lines, finals), pnl=my_pnl(),
     )
     if PUBLIC.exists():
         shutil.rmtree(PUBLIC)

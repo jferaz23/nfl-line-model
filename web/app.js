@@ -629,6 +629,29 @@
         <p class="note">The closing line is the toughest benchmark in sports; a model that matches it is doing well. Green picks are where the disagreement has historically been worth betting.</p></div></div>`;
   }
 
+  // ------------------------------------------------------------------ your profit and loss (overrides/bet_slips.csv)
+  function pnlPanel() {
+    const P = S.pnl || {}, T = P.total || {}, wk = (P.weeks || []).slice().reverse(), slips = P.slips || [];
+    if (!slips.length) return "";
+    const usd = x => fin(x) ? (x >= 0 ? "+$" : "−$") + Math.abs(x).toFixed(2) : "–";
+    const cls = x => fin(x) ? (x > 0 ? "w" : x < 0 ? "l" : "") : "";
+    const rec = x => x && x.n ? `${x.w}-${x.l}${x.p ? "-" + x.p : ""}` : "0-0";
+    const kp = (label, val, sub, c) => `<div class="kpi${c ? " kpi-green" : ""}"><div class="kl">${label}</div><div class="kv ${cls(val)}">${usd(val)}</div><div class="ks">${sub}</div></div>`;
+    return `<div class="panel"><h2>My bets: profit and loss</h2>
+      <p class="lede" style="margin:0">Your DraftKings bets as DraftKings settled them, week by week and all time.</p>
+      <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin:10px 0">
+        ${kp("All time", T.profit, `${rec(T)} · $${num(T.staked, 0)} staked · ${fin(T.roi) ? sgn(100 * T.roi, 1) + "%" : "–"} return`, true)}
+        ${kp("This week", wk.length ? wk[0].profit : NaN, wk.length ? `Week ${wk[0].week}: ${rec(wk[0])}` : "")}
+        ${kp("Straight bets", (P.singles || {}).profit, `${rec(P.singles)} · $${num((P.singles || {}).staked, 0)} staked`)}
+        ${kp("Parlays", (P.parlays || {}).profit, `${rec(P.parlays)} · $${num((P.parlays || {}).staked, 0)} staked`)}</div>
+      ${T.open ? `<p class="note">${T.open} open bet${T.open > 1 ? "s" : ""} ($${num(T.open_stake, 0)} at risk) not counted yet.</p>` : ""}
+      <div class="tablewrap"><table><thead><tr><th>Week</th><th class="num">Record</th><th class="num">Staked</th><th class="num">Profit</th><th class="num">Return</th><th class="num">Running total</th></tr></thead><tbody>
+      ${wk.map(w => `<tr><td>Week ${w.week}, ${w.season}</td><td class="num">${rec(w)}</td><td class="num">$${num(w.staked, 0)}</td><td class="num ${cls(w.profit)}">${usd(w.profit)}</td><td class="num">${fin(w.roi) ? sgn(100 * w.roi, 1) + "%" : "–"}</td><td class="num ${cls(w.cum)}">${usd(w.cum)}</td></tr>`).join("")}</tbody></table></div>
+      <details style="margin-top:8px"><summary>All ${slips.length} bets</summary><div class="tablewrap"><table><thead><tr><th>Date</th><th>Bet</th><th class="num">Odds</th><th class="num">Stake</th><th class="num">Result</th><th class="num">Profit</th></tr></thead><tbody>
+      ${slips.map(x => `<tr><td class="muted">${esc(x.date)}</td><td>${x.type === "parlay" ? '<span class="chip">PARLAY</span> ' : ""}${esc(x.bet)}</td><td class="num">${fin(x.price) ? am(x.price) : "–"}</td><td class="num">$${num(x.stake, 0)}</td><td class="num">${x.result ? resChip(x.result) : '<span class="muted">open</span>'}</td><td class="num ${cls(x.profit)}">${usd(x.profit)}</td></tr>`).join("")}</tbody></table></div></details>
+      <p class="note">Send me your new bets (screenshots are fine) and I'll add them. Past results don't guarantee future ones.</p></div>`;
+  }
+
   // ------------------------------------------------------------------ Bets (this season, live)
   let betsFilter = "top";
   function renderBets() {
@@ -638,7 +661,7 @@
     const c = r => r && r.n ? `${recTxt(r)} <span class="small muted">${pct(r.pct, 0)}${fin(r.units) ? " · " + sgn(r.units, 1) + "u" : ""}</span>` : '<span class="dash">–</span>';
     const mine = S.my_bets || [];
     const myTot = mine.reduce((s, b) => s + (b.profit || 0), 0);
-    view.innerHTML = `<div class="panel"><h2>${esc(String(REC.current_season || ""))} week by week</h2><p class="lede">Weeks the backtest already covers are graded at the closing line; later weeks at DraftKings' price from the last run before kickoff.</p>
+    view.innerHTML = `${pnlPanel()}<div class="panel"><h2>${esc(String(REC.current_season || ""))} week by week</h2><p class="lede">Weeks the backtest already covers are graded at the closing line; later weeks at DraftKings' price from the last run before kickoff.</p>
       ${wk.length ? `<div class="tablewrap"><table class="rec-table"><thead><tr><th>Week</th><th class="num gcol">Top picks</th><th class="num gcol">Green picks</th><th class="num">All spreads</th><th class="num">All totals</th><th class="num">Winners</th></tr></thead><tbody>
       ${wk.map(w => `<tr><td>Week ${w.week}</td><td class="num gcol">${c(w.top)}</td><td class="num gcol">${c(w.green)}</td><td class="num">${c(w.spread)}</td><td class="num">${c(w.total)}</td><td class="num">${c(w.winner)}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">No graded weeks yet.</p>`}</div>
       <div class="panel"><div class="toolbar" style="justify-content:space-between"><div><h2>Live pick tracker</h2><p class="lede">Every pick from the weekly runs as the page showed it before kickoff. CLV = points better than DraftKings' closing line, the best early test of whether the edge is real.</p></div>
