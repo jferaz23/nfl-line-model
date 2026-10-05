@@ -1,5 +1,5 @@
 {
- "built": "2026-10-05T17:14:30+00:00",
+ "built": "2026-10-05T22:57:55+00:00",
  "scores": {
   "ok": true,
   "games": 3091,
@@ -403,24 +403,31 @@
  "injuries": {
   "ok": true,
   "listings": 50,
-  "not_active": 11,
+  "not_active": 13,
   "matched_share": 1.0,
   "unmatched": [],
   "n_unmatched": 0,
-  "status_disagreements": [],
-  "n_status_disagree": 0,
+  "status_disagreements": [
+   {
+    "team": "NO",
+    "player": "Noah Fant",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   }
+  ],
+  "n_status_disagree": 1,
   "qb_flags": [],
-  "checked": "2026-10-05T17:16:23+00:00"
+  "checked": "2026-10-05T22:59:40+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261005T171425Z.json",
+  "snapshot": "odds_20261005T225751Z.json",
   "games": 16,
   "books_seen": {
    "draftkings": 16,
    "fanduel": 16,
-   "betonlineag": 16,
-   "lowvig": 16,
+   "betonlineag": 14,
+   "lowvig": 14,
    "betrivers": 16,
    "novig": 16,
    "betmgm": 16,
