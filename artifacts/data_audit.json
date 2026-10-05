@@ -1,9 +1,9 @@
 {
- "built": "2026-10-05T05:06:41+00:00",
+ "built": "2026-10-05T11:15:11+00:00",
  "scores": {
   "ok": true,
-  "games": 3090,
-  "matched": 3090,
+  "games": 3091,
+  "matched": 3091,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3090,
+  "games": 3091,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -76,7 +76,7 @@
     "espn_venue": "M&T Bank Stadium",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": ",grass",
+    "nflverse_surface": "grass",
     "espn_current": true
    },
    {
@@ -87,7 +87,7 @@
     "espn_venue": "Highmark Stadium",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": ",a_turf,grass",
+    "nflverse_surface": "a_turf,grass",
     "espn_current": true
    },
    {
@@ -109,7 +109,7 @@
     "espn_venue": "Soldier Field",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": ",grass",
+    "nflverse_surface": "grass",
     "espn_current": true
    },
    {
@@ -120,7 +120,7 @@
     "espn_venue": "Paycor Stadium",
     "espn_grass": false,
     "espn_indoor": false,
-    "nflverse_surface": ",fieldturf",
+    "nflverse_surface": "fieldturf",
     "espn_current": true
    },
    {
@@ -186,7 +186,7 @@
     "espn_venue": "Reliant Stadium",
     "espn_grass": false,
     "espn_indoor": true,
-    "nflverse_surface": ",astroturf",
+    "nflverse_surface": "astroturf",
     "espn_current": true
    },
    {
@@ -230,7 +230,7 @@
     "espn_venue": "Allegiant Stadium",
     "espn_grass": true,
     "espn_indoor": true,
-    "nflverse_surface": ",grass",
+    "nflverse_surface": "grass",
     "espn_current": true
    },
    {
@@ -274,7 +274,7 @@
     "espn_venue": "U.S. Bank Stadium",
     "espn_grass": false,
     "espn_indoor": true,
-    "nflverse_surface": ",sportturf",
+    "nflverse_surface": "sportturf",
     "espn_current": true
    },
    {
@@ -307,7 +307,7 @@
     "espn_venue": "MetLife Stadium",
     "espn_grass": false,
     "espn_indoor": false,
-    "nflverse_surface": ",fieldturf",
+    "nflverse_surface": "fieldturf",
     "espn_current": true
    },
    {
@@ -329,7 +329,7 @@
     "espn_venue": "Lincoln Financial Field",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": ",grass",
+    "nflverse_surface": "grass",
     "espn_current": true
    },
    {
@@ -351,7 +351,7 @@
     "espn_venue": "Levi's Stadium",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": ",grass",
+    "nflverse_surface": "grass",
     "espn_current": true
    },
    {
@@ -362,7 +362,7 @@
     "espn_venue": "Lumen Field",
     "espn_grass": false,
     "espn_indoor": false,
-    "nflverse_surface": ",fieldturf",
+    "nflverse_surface": "fieldturf",
     "espn_current": true
    },
    {
@@ -373,7 +373,7 @@
     "espn_venue": "Raymond James Stadium",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": ",grass",
+    "nflverse_surface": "grass",
     "espn_current": true
    },
    {
@@ -402,38 +402,19 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 100,
-  "not_active": 32,
+  "listings": 50,
+  "not_active": 11,
   "matched_share": 1.0,
   "unmatched": [],
   "n_unmatched": 0,
-  "status_disagreements": [
-   {
-    "team": "CAR",
-    "player": "Cam Jackson",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "CAR",
-    "player": "Jalen Coker",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "CAR",
-    "player": "Xavier Legette",
-    "espn": "IR",
-    "league": "OUT"
-   }
-  ],
-  "n_status_disagree": 3,
+  "status_disagreements": [],
+  "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-05T05:08:32+00:00"
+  "checked": "2026-10-05T11:16:57+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261005T050638Z.json",
+  "snapshot": "odds_20261005T111507Z.json",
   "games": 16,
   "books_seen": {
    "draftkings": 16,
@@ -445,7 +426,7 @@
    "betmgm": 16,
    "pinnacle": 10,
    "prophetx": 14,
-   "hardrockbet": 14
+   "hardrockbet": 16
   },
   "configured_missing": []
  }
