@@ -1,5 +1,5 @@
 {
- "built": "2026-10-06T04:46:57+00:00",
+ "built": "2026-10-06T10:48:13+00:00",
  "scores": {
   "ok": true,
   "games": 3092,
@@ -296,7 +296,7 @@
     "espn_venue": "Caesars Superdome",
     "espn_grass": false,
     "espn_indoor": true,
-    "nflverse_surface": ",sportturf",
+    "nflverse_surface": "sportturf",
     "espn_current": true
    },
    {
@@ -423,11 +423,11 @@
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-06T04:48:43+00:00"
+  "checked": "2026-10-06T10:49:50+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261006T044650Z.json",
+  "snapshot": "odds_20261006T104804Z.json",
   "games": 15,
   "books_seen": {
    "draftkings": 15,
