@@ -1,18 +1,20 @@
 # Your DraftKings bets, one row per slip, as DraftKings settled them (shown on the site's Bets tab: P&L by week and total).
 # type: single | parlay.  result: W | L | P (push) | blank while open.  payout: total returned on a win (stake included).
 # price: American odds of the slip (parlay = the boosted price you got); leave blank if unknown.
+# source: what the site showed when you bet: top | green | wind | teaser | lean (model's side, not green) | parlay | other.
+# game_id / market / side / line (singles): used to compare your line with DraftKings' closing line (CLV).
 # No bet IDs or account details here: this file and the site are public.
-date,season,week,type,bet,price,stake,result,payout
-2026-09-30,2026,4,single,LA @ PHI Over 43.5,100,10,W,20.00
-2026-09-30,2026,4,single,GB @ TB: TB +3.5,100,10,W,20.00
-2026-10-01,2026,4,single,PIT @ CLE Under 38.5 (Thursday night),,10,L,
-2026-10-04,2026,4,single,DAL @ HOU: HOU -3,-102,10,L,
-2026-10-04,2026,4,single,KC @ LV: LV +4.5,100,10,W,20.00
-2026-10-04,2026,4,single,JAX @ CIN: JAX +2.5,-102,10,W,19.80
-2026-10-04,2026,4,single,NE @ BUF Under 49.5,-112,10,L,
-2026-10-04,2026,4,single,DET @ CAR: CAR +3.5,100,10,W,20.00
-2026-10-04,2026,4,single,JAX @ CIN Under 51.5,-110,10,W,19.09
-2026-10-04,2026,4,single,ARI @ NYG: NYG +2.5,-110,10,W,19.09
-2026-10-04,2026,4,parlay,"3 legs (alt lines): NYG +8.5, JAX +8.5, TB +8.5",137,10,W,23.70
-2026-10-04,2026,4,parlay,"3 legs: JAX +2.5, LV +4.5, NE @ BUF Under 49.5 (+50% boost)",975,10,L,
-2026-10-04,2026,4,parlay,"3 legs: NE @ BUF Under 49.5, JAX @ CIN Under 51.5, MIA @ MIN Over 38.5 (+50% boost)",894,10,L,
+date,season,week,type,bet,price,stake,result,payout,source,game_id,market,side,line
+2026-09-30,2026,4,single,LA @ PHI Over 43.5,100,10,W,20.00,green,2026_04_LA_PHI,total,over,43.5
+2026-09-30,2026,4,single,GB @ TB: TB +3.5,100,10,W,20.00,green,2026_04_GB_TB,spread,home,3.5
+2026-10-01,2026,4,single,PIT @ CLE Under 38.5 (Thursday night),,10,L,,wind,2026_04_PIT_CLE,total,under,38.5
+2026-10-04,2026,4,single,DAL @ HOU: HOU -3,-102,10,L,,green,2026_04_DAL_HOU,spread,home,-3
+2026-10-04,2026,4,single,KC @ LV: LV +4.5,100,10,W,20.00,green,2026_04_KC_LV,spread,home,4.5
+2026-10-04,2026,4,single,JAX @ CIN: JAX +2.5,-102,10,W,19.80,green,2026_04_JAX_CIN,spread,away,2.5
+2026-10-04,2026,4,single,NE @ BUF Under 49.5,-112,10,L,,lean,2026_04_NE_BUF,total,under,49.5
+2026-10-04,2026,4,single,DET @ CAR: CAR +3.5,100,10,W,20.00,green,2026_04_DET_CAR,spread,home,3.5
+2026-10-04,2026,4,single,JAX @ CIN Under 51.5,-110,10,W,19.09,lean,2026_04_JAX_CIN,total,under,51.5
+2026-10-04,2026,4,single,ARI @ NYG: NYG +2.5,-110,10,W,19.09,lean,2026_04_ARI_NYG,spread,home,2.5
+2026-10-04,2026,4,parlay,"3 legs (alt lines): NYG +8.5, JAX +8.5, TB +8.5",137,10,W,23.70,parlay,,,,
+2026-10-04,2026,4,parlay,"3 legs: JAX +2.5, LV +4.5, NE @ BUF Under 49.5 (+50% boost)",975,10,L,,parlay,,,,
+2026-10-04,2026,4,parlay,"3 legs: NE @ BUF Under 49.5, JAX @ CIN Under 51.5, MIA @ MIN Over 38.5 (+50% boost)",894,10,L,,parlay,,,,

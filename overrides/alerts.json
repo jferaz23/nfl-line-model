@@ -1,0 +1,5 @@
+{
+  "_about": "Phone (ntfy) alert settings. Pick changes go to <topic> and <topic>-picks; Top-pick changes also to <topic>-top. Line moves go only to <topic>, and are held during quiet hours (Eastern time, start hour to end hour).",
+  "line_moves": true,
+  "quiet_hours_et": [0, 7]
+}

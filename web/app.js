@@ -311,7 +311,7 @@
         <div class="pick">${esc(p.bet)} <span class="muted" style="font-weight:500">${am(p.price)}</span>${resChip(r)}</div>
         <div class="small muted">${esc(g.away_team)} @ ${esc(g.home_team)} · ${p.market}</div>
         <div class="conf" title="Chance ${pct(p.chance, 1)} vs break-even ${pct(p.breakeven, 1)}"><i style="width:${Math.round(100 * p.chance)}%"></i><b style="left:${(100 * p.breakeven).toFixed(1)}%"></b></div>
-        <div class="meta"><span>Chance <b>${pct(p.chance, 1)}</b></span><span>Needs <b>${pct(p.breakeven, 1)}</b></span><span>Value <b class="w">${val(p)}</b></span><span>Model ${edgeTxt(p.edge)} pts</span></div></a>`; };
+        <div class="meta"><span>Chance <b>${pct(p.chance, 1)}</b></span><span>Needs <b>${pct(p.breakeven, 1)}</b></span><span>Value <b class="w">${val(p)}</b></span><span>Model ${edgeTxt(p.edge)} pts</span>${d.lv && d.lv.state !== "pre" ? "" : logBtn(p)}</div></a>`; };
     const next = all.filter(p => !p.highlight).slice(0, compact ? 0 : 50);
     const rows = next.map(p => { const g = games[p.game_id];
       return `<tr><td><strong>${esc(p.bet)}</strong> ${am(p.price)}</td><td>${esc(g.away_team)} @ ${esc(g.home_team)}</td><td class="num">${pct(p.chance, 1)}</td><td class="num">${pct(p.breakeven, 1)}</td><td class="num muted">${val(p)}</td></tr>`; }).join("");
@@ -335,7 +335,8 @@
   function renderGames() {
     const W = S.weeks[curKey];
     if (!W) { view.innerHTML = `<p class="empty">No weekly run yet.</p>`; return; }
-    const games = W.games.slice().sort((x, y) => (x.kickoff_utc || "").localeCompare(y.kickoff_utc || ""));
+    const games = W.games.slice().sort((x, y) => (isFollowed(y) ? 1 : 0) - (isFollowed(x) ? 1 : 0) || (x.kickoff_utc || "").localeCompare(y.kickoff_utc || ""));
+    const star = t => `<span class="star${follows().has(t) ? " on" : ""}" role="button" tabindex="0" data-follow="${esc(t)}" title="${follows().has(t) ? "Unfollow" : "Follow"} ${esc(t)}">${follows().has(t) ? "★" : "☆"}</span>`;
     const card = g => {
       const d = derive(W, g), lv = d.lv;
       const hs = lv && lv.state !== "pre" ? lv.home_score : null, as = lv && lv.state !== "pre" ? lv.away_score : null;
@@ -343,9 +344,9 @@
       const pk = (p, label) => { if (!p) return ""; const r = d.res(p);
         return `<span class="pk${r ? " " + r : p.top ? " green top" : p.highlight ? " green" : ""}">${p.top ? "TOP · " : ""}${esc(label || p.bet)}${r ? " · " + r : ""}</span>`; };
       const scoreCls = (mine, other) => mine != null && other != null && mine < other ? "score lose" : "score";
-      return `<button class="gcard${[d.sp, d.tt].some(p => p && p.highlight) ? " has-green" : ""}" type="button" data-g="${esc(g.game_id)}" aria-expanded="${openGame === g.game_id}">
-        <div class="row">${team(g.away_team, ` <span class="rec">${recText(g.away_team)}</span>`)}${as != null ? `<span class="${scoreCls(as, hs)}">${as}</span>` : ""}</div>
-        <div class="row">${team(g.home_team, ` <span class="rec">${recText(g.home_team)}</span>`)}${hs != null ? `<span class="${scoreCls(hs, as)}">${hs}</span>` : ""}</div>
+      return `<button class="gcard${[d.sp, d.tt].some(p => p && p.highlight) ? " has-green" : ""}${isFollowed(g) ? " fav" : ""}" type="button" data-g="${esc(g.game_id)}" aria-expanded="${openGame === g.game_id}" style="--ac:${COLORS[g.away_team] || "var(--line)"};--hc:${COLORS[g.home_team] || "var(--line)"}">
+        <div class="row">${team(g.away_team, ` <span class="rec">${recText(g.away_team)}</span>${star(g.away_team)}`)}${as != null ? `<span class="${scoreCls(as, hs)}">${as}</span>` : ""}</div>
+        <div class="row">${team(g.home_team, ` <span class="rec">${recText(g.home_team)}</span>${star(g.home_team)}`)}${hs != null ? `<span class="${scoreCls(hs, as)}">${hs}</span>` : ""}</div>
         <div class="picks">${pk(d.sp)}${pk(d.tt)}${d.wn ? pk(d.wn, d.wn.bet.replace(" to win", " ML")) : ""}${(W.wind_unders || []).filter(x => x.game_id === g.game_id && x.highlight).map(x => `<span class="pk green">WIND ${esc(x.bet)}</span>`).join("")}</div>
         ${lineMove(g)}
         <div class="foot">${status}<span class="muted">${esc((lv && lv.broadcast) || "")}</span></div></button>`;
@@ -423,7 +424,7 @@
     view.innerHTML = `
       <div class="toolbar noprint"><select id="wk" aria-label="Week">${weekKeys.map(k => `<option value="${k}"${k === key ? " selected" : ""}>Week ${+k.split("-")[1]}, ${k.split("-")[0]}</option>`).join("")}</select>
         <button class="btn primary" type="button" id="pdf">Download PDF</button><span class="small muted">Prices from ${esc(fmtStamp(dt(W.generated)))}</span></div>
-      ${key === curKey ? earlyPanel(W) : ""}
+      ${key === curKey ? betNowPanel(W) + earlyPanel(W) : ""}
       ${key === curKey && ALERTS.some(a => a.kind === "pick") ? `<div class="panel noprint"><div class="toolbar" style="justify-content:space-between;margin:0"><h2>Recent pick changes</h2><a href="#alerts">All alerts →</a></div>${alertList(ALERTS.filter(a => a.kind === "pick").slice(0, 4), lastSeen())}</div>` : ""}
       ${bestPanel(W, false)}
       <div class="panel"><h2>Every game</h2><div class="tablewrap"><table><thead><tr><th>Game</th><th>Spread</th><th>Total</th><th>Winner</th><th class="num">Model score</th><th class="num">Vegas score</th><th class="num">Final</th></tr></thead><tbody>${rows}</tbody></table></div>
@@ -659,8 +660,6 @@
     const list = betsFilter === "top" ? all.filter(p => p.top) : betsFilter === "green" ? all.filter(p => p.highlight && p.market !== "wind") : betsFilter === "all" ? all : all.filter(p => p.market === betsFilter);
     const wk = (REC.by_week || []).slice().reverse();
     const c = r => r && r.n ? `${recTxt(r)} <span class="small muted">${pct(r.pct, 0)}${fin(r.units) ? " · " + sgn(r.units, 1) + "u" : ""}</span>` : '<span class="dash">–</span>';
-    const mine = S.my_bets || [];
-    const myTot = mine.reduce((s, b) => s + (b.profit || 0), 0);
     view.innerHTML = `${pnlPanel()}<div class="panel"><h2>${esc(String(REC.current_season || ""))} week by week</h2><p class="lede">Weeks the backtest already covers are graded at the closing line; later weeks at DraftKings' price from the last run before kickoff.</p>
       ${wk.length ? `<div class="tablewrap"><table class="rec-table"><thead><tr><th>Week</th><th class="num gcol">Top picks</th><th class="num gcol">Green picks</th><th class="num">All spreads</th><th class="num">All totals</th><th class="num">Winners</th></tr></thead><tbody>
       ${wk.map(w => `<tr><td>Week ${w.week}</td><td class="num gcol">${c(w.top)}</td><td class="num gcol">${c(w.green)}</td><td class="num">${c(w.spread)}</td><td class="num">${c(w.total)}</td><td class="num">${c(w.winner)}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">No graded weeks yet.</p>`}</div>
@@ -668,9 +667,8 @@
         <div class="seg" role="group" aria-label="Filter">${[["top", "Top"], ["green", "Green"], ["wind", "Wind"], ["spread", "Spreads"], ["total", "Totals"], ["winner", "Winners"], ["all", "All"]].map(([k, l]) => `<button type="button" data-bf="${k}" aria-pressed="${betsFilter === k}">${l}</button>`).join("")}</div></div>
       ${list.length ? `<div class="tablewrap"><table><thead><tr><th>Week</th><th>Game</th><th>Pick</th><th class="num">Price</th><th class="num">Chance</th><th class="num">Value</th><th class="num">CLV</th><th class="num">Result</th><th class="num">Units</th></tr></thead><tbody>
       ${list.map(p => `<tr${p.highlight ? ' class="grow"' : ""}><td>${p.week}</td><td>${esc(p.matchup)}</td><td><strong>${esc(p.bet)}</strong>${topTag(p)}</td><td class="num">${am(p.price)}</td><td class="num">${pct(p.chance, 1)}</td><td class="num">${p.market === "winner" ? "" : val(p)}</td><td class="num">${fin(p.clv) ? sgn(p.clv) : "–"}</td><td class="num">${p.result ? resChip(p.result) : '<span class="muted">pending</span>'}</td><td class="num">${fin(p.units) ? sgn(p.units, 2) : ""}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">Picks are logged from the scheduled weekly runs and graded after each game.</p>`}</div>
-      <div class="panel"><h2>My bets</h2><p class="lede">From overrides/my_bets.csv in the repo (one row per bet you place at DraftKings).</p>
-      ${mine.length ? `<div class="tablewrap"><table><thead><tr><th>Week</th><th>Game</th><th>Bet</th><th class="num">Price</th><th class="num">Stake</th><th class="num">Result</th><th class="num">Profit</th></tr></thead><tbody>
-      ${mine.map(b => `<tr><td>${b.week}</td><td>${esc(b.matchup)}</td><td>${esc(b.market)} ${esc(b.side)} ${b.market === "moneyline" ? "" : esc(trim(b.line))}</td><td class="num">${am(b.price)}</td><td class="num">$${num(b.stake, 0)}</td><td class="num">${b.result ? resChip(b.result) : "pending"}</td><td class="num">${fin(b.profit) ? (b.profit >= 0 ? "+$" : "−$") + Math.abs(b.profit).toFixed(2) : ""}</td></tr>`).join("")}</tbody></table></div><p class="note">Total: ${myTot >= 0 ? "+$" : "−$"}${Math.abs(myTot).toFixed(2)}</p>` : `<p class="empty">No bets logged yet.</p>`}</div>`;
+      ${myStatsPanel()}`;
+    wireMyStats();
     view.querySelectorAll("[data-bf]").forEach(b => b.onclick = () => { betsFilter = b.dataset.bf; renderBets(); });
   }
 
@@ -908,7 +906,8 @@
         : on ? '<span class="small">Notifications are on for this browser.</span> <button class="btn" type="button" id="notify-off">Turn off</button>'
         : perm === "denied" ? '<span class="small muted">Notifications are blocked for this site in your browser settings.</span>'
         : '<button class="btn primary" type="button" id="notify-on">Notify me about pick changes</button>'}</div>
-      <p class="note">Browser notifications work while this page is open in a tab (it checks for updates every 5 minutes). New pick changes also show as a red count on the Alerts tab.</p></div>`;
+      <p class="note">Browser notifications work while this page is open in a tab (it checks for updates every 5 minutes). New pick changes also show as a red count on the Alerts tab.</p></div>${alertSettings()}`;
+    wireAlertSettings();
     view.querySelectorAll("[data-af]").forEach(b => b.onclick = () => { alertFilter = b.dataset.af; renderAlerts(); });
     const bOn = document.getElementById("notify-on"), bOff = document.getElementById("notify-off");
     if (bOn) bOn.onclick = async () => { const p = await Notification.requestPermission(); if (p === "granted") { store.set(NOTIFY_KEY, "on"); new Notification("NFL Line Model", { body: "Alerts are on. You'll hear about pick changes while this page is open." }); } renderAlerts(); };
@@ -929,9 +928,10 @@
         ban.hidden = false;
         ban.innerHTML = `<span><strong>${fresh.length ? `${fresh.length} new pick change${fresh.length > 1 ? "s" : ""}` : "New prices"}</strong>${fresh.length ? ": " + esc(fresh.slice(0, 2).map(a => `${a.matchup}, ${a.title.toLowerCase()}`).join("; ")) : " are available"}.</span> <button class="btn primary" type="button" id="reload-btn">Refresh</button>`;
         document.getElementById("reload-btn").onclick = () => location.reload();
-        if (fresh.length && store.get(NOTIFY_KEY) === "on" && "Notification" in window && Notification.permission === "granted") {
-          fresh.slice(0, 3).forEach(a => new Notification(`${a.title}: ${a.matchup}`, { body: a.text, tag: a.id }));
-          if (fresh.length > 3) new Notification("NFL Line Model", { body: `${fresh.length - 3} more pick changes. Open the Alerts tab.` });
+        const mineA = fresh.filter(wantAlert);
+        if (mineA.length && store.get(NOTIFY_KEY) === "on" && "Notification" in window && Notification.permission === "granted") {
+          mineA.slice(0, 3).forEach(a => new Notification(`${a.title}: ${a.matchup}`, { body: a.text, tag: a.id }));
+          if (mineA.length > 3) new Notification("NFL Line Model", { body: `${mineA.length - 3} more pick changes. Open the Alerts tab.` });
         }
         fresh.forEach(a => told.add(a.id));
       } catch (e) { /* offline or mid-deploy: try again next time */ }
@@ -995,18 +995,294 @@
       ${sec("7. Limits", `<p>NFL betting markets are efficient and these edges are small; even the best group wins a bit under 60%. Lines and injuries change through the week, so a pick is final at the update about 80 minutes before kickoff. Confirm every price in the DraftKings app. Information only, not financial advice.</p>`)}`;
   }
 
+  // ================================================================== extras (Oct 2026): app install, phone tab bar,
+  // bet logging, personal stats, recap, parlay calculator, bet sizing, team follows, team colors
+  const COLORS = { ARI: "#97233F", ATL: "#A71930", BAL: "#241773", BUF: "#00338D", CAR: "#0085CA", CHI: "#0B162A", CIN: "#FB4F14",
+    CLE: "#FF3C00", DAL: "#003594", DEN: "#FB4F14", DET: "#0076B6", GB: "#203731", HOU: "#03202F", IND: "#002C5F", JAX: "#006778",
+    KC: "#E31837", LA: "#003594", LAC: "#0080C6", LV: "#A5ACAF", MIA: "#008E97", MIN: "#4F2683", NE: "#002244", NO: "#D3BC8D",
+    NYG: "#0B2265", NYJ: "#125740", PHI: "#004C54", PIT: "#FFB612", SEA: "#69BE28", SF: "#AA0000", TB: "#D50A0A", TEN: "#4B92DB", WAS: "#5A1414" };
+  const jget = (k, d) => { try { const v = JSON.parse(store.get(k) || "null"); return v == null ? d : v; } catch (e) { return d; } };
+  const jset = (k, v) => store.set(k, JSON.stringify(v));
+  const MYBETS = "nflmodel-mybets", FOLLOW = "nflmodel-follow", BANK = "nflmodel-bankroll", KELLY = "nflmodel-kelly", BNOTE = "nflmodel-bnotify";
+  const follows = () => new Set(jget(FOLLOW, []));
+  const isFollowed = g => { const f = follows(); return f.has(g.home_team) || f.has(g.away_team); };
+  const toggleFollow = t => { const f = follows(); f.has(t) ? f.delete(t) : f.add(t); jset(FOLLOW, [...f]); };
+  const usd = x => fin(x) ? (x >= 0 ? "+$" : "−$") + Math.abs(x).toFixed(2) : "–";
+  const profitOf = (res, price, stake) => res === "W" ? stake * (dec(price) - 1) : res === "L" ? -stake : res === "P" ? 0 : null;
+  const allGames = () => { const m = {}; (S.schedule && S.schedule.games || []).forEach(g => m[g.game_id] = g); Object.values(S.weeks || {}).forEach(W => W.games.forEach(g => m[g.game_id] = Object.assign({}, m[g.game_id] || {}, g))); return m; };
+  function finalFor(gid) {
+    const g = allGames()[gid]; if (!g) return null;
+    if (g.home_score != null && g.away_score != null && g.result != null) return [g.home_score, g.away_score];
+    const lv = liveFor(g); return lv && lv.completed ? [lv.home_score, lv.away_score] : null;
+  }
+  const gradeLeg = l => { if (!l.game_id || !l.market) return null; const f = finalFor(l.game_id); return f ? gradePick(l, f[0], f[1]) : null; };
+  function myBets() {   // bets logged on this device, graded automatically when their games are final
+    return jget(MYBETS, []).map(b => {
+      let res = b.result || null;
+      if (!res && b.type === "single") res = gradeLeg(b);
+      if (!res && b.type === "parlay" && b.legs && b.legs.length) {
+        const rs = b.legs.map(gradeLeg);
+        res = rs.includes("L") ? "L" : rs.every(r => r === "W") ? "W" : null;
+      }
+      return Object.assign({}, b, { result: res, profit: profitOf(res, b.price, b.stake) });
+    });
+  }
+  // ---------- bottom sheet (log a bet, more menu)
+  function sheet(html) {
+    const el = document.getElementById("sheet"); if (!el) return;
+    el.innerHTML = `<div class="sheet-card" role="dialog" aria-modal="true">${html}</div>`; el.hidden = false;
+    el.onclick = e => { if (e.target === el || e.target.closest("[data-close-sheet]")) el.hidden = true; };
+    return el;
+  }
+  function logBetSheet(b) {
+    const k = jget(KELLY, 0.25), bank = jget(BANK, null);
+    const sug = bank && fin(b.chance) && fin(b.price) ? kellyStake(b.chance, b.price, bank, k) : null;
+    const el = sheet(`<h3 style="margin-top:0">Log this bet</h3>
+      <label class="fld">Bet<input id="lb-bet" value="${esc(b.bet || "")}"></label>
+      <div class="two-fld"><label class="fld">Odds<input id="lb-price" inputmode="numeric" value="${fin(b.price) ? Math.round(b.price) : ""}"></label>
+      <label class="fld">Stake ($)<input id="lb-stake" inputmode="decimal" value="${jget("nflmodel-laststake", 10)}"></label></div>
+      ${sug != null ? `<p class="note">Bet sizing guide (${Math.round(k * 100)}% Kelly, bankroll $${num(bank, 0)}): about $${num(sug, 2)}. Information only.</p>` : ""}
+      <p class="note">Saved on this device and graded automatically when the game ends. Use "Export for Claude" on the Bets tab to add it to your official record.</p>
+      <div class="toolbar"><button class="btn primary" type="button" id="lb-save">Save bet</button><button class="btn" type="button" data-close-sheet>Cancel</button></div>`);
+    el.querySelector("#lb-save").onclick = () => {
+      const price = parseFloat(el.querySelector("#lb-price").value), stake = parseFloat(el.querySelector("#lb-stake").value);
+      if (!fin(price) || Math.abs(price) < 100 || !fin(stake) || stake <= 0) { alert("Enter American odds (like -110 or +150) and a stake."); return; }
+      const list = jget(MYBETS, []);
+      list.push(Object.assign({ id: "b" + Date.now(), date: new Date().toISOString().slice(0, 10), type: "single" }, b,
+        { bet: el.querySelector("#lb-bet").value, price, stake, logged: new Date().toISOString() }));
+      jset(MYBETS, list); jset("nflmodel-laststake", stake); el.hidden = true;
+      if (currentRoute === "bets") renderBets();
+    };
+  }
+  const logAttr = (p, src) => `data-log='${esc(JSON.stringify({ game_id: p.game_id, season: p.season, week: p.week, market: p.market === "wind" ? "total" : p.market,
+    side: p.side, line: p.line, teased: p.teased, price: p.price, chance: p.chance, bet: p.bet, source: src || (p.top ? "top" : p.highlight ? "green" : "lean") }))}'`;
+  const logBtn = (p, src) => `<span class="logbtn" role="button" tabindex="0" ${logAttr(p, src)}>+ Log bet</span>`;
+  document.addEventListener("click", e => {
+    const t = e.target.closest("[data-log]");
+    if (t) { e.preventDefault(); e.stopPropagation(); try { logBetSheet(JSON.parse(t.getAttribute("data-log"))); } catch (err) { /* ignore */ } return; }
+    const f = e.target.closest("[data-follow]");
+    if (f) { e.preventDefault(); e.stopPropagation(); toggleFollow(f.getAttribute("data-follow")); route(); }
+  }, true);
+  // ---------- bet sizing (Kelly), information only
+  function kellyStake(p, price, bank, frac) {
+    const b = dec(price) - 1, f = (b * p - (1 - p)) / b;
+    return Math.max(0, Math.min(f * frac, 0.03)) * bank;     // never more than 3% of the bankroll
+  }
+  // ---------- "Bet now": this week's card at a glance, with price movement since the week opened
+  function betNowPanel(W) {
+    const games = {}; W.games.forEach(g => games[g.game_id] = g);
+    const open = gid => { const L = (S.lines || {})[gid]; return L && L.points && L.points.length ? L.points[0] : null; };
+    const row = (p, kind) => { const g = games[p.game_id]; if (!g) return ""; const o = open(p.game_id); let mv = "";
+      if (o && p.market === "spread" && fin(g.dk_home_spread)) { const d = g.dk_home_spread - o[1]; if (Math.abs(d) > 1e-9) mv = `line ${hcap(o[1])} → ${hcap(g.dk_home_spread)} (${g.home_team})`; }
+      if (o && (p.market === "total" || p.market === "wind") && fin(g.dk_total)) { const d = g.dk_total - o[2]; if (Math.abs(d) > 1e-9) mv = `total ${trim(o[2])} → ${trim(g.dk_total)}`; }
+      const d = derive(W, g), started = d.lv && d.lv.state !== "pre";
+      return `<div class="bn-row${isFollowed(g) ? " fav" : ""}"><span class="chip ${kind === "TOP" ? "top" : ""}">${kind}</span><strong>${esc(p.bet)}</strong> <span class="muted">${am(p.price)}</span>
+        <span class="small muted">${esc(g.away_team)} @ ${esc(g.home_team)} · ${esc(kick(g))}${mv ? " · " + esc(mv) : ""}</span>${started ? "" : logBtn(p, kind === "TOP" ? "top" : kind === "WIND" ? "wind" : "green")}</div>`; };
+    const tops = (W.picks || []).filter(p => p.top), wind = (W.wind_unders || []).filter(x => x.highlight),
+      greens = (W.picks || []).filter(p => p.highlight && !p.top && p.market !== "winner");
+    const items = tops.map(p => row(p, "TOP")).concat(wind.map(x => row(x, "WIND")), greens.map(p => row(p, "GREEN"))).join("");
+    return `<div class="panel betnow"><div class="toolbar" style="justify-content:space-between;margin:0"><h2>Bet now: this week's picks at DraftKings' current price</h2><a class="btn" href="#tools">Parlay calculator</a></div>
+      ${items || `<p class="note">No Top, wind or green picks right now. Prices update every 15 minutes; picks are final about 80 minutes before kickoff.</p>`}
+      <p class="note">Check the price in the DraftKings app before betting. Information only, not financial advice.</p></div>`;
+  }
+  // ---------- personal stats on the Bets tab
+  function myStatsPanel() {
+    const P = S.pnl || {}, mine = myBets();
+    const SRC = { top: "Top picks", green: "Green picks", wind: "Wind unders", teaser: "Teasers", lean: "Model leans (not green)", parlay: "Parlays", other: "Other" };
+    const bs = P.by_source || {}, C = P.clv || {};
+    const rows = Object.keys(bs).map(k => { const x = bs[k]; return `<tr><td>${esc(SRC[k] || k)}</td><td class="num">${x.w}-${x.l}${x.p ? "-" + x.p : ""}</td><td class="num">$${num(x.staked, 0)}</td><td class="num ${x.profit > 0 ? "w" : x.profit < 0 ? "l" : ""}">${usd(x.profit)}</td></tr>`; }).join("");
+    const cum = P.cum || [];
+    let chart = "";
+    if (cum.length > 1) {
+      const W_ = 560, H_ = 120, pl = 44, pr = 10, pt = 10, pb = 18, v = cum.map(c => c[1]), lo = Math.min(0, ...v), hi = Math.max(0, ...v);
+      const x = i => pl + (W_ - pl - pr) * i / (cum.length - 1), y = q => pt + (H_ - pt - pb) * (hi - q) / Math.max(hi - lo, 1);
+      chart = `<svg class="chart" viewBox="0 0 ${W_} ${H_}" role="img" aria-label="Your running profit"><line x1="${pl}" x2="${W_ - pr}" y1="${y(0)}" y2="${y(0)}" stroke="var(--line)"/>
+        <polyline fill="none" stroke="var(--accent)" stroke-width="2.2" points="${cum.map((c, i) => `${x(i)},${y(c[1])}`).join(" ")}"/>
+        <text x="${pl - 5}" y="${y(hi) + 4}" text-anchor="end">${usd(hi)}</text><text x="${pl - 5}" y="${y(lo) + 4}" text-anchor="end">${usd(lo)}</text></svg>`;
+    }
+    const mineRows = mine.slice().reverse().map(b => `<tr><td class="muted">${esc(b.date)}</td><td>${b.type === "parlay" ? '<span class="chip">PARLAY</span> ' : ""}${esc(b.bet)}</td><td class="num">${am(b.price)}</td><td class="num">$${num(b.stake, 0)}</td><td class="num">${b.result ? resChip(b.result) : '<span class="muted">open</span>'}</td><td class="num">${usd(b.profit)}</td><td><span class="logbtn" role="button" data-del="${esc(b.id)}">remove</span></td></tr>`).join("");
+    const mineTot = mine.reduce((s, b) => s + (b.profit || 0), 0);
+    return `<div class="panel"><h2>Your betting stats</h2>
+      ${rows ? `<div class="two"><div><h3>By pick type</h3><div class="tablewrap"><table><thead><tr><th>Type</th><th class="num">Record</th><th class="num">Staked</th><th class="num">Profit</th></tr></thead><tbody>${rows}</tbody></table></div>
+        <p class="note">${C.n ? `Your line vs DraftKings' closing line (straight bets): better on ${C.beat}, same on ${C.same}, worse on ${C.n - C.beat - C.same}; average ${sgn(C.avg, 2)} points. Beating the close is the best early sign of a real edge.` : ""}</p></div>
+        <div><h3>Running profit</h3>${chart || '<p class="note">The chart starts after a second graded bet.</p>'}</div></div>` : ""}
+      <h3>Logged on this device</h3>
+      ${mine.length ? `<div class="tablewrap"><table><thead><tr><th>Date</th><th>Bet</th><th class="num">Odds</th><th class="num">Stake</th><th class="num">Result</th><th class="num">Profit</th><th></th></tr></thead><tbody>${mineRows}</tbody></table></div>
+        <p class="note">Total: ${usd(mineTot)} (not in the official record above until you send them to me).</p>
+        <div class="toolbar"><button class="btn primary" type="button" id="mb-export">Export for Claude</button><button class="btn" type="button" id="mb-clear">Clear after export</button></div>`
+        : `<p class="note">Tap "+ Log bet" on any pick to save it here; it is graded automatically when the game ends.</p>`}</div>`;
+  }
+  function wireMyStats() {
+    view.querySelectorAll("[data-del]").forEach(b => b.onclick = () => { jset(MYBETS, jget(MYBETS, []).filter(x => x.id !== b.dataset.del)); renderBets(); });
+    const ex = document.getElementById("mb-export"), cl = document.getElementById("mb-clear");
+    if (ex) ex.onclick = async () => {
+      const lines = myBets().map(b => [b.date, b.season, b.week, b.type, `"${(b.bet || "").replace(/"/g, "'")} (logged in app)"`, b.price, b.stake, b.result || "",
+        b.result === "W" ? (b.stake + b.profit).toFixed(2) : "", b.source || "", b.game_id || "", b.market || "", b.side || "", b.line != null ? b.line : ""].join(","));
+      const text = "My logged bets (bet_slips.csv rows):\n" + lines.join("\n");
+      try { if (navigator.share) await navigator.share({ text }); else { await navigator.clipboard.writeText(text); alert("Copied. Paste it to Claude."); } } catch (e) { prompt("Copy this and send it to Claude:", text); }
+    };
+    if (cl) cl.onclick = () => { if (confirm("Remove the bets logged on this device? Do this after I have added them to your record.")) { jset(MYBETS, []); renderBets(); } };
+  }
+  // ---------- weekly recap
+  let recapKey = null;
+  function renderRecap() {
+    const live = (REC.live || []).filter(p => p.result);
+    const keys = [...new Set(live.map(p => `${p.season}-${String(p.week).padStart(2, "0")}`).concat((S.pnl && S.pnl.weeks || []).map(w => `${w.season}-${String(w.week).padStart(2, "0")}`)))].sort();
+    if (!keys.length) { view.innerHTML = `<div class="panel"><h2>Weekly recap</h2><p class="empty">The first recap appears once a week's games are graded.</p></div>`; return; }
+    const key = recapKey && keys.includes(recapKey) ? recapKey : keys[keys.length - 1];
+    const [se, wk] = key.split("-").map(Number);
+    const rows = live.filter(p => p.season === se && p.week === wk);
+    const games = allGames();
+    const score = gid => { const f = finalFor(gid), g = games[gid]; return f && g ? `${g.away_team} ${f[1]}, ${g.home_team} ${f[0]}` : ""; };
+    const sumr = list => { const w = list.filter(p => p.result === "W").length, l = list.filter(p => p.result === "L").length, u = list.reduce((s, p) => s + (p.units || 0), 0);
+      return `${w}-${l}${list.length - w - l ? "-" + (list.length - w - l) : ""}, ${sgn(u, 1)} units`; };
+    const lst = list => list.length ? `<ul class="recap">${list.map(p => `<li>${resChip(p.result)} <strong>${esc(p.bet)}</strong> ${am(p.price)} <span class="muted small">· ${esc(p.matchup || "")} · ${esc(score(p.game_id))}${fin(p.edge) && p.edge >= 0.1 ? ` · model ${edgeTxt(p.edge)} pts off` : ""}${fin(p.clv) ? ` · line vs close ${sgn(p.clv, 1)}` : ""}</span></li>`).join("")}</ul>` : '<p class="note">None.</p>';
+    const tops = rows.filter(p => p.top), greens = rows.filter(p => p.highlight && !p.top && p.market !== "wind"), wind = rows.filter(p => p.market === "wind");
+    const early = ((S.early || {}).all || []).filter(x => x.season === se && x.week === wk && x.result);
+    const mine = (S.pnl && S.pnl.slips || []).filter(x => x.season === se && x.week === wk && x.result);
+    const mp = mine.reduce((s, x) => s + (x.profit || 0), 0);
+    const hl = tops.concat(greens, wind), best = hl.filter(p => p.result === "W").sort((a, b) => (b.edge || 0) - (a.edge || 0))[0], worst = hl.filter(p => p.result === "L").sort((a, b) => (b.edge || 0) - (a.edge || 0))[0];
+    view.innerHTML = `<div class="panel"><div class="toolbar" style="justify-content:space-between;margin:0"><h2>Week ${wk} recap, ${se}</h2>
+      <select id="rk" aria-label="Week">${keys.map(k => `<option value="${k}"${k === key ? " selected" : ""}>Week ${+k.split("-")[1]}, ${k.split("-")[0]}</option>`).join("")}</select></div>
+      <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin:10px 0">
+        <div class="kpi kpi-green"><div class="kl">Top picks</div><div class="kv">${tops.length ? sumr(tops).split(",")[0] : "–"}</div><div class="ks">${tops.length ? sumr(tops).split(",")[1] : "none this week"}</div></div>
+        <div class="kpi"><div class="kl">Green picks</div><div class="kv">${greens.length ? sumr(greens).split(",")[0] : "–"}</div><div class="ks">${greens.length ? sumr(greens).split(",")[1] : ""}</div></div>
+        <div class="kpi"><div class="kl">Wind unders</div><div class="kv">${wind.length ? sumr(wind).split(",")[0] : "–"}</div><div class="ks">${wind.length ? sumr(wind).split(",")[1] : ""}</div></div>
+        <div class="kpi"><div class="kl">Your bets</div><div class="kv ${mp > 0 ? "w" : mp < 0 ? "l" : ""}">${mine.length ? usd(mp) : "–"}</div><div class="ks">${mine.length ? `${mine.filter(x => x.result === "W").length}-${mine.filter(x => x.result === "L").length}` : "none logged"}</div></div></div>
+      ${best || worst ? `<p class="lede">${best ? `Best call: <strong>${esc(best.bet)}</strong> (${esc(best.matchup || "")})${fin(best.edge) && best.edge >= 0.1 ? `, the model was ${edgeTxt(best.edge)} points off` : ""} and it hit. ` : ""}${worst ? `Toughest miss: <strong>${esc(worst.bet)}</strong> (${esc(worst.matchup || "")})${fin(worst.edge) && worst.edge >= 0.1 ? `, ${edgeTxt(worst.edge)} points off` : ""}. ` : ""}One week is mostly luck; the record is what matters.</p>` : ""}</div>
+      <div class="two"><div class="panel"><h3 style="margin-top:0">Top picks</h3>${lst(tops)}<h3>Wind unders</h3>${lst(wind)}</div>
+      <div class="panel"><h3 style="margin-top:0">Green picks</h3>${lst(greens)}<h3>Early-week value (information only)</h3>${early.length ? `<ul class="recap">${early.map(x => `<li>${resChip(x.result)} <strong>${esc(x.bet)}</strong> ${am(x.price)} <span class="muted small">· ${esc(x.matchup)}${fin(x.clv) ? ` · line vs close ${sgn(x.clv, 1)}` : ""}</span></li>`).join("")}</ul>` : '<p class="note">None.</p>'}</div></div>
+      ${mine.length ? `<div class="panel"><h3 style="margin-top:0">Your bets</h3><ul class="recap">${mine.map(x => `<li>${resChip(x.result)} ${x.type === "parlay" ? '<span class="chip">PARLAY</span> ' : ""}<strong>${esc(x.bet)}</strong> <span class="muted small">· $${num(x.stake, 0)} · ${usd(x.profit)}</span></li>`).join("")}</ul></div>` : ""}
+      <p class="note">Picks as the site showed them at the last update before kickoff, graded at that DraftKings price (the all-time record grades covered weeks at the closing line, so its week totals can differ). Information only, not financial advice.</p>`;
+    view.querySelector("#rk").onchange = e => { recapKey = e.target.value; renderRecap(); };
+  }
+  // ---------- tools: parlay calculator + bet sizing
+  let parlayLegs = [];
+  function renderTools() {
+    const W = S.weeks[curKey] || { games: [], picks: [] };
+    const games = {}; W.games.forEach(g => games[g.game_id] = g);
+    const pool = (W.picks || []).filter(p => p.market !== "winner" && games[p.game_id] && fin(p.price) && fin(p.chance))
+      .concat((W.wind_unders || []).filter(x => x.highlight && fin(x.price)))
+      .sort((a, b) => (b.top ? 1 : 0) - (a.top ? 1 : 0) || (b.highlight ? 1 : 0) - (a.highlight ? 1 : 0) || (b.value || 0) - (a.value || 0));
+    const key = p => `${p.game_id}|${p.market}`;
+    const legs = parlayLegs.filter(l => l.custom || pool.some(p => key(p) === l.key));
+    const legObjs = legs.map(l => l.custom ? l : Object.assign({}, pool.find(p => key(p) === l.key), { key: l.key }));
+    const boost = parseFloat(store.get("nflmodel-boost") || "0") || 0, stake = parseFloat(store.get("nflmodel-pstake") || "10") || 10;
+    const dkOverride = parseFloat(store.get("nflmodel-dkodds") || "");
+    let html = "";
+    if (legObjs.length >= 2) {
+      const decAll = legObjs.reduce((a, l) => a * dec(l.price), 1);
+      const dkDec = fin(dkOverride) && Math.abs(dkOverride) >= 100 ? dec(dkOverride) : decAll;
+      const pay = stake * (1 + (dkDec - 1) * (1 + boost / 100));
+      const pTrue = legObjs.reduce((a, l) => a * l.chance, 1);
+      const ev = pTrue * (pay - stake) - (1 - pTrue) * stake;
+      const sameGame = new Set(legObjs.map(l => l.game_id)).size < legObjs.length;
+      html = `<div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin:10px 0">
+        <div class="kpi"><div class="kl">DraftKings pays</div><div class="kv">$${num(pay, 2)}</div><div class="ks">odds ${am(dkDec >= 2 ? (dkDec - 1) * 100 : -100 / (dkDec - 1))}${boost ? ` + ${boost}% boost` : ""} on $${num(stake, 0)}</div></div>
+        <div class="kpi"><div class="kl">Model chance it hits</div><div class="kv">${pct(pTrue, 1)}</div><div class="ks">legs multiplied</div></div>
+        <div class="kpi"><div class="kl">Break-even chance</div><div class="kv">${pct(stake / pay, 1)}</div><div class="ks">what the payout needs</div></div>
+        <div class="kpi ${ev > 0 ? "kpi-green" : ""}"><div class="kl">Expected value</div><div class="kv ${ev > 0 ? "w" : "l"}">${usd(ev)}</div><div class="ks">per $${num(stake, 0)}, long run</div></div></div>
+        ${sameGame ? '<p class="note">Two legs are from the same game; their outcomes are linked, so the multiplied chance is only a rough guide.</p>' : ""}
+        <div class="toolbar"><span class="logbtn" role="button" id="pc-log">+ Log this parlay</span></div>`;
+    }
+    const bank = jget(BANK, null), k = jget(KELLY, 0.25);
+    const sized = (W.picks || []).filter(p => p.highlight && p.market !== "winner").concat((W.wind_unders || []).filter(x => x.highlight)).map(p => {
+      const g = games[p.game_id]; const s = bank ? kellyStake(p.chance, p.price, bank, k) : null;
+      return `<tr><td><strong>${esc(p.bet)}</strong> ${am(p.price)}${p.top ? ' <span class="chip top">TOP</span>' : ""}</td><td>${g ? esc(g.away_team + " @ " + g.home_team) : ""}</td><td class="num">${pct(p.chance, 1)}</td><td class="num">${s != null ? "$" + num(s, 2) : "–"}</td></tr>`; }).join("");
+    view.innerHTML = `<div class="panel"><h2>Parlay calculator</h2>
+      <p class="lede" style="margin:0">Pick legs from this week's picks to see what DraftKings pays against the model's chance that every leg hits. Each leg's chance is its historical win rate, so a 3-leg parlay of 55% legs hits about 17% of the time.</p>
+      <div class="toolbar" style="margin-top:10px"><label class="fld">Stake ($)<input id="pc-stake" inputmode="decimal" value="${stake}"></label>
+        <label class="fld">Boost (%)<input id="pc-boost" inputmode="decimal" value="${boost || ""}" placeholder="0"></label>
+        <label class="fld">DraftKings parlay odds (optional)<input id="pc-dk" inputmode="numeric" value="${fin(dkOverride) ? dkOverride : ""}" placeholder="from the bet slip"></label></div>
+      <div class="pc-legs">${pool.map(p => { const g = games[p.game_id]; const on = legs.some(l => l.key === key(p));
+        return `<label class="pc-leg${on ? " on" : ""}"><input type="checkbox" data-leg="${esc(key(p))}"${on ? " checked" : ""}> <strong>${esc(p.bet)}</strong> ${am(p.price)} <span class="muted small">${g ? esc(g.away_team + " @ " + g.home_team) : ""} · ${pct(p.chance, 0)}${p.top ? " · TOP" : p.highlight ? " · green" : ""}</span></label>`; }).join("")}</div>
+      ${legObjs.length < 2 ? '<p class="note">Choose at least two legs.</p>' : html}
+      <p class="note">Boosted parlays raise the payout, but the legs still all have to hit. Information only, not financial advice.</p></div>
+      <div class="panel"><h2>Bet sizing guide</h2>
+      <p class="lede" style="margin:0">A cautious stake for each green pick from its edge and your bankroll (fractional Kelly, capped at 3% of the bankroll per bet). Information only.</p>
+      <div class="toolbar" style="margin-top:10px"><label class="fld">Bankroll ($)<input id="bs-bank" inputmode="decimal" value="${bank || ""}" placeholder="e.g. 200"></label>
+        <label class="fld">Kelly fraction<select id="bs-k">${[[0.125, "1/8 (very cautious)"], [0.25, "1/4 (cautious)"], [0.5, "1/2"]].map(([v, l]) => `<option value="${v}"${v === k ? " selected" : ""}>${l}</option>`).join("")}</select></label></div>
+      ${sized ? `<div class="tablewrap"><table><thead><tr><th>Pick</th><th>Game</th><th class="num">Chance</th><th class="num">Suggested stake</th></tr></thead><tbody>${sized}</tbody></table></div>` : '<p class="note">No green picks right now.</p>'}
+      <p class="note">Edges are small, so the guide keeps stakes small; flat betting the same amount each time is also reasonable.</p></div>
+      <div class="panel"><h2>Teams you follow</h2><p class="lede" style="margin:0">Followed teams' games show first on the Games tab and can be the only browser alerts you get (Alerts tab).</p>
+      <div class="follow-grid">${Object.keys(COLORS).sort().map(t => `<span class="followchip${follows().has(t) ? " on" : ""}" role="button" data-follow="${t}" style="--tc:${COLORS[t]}">${esc(t)}</span>`).join("")}</div></div>`;
+    view.querySelectorAll("[data-leg]").forEach(c => c.onchange = () => {
+      const k2 = c.dataset.leg; parlayLegs = c.checked ? parlayLegs.concat([{ key: k2 }]) : parlayLegs.filter(l => l.key !== k2); renderTools(); });
+    const bind = (id, keyName) => { const el = document.getElementById(id); if (el) el.onchange = () => { store.set(keyName, el.value); renderTools(); }; };
+    bind("pc-stake", "nflmodel-pstake"); bind("pc-boost", "nflmodel-boost"); bind("pc-dk", "nflmodel-dkodds");
+    const bb = document.getElementById("bs-bank"); if (bb) bb.onchange = () => { jset(BANK, parseFloat(bb.value) || null); renderTools(); };
+    const bk = document.getElementById("bs-k"); if (bk) bk.onchange = () => { jset(KELLY, parseFloat(bk.value)); renderTools(); };
+    const lp = document.getElementById("pc-log");
+    if (lp) lp.onclick = () => {
+      const decAll = legObjs.reduce((a, l) => a * dec(l.price), 1), dkDec = fin(dkOverride) && Math.abs(dkOverride) >= 100 ? dec(dkOverride) : decAll;
+      const eff = 1 + (dkDec - 1) * (1 + boost / 100), price = eff >= 2 ? Math.round((eff - 1) * 100) : Math.round(-100 / (eff - 1));
+      const list = jget(MYBETS, []);
+      list.push({ id: "b" + Date.now(), date: new Date().toISOString().slice(0, 10), type: "parlay", season: W.season, week: W.week, source: "parlay",
+        bet: `${legObjs.length} legs: ` + legObjs.map(l => l.bet).join(", ") + (boost ? ` (+${boost}% boost)` : ""), price, stake,
+        legs: legObjs.map(l => ({ game_id: l.game_id, market: l.market === "wind" ? "total" : l.market, side: l.side, line: l.line })) });
+      jset(MYBETS, list); alert("Saved on this device. It shows on the Bets tab and is graded when the games end.");
+    };
+  }
+  // ---------- phone: install as an app, bottom tab bar, more menu
+  let installEvt = null;
+  window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installEvt = e; installHint(); });
+  function installHint() {
+    const standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+    if (standalone || store.get("nflmodel-installhint") === "no") return;
+    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent), small = window.innerWidth < 760;
+    if (!installEvt && !(ios && small)) return;
+    const ban = document.getElementById("install-banner"); if (!ban) return;
+    ban.hidden = false;
+    ban.innerHTML = `<span>${installEvt ? "Install the site as an app for one-tap access." : "Add this site to your home screen: tap the Share button, then <strong>Add to Home Screen</strong>."}</span>
+      ${installEvt ? '<button class="btn primary" type="button" id="inst-yes">Install</button>' : ""}<button class="btn" type="button" id="inst-no">Not now</button>`;
+    const y = document.getElementById("inst-yes"); if (y) y.onclick = async () => { installEvt.prompt(); installEvt = null; ban.hidden = true; };
+    document.getElementById("inst-no").onclick = () => { store.set("nflmodel-installhint", "no"); ban.hidden = true; };
+  }
+  function bottomBar() {
+    const bb = document.getElementById("bottombar"); if (!bb) return;
+    bb.querySelectorAll("a").forEach(a => a.getAttribute("href") === "#" + currentRoute ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+    const more = document.getElementById("more-btn");
+    if (more) more.onclick = () => sheet(`<h3 style="margin-top:0">More</h3><div class="more-grid">${[["games", "Games"], ["live", "Gamecast"], ["picks", "Picks"], ["breakdown", "Breakdown"], ["alerts", "Alerts"], ["recap", "Weekly recap"], ["tools", "Parlay calculator and bet sizing"], ["futures", "Futures"], ["teams", "Teams"], ["players", "Players"], ["record", "Record"], ["bets", "Bets and P&L"], ["how", "How it works"], ["info", "Info"]].map(([k, l]) => `<a class="btn" href="#${k}" data-close-sheet>${l}</a>`).join("")}</div>`);
+  }
+  if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+
+  // ---------- browser alert settings (which pick changes notify this device)
+  const ASET = "nflmodel-alertset";
+  function wantAlert(a) {
+    const s = jget(ASET, { which: "all", follow: false });
+    if (s.which === "top" && !/Top/.test(a.title)) return false;
+    if (s.follow && follows().size) { const tm = (a.matchup || "").split(" @ "); if (!tm.some(x => follows().has(x))) return false; }
+    return true;
+  }
+  function alertSettings() {
+    const s = jget(ASET, { which: "all", follow: false }), nf = follows().size;
+    return `<div class="panel"><h2>Alert settings</h2>
+      <div class="toolbar"><label class="fld">Browser notifications for<select id="as-which"><option value="all"${s.which === "all" ? " selected" : ""}>Every pick change</option><option value="top"${s.which === "top" ? " selected" : ""}>Top picks only</option></select></label>
+      <label class="chk"><input type="checkbox" id="as-follow"${s.follow ? " checked" : ""}> Only teams I follow ${nf ? `(${nf})` : '(none yet: pick them on the <a href="#tools">Tools</a> tab)'}</label></div>
+      <p class="note">Phone (ntfy) channels: your usual topic gets everything (pick changes plus one combined line-move push per update). Subscribe in the ntfy app to the same topic name with <strong>-picks</strong> on the end for pick changes only, or <strong>-top</strong> for Top picks only. Line-move pushes pause overnight (midnight to 7 AM Eastern); pick changes always go through.</p></div>`;
+  }
+  function wireAlertSettings() {
+    const w = document.getElementById("as-which"), f = document.getElementById("as-follow");
+    const save = () => jset(ASET, { which: w.value, follow: f.checked });
+    if (w) w.onchange = save; if (f) f.onchange = save;
+  }
+  const SCROLL = {};
+
   // ------------------------------------------------------------------ router
-  const ROUTES = { how: renderHow, alerts: renderAlerts, games: renderGames, picks: renderPicks, breakdown: renderBreakdown, futures: renderFutures, teams: renderTeams,
+  const ROUTES = { recap: renderRecap, tools: renderTools, how: renderHow, alerts: renderAlerts, games: renderGames, picks: renderPicks, breakdown: renderBreakdown, futures: renderFutures, teams: renderTeams,
     players: renderPlayers, record: renderRecord, backtest: renderRecord, bets: renderBets, info: renderInfo, live: renderLive };
   function route() {
     const [name, arg] = (location.hash.replace(/^#/, "") || "games").split("/");
     const r = ROUTES[name] ? (name === "backtest" ? "record" : name) : "games";
     if (r !== "live") { clearTimeout(gcTimer); }
     if (r === "live" && arg && arg !== gcGame) { gcData = null; }
+    SCROLL[currentRoute] = window.scrollY;
     currentRoute = r;
+    view.classList.remove("fade"); void view.offsetWidth; view.classList.add("fade");
     document.querySelectorAll("nav.tabs a").forEach(a => a.getAttribute("href") === "#" + r ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
     ROUTES[r](arg ? decodeURIComponent(arg) : undefined);
-    if (!arg) window.scrollTo({ top: 0 });
+    bottomBar();
+    if (!arg) window.scrollTo({ top: SCROLL[r] || 0 });
   }
   theme();
   if (!S.weeks || !weekKeys.length) { view.innerHTML = `<p class="empty">No data yet. The site fills in after the first weekly run.</p>`; return; }
@@ -1017,4 +1293,5 @@
   setInterval(header, 60000);              // keep the "updated ... ago" labels honest
   alertBadge();
   watchUpdates();
+  installHint();
 })();

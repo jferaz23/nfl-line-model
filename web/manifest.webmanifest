@@ -1,0 +1,15 @@
+{
+  "name": "NFL Line Model",
+  "short_name": "NFL Model",
+  "description": "Weekly NFL spreads and totals priced by a model and compared with DraftKings. Information only.",
+  "start_url": "./#games",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#131517",
+  "theme_color": "#131517",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

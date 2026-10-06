@@ -118,8 +118,8 @@ def closing_lines(lines: pd.DataFrame, games: dict) -> dict:
     if lines is None or lines.empty:
         return out
     lines = lines.copy()
-    lines["t"] = pd.to_datetime(lines["ts"], utc=True, errors="coerce")
-    lines["ko"] = pd.to_datetime(lines["kickoff_utc"], utc=True, errors="coerce")
+    lines["t"] = pd.to_datetime(lines["ts"], utc=True, errors="coerce", format="ISO8601")
+    lines["ko"] = pd.to_datetime(lines["kickoff_utc"], utc=True, errors="coerce", format="ISO8601")
     pre = lines[(lines["t"] < lines["ko"]) & lines["home_spread"].notna()]
     last = pre.sort_values("t").groupby(["season", "week", "home_team", "away_team"]).tail(1)
     key = {(g["season"], g["week"], g["home_team"], g["away_team"]): gid for gid, g in games.items()}
@@ -163,9 +163,9 @@ def build_tracker(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict,
     if not p.exists():
         return dict(picks=[], records={})
     df = pd.read_csv(p, on_bad_lines="skip")
-    df["t"] = pd.to_datetime(df["run_at"], utc=True, errors="coerce")
+    df["t"] = pd.to_datetime(df["run_at"], utc=True, errors="coerce", format="ISO8601")
     df["ko"] = df["game_id"].map(lambda g: kickoffs.get(g))
-    df["ko"] = pd.to_datetime(df["ko"], utc=True, errors="coerce")
+    df["ko"] = pd.to_datetime(df["ko"], utc=True, errors="coerce", format="ISO8601")
     df = df[df["t"] < df["ko"]]                               # only runs before kickoff count
     df = df.sort_values("t").groupby(["game_id", "market"]).tail(1)
     rows = []
@@ -230,8 +230,8 @@ def build_record(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict) 
     lp = ART / "tracker" / "picks_log.csv"
     if lp.exists():
         lg = read_log(lp)
-        lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce")
-        lg["ko"] = pd.to_datetime(lg["game_id"].map(kickoffs), utc=True, errors="coerce")
+        lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce", format="ISO8601")
+        lg["ko"] = pd.to_datetime(lg["game_id"].map(kickoffs), utc=True, errors="coerce", format="ISO8601")
         lg = lg[lg["t"] < lg["ko"]].sort_values("t").groupby(["game_id", "market"]).tail(1)
         wind_log = lg[lg["market"] == "wind"]
         lg = lg[lg["market"] != "wind"]
@@ -321,8 +321,8 @@ def fill_started(weeks: list[dict], kickoffs: dict):
     if not lp.exists():
         return
     lg = read_log(lp)
-    lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce")
-    lg["ko"] = pd.to_datetime(lg["game_id"].map(kickoffs), utc=True, errors="coerce")
+    lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce", format="ISO8601")
+    lg["ko"] = pd.to_datetime(lg["game_id"].map(kickoffs), utc=True, errors="coerce", format="ISO8601")
     lg = lg[lg["t"] < lg["ko"]].sort_values("t").groupby(["game_id", "market"]).tail(1)
     for w in weeks:
         have = {(p["game_id"], p["market"]) for p in w.get("picks", [])}
@@ -447,7 +447,7 @@ def early_value(week: dict, sched: dict, lines: pd.DataFrame | None, finals: dic
     lg = read_log(lp)
     lg = lg[(lg["market"] == "spread") & lg["game_id"].isin(set(sg))].copy()
     lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce", format="ISO8601")
-    lg["ko"] = pd.to_datetime(lg["game_id"].map(lambda x: ko.get(x)), utc=True, errors="coerce")
+    lg["ko"] = pd.to_datetime(lg["game_id"].map(lambda x: ko.get(x)), utc=True, errors="coerce", format="ISO8601")
     lg = lg[lg["t"] < lg["ko"]].sort_values("t")
     first = lg.groupby("game_id").head(1)
     cur = {g["game_id"]: g for g in (week or {}).get("games", [])}
@@ -551,7 +551,7 @@ def alerts(week: dict, lines: pd.DataFrame | None, kickoffs: dict) -> list:
             gid = next((x for x, gg in ids.items() if gg["home_team"] == h and gg["away_team"] == a), None)
             if not gid:
                 continue
-            ko = pd.to_datetime(kickoffs.get(gid), utc=True, errors="coerce")
+            ko = pd.to_datetime(kickoffs.get(gid), utc=True, errors="coerce", format="ISO8601")
             ls, lt = None, None
             for r in sub.itertuples(index=False):
                 if pd.notna(ko) and pd.to_datetime(r.ts, utc=True) >= ko:
@@ -652,7 +652,7 @@ def my_bets(finals_by_key) -> list:
     return out
 
 
-def my_pnl() -> dict:
+def my_pnl(sched: dict | None = None, lines: pd.DataFrame | None = None) -> dict:
     """Your DraftKings slips (overrides/bet_slips.csv), as DraftKings settled them: per slip, by week, all time."""
     p = ROOT / "overrides" / "bet_slips.csv"
     out = dict(slips=[], weeks=[], total={})
@@ -675,8 +675,19 @@ def my_pnl() -> dict:
             profit = 0.0
         else:
             profit = None
+        src = str(getattr(r, "source", "") or "").strip().lower()
+        src = src if src and src != "nan" else ("parlay" if str(r.type) == "parlay" else "other")
         rows.append(dict(date=str(r.date), season=int(r.season), week=int(r.week), type=str(r.type), bet=str(r.bet),
-                         price=_f(r.price), stake=stake, result=res, payout=pay, profit=profit))
+                         price=_f(r.price), stake=stake, result=res, payout=pay, profit=profit, source=src,
+                         game_id=str(getattr(r, "game_id", "") or "") if pd.notna(getattr(r, "game_id", None)) else "",
+                         market=str(getattr(r, "market", "") or "") if pd.notna(getattr(r, "market", None)) else "",
+                         side=str(getattr(r, "side", "") or "") if pd.notna(getattr(r, "side", None)) else "",
+                         line=_f(getattr(r, "line", None))))
+    # closing-line value for singles: points better (+) or worse than DraftKings' last line before kickoff
+    sg = {g["game_id"]: g for g in (sched or {}).get("games", [])}
+    closes = closing_lines(lines, sg) if sg and lines is not None else {}
+    for x in rows:
+        x["clv"] = clv(x["market"], x["side"], x["line"], closes.get(x["game_id"])) if x["game_id"] and x["line"] is not None else None
     def summ(d):
         s = [x for x in d if x["result"]]
         w, l, pu = sum(x["result"] == "W" for x in s), sum(x["result"] == "L" for x in s), sum(x["result"] == "P" for x in s)
@@ -692,6 +703,14 @@ def my_pnl() -> dict:
     out["slips"] = sorted(rows, key=lambda x: x["date"], reverse=True)
     out["total"] = summ(rows)
     out["singles"], out["parlays"] = summ([x for x in rows if x["type"] == "single"]), summ([x for x in rows if x["type"] == "parlay"])
+    out["by_source"] = {s: summ([x for x in rows if x["source"] == s]) for s in sorted({x["source"] for x in rows})}
+    cl = [x["clv"] for x in rows if x["clv"] is not None]
+    out["clv"] = dict(n=len(cl), avg=float(np.mean(cl)) if cl else None, beat=int(sum(c > 0 for c in cl)), same=int(sum(c == 0 for c in cl)))
+    run, cum = 0.0, []
+    for x in sorted([x for x in rows if x["result"]], key=lambda x: x["date"]):
+        run += x["profit"] or 0
+        cum.append([x["date"], round(run, 2)])
+    out["cum"] = cum
     return out
 
 
@@ -715,6 +734,10 @@ def main() -> int:
             games[g["game_id"]] = g
             kickoffs[g["game_id"]] = g.get("kickoff_utc")
             teams[g["game_id"]] = (g["home_team"], g["away_team"])
+    if (ART / "tracker" / "picks_log.csv").exists():   # games no longer in a saved run (e.g. last week's Sunday games)
+        lk = read_log(ART / "tracker" / "picks_log.csv").dropna(subset=["kickoff_utc"]).groupby("game_id")["kickoff_utc"].last()
+        for gid, ko in lk.items():
+            kickoffs.setdefault(gid, ko)
     finals, finals_by_key = {}, {}
     for g in sched.get("games", []):
         if g.get("home_score") is not None and g.get("result") is not None:
@@ -743,7 +766,7 @@ def main() -> int:
         lines=line_history(lines, cur), my_bets=my_bets(finals_by_key),
         checks=checks, checks_ok=all(c[1] for c in checks), audit=_load(ART / "data_audit.json"),
         budget=_load(ART / "odds_budget.json"), alerts=alerts(cur, lines, kickoffs),
-        early=early_value(cur, sched, lines, finals), pnl=my_pnl(),
+        early=early_value(cur, sched, lines, finals), pnl=my_pnl(sched, lines),
     )
     if PUBLIC.exists():
         shutil.rmtree(PUBLIC)

@@ -59,6 +59,14 @@ win_totals/win_totals.csv; inert until then, and must pass the backtest before i
 Alerts: build_site.alerts() -> site Alerts tab (pick green/Top/wind on-off with the reason, DraftKings line moves),
 badge + browser notifications while open (polls site.js every 5 min); notify.py pushes pick changes to ntfy only
 if the NTFY_TOPIC secret exists (state artifacts/alerts_sent.json); line moves go as one combined low-priority push per run.
+Site extras (Oct 6, 2026, display only, no model change): installable app (web/manifest.webmanifest, sw.js network-first,
+web/icons), phone bottom tab bar + More sheet, "Bet now" panel on Picks, one-tap "Log bet" (localStorage, auto-graded,
+"Export for Claude" -> bet_slips.csv rows), Bets tab stats (by source, CLV vs DK close, running profit), #recap, #tools
+(parlay calculator with boost + model EV, fractional-Kelly sizing capped 3%, follow teams), team-color cards, followed
+games first, scroll memory per tab, Alerts settings (Top-only / followed teams for browser alerts). notify.py also posts to
+<topic>-picks and <topic>-top; overrides/alerts.json holds line-move quiet hours (0-7 ET). build_site fills kickoffs from
+the pick log (games no longer in a saved run) and parses timestamps with format="ISO8601".
+Personal P&L: overrides/bet_slips.csv (source/game_id/market/side/line per slip) -> build_site.my_pnl (by_source, clv, cum).
 Site tabs: How it works (#how, web/app.js renderHow) explains the method with live numbers; game cards show the week's
 opening line -> now (the weekly opener = first logged line; ESPN's 'open' is the line first posted months earlier).
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;

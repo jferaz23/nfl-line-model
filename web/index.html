@@ -6,6 +6,13 @@
 <title>NFL Line Model</title>
 <meta name="description" content="Weekly NFL spreads, totals and moneylines priced by a model and compared with DraftKings.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='32' cy='32' rx='27' ry='17' fill='%232d7a4c' transform='rotate(-35 32 32)'/%3E%3Cpath d='M22 42 42 22M27 33l4 4M31 29l4 4M35 25l4 4' stroke='%23fff' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#131517">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NFL Model">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
@@ -18,18 +25,23 @@
     <p class="updated" id="updated"></p>
     <nav class="tabs" aria-label="Sections">
       <div class="tgroup"><span class="gl">This week</span><div class="items">
-        <a href="#games">Games</a><a href="#live">Gamecast</a><a href="#picks">Picks</a><a href="#breakdown">Breakdown</a><a href="#alerts" id="alerts-tab">Alerts</a></div></div>
+        <a href="#games">Games</a><a href="#live">Gamecast</a><a href="#picks">Picks</a><a href="#breakdown">Breakdown</a><a href="#alerts" id="alerts-tab">Alerts</a><a href="#recap">Recap</a></div></div>
       <div class="tgroup"><span class="gl">Season</span><div class="items">
         <a href="#futures">Futures</a><a href="#teams">Teams</a><a href="#players">Players</a></div></div>
       <div class="tgroup"><span class="gl">Model</span><div class="items">
-        <a href="#record">Record</a><a href="#bets">Bets</a><a href="#how">How it works</a><a href="#info">Info</a></div></div>
+        <a href="#record">Record</a><a href="#bets">Bets</a><a href="#tools">Tools</a><a href="#how">How it works</a><a href="#info">Info</a></div></div>
     </nav>
   </header>
   <div id="update-banner" class="update-banner" hidden></div>
+  <div id="install-banner" class="update-banner" hidden></div>
   <section class="kpis" id="kpis" aria-label="Record"></section>
   <main id="view"></main>
   <footer class="site">For information only, not financial advice. NFL betting markets are efficient and edges are small; confirm every price in the DraftKings app. If betting stops being fun, call 1-800-GAMBLER.</footer>
 </div>
+<nav class="bottombar" id="bottombar" aria-label="Main sections">
+  <a href="#games"><span class="bi">🏈</span>Games</a><a href="#picks"><span class="bi">✓</span>Picks</a><a href="#live"><span class="bi">●</span>Live</a><a href="#bets"><span class="bi">$</span>My bets</a><button type="button" id="more-btn"><span class="bi">☰</span>More</button>
+</nav>
+<div id="sheet" class="sheet" hidden></div>
 <script>try{var t=localStorage.getItem("nflmodel-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <script src="data/site.js"></script>
 <script src="app.js"></script>

@@ -328,3 +328,55 @@ table.gcstats td { padding: 5px 8px; }
 
 .lmove { display: flex; align-items: center; gap: 6px; font-size: 12px; margin-top: 6px; color: var(--ink); }
 .lmove svg { flex: none; }
+
+/* ---- Oct 2026 extras: smoother pages, phone tab bar, sheets, bet logging, tools */
+#view.fade { animation: fadein .18s ease-out; }
+@keyframes fadein { from { opacity: .35; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { #view.fade { animation: none; } }
+.gcard { position: relative; overflow: hidden; padding-left: 16px; transition: border-color .15s, transform .15s; }
+.gcard::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: linear-gradient(var(--ac) 0 50%, var(--hc) 50% 100%); }
+.gcard:active { transform: scale(.99); }
+.gcard.fav { box-shadow: 0 0 0 1px var(--warn) inset; }
+.star { margin-left: 5px; color: var(--faint); cursor: pointer; font-size: 14px; line-height: 1; }
+.star.on { color: var(--warn); }
+.logbtn { display: inline-block; margin-left: auto; font-size: 12px; font-weight: 600; color: var(--accent-ink); background: var(--accent-soft);
+  border-radius: 6px; padding: 2px 8px; cursor: pointer; white-space: nowrap; }
+.logbtn:hover { filter: brightness(1.08); }
+.betnow .bn-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding: 8px 0; border-top: 1px solid var(--line2); }
+.betnow .bn-row:first-of-type { border-top: 0; }
+.betnow .bn-row .small { flex-basis: 100%; order: 3; }
+.betnow .bn-row.fav strong::after { content: " ★"; color: var(--warn); }
+.fld { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: var(--muted); }
+.fld input, .fld select { font: inherit; font-size: 15px; color: var(--ink); background: var(--card2); border: 1px solid var(--line); border-radius: 7px; padding: 6px 8px; min-width: 0; }
+.two-fld { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0; }
+.chk { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.sheet { position: fixed; inset: 0; z-index: 60; background: rgba(0, 0, 0, .45); display: flex; align-items: flex-end; justify-content: center; }
+.sheet[hidden] { display: none; }
+.sheet-card { background: var(--card); width: min(520px, 100%); max-height: 85vh; overflow: auto; border-radius: 14px 14px 0 0; padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
+  animation: sheetup .2s ease-out; }
+.sheet-card .fld { margin: 8px 0; }
+@keyframes sheetup { from { transform: translateY(30px); opacity: .5; } to { transform: none; opacity: 1; } }
+.more-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.more-grid .btn { text-align: center; padding: 10px; text-decoration: none; color: var(--ink); }
+.bottombar { display: none; }
+.pc-legs { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 6px; margin: 10px 0; }
+.pc-leg { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: baseline; border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; cursor: pointer; font-size: 13.5px; }
+.pc-leg.on { border-color: var(--accent); background: var(--accent-soft); }
+.follow-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.followchip { border: 1px solid var(--line); border-left: 4px solid var(--tc); border-radius: 6px; padding: 4px 9px; font-size: 13px; cursor: pointer; }
+.followchip.on { background: var(--warn-soft); border-color: var(--warn); border-left-color: var(--tc); font-weight: 600; }
+ul.recap { list-style: none; padding: 0; margin: 6px 0; }
+ul.recap li { padding: 5px 0; border-top: 1px solid var(--line2); }
+ul.recap li:first-child { border-top: 0; }
+@media (max-width: 640px) {
+  nav.tabs { display: none; }
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+  .bottombar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; background: var(--card); border-top: 1px solid var(--line);
+    padding: 4px 4px calc(4px + env(safe-area-inset-bottom)); justify-content: space-around; }
+  .bottombar a, .bottombar button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 1px; font-size: 11px; color: var(--muted);
+    text-decoration: none; background: none; border: 0; padding: 4px 0; font-family: inherit; cursor: pointer; }
+  .bottombar .bi { font-size: 18px; line-height: 1.1; }
+  .bottombar a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+  .two-fld { grid-template-columns: 1fr 1fr; }
+}
+@media print { .bottombar, .sheet, .logbtn, .star { display: none !important; } }
