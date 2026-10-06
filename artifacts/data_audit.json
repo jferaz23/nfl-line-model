@@ -1,9 +1,9 @@
 {
- "built": "2026-10-05T22:57:55+00:00",
+ "built": "2026-10-06T04:46:57+00:00",
  "scores": {
   "ok": true,
-  "games": 3091,
-  "matched": 3091,
+  "games": 3092,
+  "matched": 3092,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,13 +12,13 @@
  },
  "lines": {
   "ok": true,
-  "games": 3091,
+  "games": 3092,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
   "favorite_disagree": [],
   "n_favorite_disagree": 0,
-  "spread_result_corr": 0.438,
+  "spread_result_corr": 0.437,
   "moneyline_entry_errors": [
    "2015_01_KC_HOU",
    "2015_15_TB_STL",
@@ -296,7 +296,7 @@
     "espn_venue": "Caesars Superdome",
     "espn_grass": false,
     "espn_indoor": true,
-    "nflverse_surface": "sportturf",
+    "nflverse_surface": ",sportturf",
     "espn_current": true
    },
    {
@@ -402,38 +402,44 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 50,
-  "not_active": 13,
-  "matched_share": 1.0,
-  "unmatched": [],
-  "n_unmatched": 0,
-  "status_disagreements": [
+  "listings": 750,
+  "not_active": 199,
+  "matched_share": 0.997,
+  "unmatched": [
    {
-    "team": "NO",
-    "player": "Noah Fant",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
+    "team": "BUF",
+    "full_name": "Mike Danna",
+    "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Sean Murphy-Bunting",
+    "position": "CB",
+    "report_status": "ACTIVE"
    }
   ],
-  "n_status_disagree": 1,
+  "n_unmatched": 2,
+  "status_disagreements": [],
+  "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-05T22:59:40+00:00"
+  "checked": "2026-10-06T04:48:43+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261005T225751Z.json",
-  "games": 16,
+  "snapshot": "odds_20261006T044650Z.json",
+  "games": 15,
   "books_seen": {
-   "draftkings": 16,
-   "fanduel": 16,
-   "betonlineag": 14,
-   "lowvig": 14,
-   "betrivers": 16,
-   "novig": 16,
-   "betmgm": 16,
-   "pinnacle": 10,
-   "prophetx": 16,
-   "hardrockbet": 16
+   "draftkings": 15,
+   "fanduel": 15,
+   "betonlineag": 13,
+   "lowvig": 13,
+   "novig": 15,
+   "betrivers": 15,
+   "betmgm": 15,
+   "pinnacle": 13,
+   "hardrockbet": 15,
+   "prophetx": 15
   },
   "configured_missing": []
  }
