@@ -1,5 +1,5 @@
 {
- "built": "2026-10-06T10:48:13+00:00",
+ "built": "2026-10-06T16:48:13+00:00",
  "scores": {
   "ok": true,
   "games": 3092,
@@ -401,43 +401,43 @@
   ]
  },
  "injuries": {
-  "ok": true,
+  "ok": false,
   "listings": 750,
   "not_active": 199,
-  "matched_share": 0.997,
+  "matched_share": 0.999,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
     "report_status": "ACTIVE"
-   },
-   {
-    "team": "PIT",
-    "full_name": "Sean Murphy-Bunting",
-    "position": "CB",
-    "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 2,
+  "n_unmatched": 1,
   "status_disagreements": [],
   "n_status_disagree": 0,
-  "qb_flags": [],
-  "checked": "2026-10-06T10:49:50+00:00"
+  "qb_flags": [
+   {
+    "team": "WAS",
+    "qb": "Jayden Daniels",
+    "espn_status": "out/doubtful"
+   }
+  ],
+  "checked": "2026-10-06T16:50:00+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261006T104804Z.json",
+  "snapshot": "odds_20261006T164808Z.json",
   "games": 15,
   "books_seen": {
    "draftkings": 15,
    "fanduel": 15,
-   "betonlineag": 13,
-   "lowvig": 13,
+   "betonlineag": 15,
+   "lowvig": 15,
    "novig": 15,
    "betrivers": 15,
    "betmgm": 15,
-   "pinnacle": 13,
+   "pinnacle": 15,
    "hardrockbet": 15,
    "prophetx": 15
   },
