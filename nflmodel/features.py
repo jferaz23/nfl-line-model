@@ -1004,16 +1004,21 @@ def _add_venue_history(g, qg, season_decay=0.85):
 
 
 MKT_HALF_LIFE, MKT_LAM, MKT_QB_ADJ = 2.5, 0.1, 0.75   # Oct 6, 2026 (Test 41): was 6 weeks / 3.0 / no QB adjustment
+# Oct 6, 2026 (Test 50): points per missing regular starter, fit on 2015-20 (result - market forecast on d_miss_*),
+# capped at 0 (a missing starter never helps); the spread rating shifts by the missing-points gap vs what the lines priced
+MKT_INJ_PTS = {"OL": -0.7757, "WR": -1.4823, "TE": 0.0, "RB": -0.9082, "DL": 0.0, "LB": -1.4867, "DB": -0.7738}
+MKT_INJ_ADJ = 1.0
 
 
-def _add_market_ratings(g, half_life=MKT_HALF_LIFE, lam=MKT_LAM, qb_adj=MKT_QB_ADJ):
+def _add_market_ratings(g, half_life=MKT_HALF_LIFE, lam=MKT_LAM, qb_adj=MKT_QB_ADJ, inj_adj=MKT_INJ_ADJ):
     """Market-implied team ratings: the spread and total each team 'deserves' according to the
     closing lines of its previous games (a least-squares fit, recent weeks weighted more, last
     season's games discounted). This is the market's own prior on every team, the same idea as
     preseason win totals, rebuilt from lines nflverse already has.
     QB adjustment (spreads): those lines priced the QB expected to start then; if this week's projected
     starter is worth more or less (h/a_qb_rel, pts/game), shift the rating by qb_adj x the gap between his
-    value and the same-weighted average value the market priced."""
+    value and the same-weighted average value the market priced. Injuries (spreads): the same for missing regular
+    starters, valued at MKT_INJ_PTS per player (inj_adj x the gap)."""
     g = g.reset_index(drop=True).copy()
     g["d_mkt_rating"], g["mkt_total_pred"] = 0.0, 0.0
     if not {"spread_line", "total_line"}.issubset(g.columns):
@@ -1029,6 +1034,12 @@ def _add_market_ratings(g, half_life=MKT_HALF_LIFE, lam=MKT_LAM, qb_adj=MKT_QB_A
     use_qb = qb_adj > 0 and {"h_qb_rel", "a_qb_rel"}.issubset(g.columns)
     if use_qb:
         hv, av = hist["h_qb_rel"].fillna(0.0).to_numpy(float), hist["a_qb_rel"].fillna(0.0).to_numpy(float)
+    use_inj = inj_adj > 0 and all(f"{s}_miss_{x}" in g.columns for s in "ha" for x in MKT_INJ_PTS)
+    if use_inj:
+        cv = np.array(list(MKT_INJ_PTS.values()))
+        hp_all = g[[f"h_miss_{x}" for x in MKT_INJ_PTS]].fillna(0.0).to_numpy(float) @ cv
+        ap_all = g[[f"a_miss_{x}" for x in MKT_INJ_PTS]].fillna(0.0).to_numpy(float) @ cv
+        hpv, apv = hp_all[hist.index], ap_all[hist.index]
     Xs = np.zeros((len(hist), k + 1)); Xs[np.arange(len(hist)), H] += 1; Xs[np.arange(len(hist)), A] -= 1; Xs[:, k] = home
     Xt = np.zeros((len(hist), k + 1)); Xt[np.arange(len(hist)), H] += 1; Xt[np.arange(len(hist)), A] += 1; Xt[:, k] = 1
     out_s, out_t = np.zeros(len(g)), np.zeros(len(g))
@@ -1053,6 +1064,12 @@ def _add_market_ratings(g, half_life=MKT_HALF_LIFE, lam=MKT_LAM, qb_adj=MKT_QB_A
             priced = np.where(sw > 0, sv / np.maximum(sw, 1e-12), 0.0)
             gap = (rows["h_qb_rel"].fillna(0.0).to_numpy() - priced[hi]) - (rows["a_qb_rel"].fillna(0.0).to_numpy() - priced[ai])
             out_s[g.index.get_indexer(idx)] += qb_adj * gap
+        if use_inj:
+            sw = np.bincount(H[m], w, k) + np.bincount(A[m], w, k)
+            sv = np.bincount(H[m], w * hpv[m], k) + np.bincount(A[m], w * apv[m], k)
+            pr = np.where(sw > 0, sv / np.maximum(sw, 1e-12), 0.0)
+            ii = g.index.get_indexer(idx)
+            out_s[ii] += inj_adj * ((hp_all[ii] - pr[hi]) - (ap_all[ii] - pr[ai]))
         out_t[g.index.get_indexer(idx)] = mu + bt[hi] + bt[ai]
     g["d_mkt_rating"] = out_s
     g["mkt_total_pred"] = np.where(out_t > 0, out_t - np.nanmean(np.where(out_t > 0, out_t, np.nan)), 0.0)
