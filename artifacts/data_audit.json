@@ -1,5 +1,5 @@
 {
- "built": "2026-10-06T16:48:13+00:00",
+ "built": "2026-10-06T22:45:02+00:00",
  "scores": {
   "ok": true,
   "games": 3092,
@@ -401,11 +401,17 @@
   ]
  },
  "injuries": {
-  "ok": false,
+  "ok": true,
   "listings": 750,
-  "not_active": 199,
-  "matched_share": 0.999,
+  "not_active": 191,
+  "matched_share": 0.997,
   "unmatched": [
+   {
+    "team": "ARI",
+    "full_name": "Kenny Yeboah",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
    {
     "team": "BUF",
     "full_name": "Mike Danna",
@@ -413,28 +419,22 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 1,
+  "n_unmatched": 2,
   "status_disagreements": [],
   "n_status_disagree": 0,
-  "qb_flags": [
-   {
-    "team": "WAS",
-    "qb": "Jayden Daniels",
-    "espn_status": "out/doubtful"
-   }
-  ],
-  "checked": "2026-10-06T16:50:00+00:00"
+  "qb_flags": [],
+  "checked": "2026-10-06T22:46:44+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261006T164808Z.json",
-  "games": 15,
+  "snapshot": "odds_20261006T224453Z.json",
+  "games": 29,
   "books_seen": {
-   "draftkings": 15,
-   "fanduel": 15,
-   "betonlineag": 15,
-   "lowvig": 15,
-   "novig": 15,
+   "draftkings": 29,
+   "fanduel": 29,
+   "betonlineag": 29,
+   "lowvig": 29,
+   "novig": 29,
    "betrivers": 15,
    "betmgm": 15,
    "pinnacle": 15,
