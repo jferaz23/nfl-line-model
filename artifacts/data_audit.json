@@ -1,5 +1,5 @@
 {
- "built": "2026-10-07T10:16:35+00:00",
+ "built": "2026-10-07T15:52:29+00:00",
  "scores": {
   "ok": true,
   "games": 3092,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 750,
-  "not_active": 192,
+  "not_active": 191,
   "matched_share": 0.999,
   "unmatched": [
    {
@@ -417,11 +417,11 @@
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-07T10:18:34+00:00"
+  "checked": "2026-10-07T15:54:13+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261007T101628Z.json",
+  "snapshot": "odds_20261007T155220Z.json",
   "games": 29,
   "books_seen": {
    "draftkings": 29,
@@ -429,7 +429,7 @@
    "betonlineag": 29,
    "lowvig": 29,
    "novig": 29,
-   "betrivers": 28,
+   "betrivers": 29,
    "betmgm": 15,
    "pinnacle": 15,
    "hardrockbet": 15,
