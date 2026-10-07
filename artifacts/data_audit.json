@@ -1,5 +1,5 @@
 {
- "built": "2026-10-07T04:39:46+00:00",
+ "built": "2026-10-07T10:16:35+00:00",
  "scores": {
   "ok": true,
   "games": 3092,
@@ -404,42 +404,24 @@
   "ok": true,
   "listings": 750,
   "not_active": 192,
-  "matched_share": 0.995,
+  "matched_share": 0.999,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
     "report_status": "ACTIVE"
-   },
-   {
-    "team": "JAX",
-    "full_name": "Alijah Huzzie",
-    "position": "CB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "PIT",
-    "full_name": "Terell Smith",
-    "position": "CB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "SEA",
-    "full_name": "Robert Henry Jr.",
-    "position": "RB",
-    "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 4,
+  "n_unmatched": 1,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-07T04:41:35+00:00"
+  "checked": "2026-10-07T10:18:34+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261007T043937Z.json",
+  "snapshot": "odds_20261007T101628Z.json",
   "games": 29,
   "books_seen": {
    "draftkings": 29,
@@ -447,7 +429,7 @@
    "betonlineag": 29,
    "lowvig": 29,
    "novig": 29,
-   "betrivers": 29,
+   "betrivers": 28,
    "betmgm": 15,
    "pinnacle": 15,
    "hardrockbet": 15,
