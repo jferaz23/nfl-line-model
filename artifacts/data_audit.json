@@ -1,5 +1,5 @@
 {
- "built": "2026-10-08T02:14:59+00:00",
+ "built": "2026-10-08T07:48:50+00:00",
  "scores": {
   "ok": true,
   "games": 3092,
@@ -404,30 +404,12 @@
   "ok": true,
   "listings": 750,
   "not_active": 271,
-  "matched_share": 0.993,
+  "matched_share": 0.997,
   "unmatched": [
-   {
-    "team": "ARI",
-    "full_name": "Jedrick Wills Jr.",
-    "position": "OT",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BAL",
-    "full_name": "Cam Jurgens",
-    "position": "C",
-    "report_status": "QUESTIONABLE"
-   },
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Mark Gronowski",
-    "position": "QB",
     "report_status": "ACTIVE"
    },
    {
@@ -437,15 +419,22 @@
     "report_status": "QUESTIONABLE"
    }
   ],
-  "n_unmatched": 5,
-  "status_disagreements": [],
-  "n_status_disagree": 0,
+  "n_unmatched": 2,
+  "status_disagreements": [
+   {
+    "team": "DAL",
+    "player": "Tyler Smith",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   }
+  ],
+  "n_status_disagree": 1,
   "qb_flags": [],
-  "checked": "2026-10-08T02:16:35+00:00"
+  "checked": "2026-10-08T07:50:44+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261008T021450Z.json",
+  "snapshot": "odds_20261008T074841Z.json",
   "games": 29,
   "books_seen": {
    "draftkings": 29,
