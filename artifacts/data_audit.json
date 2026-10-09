@@ -1,9 +1,9 @@
 {
- "built": "2026-10-09T02:15:46+00:00",
+ "built": "2026-10-09T07:47:40+00:00",
  "scores": {
   "ok": true,
-  "games": 3092,
-  "matched": 3092,
+  "games": 3093,
+  "matched": 3093,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3092,
+  "games": 3093,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -142,7 +142,7 @@
     "espn_venue": "AT&T Stadium",
     "espn_grass": false,
     "espn_indoor": true,
-    "nflverse_surface": "matrixturf",
+    "nflverse_surface": ",matrixturf",
     "espn_current": true
    },
    {
@@ -402,8 +402,8 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 750,
-  "not_active": 274,
+  "listings": 700,
+  "not_active": 258,
   "matched_share": 0.996,
   "unmatched": [
    {
@@ -429,23 +429,23 @@
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-09T02:17:35+00:00"
+  "checked": "2026-10-09T07:49:28+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261009T021539Z.json",
-  "games": 27,
+  "snapshot": "odds_20261009T074735Z.json",
+  "games": 26,
   "books_seen": {
-   "draftkings": 27,
-   "fanduel": 27,
-   "novig": 27,
-   "betrivers": 27,
-   "betmgm": 15,
-   "pinnacle": 15,
-   "hardrockbet": 15,
-   "prophetx": 15,
+   "draftkings": 26,
+   "fanduel": 26,
+   "betmgm": 14,
    "betonlineag": 26,
-   "lowvig": 26
+   "lowvig": 26,
+   "novig": 26,
+   "betrivers": 26,
+   "hardrockbet": 14,
+   "pinnacle": 14,
+   "prophetx": 14
   },
   "configured_missing": []
  }
