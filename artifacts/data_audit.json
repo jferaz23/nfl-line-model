@@ -1,5 +1,5 @@
 {
- "built": "2026-10-09T07:47:40+00:00",
+ "built": "2026-10-09T13:19:01+00:00",
  "scores": {
   "ok": true,
   "games": 3093,
@@ -142,7 +142,7 @@
     "espn_venue": "AT&T Stadium",
     "espn_grass": false,
     "espn_indoor": true,
-    "nflverse_surface": ",matrixturf",
+    "nflverse_surface": "matrixturf",
     "espn_current": true
    },
    {
@@ -429,11 +429,11 @@
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-09T07:49:28+00:00"
+  "checked": "2026-10-09T13:20:48+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261009T074735Z.json",
+  "snapshot": "odds_20261009T131856Z.json",
   "games": 26,
   "books_seen": {
    "draftkings": 26,
