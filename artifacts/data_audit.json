@@ -1,5 +1,5 @@
 {
- "built": "2026-10-08T20:24:13+00:00",
+ "built": "2026-10-09T02:15:46+00:00",
  "scores": {
   "ok": true,
   "games": 3092,
@@ -403,8 +403,8 @@
  "injuries": {
   "ok": true,
   "listings": 750,
-  "not_active": 266,
-  "matched_share": 0.997,
+  "not_active": 274,
+  "matched_share": 0.996,
   "unmatched": [
    {
     "team": "BUF",
@@ -413,33 +413,39 @@
     "report_status": "ACTIVE"
    },
    {
+    "team": "HOU",
+    "full_name": "Bryce Oliver",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
     "team": "NO",
     "full_name": "Mike Reid",
     "position": "CB",
-    "report_status": "QUESTIONABLE"
+    "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 2,
+  "n_unmatched": 3,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-08T20:25:54+00:00"
+  "checked": "2026-10-09T02:17:35+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261008T202403Z.json",
-  "games": 29,
+  "snapshot": "odds_20261009T021539Z.json",
+  "games": 27,
   "books_seen": {
-   "draftkings": 29,
-   "fanduel": 29,
-   "betonlineag": 29,
-   "lowvig": 29,
-   "novig": 29,
-   "betrivers": 29,
+   "draftkings": 27,
+   "fanduel": 27,
+   "novig": 27,
+   "betrivers": 27,
    "betmgm": 15,
    "pinnacle": 15,
    "hardrockbet": 15,
-   "prophetx": 15
+   "prophetx": 15,
+   "betonlineag": 26,
+   "lowvig": 26
   },
   "configured_missing": []
  }
