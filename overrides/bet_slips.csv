@@ -18,3 +18,4 @@ date,season,week,type,bet,price,stake,result,payout,source,game_id,market,side,l
 2026-10-04,2026,4,parlay,"3 legs (alt lines): NYG +8.5, JAX +8.5, TB +8.5",137,10,W,23.70,parlay,,,,
 2026-10-04,2026,4,parlay,"3 legs: JAX +2.5, LV +4.5, NE @ BUF Under 49.5 (+50% boost)",975,10,L,,parlay,,,,
 2026-10-04,2026,4,parlay,"3 legs: NE @ BUF Under 49.5, JAX @ CIN Under 51.5, MIA @ MIN Over 38.5 (+50% boost)",894,10,L,,parlay,,,,
+2026-10-08,2026,5,single,TB @ DAL: TB +9.5,-112,10,W,18.93,top,2026_05_TB_DAL,spread,away,9.5
