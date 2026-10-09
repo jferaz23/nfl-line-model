@@ -1,5 +1,5 @@
 {
- "built": "2026-10-09T13:19:01+00:00",
+ "built": "2026-10-09T18:50:46+00:00",
  "scores": {
   "ok": true,
   "games": 3093,
@@ -403,19 +403,13 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 258,
-  "matched_share": 0.996,
+  "not_active": 253,
+  "matched_share": 0.997,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Bryce Oliver",
-    "position": "WR",
     "report_status": "ACTIVE"
    },
    {
@@ -425,15 +419,15 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 3,
+  "n_unmatched": 2,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-09T13:20:48+00:00"
+  "checked": "2026-10-09T18:52:23+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261009T131856Z.json",
+  "snapshot": "odds_20261009T185037Z.json",
   "games": 26,
   "books_seen": {
    "draftkings": 26,
