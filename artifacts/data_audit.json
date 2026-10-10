@@ -1,5 +1,5 @@
 {
- "built": "2026-10-10T02:20:12+00:00",
+ "built": "2026-10-10T07:57:14+00:00",
  "scores": {
   "ok": true,
   "games": 3093,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 197,
+  "not_active": 196,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -420,14 +420,177 @@
    }
   ],
   "n_unmatched": 2,
-  "status_disagreements": [],
-  "n_status_disagree": 0,
+  "status_disagreements": [
+   {
+    "team": "CHI",
+    "player": "Kyler Gordon",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "CLE",
+    "player": "Kalia Davis",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "CLE",
+    "player": "Dillon Gabriel",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "DET",
+    "player": "Cade Mays",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "GB",
+    "player": "Savion Williams",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "HOU",
+    "player": "M.J. Stewart",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "HOU",
+    "player": "Tank Dell",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "HOU",
+    "player": "Braden Smith",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "HOU",
+    "player": "Kayden McDonald",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "IND",
+    "player": "Will Mallory",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "LV",
+    "player": "Dont'e Thornton Jr.",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "LAC",
+    "player": "Branson Taylor",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LAC",
+    "player": "Scott Matlock",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "MIA",
+    "player": "Storm Duck",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "MIA",
+    "player": "Kenneth Grant",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "MIN",
+    "player": "Ben Yurosek",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "MIN",
+    "player": "Michael Jurgens",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NO",
+    "player": "Jaylan Ford",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NO",
+    "player": "Lorenzo Styles Jr.",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NYJ",
+    "player": "Tim Patrick",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "PIT",
+    "player": "DeShon Elliott",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "SF",
+    "player": "Mykel Williams",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "SEA",
+    "player": "Irvin Charles",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "TEN",
+    "player": "Joshua Williams",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "WAS",
+    "player": "Trey Amos",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "WAS",
+    "player": "Jeremy McNichols",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "WAS",
+    "player": "Deatrich Wise Jr.",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   }
+  ],
+  "n_status_disagree": 27,
   "qb_flags": [],
-  "checked": "2026-10-10T02:21:55+00:00"
+  "checked": "2026-10-10T07:59:59+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261010T022003Z.json",
+  "snapshot": "odds_20261010T075705Z.json",
   "games": 26,
   "books_seen": {
    "draftkings": 26,
