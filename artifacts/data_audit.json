@@ -1,5 +1,5 @@
 {
- "built": "2026-10-10T13:35:22+00:00",
+ "built": "2026-10-10T19:19:55+00:00",
  "scores": {
   "ok": true,
   "games": 3093,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 197,
+  "not_active": 199,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -473,6 +473,18 @@
     "team": "HOU",
     "player": "Kayden McDonald",
     "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "IND",
+    "player": "Arden Key",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "IND",
+    "player": "Darius Slayton",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
@@ -584,13 +596,13 @@
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 27,
+  "n_status_disagree": 29,
   "qb_flags": [],
-  "checked": "2026-10-10T13:36:58+00:00"
+  "checked": "2026-10-10T19:21:43+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261010T133516Z.json",
+  "snapshot": "odds_20261010T191946Z.json",
   "games": 26,
   "books_seen": {
    "draftkings": 26,
