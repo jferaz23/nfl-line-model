@@ -1,5 +1,5 @@
 {
- "built": "2026-10-11T18:49:53+00:00",
+ "built": "2026-10-11T19:14:25+00:00",
  "scores": {
   "ok": true,
   "games": 3094,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 213,
+  "not_active": 223,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -549,6 +549,12 @@
    },
    {
     "team": "LAC",
+    "player": "Rodney Shelley",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LAC",
     "player": "Trevor Penning",
     "espn": "IR",
     "league": "OUT"
@@ -644,13 +650,13 @@
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 37,
+  "n_status_disagree": 38,
   "qb_flags": [],
-  "checked": "2026-10-11T18:51:36+00:00"
+  "checked": "2026-10-11T19:16:17+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261011T184947Z.json",
+  "snapshot": "odds_20261011T191416Z.json",
   "games": 13,
   "books_seen": {
    "draftkings": 13,
