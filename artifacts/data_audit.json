@@ -1,5 +1,5 @@
 {
- "built": "2026-10-11T12:00:18+00:00",
+ "built": "2026-10-11T15:45:58+00:00",
  "scores": {
   "ok": true,
   "games": 3093,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 192,
+  "not_active": 214,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -452,6 +452,12 @@
     "league": "QUESTIONABLE"
    },
    {
+    "team": "CIN",
+    "player": "Colbie Young",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "CLE",
     "player": "Kalia Davis",
     "espn": "IR",
@@ -468,6 +474,24 @@
     "player": "Cade Mays",
     "espn": "IR",
     "league": "OUT"
+   },
+   {
+    "team": "GB",
+    "player": "Jacob Monk",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "GB",
+    "player": "Aaron Banks",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "GB",
+    "player": "Anthony Campbell",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
    },
    {
     "team": "GB",
@@ -512,6 +536,12 @@
     "league": "OUT"
    },
    {
+    "team": "JAX",
+    "player": "Eric Murray",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
+   },
+   {
     "team": "LV",
     "player": "Dont'e Thornton Jr.",
     "espn": "IR",
@@ -554,6 +584,18 @@
     "league": "OUT"
    },
    {
+    "team": "PHI",
+    "player": "Jonathan Greenard",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "PIT",
+    "player": "Rico Dowdle",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "PIT",
     "player": "Michael Pittman Jr.",
     "espn": "IR",
@@ -579,6 +621,12 @@
    },
    {
     "team": "TEN",
+    "player": "David Martin-Robinson",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "TEN",
     "player": "Joshua Williams",
     "espn": "IR",
     "league": "QUESTIONABLE"
@@ -596,25 +644,25 @@
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 29,
+  "n_status_disagree": 37,
   "qb_flags": [],
-  "checked": "2026-10-11T12:01:51+00:00"
+  "checked": "2026-10-11T15:47:38+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261011T120010Z.json",
-  "games": 26,
+  "snapshot": "odds_20261011T154549Z.json",
+  "games": 24,
   "books_seen": {
-   "draftkings": 26,
-   "fanduel": 26,
+   "draftkings": 24,
+   "fanduel": 24,
    "betmgm": 14,
-   "betonlineag": 24,
-   "lowvig": 24,
-   "novig": 26,
-   "betrivers": 25,
+   "novig": 24,
+   "betrivers": 24,
    "hardrockbet": 14,
    "pinnacle": 14,
-   "prophetx": 14
+   "prophetx": 14,
+   "betonlineag": 13,
+   "lowvig": 13
   },
   "configured_missing": []
  }
