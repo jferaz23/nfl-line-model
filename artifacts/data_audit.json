@@ -1,9 +1,9 @@
 {
- "built": "2026-10-11T15:45:58+00:00",
+ "built": "2026-10-11T18:49:53+00:00",
  "scores": {
   "ok": true,
-  "games": 3093,
-  "matched": 3093,
+  "games": 3094,
+  "matched": 3094,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3093,
+  "games": 3094,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -402,8 +402,8 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 700,
-  "not_active": 214,
+  "listings": 650,
+  "not_active": 213,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -416,7 +416,7 @@
     "team": "NO",
     "full_name": "Mike Reid",
     "position": "CB",
-    "report_status": "ACTIVE"
+    "report_status": "OUT"
    }
   ],
   "n_unmatched": 2,
@@ -436,6 +436,12 @@
    {
     "team": "ATL",
     "player": "Za'Darius Smith",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "CHI",
+    "player": "Caleb Williams",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
@@ -477,13 +483,13 @@
    },
    {
     "team": "GB",
-    "player": "Jacob Monk",
+    "player": "Aaron Banks",
     "espn": "OUT",
     "league": "DOUBTFUL"
    },
    {
     "team": "GB",
-    "player": "Aaron Banks",
+    "player": "Jacob Monk",
     "espn": "OUT",
     "league": "DOUBTFUL"
    },
@@ -536,12 +542,6 @@
     "league": "OUT"
    },
    {
-    "team": "JAX",
-    "player": "Eric Murray",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
-   },
-   {
     "team": "LV",
     "player": "Dont'e Thornton Jr.",
     "espn": "IR",
@@ -566,6 +566,12 @@
     "league": "QUESTIONABLE"
    },
    {
+    "team": "MIN",
+    "player": "Jordan Addison",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "NE",
     "player": "Reggie Gilliam",
     "espn": "IR",
@@ -582,12 +588,6 @@
     "player": "Chauncey Golston",
     "espn": "IR",
     "league": "OUT"
-   },
-   {
-    "team": "PHI",
-    "player": "Jonathan Greenard",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
    },
    {
     "team": "PIT",
@@ -646,23 +646,23 @@
   ],
   "n_status_disagree": 37,
   "qb_flags": [],
-  "checked": "2026-10-11T15:47:38+00:00"
+  "checked": "2026-10-11T18:51:36+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261011T154549Z.json",
-  "games": 24,
+  "snapshot": "odds_20261011T184947Z.json",
+  "games": 13,
   "books_seen": {
-   "draftkings": 24,
-   "fanduel": 24,
-   "betmgm": 14,
-   "novig": 24,
-   "betrivers": 24,
-   "hardrockbet": 14,
-   "pinnacle": 14,
-   "prophetx": 14,
-   "betonlineag": 13,
-   "lowvig": 13
+   "draftkings": 13,
+   "fanduel": 13,
+   "novig": 13,
+   "betrivers": 13,
+   "betmgm": 13,
+   "hardrockbet": 13,
+   "pinnacle": 12,
+   "prophetx": 13,
+   "betonlineag": 5,
+   "lowvig": 5
   },
   "configured_missing": []
  }
