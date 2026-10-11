@@ -1,9 +1,9 @@
 {
- "built": "2026-10-11T19:14:25+00:00",
+ "built": "2026-10-11T22:57:47+00:00",
  "scores": {
   "ok": true,
-  "games": 3094,
-  "matched": 3094,
+  "games": 3102,
+  "matched": 3102,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3094,
+  "games": 3102,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -175,7 +175,7 @@
     "espn_venue": "Lambeau Field",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": "grass",
+    "nflverse_surface": ",grass",
     "espn_current": true
    },
    {
@@ -263,7 +263,7 @@
     "espn_venue": "Hard Rock Stadium",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": "grass",
+    "nflverse_surface": ",grass",
     "espn_current": true
    },
    {
@@ -285,7 +285,7 @@
     "espn_venue": "Gillette Stadium",
     "espn_grass": false,
     "espn_indoor": false,
-    "nflverse_surface": "fieldturf",
+    "nflverse_surface": ",fieldturf",
     "espn_current": true
    },
    {
@@ -296,7 +296,7 @@
     "espn_venue": "Caesars Superdome",
     "espn_grass": false,
     "espn_indoor": true,
-    "nflverse_surface": "sportturf",
+    "nflverse_surface": ",sportturf",
     "espn_current": true
    },
    {
@@ -318,7 +318,7 @@
     "espn_venue": "MetLife Stadium",
     "espn_grass": false,
     "espn_indoor": false,
-    "nflverse_surface": "fieldturf",
+    "nflverse_surface": ",fieldturf",
     "espn_current": true
    },
    {
@@ -340,7 +340,7 @@
     "espn_venue": "Acrisure Stadium",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": "grass",
+    "nflverse_surface": ",grass",
     "espn_current": true
    },
    {
@@ -384,7 +384,7 @@
     "espn_venue": "Nissan Stadium",
     "espn_grass": false,
     "espn_indoor": false,
-    "nflverse_surface": "grass",
+    "nflverse_surface": ",grass",
     "espn_current": true
    },
    {
@@ -395,31 +395,25 @@
     "espn_venue": "Northwest Stadium",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": "grass",
+    "nflverse_surface": ",grass",
     "espn_current": true
    }
   ]
  },
  "injuries": {
   "ok": true,
-  "listings": 650,
-  "not_active": 223,
-  "matched_share": 0.997,
+  "listings": 250,
+  "not_active": 76,
+  "matched_share": 0.996,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
     "report_status": "ACTIVE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Mike Reid",
-    "position": "CB",
-    "report_status": "OUT"
    }
   ],
-  "n_unmatched": 2,
+  "n_unmatched": 1,
   "status_disagreements": [
    {
     "team": "ARI",
@@ -440,110 +434,8 @@
     "league": "QUESTIONABLE"
    },
    {
-    "team": "CHI",
-    "player": "Caleb Williams",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "CHI",
-    "player": "Shemar Turner",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "CHI",
-    "player": "Kyler Gordon",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "CIN",
-    "player": "Colbie Young",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "CLE",
-    "player": "Kalia Davis",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "CLE",
-    "player": "Dillon Gabriel",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
     "team": "DET",
     "player": "Cade Mays",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "GB",
-    "player": "Aaron Banks",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "GB",
-    "player": "Jacob Monk",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "GB",
-    "player": "Anthony Campbell",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "GB",
-    "player": "Chris Brooks",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "GB",
-    "player": "Savion Williams",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "HOU",
-    "player": "Braden Smith",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "HOU",
-    "player": "Tank Dell",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "IND",
-    "player": "Arden Key",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "IND",
-    "player": "Darius Slayton",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "IND",
-    "player": "Will Mallory",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "LV",
-    "player": "Dont'e Thornton Jr.",
     "espn": "IR",
     "league": "OUT"
    },
@@ -566,54 +458,6 @@
     "league": "DOUBTFUL"
    },
    {
-    "team": "MIA",
-    "player": "Storm Duck",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "MIN",
-    "player": "Jordan Addison",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "NE",
-    "player": "Reggie Gilliam",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "NE",
-    "player": "Mack Hollins",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "NYG",
-    "player": "Chauncey Golston",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "PIT",
-    "player": "Rico Dowdle",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "PIT",
-    "player": "Michael Pittman Jr.",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "PIT",
-    "player": "DeShon Elliott",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
     "team": "SEA",
     "player": "Julian Neal",
     "espn": "IR",
@@ -624,51 +468,27 @@
     "player": "Irvin Charles",
     "espn": "IR",
     "league": "QUESTIONABLE"
-   },
-   {
-    "team": "TEN",
-    "player": "David Martin-Robinson",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "TEN",
-    "player": "Joshua Williams",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "WAS",
-    "player": "Trey Amos",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "WAS",
-    "player": "Jeremy McNichols",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 38,
+  "n_status_disagree": 9,
   "qb_flags": [],
-  "checked": "2026-10-11T19:16:17+00:00"
+  "checked": "2026-10-11T22:59:50+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261011T191416Z.json",
-  "games": 13,
+  "snapshot": "odds_20261011T225743Z.json",
+  "games": 19,
   "books_seen": {
-   "draftkings": 13,
-   "fanduel": 13,
-   "novig": 13,
-   "betrivers": 13,
-   "betmgm": 13,
-   "hardrockbet": 13,
-   "pinnacle": 12,
-   "prophetx": 13,
-   "betonlineag": 5,
-   "lowvig": 5
+   "draftkings": 19,
+   "fanduel": 19,
+   "novig": 19,
+   "betrivers": 19,
+   "betmgm": 19,
+   "hardrockbet": 5,
+   "prophetx": 19,
+   "pinnacle": 4,
+   "betonlineag": 2,
+   "lowvig": 2
   },
   "configured_missing": []
  }
