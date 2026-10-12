@@ -1,5 +1,5 @@
 {
- "built": "2026-10-12T15:51:03+00:00",
+ "built": "2026-10-12T21:15:04+00:00",
  "scores": {
   "ok": true,
   "games": 3106,
@@ -41,10 +41,17 @@
   "note": "nflverse closing lines; spread sign = home favored when positive"
  },
  "venues": {
-  "ok": true,
+  "ok": false,
   "stadiums": 32,
-  "issues": [],
-  "n_issues": 0,
+  "issues": [
+   {
+    "team": "BUF",
+    "field": "surface",
+    "ours": "grass",
+    "espn": "turf"
+   }
+  ],
+  "n_issues": 1,
   "table": [
    {
     "team": "ARI",
@@ -84,8 +91,8 @@
     "stadium": "Highmark Stadium",
     "ours_surface": "grass",
     "ours_roof": "outdoors",
-    "espn_venue": "Highmark Stadium",
-    "espn_grass": true,
+    "espn_venue": "Highmark Stadium (Old)",
+    "espn_grass": false,
     "espn_indoor": false,
     "nflverse_surface": "a_turf,grass",
     "espn_current": true
@@ -417,11 +424,11 @@
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-12T15:52:58+00:00"
+  "checked": "2026-10-12T21:16:48+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261012T155058Z.json",
+  "snapshot": "odds_20261012T211459Z.json",
   "games": 15,
   "books_seen": {
    "draftkings": 15,
