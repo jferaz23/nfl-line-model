@@ -1,18 +1,28 @@
 {
- "built": "2026-10-11T22:57:47+00:00",
+ "built": "2026-10-12T04:51:18+00:00",
  "scores": {
   "ok": true,
-  "games": 3102,
-  "matched": 3102,
+  "games": 3105,
+  "matched": 3096,
   "mismatches": [],
   "n_mismatch": 0,
-  "unmatched": [],
-  "n_unmatched": 0,
+  "unmatched": [
+   "2015_18_KC_HOU",
+   "2015_18_PIT_CIN",
+   "2015_18_SEA_MIN",
+   "2015_18_GB_WAS",
+   "2015_19_KC_NE",
+   "2015_19_GB_ARI",
+   "2015_19_SEA_CAR",
+   "2015_19_PIT_DEN",
+   "2015_21_CAR_DEN"
+  ],
+  "n_unmatched": 9,
   "seasons": "2015-2026"
  },
  "lines": {
   "ok": true,
-  "games": 3102,
+  "games": 3105,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -54,7 +64,7 @@
     "espn_venue": "State Farm Stadium",
     "espn_grass": true,
     "espn_indoor": true,
-    "nflverse_surface": "grass",
+    "nflverse_surface": ",grass",
     "espn_current": true
    },
    {
@@ -241,7 +251,7 @@
     "espn_venue": "Dignity Health Sports Park",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": "matrixturf",
+    "nflverse_surface": ",matrixturf",
     "espn_current": false
    },
    {
@@ -362,7 +372,7 @@
     "espn_venue": "Lumen Field",
     "espn_grass": false,
     "espn_indoor": false,
-    "nflverse_surface": "fieldturf",
+    "nflverse_surface": ",fieldturf",
     "espn_current": true
    },
    {
@@ -402,9 +412,9 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 250,
-  "not_active": 76,
-  "matched_share": 0.996,
+  "listings": 100,
+  "not_active": 28,
+  "matched_share": 0.99,
   "unmatched": [
    {
     "team": "BUF",
@@ -415,12 +425,6 @@
   ],
   "n_unmatched": 1,
   "status_disagreements": [
-   {
-    "team": "ARI",
-    "player": "Isaiah Adams",
-    "espn": "IR",
-    "league": "OUT"
-   },
    {
     "team": "ATL",
     "player": "Yasir Abdullah",
@@ -434,61 +438,31 @@
     "league": "QUESTIONABLE"
    },
    {
-    "team": "DET",
-    "player": "Cade Mays",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "LAC",
-    "player": "Rodney Shelley",
+    "team": "BAL",
+    "player": "Andrew Vorhees",
     "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "LAC",
-    "player": "Trevor Penning",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "LAC",
-    "player": "Trey Lance",
-    "espn": "IR",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "SEA",
-    "player": "Julian Neal",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "SEA",
-    "player": "Irvin Charles",
-    "espn": "IR",
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 9,
+  "n_status_disagree": 3,
   "qb_flags": [],
-  "checked": "2026-10-11T22:59:50+00:00"
+  "checked": "2026-10-12T04:54:17+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261011T225743Z.json",
-  "games": 19,
+  "snapshot": "odds_20261012T045112Z.json",
+  "games": 15,
   "books_seen": {
-   "draftkings": 19,
-   "fanduel": 19,
-   "novig": 19,
-   "betrivers": 19,
-   "betmgm": 19,
-   "hardrockbet": 5,
-   "prophetx": 19,
-   "pinnacle": 4,
-   "betonlineag": 2,
-   "lowvig": 2
+   "draftkings": 15,
+   "fanduel": 15,
+   "lowvig": 13,
+   "betonlineag": 13,
+   "novig": 15,
+   "betrivers": 15,
+   "betmgm": 15,
+   "pinnacle": 10,
+   "hardrockbet": 2,
+   "prophetx": 15
   },
   "configured_missing": []
  }
