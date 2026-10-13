@@ -1,19 +1,19 @@
 {
-  "model_weight_spread": 0.17898352865052453,
-  "model_weight_total": 0.07063777764206612,
+  "model_weight_spread": 0.18813476203980187,
+  "model_weight_total": 0.0671447908519035,
   "gbm_weight_margin": 0.0,
   "gbm_weight_total": 0.2,
-  "margin_sd": 12.698193139729062,
-  "total_sd": 13.225443237660832,
+  "margin_sd": 12.69860980179654,
+  "total_sd": 13.214853532701271,
   "seasons": "2015-2026",
-  "n_games": 3092,
-  "created": "2026-10-06T16:37:07+00:00",
+  "n_games": 3107,
+  "created": "2026-10-13T09:14:48+00:00",
   "raw_weights": {
-    "spread": 0.2716122838093694,
-    "total": 0.16462376932698294
+    "spread": 0.2806459429650886,
+    "total": 0.16101859872844507
   },
   "sd_total_alpha": 0.0,
-  "sd_total_beta": 0.219183121136059,
+  "sd_total_beta": 0.22484678760839366,
   "sd_ref_total": 44.0,
   "dyn_half_life_games": 0.0,
   "dyn_scale": 40.0,
