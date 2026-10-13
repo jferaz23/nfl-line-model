@@ -1,5 +1,5 @@
 {
- "built": "2026-10-12T21:15:04+00:00",
+ "built": "2026-10-13T02:50:16+00:00",
  "scores": {
   "ok": true,
   "games": 3106,
@@ -410,37 +410,49 @@
  "injuries": {
   "ok": true,
   "listings": 50,
-  "not_active": 9,
-  "matched_share": 0.98,
-  "unmatched": [
+  "not_active": 16,
+  "matched_share": 1.0,
+  "unmatched": [],
+  "n_unmatched": 0,
+  "status_disagreements": [
    {
     "team": "BUF",
-    "full_name": "Mike Danna",
-    "position": "DE",
-    "report_status": "ACTIVE"
+    "player": "Landon Jackson",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "BUF",
+    "player": "Dee Alford",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "BUF",
+    "player": "DJ Moore",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
    }
   ],
-  "n_unmatched": 1,
-  "status_disagreements": [],
-  "n_status_disagree": 0,
+  "n_status_disagree": 3,
   "qb_flags": [],
-  "checked": "2026-10-12T21:16:48+00:00"
+  "checked": "2026-10-13T02:52:16+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261012T211459Z.json",
-  "games": 15,
+  "snapshot": "odds_20261013T025011Z.json",
+  "games": 13,
   "books_seen": {
-   "draftkings": 15,
-   "fanduel": 15,
-   "lowvig": 15,
-   "betonlineag": 15,
-   "novig": 15,
-   "betrivers": 15,
-   "betmgm": 15,
+   "draftkings": 13,
+   "fanduel": 13,
+   "novig": 13,
+   "betrivers": 13,
+   "betmgm": 13,
    "pinnacle": 11,
-   "hardrockbet": 15,
-   "prophetx": 15
+   "hardrockbet": 13,
+   "prophetx": 13,
+   "lowvig": 12,
+   "betonlineag": 12
   },
   "configured_missing": []
  }
