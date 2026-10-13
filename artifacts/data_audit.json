@@ -1,5 +1,5 @@
 {
- "built": "2026-10-13T08:19:30+00:00",
+ "built": "2026-10-13T13:56:04+00:00",
  "scores": {
   "ok": true,
   "games": 3107,
@@ -658,24 +658,25 @@
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-13T08:21:12+00:00"
+  "checked": "2026-10-13T13:57:53+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261013T081924Z.json",
+  "snapshot": "odds_20261013T135558Z.json",
   "games": 14,
   "books_seen": {
    "draftkings": 14,
    "fanduel": 14,
-   "lowvig": 12,
-   "betonlineag": 12,
+   "lowvig": 14,
+   "betonlineag": 14,
    "novig": 14,
    "betrivers": 14,
    "prophetx": 14,
    "betmgm": 14,
-   "pinnacle": 12,
-   "hardrockbet": 14
+   "pinnacle": 14
   },
-  "configured_missing": []
+  "configured_missing": [
+   "hardrockbet"
+  ]
  }
 }
