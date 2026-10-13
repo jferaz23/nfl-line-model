@@ -150,8 +150,8 @@ def audit_venues(sched: pd.DataFrame, season: int) -> dict:
                    espn_venue=v.get("fullName"), espn_grass=v.get("grass"), espn_indoor=v.get("indoor"),
                    nflverse_surface=",".join(nv), espn_current=played_there)
         rows.append(row)
-        if not played_there:
-            continue
+        if not played_there or "(old)" in str(v.get("fullName", "")).lower():
+            continue           # ESPN's record is a retired stadium (e.g. Buffalo moved to the new grass Highmark in 2026)
         if v.get("grass") is not None and bool(v["grass"]) == bool(is_turf(ours["surface"])):
             issues.append(dict(team=ab, field="surface", ours=ours["surface"], espn="grass" if v["grass"] else "turf"))
         if v.get("indoor") is not None and "retract" not in str(ours["roof"]) and bool(v["indoor"]) != (is_indoor(ours["roof"]) >= 0.5):
