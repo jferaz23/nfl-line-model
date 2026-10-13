@@ -1,9 +1,9 @@
 {
- "built": "2026-10-13T02:50:16+00:00",
+ "built": "2026-10-13T08:19:30+00:00",
  "scores": {
   "ok": true,
-  "games": 3106,
-  "matched": 3106,
+  "games": 3107,
+  "matched": 3107,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3106,
+  "games": 3107,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -259,7 +259,7 @@
     "espn_venue": "Los Angeles Memorial Coliseum",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": "matrixturf",
+    "nflverse_surface": ",matrixturf",
     "espn_current": false
    },
    {
@@ -409,50 +409,272 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 50,
-  "not_active": 16,
-  "matched_share": 1.0,
-  "unmatched": [],
-  "n_unmatched": 0,
-  "status_disagreements": [
+  "listings": 699,
+  "not_active": 203,
+  "matched_share": 0.927,
+  "unmatched": [
    {
-    "team": "BUF",
-    "player": "Landon Jackson",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
+    "team": "CAR",
+    "full_name": "Taylor Moton",
+    "position": "OT",
+    "report_status": "OUT"
    },
    {
-    "team": "BUF",
-    "player": "Dee Alford",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
+    "team": "CAR",
+    "full_name": "Tershawn Wharton",
+    "position": "DT",
+    "report_status": "OUT"
    },
    {
-    "team": "BUF",
-    "player": "DJ Moore",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
+    "team": "CAR",
+    "full_name": "Jalen Coker",
+    "position": "WR",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Devin Lloyd",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Akayleb Evans",
+    "position": "CB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Cam Jackson",
+    "position": "DT",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Damien Lewis",
+    "position": "G",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Tommy Tremble",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Brycen Tremayne",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "John Metchie III",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Ikem Ekwonu",
+    "position": "OT",
+    "report_status": "OUT"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Monroe Freeling",
+    "position": "OT",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Jaelan Phillips",
+    "position": "LB",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Trevor Etienne",
+    "position": "RB",
+    "report_status": "IR"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Ja'Tavion Sanders",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Albert Reese IV",
+    "position": "OT",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Ryan Fitzgerald",
+    "position": "PK",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Darren Waller",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Bryce Young",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Chuba Hubbard",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Tetairoa McMillan",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Haynes King",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Lee Hunter",
+    "position": "DT",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Xavier Legette",
+    "position": "WR",
+    "report_status": "IR"
+   },
+   {
+    "team": "CAR",
+    "full_name": "Princely Umanmielen",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "KC",
+    "full_name": "Tyquan Thornton",
+    "position": "WR",
+    "report_status": "IR"
+   },
+   {
+    "team": "KC",
+    "full_name": "Nick Bolton",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "KC",
+    "full_name": "Mansoor Delane",
+    "position": "CB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "KC",
+    "full_name": "Josh Simmons",
+    "position": "OT",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "KC",
+    "full_name": "Cyrus Allen",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "KC",
+    "full_name": "Noah Gray",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "KC",
+    "full_name": "Emmett Johnson",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "KC",
+    "full_name": "Rashee Rice",
+    "position": "WR",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "KC",
+    "full_name": "Garrett Nussmeier",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "KC",
+    "full_name": "Diego Pounds",
+    "position": "OT",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "KC",
+    "full_name": "Jack Pyburn",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "KC",
+    "full_name": "Jadon Canady",
+    "position": "CB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "KC",
+    "full_name": "Jared Wiley",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "KC",
+    "full_name": "Harrison Butker",
+    "position": "PK",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "KC",
+    "full_name": "Travis Kelce",
+    "position": "TE",
+    "report_status": "ACTIVE"
    }
   ],
-  "n_status_disagree": 3,
+  "n_unmatched": 51,
+  "status_disagreements": [],
+  "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-13T02:52:16+00:00"
+  "checked": "2026-10-13T08:21:12+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261013T025011Z.json",
-  "games": 13,
+  "snapshot": "odds_20261013T081924Z.json",
+  "games": 14,
   "books_seen": {
-   "draftkings": 13,
-   "fanduel": 13,
-   "novig": 13,
-   "betrivers": 13,
-   "betmgm": 13,
-   "pinnacle": 11,
-   "hardrockbet": 13,
-   "prophetx": 13,
+   "draftkings": 14,
+   "fanduel": 14,
    "lowvig": 12,
-   "betonlineag": 12
+   "betonlineag": 12,
+   "novig": 14,
+   "betrivers": 14,
+   "prophetx": 14,
+   "betmgm": 14,
+   "pinnacle": 12,
+   "hardrockbet": 14
   },
   "configured_missing": []
  }
