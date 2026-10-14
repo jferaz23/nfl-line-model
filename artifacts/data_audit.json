@@ -1,5 +1,5 @@
 {
- "built": "2026-10-13T19:32:41+00:00",
+ "built": "2026-10-14T01:19:07+00:00",
  "scores": {
   "ok": true,
   "games": 3107,
@@ -403,9 +403,21 @@
  "injuries": {
   "ok": true,
   "listings": 699,
-  "not_active": 197,
-  "matched_share": 0.999,
+  "not_active": 193,
+  "matched_share": 0.996,
   "unmatched": [
+   {
+    "team": "DAL",
+    "full_name": "Emari Demercado",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "LA",
+    "full_name": "Blake Grupe",
+    "position": "PK",
+    "report_status": "ACTIVE"
+   },
    {
     "team": "NO",
     "full_name": "Mike Reid",
@@ -413,23 +425,23 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 1,
+  "n_unmatched": 3,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-13T19:34:19+00:00"
+  "checked": "2026-10-14T01:21:01+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261013T193233Z.json",
+  "snapshot": "odds_20261014T011859Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
    "fanduel": 28,
-   "lowvig": 14,
-   "betonlineag": 14,
-   "novig": 14,
-   "betrivers": 14,
+   "lowvig": 28,
+   "betonlineag": 28,
+   "novig": 28,
+   "betrivers": 28,
    "prophetx": 14,
    "betmgm": 14,
    "pinnacle": 14,
