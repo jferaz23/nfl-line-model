@@ -1,5 +1,5 @@
 {
- "built": "2026-10-15T02:03:16+00:00",
+ "built": "2026-10-15T07:24:35+00:00",
  "scores": {
   "ok": true,
   "games": 3107,
@@ -404,7 +404,7 @@
   "ok": true,
   "listings": 700,
   "not_active": 260,
-  "matched_share": 0.993,
+  "matched_share": 0.996,
   "unmatched": [
    {
     "team": "BUF",
@@ -419,33 +419,21 @@
     "report_status": "ACTIVE"
    },
    {
-    "team": "LAC",
-    "full_name": "Jake Browning",
-    "position": "QB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "LA",
-    "full_name": "Blake Grupe",
-    "position": "PK",
-    "report_status": "ACTIVE"
-   },
-   {
     "team": "NO",
     "full_name": "Mike Reid",
     "position": "CB",
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 5,
+  "n_unmatched": 3,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-15T02:05:14+00:00"
+  "checked": "2026-10-15T07:26:06+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261015T020311Z.json",
+  "snapshot": "odds_20261015T072426Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
