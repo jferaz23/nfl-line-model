@@ -1,5 +1,5 @@
 {
- "built": "2026-10-14T20:25:57+00:00",
+ "built": "2026-10-15T02:03:16+00:00",
  "scores": {
   "ok": true,
   "games": 3107,
@@ -402,9 +402,9 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 699,
-  "not_active": 199,
-  "matched_share": 0.994,
+  "listings": 700,
+  "not_active": 260,
+  "matched_share": 0.993,
   "unmatched": [
    {
     "team": "BUF",
@@ -416,6 +416,12 @@
     "team": "CLE",
     "full_name": "Audric Estime",
     "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "LAC",
+    "full_name": "Jake Browning",
+    "position": "QB",
     "report_status": "ACTIVE"
    },
    {
@@ -431,15 +437,15 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 4,
+  "n_unmatched": 5,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-14T20:27:37+00:00"
+  "checked": "2026-10-15T02:05:14+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261014T202552Z.json",
+  "snapshot": "odds_20261015T020311Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
