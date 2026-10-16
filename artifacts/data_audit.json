@@ -1,9 +1,9 @@
 {
- "built": "2026-10-16T02:02:47+00:00",
+ "built": "2026-10-16T07:23:04+00:00",
  "scores": {
   "ok": true,
-  "games": 3107,
-  "matched": 3107,
+  "games": 3108,
+  "matched": 3108,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3107,
+  "games": 3108,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -153,7 +153,7 @@
     "espn_venue": "Empower Field at Mile High",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": "grass",
+    "nflverse_surface": ",grass",
     "espn_current": true
    },
    {
@@ -402,9 +402,9 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 700,
-  "not_active": 278,
-  "matched_share": 0.996,
+  "listings": 650,
+  "not_active": 260,
+  "matched_share": 0.995,
   "unmatched": [
    {
     "team": "BUF",
@@ -429,23 +429,23 @@
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-16T02:04:48+00:00"
+  "checked": "2026-10-16T07:24:50+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261016T020242Z.json",
-  "games": 25,
+  "snapshot": "odds_20261016T072255Z.json",
+  "games": 24,
   "books_seen": {
-   "draftkings": 25,
-   "fanduel": 25,
-   "novig": 25,
-   "betrivers": 25,
-   "prophetx": 14,
-   "betmgm": 14,
-   "pinnacle": 14,
-   "hardrockbet": 14,
+   "draftkings": 24,
+   "fanduel": 24,
+   "betmgm": 13,
    "lowvig": 24,
-   "betonlineag": 24
+   "betonlineag": 24,
+   "novig": 24,
+   "betrivers": 24,
+   "prophetx": 13,
+   "pinnacle": 13,
+   "hardrockbet": 13
   },
   "configured_missing": []
  }
