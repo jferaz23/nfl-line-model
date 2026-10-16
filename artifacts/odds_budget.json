@@ -1,13 +1,13 @@
 {
- "remaining": 287,
+ "remaining": 284,
  "first_seen": "2026-09-29T17:24:00-04:00",
- "remaining_at": "2026-10-16T13:58:31-04:00",
- "last_api_run": "2026-10-16T17:57:15+00:00",
- "last_model_run": "2026-10-16T17:57:15+00:00",
+ "remaining_at": "2026-10-16T16:23:21-04:00",
+ "last_api_run": "2026-10-16T20:22:04+00:00",
+ "last_model_run": "2026-10-16T20:22:04+00:00",
  "last_decision": {
-  "at": "2026-10-16T17:57:15+00:00",
+  "at": "2026-10-16T20:22:04+00:00",
   "mode": "api",
-  "reason": "paced: every 5.1 h to last the month (290 credits left)"
+  "reason": "mandatory: Friday injury report"
  },
  "done": [
   "injury-2026-09-30",
@@ -24,7 +24,8 @@
   "pregame-20261011T2025",
   "pregame-20261012T0020",
   "injury-2026-10-14",
-  "injury-2026-10-15"
+  "injury-2026-10-15",
+  "injury-2026-10-16"
  ],
  "reset_at": "2026-09-30T23:01:12-04:00"
 }
