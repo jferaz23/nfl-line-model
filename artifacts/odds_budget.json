@@ -1,13 +1,13 @@
 {
- "remaining": 284,
+ "remaining": 281,
  "first_seen": "2026-09-29T17:24:00-04:00",
- "remaining_at": "2026-10-16T16:23:21-04:00",
- "last_api_run": "2026-10-16T20:22:04+00:00",
- "last_model_run": "2026-10-16T23:25:14+00:00",
+ "remaining_at": "2026-10-16T21:44:46-04:00",
+ "last_api_run": "2026-10-17T01:43:26+00:00",
+ "last_model_run": "2026-10-17T01:43:26+00:00",
  "last_decision": {
-  "at": "2026-10-16T23:25:14+00:00",
-  "mode": "espn",
-  "reason": "model refresh (every 3 h, free)"
+  "at": "2026-10-17T01:43:26+00:00",
+  "mode": "api",
+  "reason": "paced: every 5.1 h to last the month (284 credits left)"
  },
  "done": [
   "injury-2026-09-30",
