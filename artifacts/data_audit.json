@@ -1,5 +1,5 @@
 {
- "built": "2026-10-17T17:40:30+00:00",
+ "built": "2026-10-17T22:40:07+00:00",
  "scores": {
   "ok": true,
   "games": 3108,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 210,
+  "not_active": 203,
   "matched_share": 0.994,
   "unmatched": [
    {
@@ -434,36 +434,6 @@
   "n_unmatched": 4,
   "status_disagreements": [
    {
-    "team": "ARI",
-    "player": "Kitan Crawford",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "BAL",
-    "player": "Ja'Kobi Lane",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "CAR",
-    "player": "Taylor Moton",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "CAR",
-    "player": "Trevor Etienne",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "CAR",
-    "player": "Tershawn Wharton",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
     "team": "CHI",
     "player": "Dayo Odeyingbo",
     "espn": "IR",
@@ -488,10 +458,28 @@
     "league": "OUT"
    },
    {
-    "team": "GB",
-    "player": "Savion Williams",
-    "espn": "IR",
+    "team": "DAL",
+    "player": "DeMarvion Overshown",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
+   },
+   {
+    "team": "GB",
+    "player": "Skyy Moore",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "GB",
+    "player": "Javon Hargrave",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "GB",
+    "player": "Jonathan Ford",
+    "espn": "IR",
+    "league": "OUT"
    },
    {
     "team": "GB",
@@ -501,21 +489,9 @@
    },
    {
     "team": "HOU",
-    "player": "Henry To'oTo'o",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "HOU",
     "player": "Tank Dell",
     "espn": "IR",
     "league": "OUT"
-   },
-   {
-    "team": "HOU",
-    "player": "Ja'Marcus Ingram",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
    },
    {
     "team": "LV",
@@ -530,34 +506,16 @@
     "league": "OUT"
    },
    {
-    "team": "LAC",
-    "player": "KeAndre Lambert-Smith",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "NE",
-    "player": "A.J. Brown",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
     "team": "NE",
     "player": "Marcus Bryant",
     "espn": "IR",
     "league": "QUESTIONABLE"
    },
    {
-    "team": "NO",
-    "player": "Zach Wood",
+    "team": "PHI",
+    "player": "Jalen Hurts",
     "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "NYJ",
-    "player": "Omar Cooper Jr.",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "PHI",
@@ -591,6 +549,12 @@
    },
    {
     "team": "PIT",
+    "player": "Roman Wilson",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "PIT",
     "player": "DeShon Elliott",
     "espn": "IR",
     "league": "OUT"
@@ -600,21 +564,15 @@
     "player": "David Sills V",
     "espn": "IR",
     "league": "OUT"
-   },
-   {
-    "team": "TEN",
-    "player": "Joshua Williams",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 29,
+  "n_status_disagree": 22,
   "qb_flags": [],
-  "checked": "2026-10-17T17:42:20+00:00"
+  "checked": "2026-10-17T22:41:52+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261017T174025Z.json",
+  "snapshot": "odds_20261017T223959Z.json",
   "games": 24,
   "books_seen": {
    "draftkings": 24,
