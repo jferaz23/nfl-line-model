@@ -1,5 +1,5 @@
 {
- "built": "2026-10-18T03:45:11+00:00",
+ "built": "2026-10-18T08:44:35+00:00",
  "scores": {
   "ok": true,
   "games": 3108,
@@ -404,7 +404,7 @@
   "ok": true,
   "listings": 650,
   "not_active": 200,
-  "matched_share": 0.994,
+  "matched_share": 0.995,
   "unmatched": [
    {
     "team": "BUF",
@@ -423,15 +423,9 @@
     "full_name": "Mike Reid",
     "position": "CB",
     "report_status": "ACTIVE"
-   },
-   {
-    "team": "PHI",
-    "full_name": "Joe Milton III",
-    "position": "QB",
-    "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 4,
+  "n_unmatched": 3,
   "status_disagreements": [
    {
     "team": "CHI",
@@ -515,25 +509,25 @@
     "team": "PHI",
     "player": "Jakorian Bennett",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "PHI",
     "player": "Landon Dickerson",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "PHI",
     "player": "Eli Stowers",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "PHI",
     "player": "Grant Calcaterra",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "PHI",
@@ -560,19 +554,37 @@
     "league": "OUT"
    },
    {
+    "team": "SF",
+    "player": "Christian Kirk",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "TB",
     "player": "David Sills V",
     "espn": "IR",
     "league": "OUT"
+   },
+   {
+    "team": "WAS",
+    "player": "Jeremy McNichols",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "WAS",
+    "player": "Jordan Magee",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 22,
+  "n_status_disagree": 25,
   "qb_flags": [],
-  "checked": "2026-10-18T03:46:57+00:00"
+  "checked": "2026-10-18T08:46:21+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261018T034503Z.json",
+  "snapshot": "odds_20261018T084429Z.json",
   "games": 24,
   "books_seen": {
    "draftkings": 24,
