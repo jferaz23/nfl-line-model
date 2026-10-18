@@ -1,5 +1,5 @@
 {
- "built": "2026-10-18T17:22:11+00:00",
+ "built": "2026-10-18T18:58:36+00:00",
  "scores": {
   "ok": true,
   "games": 3109,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 600,
-  "not_active": 199,
+  "not_active": 220,
   "matched_share": 0.995,
   "unmatched": [
    {
@@ -524,6 +524,12 @@
     "league": "OUT"
    },
    {
+    "team": "LA",
+    "player": "Trent McDuffie",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "NE",
     "player": "Channing Canada",
     "espn": "OUT",
@@ -584,12 +590,6 @@
     "league": "OUT"
    },
    {
-    "team": "PHI",
-    "player": "Will Shipley",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
     "team": "PIT",
     "player": "Roman Wilson",
     "espn": "IR",
@@ -640,11 +640,11 @@
   ],
   "n_status_disagree": 35,
   "qb_flags": [],
-  "checked": "2026-10-18T17:23:48+00:00"
+  "checked": "2026-10-18T19:00:14+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261018T172202Z.json",
+  "snapshot": "odds_20261018T185827Z.json",
   "games": 12,
   "books_seen": {
    "draftkings": 12,
@@ -654,7 +654,7 @@
    "prophetx": 12,
    "betmgm": 12,
    "hardrockbet": 12,
-   "pinnacle": 7,
+   "pinnacle": 12,
    "lowvig": 5,
    "betonlineag": 5
   },
