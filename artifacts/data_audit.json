@@ -1,9 +1,9 @@
 {
- "built": "2026-10-18T12:03:46+00:00",
+ "built": "2026-10-18T17:22:11+00:00",
  "scores": {
   "ok": true,
-  "games": 3108,
-  "matched": 3108,
+  "games": 3109,
+  "matched": 3109,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3108,
+  "games": 3109,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -402,8 +402,8 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 650,
-  "not_active": 200,
+  "listings": 600,
+  "not_active": 199,
   "matched_share": 0.995,
   "unmatched": [
    {
@@ -422,16 +422,46 @@
     "team": "NO",
     "full_name": "Mike Reid",
     "position": "CB",
-    "report_status": "ACTIVE"
+    "report_status": "OUT"
    }
   ],
   "n_unmatched": 3,
   "status_disagreements": [
    {
+    "team": "BAL",
+    "player": "Andrew Vorhees",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "CAR",
+    "player": "Monroe Freeling",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "CHI",
+    "player": "Tyrique Stevenson Sr.",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "CHI",
     "player": "Dayo Odeyingbo",
     "espn": "IR",
     "league": "OUT"
+   },
+   {
+    "team": "CLE",
+    "player": "Mason Graham",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "CLE",
+    "player": "Quinshon Judkins",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
    },
    {
     "team": "CLE",
@@ -442,12 +472,6 @@
    {
     "team": "CLE",
     "player": "Dylan Sampson",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "CLE",
-    "player": "Dillon Gabriel",
     "espn": "IR",
     "league": "OUT"
    },
@@ -482,10 +506,10 @@
     "league": "DOUBTFUL"
    },
    {
-    "team": "HOU",
-    "player": "Tank Dell",
-    "espn": "IR",
-    "league": "OUT"
+    "team": "IND",
+    "player": "Tyler Warren",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
    },
    {
     "team": "LV",
@@ -501,9 +525,33 @@
    },
    {
     "team": "NE",
+    "player": "Channing Canada",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NE",
     "player": "Marcus Bryant",
     "espn": "IR",
     "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NO",
+    "player": "Nathan Shepherd",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NYG",
+    "player": "Jermaine Eluemunor",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "PHI",
+    "player": "A.J. Epenesa",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
    },
    {
     "team": "PHI",
@@ -561,6 +609,18 @@
    },
    {
     "team": "TB",
+    "player": "Sean Tucker",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "TB",
+    "player": "Benjamin Morrison",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "TB",
     "player": "David Sills V",
     "espn": "IR",
     "league": "OUT"
@@ -578,25 +638,25 @@
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 25,
+  "n_status_disagree": 35,
   "qb_flags": [],
-  "checked": "2026-10-18T12:05:34+00:00"
+  "checked": "2026-10-18T17:23:48+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261018T120341Z.json",
-  "games": 24,
+  "snapshot": "odds_20261018T172202Z.json",
+  "games": 12,
   "books_seen": {
-   "draftkings": 24,
-   "fanduel": 24,
-   "betmgm": 13,
-   "lowvig": 24,
-   "betonlineag": 24,
-   "novig": 24,
-   "betrivers": 24,
-   "prophetx": 13,
-   "pinnacle": 13,
-   "hardrockbet": 13
+   "draftkings": 12,
+   "fanduel": 12,
+   "novig": 12,
+   "betrivers": 12,
+   "prophetx": 12,
+   "betmgm": 12,
+   "hardrockbet": 12,
+   "pinnacle": 7,
+   "lowvig": 5,
+   "betonlineag": 5
   },
   "configured_missing": []
  }
