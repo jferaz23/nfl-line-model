@@ -1,5 +1,5 @@
 {
- "built": "2026-10-17T22:40:07+00:00",
+ "built": "2026-10-18T03:45:11+00:00",
  "scores": {
   "ok": true,
   "games": 3108,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 203,
+  "not_active": 200,
   "matched_share": 0.994,
   "unmatched": [
    {
@@ -465,7 +465,7 @@
    },
    {
     "team": "GB",
-    "player": "Skyy Moore",
+    "player": "Jonathan Ford",
     "espn": "IR",
     "league": "OUT"
    },
@@ -477,7 +477,7 @@
    },
    {
     "team": "GB",
-    "player": "Jonathan Ford",
+    "player": "Skyy Moore",
     "espn": "IR",
     "league": "OUT"
    },
@@ -513,9 +513,9 @@
    },
    {
     "team": "PHI",
-    "player": "Jalen Hurts",
+    "player": "Jakorian Bennett",
     "espn": "IR",
-    "league": "OUT"
+    "league": "QUESTIONABLE"
    },
    {
     "team": "PHI",
@@ -537,15 +537,15 @@
    },
    {
     "team": "PHI",
-    "player": "Will Shipley",
+    "player": "Jalen Hurts",
     "espn": "IR",
     "league": "OUT"
    },
    {
     "team": "PHI",
-    "player": "Jakorian Bennett",
+    "player": "Will Shipley",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "PIT",
@@ -568,11 +568,11 @@
   ],
   "n_status_disagree": 22,
   "qb_flags": [],
-  "checked": "2026-10-17T22:41:52+00:00"
+  "checked": "2026-10-18T03:46:57+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261017T223959Z.json",
+  "snapshot": "odds_20261018T034503Z.json",
   "games": 24,
   "books_seen": {
    "draftkings": 24,
