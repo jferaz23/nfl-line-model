@@ -1,9 +1,9 @@
 {
- "built": "2026-10-19T05:45:58+00:00",
+ "built": "2026-10-19T11:06:34+00:00",
  "scores": {
   "ok": true,
-  "games": 3119,
-  "matched": 3119,
+  "games": 3120,
+  "matched": 3120,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": false,
-  "games": 3119,
+  "games": 3120,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -404,48 +404,12 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 100,
-  "not_active": 45,
+  "listings": 50,
+  "not_active": 25,
   "matched_share": 1.0,
   "unmatched": [],
   "n_unmatched": 0,
   "status_disagreements": [
-   {
-    "team": "DAL",
-    "player": "DeMarvion Overshown",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "GB",
-    "player": "Aaron Banks",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "GB",
-    "player": "Jonathan Ford",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "GB",
-    "player": "Javon Hargrave",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "GB",
-    "player": "Skyy Moore",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "GB",
-    "player": "Jordon Riley",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
-   },
    {
     "team": "SF",
     "player": "Christian Kirk",
@@ -465,13 +429,13 @@
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 9,
+  "n_status_disagree": 3,
   "qb_flags": [],
-  "checked": "2026-10-19T05:46:13+00:00"
+  "checked": "2026-10-19T11:06:49+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261019T054555Z.json",
+  "snapshot": "odds_20261019T110630Z.json",
   "games": 15,
   "books_seen": {
    "draftkings": 15,
@@ -483,7 +447,7 @@
    "prophetx": 14,
    "betmgm": 15,
    "pinnacle": 11,
-   "hardrockbet": 13
+   "hardrockbet": 15
   },
   "configured_missing": []
  }
