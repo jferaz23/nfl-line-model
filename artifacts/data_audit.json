@@ -1,5 +1,5 @@
 {
- "built": "2026-10-19T16:16:01+00:00",
+ "built": "2026-10-19T21:25:43+00:00",
  "scores": {
   "ok": true,
   "games": 3120,
@@ -405,7 +405,7 @@
  "injuries": {
   "ok": true,
   "listings": 50,
-  "not_active": 26,
+  "not_active": 23,
   "matched_share": 1.0,
   "unmatched": [],
   "n_unmatched": 0,
@@ -418,30 +418,24 @@
    },
    {
     "team": "WAS",
-    "player": "Trey Amos",
+    "player": "Jacory Croskey-Merritt",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "WAS",
-    "player": "Jeremy McNichols",
+    "player": "Javontae Jean-Baptiste",
     "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "WAS",
-    "player": "Jordan Magee",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    }
   ],
-  "n_status_disagree": 4,
+  "n_status_disagree": 3,
   "qb_flags": [],
-  "checked": "2026-10-19T16:16:15+00:00"
+  "checked": "2026-10-19T21:25:59+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261019T161556Z.json",
+  "snapshot": "odds_20261019T212538Z.json",
   "games": 15,
   "books_seen": {
    "draftkings": 15,
