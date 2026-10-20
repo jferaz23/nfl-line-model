@@ -1,5 +1,5 @@
 {
- "built": "2026-10-20T09:32:57+00:00",
+ "built": "2026-10-20T14:49:12+00:00",
  "scores": {
   "ok": true,
   "games": 3121,
@@ -403,167 +403,11 @@
   ]
  },
  "injuries": {
-  "ok": false,
+  "ok": true,
   "listings": 700,
-  "not_active": 170,
-  "matched_share": 0.853,
+  "not_active": 169,
+  "matched_share": 0.997,
   "unmatched": [
-   {
-    "team": "ATL",
-    "full_name": "Andy Dalton",
-    "position": "QB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Tanner Hudson",
-    "position": "TE",
-    "report_status": "IR"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Dohnte Meyers",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Colbie Young",
-    "position": "WR",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Kyle Dugger",
-    "position": "S",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Swayze Bozeman",
-    "position": "LB",
-    "report_status": "IR"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Myles Hinton",
-    "position": "OT",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Jack Endries",
-    "position": "TE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Connor Lew",
-    "position": "C",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Landon Robinson",
-    "position": "DT",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Evan McPherson",
-    "position": "PK",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Samaje Perine",
-    "position": "RB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Mike Gesicki",
-    "position": "TE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Tee Higgins",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Chase Brown",
-    "position": "RB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Joe Burrow",
-    "position": "QB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Ja'Marr Chase",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Bryan Cook",
-    "position": "S",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "B.J. Hill",
-    "position": "DT",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Dalton Risner",
-    "position": "G",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Dexter Lawrence II",
-    "position": "DT",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Barrett Carter",
-    "position": "LB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Jordan Battle",
-    "position": "S",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Demetrius Knight Jr.",
-    "position": "LB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Mitchell Tinsley",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "DJ Turner II",
-    "position": "CB",
-    "report_status": "ACTIVE"
-   },
    {
     "team": "CLE",
     "full_name": "Audric Estime",
@@ -571,100 +415,28 @@
     "report_status": "ACTIVE"
    },
    {
-    "team": "DET",
-    "full_name": "Ben Bartch",
-    "position": "G",
-    "report_status": "IR"
-   },
-   {
-    "team": "DET",
-    "full_name": "Devin White",
-    "position": "LB",
-    "report_status": "IR"
-   },
-   {
-    "team": "DET",
-    "full_name": "Tom Kennedy",
-    "position": "WR",
-    "report_status": "IR"
-   },
-   {
-    "team": "DET",
-    "full_name": "Isaac TeSlaa",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "DET",
-    "full_name": "Rock Ya-Sin",
+    "team": "NO",
+    "full_name": "Mike Reid",
     "position": "CB",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "DET",
-    "full_name": "Ahmed Hassanein",
-    "position": "DE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "DET",
-    "full_name": "Bishop Fitzgerald",
-    "position": "S",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "DET",
-    "full_name": "Mekhi Wingo",
-    "position": "DT",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "DET",
-    "full_name": "Jake Bates",
-    "position": "PK",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "DET",
-    "full_name": "Jared Goff",
-    "position": "QB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "DET",
-    "full_name": "Sam LaPorta",
-    "position": "TE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "DET",
-    "full_name": "Jameson Williams",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "DET",
-    "full_name": "Amon-Ra St. Brown",
-    "position": "WR",
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 103,
+  "n_unmatched": 2,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-20T09:33:09+00:00"
+  "checked": "2026-10-20T14:49:23+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261020T093248Z.json",
+  "snapshot": "odds_20261020T144904Z.json",
   "games": 14,
   "books_seen": {
    "draftkings": 14,
    "fanduel": 14,
-   "lowvig": 13,
-   "betonlineag": 13,
-   "betrivers": 13,
+   "lowvig": 14,
+   "betonlineag": 14,
+   "betrivers": 14,
    "novig": 14,
    "betmgm": 14,
    "pinnacle": 13,
