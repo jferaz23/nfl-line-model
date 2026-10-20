@@ -424,7 +424,7 @@
     view.innerHTML = `
       <div class="toolbar noprint"><select id="wk" aria-label="Week">${weekKeys.map(k => `<option value="${k}"${k === key ? " selected" : ""}>Week ${+k.split("-")[1]}, ${k.split("-")[0]}</option>`).join("")}</select>
         <button class="btn primary" type="button" id="pdf">Download PDF</button><span class="small muted">Prices from ${esc(fmtStamp(dt(W.generated)))}</span></div>
-      ${key === curKey ? betNowPanel(W) + earlyPanel(W) : ""}
+      ${key === curKey ? betNowPanel(W) + timingPanel() + earlyPanel(W) : ""}
       ${key === curKey && ALERTS.some(a => a.kind === "pick") ? `<div class="panel noprint"><div class="toolbar" style="justify-content:space-between;margin:0"><h2>Recent pick changes</h2><a href="#alerts">All alerts →</a></div>${alertList(ALERTS.filter(a => a.kind === "pick").slice(0, 4), lastSeen())}</div>` : ""}
       ${bestPanel(W, false)}
       <div class="panel"><h2>Every game</h2><div class="tablewrap"><table><thead><tr><th>Game</th><th>Spread</th><th>Total</th><th>Winner</th><th class="num">Model score</th><th class="num">Vegas score</th><th class="num">Final</th></tr></thead><tbody>${rows}</tbody></table></div>
@@ -1096,7 +1096,7 @@
     const items = tops.map(p => row(p, "TOP")).concat(wind.map(x => row(x, "WIND")), greens.map(p => row(p, "GREEN"))).join("");
     return `<div class="panel betnow"><div class="toolbar" style="justify-content:space-between;margin:0"><h2>Bet now: this week's picks at DraftKings' current price</h2><a class="btn" href="#tools">Parlay calculator</a></div>
       ${items || `<p class="note">No Top, wind or green picks right now. Prices update every 15 minutes; picks are final about 80 minutes before kickoff.</p>`}
-      <p class="note">Check the price in the DraftKings app before betting. Information only, not financial advice.</p></div>`;
+      <p class="note">Best time to bet: the final update about 80 minutes before kickoff (see "When to bet"). Check the price in the DraftKings app before betting. Information only, not financial advice.</p></div>`;
   }
   // ---------- personal stats on the Bets tab
   function myStatsPanel() {
@@ -1311,6 +1311,21 @@
           : '<p class="empty">No wind unders yet this season.</p>'}
         <p class="note">Each row is the under exactly as the site showed it at the last update before kickoff. Small samples swing a lot (${S26.n ? `${S26.n} graded so far` : "none graded yet"}); the long-run record below is the better guide.</p></div>
       ${windRecord(cumChart)}`;
+  }
+
+  // ---------- when to bet (live pick log: bet when first green vs at the last update before kickoff)
+  function timingPanel() {
+    const T = S.timing || {}; if (!T.first) return "";
+    const r = x => x && x.n ? `${x.w}-${x.l}${x.p ? "-" + x.p : ""} (${pct(x.pct, 0)}, ${sgn(x.units, 1)}u)` : "–";
+    const D = T.dropped || {}, wait = !(D.n >= 5 && D.pct > 0.55) && !(T.gain > 0.5);
+    return `<div class="panel noprint"><h2>When to bet</h2>
+      <p class="lede" style="margin:0"><strong>${wait ? "Bet at the final update, about 80 minutes before kickoff." : "Early bets have done as well as waiting so far."}</strong>
+      ${wait ? "By then the final injury reports and inactives are in, and the picks still green are the ones that held up." : ""}</p>
+      <div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr));margin:10px 0">
+        <div class="kpi kpi-green"><div class="kl">Green at the final update</div><div class="kv" style="font-size:17px">${r(T.late)}</div><div class="ks">the picks that count</div></div>
+        <div class="kpi"><div class="kl">Green early, gone by kickoff</div><div class="kv" style="font-size:17px">${r(T.dropped)}</div><div class="ks">${T.dropped && T.dropped.n ? `${T.dropped.n} of ${T.first} early green picks` : ""}</div></div>
+        <div class="kpi"><div class="kl">Line for the early bet by kickoff</div><div class="kv" style="font-size:17px">${fin(T.gain) ? sgn(T.gain, 2) + " pts" : "–"}</div><div class="ks">better ${T.better}, same ${T.same}, worse ${T.worse}</div></div></div>
+      <p class="note">Since ${esc(T.since || "")}: a pick that turned green early (on average ${fin(T.hours) ? Math.round(T.hours) : "–"} hours before kickoff) and stayed green won the same either way (early ${r(T.both_early)}, at kickoff ${r(T.both_late)}), and the line barely moved, so betting early gained nothing; the ones that dropped off by kickoff showed no edge. Small sample: this updates every week, and the advice will change if the record does.</p></div>`;
   }
 
   // ---------- browser alert settings (which pick changes notify this device)

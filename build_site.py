@@ -446,6 +446,52 @@ def line_history(lines: pd.DataFrame, week: dict) -> dict:
 EARLY_EDGE = 3.0
 
 
+def bet_timing(finals: dict) -> dict:
+    """When to bet, from the live pick log: every spread/total that turned green before kickoff, bet the first time it
+    was green (line and price then) vs bet at the last update before kickoff if still green. Also how far the line moved
+    for the early bet's side by kickoff (+ = the early bet got the better number)."""
+    from nflmodel.picks import grade, profit
+    lp = ART / "tracker" / "picks_log.csv"
+    if not lp.exists():
+        return {}
+    lg = read_log(lp)
+    lg = lg[lg["market"].isin(["spread", "total"])].copy()
+    lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce", format="ISO8601")
+    lg["ko"] = pd.to_datetime(lg["kickoff_utc"], utc=True, errors="coerce", format="ISO8601")
+    lg = lg[lg["t"] < lg["ko"]].sort_values("t")
+    lg["hl"] = lg["highlight"].astype(str).str.lower().eq("true")
+    early, late, drop, gains, hours, both_e, both_l = [], [], [], [], [], [], []
+    for (gid, mk), d in lg.groupby(["game_id", "market"]):
+        if gid not in finals:
+            continue
+        hs, as_ = finals[gid]
+        last, green = d.iloc[-1], d[d["hl"]]
+        if len(green):
+            f = green.iloc[0]
+            res = grade(mk, f.side, float(f.line), hs, as_)
+            early.append((res, profit(res, f.price)))
+            hours.append((last.ko - f.t).total_seconds() / 3600)
+            now = float(last.line) if last.side == f.side else (-float(last.line) if mk == "spread" else float(last.line))
+            gains.append(float(f.line) - now if (mk == "spread" or f.side == "over") else now - float(f.line))
+            if last.hl and last.side == f.side:
+                both_e.append((res, profit(res, f.price)))
+            else:
+                drop.append((res, profit(res, f.price)))
+        if last.hl:
+            res = grade(mk, last.side, float(last.line), hs, as_)
+            late.append((res, profit(res, last.price)))
+            if len(green) and green.iloc[0].side == last.side:
+                both_l.append((res, profit(res, last.price)))
+    def rec(x):
+        w, l = sum(r == "W" for r, _ in x), sum(r == "L" for r, _ in x)
+        return dict(w=w, l=l, p=len(x) - w - l, n=len(x), pct=w / (w + l) if w + l else None, units=float(sum(u or 0 for _, u in x)))
+    g = np.array(gains) if gains else np.array([])
+    return dict(early=rec(early), late=rec(late), dropped=rec(drop), both_early=rec(both_e), both_late=rec(both_l),
+                still=len(both_e), first=len(early), hours=float(np.mean(hours)) if hours else None,
+                gain=float(g.mean()) if len(g) else None, better=int((g > 0).sum()), same=int((g == 0).sum()), worse=int((g < 0).sum()),
+                since=(f"{int(lg['season'].min())} week {int(lg['week'].min())}" if len(lg) else None))
+
+
 def early_value(week: dict, sched: dict, lines: pd.DataFrame | None, finals: dict) -> dict:
     """Information only: each week's FIRST model run vs DraftKings, spreads EARLY_EDGE+ points off, graded at the
     line and price of that run. Backtest (opening-time model vs openers, 2015-2026): 3+ point gaps won 56.3%
@@ -789,7 +835,7 @@ def main() -> int:
         lines=line_history(lines, cur), my_bets=my_bets(finals_by_key),
         checks=checks, checks_ok=all(c[1] for c in checks), audit=_load(ART / "data_audit.json"),
         budget=_load(ART / "odds_budget.json"), alerts=alerts(cur, lines, kickoffs),
-        early=early_value(cur, sched, lines, finals), pnl=my_pnl(sched, lines),
+        early=early_value(cur, sched, lines, finals), timing=bet_timing(finals), pnl=my_pnl(sched, lines),
     )
     if PUBLIC.exists():
         shutil.rmtree(PUBLIC)

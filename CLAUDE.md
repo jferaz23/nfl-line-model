@@ -83,6 +83,11 @@ the pick log (games no longer in a saved run) and parses timestamps with format=
 Personal P&L: overrides/bet_slips.csv (source/game_id/market/side/line per slip) -> build_site.my_pnl (by_source, clv, cum).
 Site tabs: How it works (#how, web/app.js renderHow) explains the method with live numbers; game cards show the week's
 opening line -> now (the weekly opener = first logged line; ESPN's 'open' is the line first posted months earlier).
+Wind tab (#wind, app.js renderWind): rule, this week's outdoor forecasts, 2026 wind unders at kickoff, history.
+When to bet (build_site.bet_timing -> site.timing, Picks tab timingPanel): from the pick log, bet-when-first-green vs bet at the
+last pre-kickoff update; week 4-6 2026: first-green 15-10, at-kickoff 8-3, dropped-by-kickoff 7-7, early line -0.14 pts.
+Rejected Oct 20: green threshold 2-4 pts / chance 52-53% (current best on 2015-20), SHRINK 400 (worse 2021-26), health-neutral
+market ratings (Test 55: MAE -0.0045, green -17u).
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).
