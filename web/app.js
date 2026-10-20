@@ -424,7 +424,7 @@
     view.innerHTML = `
       <div class="toolbar noprint"><select id="wk" aria-label="Week">${weekKeys.map(k => `<option value="${k}"${k === key ? " selected" : ""}>Week ${+k.split("-")[1]}, ${k.split("-")[0]}</option>`).join("")}</select>
         <button class="btn primary" type="button" id="pdf">Download PDF</button><span class="small muted">Prices from ${esc(fmtStamp(dt(W.generated)))}</span></div>
-      ${key === curKey ? betNowPanel(W) + timingPanel() + earlyPanel(W) : ""}
+      ${key === curKey ? betNowPanel(W) + parlayIdeas(W) + timingPanel() + earlyPanel(W) : ""}
       ${key === curKey && ALERTS.some(a => a.kind === "pick") ? `<div class="panel noprint"><div class="toolbar" style="justify-content:space-between;margin:0"><h2>Recent pick changes</h2><a href="#alerts">All alerts →</a></div>${alertList(ALERTS.filter(a => a.kind === "pick").slice(0, 4), lastSeen())}</div>` : ""}
       ${bestPanel(W, false)}
       <div class="panel"><h2>Every game</h2><div class="tablewrap"><table><thead><tr><th>Game</th><th>Spread</th><th>Total</th><th>Winner</th><th class="num">Model score</th><th class="num">Vegas score</th><th class="num">Final</th></tr></thead><tbody>${rows}</tbody></table></div>
@@ -435,6 +435,7 @@
         <p class="note">Model edge: points between the model's number and DraftKings'. Chance: how often picks with that edge won against the closing line from ${esc(String(REC.since || 2015))} on (pushes excluded). Needs: the win rate DraftKings' price requires to break even. Value = chance − needs.</p></div>
       ${teaserPanel(W, games)}`;
     view.querySelector("#wk").onchange = e => { picksWeek = e.target.value; renderPicks(); };
+    wireParlayIdeas(renderPicks);
     view.querySelector("#pdf").onclick = () => window.print();
     view.querySelectorAll("[data-rm]").forEach(b => b.onclick = () => { rankMarket = b.dataset.rm; renderPicks(); });
     wireTeaser(W, games);
@@ -1202,7 +1203,7 @@
     const sized = (W.picks || []).filter(p => p.highlight && p.market !== "winner").concat((W.wind_unders || []).filter(x => x.highlight)).map(p => {
       const g = games[p.game_id]; const s = bank ? kellyStake(p.chance, p.price, bank, k) : null;
       return `<tr><td><strong>${esc(p.bet)}</strong> ${am(p.price)}${p.top ? ' <span class="chip top">TOP</span>' : ""}</td><td>${g ? esc(g.away_team + " @ " + g.home_team) : ""}</td><td class="num">${pct(p.chance, 1)}</td><td class="num">${s != null ? "$" + num(s, 2) : "–"}</td></tr>`; }).join("");
-    view.innerHTML = `<div class="panel"><h2>Parlay calculator</h2>
+    view.innerHTML = `${parlayIdeas(W)}<div class="panel"><h2>Parlay calculator</h2>
       <p class="lede" style="margin:0">Pick legs from this week's picks to see what DraftKings pays against the model's chance that every leg hits. Each leg's chance is its historical win rate, so a 3-leg parlay of 55% legs hits about 17% of the time.</p>
       <div class="toolbar" style="margin-top:10px"><label class="fld">Stake ($)<input id="pc-stake" inputmode="decimal" value="${stake}"></label>
         <label class="fld">Boost (%)<input id="pc-boost" inputmode="decimal" value="${boost || ""}" placeholder="0"></label>
@@ -1225,6 +1226,7 @@
     bind("pc-stake", "nflmodel-pstake"); bind("pc-boost", "nflmodel-boost"); bind("pc-dk", "nflmodel-dkodds");
     const bb = document.getElementById("bs-bank"); if (bb) bb.onchange = () => { jset(BANK, parseFloat(bb.value) || null); renderTools(); };
     const bk = document.getElementById("bs-k"); if (bk) bk.onchange = () => { jset(KELLY, parseFloat(bk.value)); renderTools(); };
+    wireParlayIdeas(renderTools);
     const lp = document.getElementById("pc-log");
     if (lp) lp.onclick = () => {
       const decAll = legObjs.reduce((a, l) => a * dec(l.price), 1), dkDec = fin(dkOverride) && Math.abs(dkOverride) >= 100 ? dec(dkOverride) : decAll;
@@ -1329,6 +1331,56 @@
         <div class="kpi"><div class="kl">Green early, gone by kickoff</div><div class="kv" style="font-size:17px">${r(T.dropped)}</div><div class="ks">${T.dropped && T.dropped.n ? `${T.dropped.n} of ${T.first} early green picks` : ""}</div></div>
         <div class="kpi"><div class="kl">Line for the early bet by kickoff</div><div class="kv" style="font-size:17px">${fin(T.gain) ? sgn(T.gain, 2) + " pts" : "–"}</div><div class="ks">better ${T.better}, same ${T.same}, worse ${T.worse}</div></div></div>
       <p class="note">Since ${esc(T.since || "")}: a pick that turned green early (on average ${fin(T.hours) ? Math.round(T.hours) : "–"} hours before kickoff) and stayed green won the same either way (early ${r(T.both_early)}, at kickoff ${r(T.both_late)}), and the line barely moved, so betting early gained nothing; the ones that dropped off by kickoff showed no edge. Across 2015-2026 the model's 3+ point picks also won 56-59% against opening lines. Small samples this season (${ER.n || 0} early-week picks): this updates every week, and the advice will change if the record does.</p></div>`;
+  }
+
+  // ---------- suggested parlays from this week's best picks (Top, green, wind unders; one leg per game)
+  let parlayFilter = "all";
+  function parlayPool(W) {
+    const games = {}; W.games.forEach(g => games[g.game_id] = g);
+    const pre = gid => { const g = games[gid]; if (!g) return false; const lv = liveFor(g); return !(lv && lv.state !== "pre") && new Date(g.kickoff_utc) > new Date(); };
+    const best = (W.picks || []).filter(p => p.highlight && (p.market === "spread" || p.market === "total") && fin(p.price) && fin(p.chance) && pre(p.game_id))
+      .map(p => Object.assign({}, p, { kind: p.top ? "TOP" : "GREEN" }));
+    const wind = (W.wind_unders || []).filter(x => x.highlight && fin(x.price) && fin(x.chance) && pre(x.game_id))
+      .map(x => Object.assign({}, x, { kind: "WIND" }));
+    // a game's wind under replaces its green total (same bet family); keep the higher-chance one
+    const byKey = {};
+    best.concat(wind).forEach(p => { const k = p.game_id + "|" + (p.market === "spread" ? "spread" : "total"); if (!byKey[k] || p.chance > byKey[k].chance) byKey[k] = p; });
+    return Object.values(byKey);
+  }
+  function parlayIdeas(W) {
+    const pool = parlayPool(W).filter(p => parlayFilter === "all" || (parlayFilter === "spread" ? p.market === "spread" : p.market !== "spread"));
+    const combos = [];
+    const add = legs => {
+      if (new Set(legs.map(l => l.game_id)).size < legs.length) return;      // never two legs from the same game
+      const d = legs.reduce((a, l) => a * dec(l.price), 1), p = legs.reduce((a, l) => a * l.chance, 1);
+      combos.push({ legs, dec: d, p, ev: p * d - 1 });
+    };
+    for (let i = 0; i < pool.length; i++) for (let j = i + 1; j < pool.length; j++) {
+      add([pool[i], pool[j]]);
+      for (let k = j + 1; k < pool.length; k++) add([pool[i], pool[j], pool[k]]);
+    }
+    const toAm = d => d >= 2 ? Math.round((d - 1) * 100) : Math.round(-100 / (d - 1));
+    const games = {}; W.games.forEach(g => games[g.game_id] = g);
+    const row = c => `<div class="bn-row"><span class="chip">${c.legs.length}-LEG</span><strong>${c.legs.map(l => esc(l.bet)).join(" + ")}</strong>
+      <span class="muted">${am(toAm(c.dec))}</span><span class="small muted">${c.legs.map(l => `${esc(games[l.game_id] ? games[l.game_id].away_team + " @ " + games[l.game_id].home_team : "")} (${l.kind === "TOP" ? "Top" : l.kind === "WIND" ? "wind" : "green"}, ${pct(l.chance, 0)})`).join(" · ")}
+      · hits ${pct(c.p, 1)} · value ${sgn(100 * c.ev, 1)}% · $10 pays $${num(10 * c.dec, 2)}</span>
+      <span class="logbtn" role="button" data-pl='${esc(JSON.stringify(c.legs.map(l => l.game_id + "|" + l.market)))}'>Open in calculator</span></div>`;
+    const two = combos.filter(c => c.legs.length === 2).sort((a, b) => b.ev - a.ev).slice(0, 4);
+    const three = combos.filter(c => c.legs.length === 3).sort((a, b) => b.ev - a.ev).slice(0, 3);
+    const seg = `<div class="seg" role="group" aria-label="Parlay legs">${[["all", "Spreads and totals"], ["spread", "Spreads"], ["total", "Totals"]].map(([k, l]) => `<button type="button" data-pf="${k}" aria-pressed="${parlayFilter === k}">${l}</button>`).join("")}</div>`;
+    return `<div class="panel" id="parlay-ideas"><div class="toolbar" style="justify-content:space-between;margin:0"><h2>Suggested parlays</h2>${seg}</div>
+      <p class="lede" style="margin:0">Built from this week's Top, green and wind-under picks (one leg per game, games not started), ranked by value: the model's chance that every leg hits against what DraftKings pays at standard parlay odds.</p>
+      ${pool.length < 2 ? `<p class="note">Not enough qualifying picks right now (${pool.length}). Picks fill in through the week; check back after the injury reports.</p>`
+        : `<h3>2 legs</h3>${two.map(row).join("") || '<p class="note">None.</p>'}${three.length ? `<h3>3 legs</h3>${three.map(row).join("")}` : ""}`}
+      <p class="note">Each leg's chance is its historical win rate, so a 2-leg parlay of 56% legs hits about 31% of the time and a 3-leg about 18%: expect long losing runs. Legs are treated as independent (different games). A DraftKings boost raises the value; enter it in the calculator. Prices change, so check the bet slip. Information only, not financial advice.</p></div>`;
+  }
+  function wireParlayIdeas(rerender) {
+    view.querySelectorAll("[data-pf]").forEach(b => b.onclick = () => { parlayFilter = b.dataset.pf; rerender(); });
+    view.querySelectorAll("[data-pl]").forEach(b => b.onclick = e => {
+      e.preventDefault(); e.stopPropagation();
+      try { parlayLegs = JSON.parse(b.dataset.pl).map(key => ({ key })); } catch (err) { return; }
+      if (currentRoute === "tools") { renderTools(); document.getElementById("view").scrollIntoView({ behavior: "smooth" }); } else location.hash = "tools";
+    });
   }
 
   // ---------- browser alert settings (which pick changes notify this device)

@@ -92,6 +92,10 @@ When to bet (build_site.bet_timing -> site.timing, Picks tab timingPanel): from 
 last pre-kickoff update; week 4-6 2026: first-green 15-10, at-kickoff 8-3, dropped-by-kickoff 7-7, early line -0.14 pts.
 Rejected Oct 20: green threshold 2-4 pts / chance 52-53% (current best on 2015-20), SHRINK 400 (worse 2021-26), health-neutral
 market ratings (Test 55: MAE -0.0045, green -17u).
+Suggested parlays (app.js parlayIdeas, Picks + Tools tabs): best 2-/3-leg combos of Top/green/wind picks (one leg per game,
+not started), ranked by model value at standard parlay odds, filter spreads/totals, "Open in calculator".
+Rejected Oct 20 (evening): totals market blend (2021-26 worse), weather-neutral market totals (-0.001), per-team home field
+in the market ratings (MAE -0.007 but green -28.9u).
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).
