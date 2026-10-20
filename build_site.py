@@ -712,8 +712,10 @@ def my_pnl(sched: dict | None = None, lines: pd.DataFrame | None = None) -> dict
     def summ(d):
         s = [x for x in d if x["result"]]
         w, l, pu = sum(x["result"] == "W" for x in s), sum(x["result"] == "L" for x in s), sum(x["result"] == "P" for x in s)
-        staked = sum(x["stake"] for x in s); prof = sum(x["profit"] or 0 for x in s)
+        priced = [x for x in s if x["profit"] is not None]           # settled wins without odds yet: record only
+        staked = sum(x["stake"] for x in priced); prof = sum(x["profit"] for x in priced)
         return dict(w=w, l=l, p=pu, n=len(s), staked=staked, profit=prof, roi=prof / staked if staked else None,
+                    no_odds=len(s) - len(priced),
                     open=sum(1 for x in d if not x["result"]), open_stake=sum(x["stake"] for x in d if not x["result"]))
     keys = sorted({(x["season"], x["week"]) for x in rows})
     run = 0.0
