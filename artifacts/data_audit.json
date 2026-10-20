@@ -1,5 +1,5 @@
 {
- "built": "2026-10-20T16:40:36+00:00",
+ "built": "2026-10-20T20:03:24+00:00",
  "scores": {
   "ok": true,
   "games": 3121,
@@ -403,9 +403,15 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 165,
-  "matched_share": 0.997,
+  "not_active": 164,
+  "matched_share": 0.996,
   "unmatched": [
+   {
+    "team": "CIN",
+    "full_name": "Josh Kattus",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
    {
     "team": "CLE",
     "full_name": "Audric Estime",
@@ -419,25 +425,25 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 2,
+  "n_unmatched": 3,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-20T16:41:27+00:00"
+  "checked": "2026-10-20T20:03:36+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261020T144904Z.json",
-  "games": 14,
+  "snapshot": "odds_20261020T200315Z.json",
+  "games": 28,
   "books_seen": {
-   "draftkings": 14,
-   "fanduel": 14,
-   "lowvig": 14,
-   "betonlineag": 14,
-   "betrivers": 14,
+   "draftkings": 28,
+   "fanduel": 28,
+   "lowvig": 21,
+   "betonlineag": 21,
+   "betrivers": 28,
    "novig": 14,
    "betmgm": 14,
-   "pinnacle": 13,
+   "pinnacle": 14,
    "prophetx": 14,
    "hardrockbet": 14
   },
