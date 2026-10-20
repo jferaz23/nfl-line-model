@@ -60,6 +60,10 @@ Early-week value (build_site.early_value, Picks tab, information only): the week
 DraftKings, graded at that line/price; tracked from 2026 week 4 (backtest vs openers 56-59%, unproven at DK).
 Pick log: always read it with picks.read_log (it repairs 288 rows from Sept 30 written one column off).
 Live picks logged to artifacts/tracker/picks_log.csv; build_site.build_record merges them.
+Picks lock at kickoff (Oct 20, 2026, user request): run_week.py makes no picks, teaser legs or wind calls for games already
+started (teaser legs carried over from the previous run); build_site.fill_started replaces any started game's picks with
+its last pre-kickoff log row. In-game lines never create picks. Bets tab 2026 week-by-week = picks as shown at kickoff
+(weeks the log covers, from week 4) incl. wind; weeks 1-3 backtest at the close (record.by_week[].at_kickoff).
 Data audit (audit_data.py) runs weekly; see Info tab.
 QB caution (picks.qb_caution): a green pick under the Top line that backs a team with a new (<100 plays) or
 2+ pts/game downgraded QB is not green (such picks went ~50% in both halves). QB downgrade *features* were

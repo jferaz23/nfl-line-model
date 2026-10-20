@@ -279,17 +279,31 @@ def build_record(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict) 
         if "home_spread_odds" in o2.columns:
             teas, expl = teaser_history(o2), explorer(o2)
     out = dict(teasers=teas, explorer=expl)
+    # this season: the picks as the site showed them at the last update before kickoff (pick log), graded at that
+    # DraftKings price; the backtest at the closing line only for games the log does not have (weeks before tracking)
+    s = allr[allr["season"] == cur] if len(allr) else pd.DataFrame()
+    lv = live[(live["season"] == cur) & (live["market"] != "wind")] if len(live) else pd.DataFrame()
+    if len(lv):
+        s = pd.concat([s[~s["game_id"].isin(set(lv["game_id"]))] if len(s) else s, lv], ignore_index=True)
     out.update(all=rows_summary(allr) if len(allr) else {}, since=int(allr["season"].min()) if len(allr) else None,
-               current_season=cur,
-               season=rows_summary(allr[allr["season"] == cur]) if len(allr) else {},
+               current_season=cur, season=rows_summary(s) if len(s) else {},
+               season_logged_from=int(lv["week"].min()) if len(lv) else None,
                live=_clean(live.to_dict("records")) if len(live) else [])
-    # this season, week by week
+    wl_all = pd.DataFrame([x for x in wind_live if x["season"] == cur])
+    def wrec(d):
+        d = d[d["result"].isin(["W", "L", "P"])] if len(d) else d
+        w, l, p_ = (int((d["result"] == k).sum()) if len(d) else 0 for k in ("W", "L", "P"))
+        return dict(w=w, l=l, p=p_, n=w + l + p_, pct=w / (w + l) if w + l else None,
+                    units=float(pd.to_numeric(d["units"], errors="coerce").fillna(0).sum()) if len(d) else None)
     by_week = []
-    if len(allr):
-        s = allr[allr["season"] == cur]
+    if len(s):
         for wk, d in s.groupby("week"):
-            by_week.append(dict(week=int(wk), **rows_summary(d)["total"]))
+            row = dict(week=int(wk), **rows_summary(d)["total"])
+            row["wind"] = wrec(wl_all[wl_all["week"] == wk] if len(wl_all) else wl_all)
+            row["at_kickoff"] = bool(len(lv) and wk in set(lv["week"]))
+            by_week.append(row)
     out["by_week"] = by_week
+    out["season_wind"] = wrec(wl_all)
     # wind unders record: archived-forecast history (2018 on) + live picks for games not in it yet
     ws = wind_summary(wind_hist) if len(wind_hist) else {}
     wl = pd.DataFrame([x for x in wind_live if x["source"] == "live"])
@@ -316,7 +330,8 @@ def build_record(weeks: list[dict], finals: dict, closes: dict, kickoffs: dict) 
 
 
 def fill_started(weeks: list[dict], kickoffs: dict):
-    """Games already under way drop out of the odds feed; show their last pre-kickoff pick instead."""
+    """Picks are set before kickoff: once a game has started, show its last pre-kickoff pick (and wind call) from the
+    log, replacing anything a run made from in-game lines; games that dropped out of the odds feed are filled the same way."""
     lp = ART / "tracker" / "picks_log.csv"
     if not lp.exists():
         return
@@ -324,7 +339,13 @@ def fill_started(weeks: list[dict], kickoffs: dict):
     lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce", format="ISO8601")
     lg["ko"] = pd.to_datetime(lg["game_id"].map(kickoffs), utc=True, errors="coerce", format="ISO8601")
     lg = lg[lg["t"] < lg["ko"]].sort_values("t").groupby(["game_id", "market"]).tail(1)
+    ko_all = {gid: pd.to_datetime(k, utc=True, errors="coerce", format="ISO8601") for gid, k in kickoffs.items()}
+    logged = set(lg["game_id"])
     for w in weeks:
+        started = {g["game_id"] for g in w["games"] if pd.notna(ko_all.get(g["game_id"])) and ko_all[g["game_id"]] <= NOW
+                   and g["game_id"] in logged}
+        w["picks"] = [p for p in w.get("picks", []) if p["game_id"] not in started]
+        w["wind_unders"] = [x for x in w.get("wind_unders", []) if x["game_id"] not in started]
         have = {(p["game_id"], p["market"]) for p in w.get("picks", [])}
         ids = {g["game_id"] for g in w["games"]}
         add = lg[lg["game_id"].isin(ids)]

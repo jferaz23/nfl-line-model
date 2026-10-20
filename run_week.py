@@ -226,17 +226,32 @@ def main(argv=None):
     oos_path = cfg.path("artifacts_dir") / "backtest_oos.csv"
     curves = curves_from_oos(pd.read_csv(oos_path)) if oos_path.exists() else {"spread": 0.03, "total": 0.03}
     payload["curves"] = curves
-    payload["picks"] = week_picks(payload["games"], curves)
+    # picks are set before kickoff only: games already under way get no new pick (in-game lines are ignored);
+    # their last pre-kickoff pick stands and is tracked through the game (build_site fills it from the pick log)
+    now_utc = pd.Timestamp.now(tz="UTC")
+    started = set() if args.demo else {
+        g["game_id"] for g in payload["games"]
+        if pd.notna(ko := pd.to_datetime(g.get("kickoff_utc"), utc=True, errors="coerce")) and ko <= now_utc}
+    pre_games = [g for g in payload["games"] if g["game_id"] not in started]
+    payload["picks"] = week_picks(pre_games, curves)
     from nflmodel.picks import TEASER_PRICE, pair_teasers, teaser_leg_rate, teaser_legs
     rate = teaser_leg_rate(pd.read_csv(oos_path))[0] if oos_path.exists() else 0.74
-    legs = teaser_legs(payload["games"], rate)
+    legs = teaser_legs(pre_games, rate)
+    prev_path = site_dir / f"week_{season}_{int(week):02d}.json"
+    if started and prev_path.exists():          # keep started games' teaser legs as they were before kickoff
+        try:
+            prev = __import__("json").loads(prev_path.read_text(encoding="utf-8"))
+            legs += [x for x in (prev.get("teasers") or {}).get("legs", []) if x.get("game_id") in started]
+        except (ValueError, OSError):
+            pass
+        legs = sorted(legs, key=lambda x: (x.get("kickoff_utc") or "", x["game_id"]))
     payload["teasers"] = dict(legs=legs, pairs=pair_teasers(legs), leg_rate=rate, price=TEASER_PRICE)
     # wind unders: outdoor games whose kickoff forecast shows wind 10+ mph or gusts 20+ mph (nflmodel/wind.py)
     from nflmodel.wind import GUST_MPH, WIND_MPH, rule_rate, week_wind_unders
     wh_path = cfg.path("artifacts_dir") / "wind_history.csv"
     wchance, ww, wl = rule_rate(pd.read_csv(wh_path)) if wh_path.exists() else (0.5, 0, 0)
     payload["wind_rule"] = dict(chance=wchance, w=ww, l=wl, wind_mph=WIND_MPH, gust_mph=GUST_MPH)
-    payload["wind_unders"] = week_wind_unders(payload["games"], wchance)
+    payload["wind_unders"] = week_wind_unders(pre_games, wchance)
     payload["priced_at"] = payload["generated"]
     payload["price_source"] = ("ESPN scoreboard (DraftKings)" if args.espn_lines else
                                "saved Odds API snapshot" if args.odds_snapshot else

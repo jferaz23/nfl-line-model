@@ -655,14 +655,26 @@
 
   // ------------------------------------------------------------------ Bets (this season, live)
   let betsFilter = "top";
+  function seasonLine() {     // this season since tracking began, picks as shown at kickoff
+    const rows = (REC.live || []).filter(p => p.season === REC.current_season && p.result);
+    if (!rows.length) return "";
+    const sum = l => { const w = l.filter(p => p.result === "W").length, lo = l.filter(p => p.result === "L").length, pu = l.length - w - lo,
+      u = l.reduce((s, p) => s + (p.units || 0), 0); return `<strong>${w}-${lo}${pu ? "-" + pu : ""}</strong> <span class="small muted">${w + lo ? pct(w / (w + lo), 1) : "–"} · ${sgn(u, 1)}u</span>`; };
+    const top = rows.filter(p => p.top), green = rows.filter(p => p.highlight && p.market !== "wind" && p.market !== "winner"), wind = rows.filter(p => p.market === "wind");
+    return `<div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 10px">
+      <div class="kpi kpi-green"><div class="kl">Top picks at kickoff</div><div class="kv" style="font-size:18px">${sum(top)}</div><div class="ks">since week ${REC.season_logged_from || ""}</div></div>
+      <div class="kpi"><div class="kl">Green picks at kickoff</div><div class="kv" style="font-size:18px">${sum(green)}</div><div class="ks">includes Top</div></div>
+      <div class="kpi"><div class="kl">Wind unders at kickoff</div><div class="kv" style="font-size:18px">${sum(wind)}</div><div class="ks">since week ${REC.season_logged_from || ""}</div></div></div>`;
+  }
   function renderBets() {
     const all = (REC.live || []).slice().sort((x, y) => (y.run_at || "").localeCompare(x.run_at || ""));
     const list = betsFilter === "top" ? all.filter(p => p.top) : betsFilter === "green" ? all.filter(p => p.highlight && p.market !== "wind") : betsFilter === "all" ? all : all.filter(p => p.market === betsFilter);
     const wk = (REC.by_week || []).slice().reverse();
     const c = r => r && r.n ? `${recTxt(r)} <span class="small muted">${pct(r.pct, 0)}${fin(r.units) ? " · " + sgn(r.units, 1) + "u" : ""}</span>` : '<span class="dash">–</span>';
-    view.innerHTML = `${pnlPanel()}<div class="panel"><h2>${esc(String(REC.current_season || ""))} week by week</h2><p class="lede">Weeks the backtest already covers are graded at the closing line; later weeks at DraftKings' price from the last run before kickoff.</p>
-      ${wk.length ? `<div class="tablewrap"><table class="rec-table"><thead><tr><th>Week</th><th class="num gcol">Top picks</th><th class="num gcol">Green picks</th><th class="num">All spreads</th><th class="num">All totals</th><th class="num">Winners</th></tr></thead><tbody>
-      ${wk.map(w => `<tr><td>Week ${w.week}</td><td class="num gcol">${c(w.top)}</td><td class="num gcol">${c(w.green)}</td><td class="num">${c(w.spread)}</td><td class="num">${c(w.total)}</td><td class="num">${c(w.winner)}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">No graded weeks yet.</p>`}</div>
+    view.innerHTML = `${pnlPanel()}<div class="panel"><h2>${esc(String(REC.current_season || ""))} week by week</h2><p class="lede">${REC.season_logged_from ? `From week ${REC.season_logged_from} on: the picks exactly as the site showed them at the last update before kickoff, graded at that DraftKings price. Earlier weeks (before tracking began) use the backtest at the closing line.` : "Graded at the closing line until live tracking begins."} Green includes Top picks.</p>
+      ${seasonLine()}
+      ${wk.length ? `<div class="tablewrap"><table class="rec-table"><thead><tr><th>Week</th><th class="num gcol">Top picks</th><th class="num gcol">Green picks</th><th class="num gcol">Wind unders</th><th class="num">All spreads</th><th class="num">All totals</th><th class="num">Winners</th></tr></thead><tbody>
+      ${wk.map(w => `<tr><td>Week ${w.week}${w.at_kickoff ? "" : ' <span class="small muted">(backtest)</span>'}</td><td class="num gcol">${c(w.top)}</td><td class="num gcol">${c(w.green)}</td><td class="num gcol">${w.at_kickoff ? c(w.wind) : '<span class="dash">–</span>'}</td><td class="num">${c(w.spread)}</td><td class="num">${c(w.total)}</td><td class="num">${c(w.winner)}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">No graded weeks yet.</p>`}</div>
       <div class="panel"><div class="toolbar" style="justify-content:space-between"><div><h2>Live pick tracker</h2><p class="lede">Every pick from the weekly runs as the page showed it before kickoff. CLV = points better than DraftKings' closing line, the best early test of whether the edge is real.</p></div>
         <div class="seg" role="group" aria-label="Filter">${[["top", "Top"], ["green", "Green"], ["wind", "Wind"], ["spread", "Spreads"], ["total", "Totals"], ["winner", "Winners"], ["all", "All"]].map(([k, l]) => `<button type="button" data-bf="${k}" aria-pressed="${betsFilter === k}">${l}</button>`).join("")}</div></div>
       ${list.length ? `<div class="tablewrap"><table><thead><tr><th>Week</th><th>Game</th><th>Pick</th><th class="num">Price</th><th class="num">Chance</th><th class="num">Value</th><th class="num">CLV</th><th class="num">Result</th><th class="num">Units</th></tr></thead><tbody>
