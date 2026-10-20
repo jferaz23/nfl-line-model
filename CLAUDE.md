@@ -103,6 +103,10 @@ in the market ratings (MAE -0.007 but green -28.9u).
 Rejected Oct 21: Top cutoff 3.5 (2015-20 +35.4u vs +17.9u and 4/4 noise wins, but 2021-26 +6.1u vs +9.1u; re-check later),
 ratings-memory ensemble 3/5/9 wk (MAE +0.001, green -13.9u). Diagnostic: green picks by type (dog/fav, home/road, key
 numbers, division, primetime, season phase) are positive in both halves; no filter justified.
+Rejected Oct 21 (after the agreement filter): key-number cover-probability bands, logistic chance curve, consensus edge,
+curve fit without split games (1/4 noise), third-opinion filters (Elo/points/EPA disagreeing greens profitable both halves),
+market QB adj 0.5/1.0 and injury x0.75/1.25 inside the full model, teaser/wind filters by model agreement (inconsistent
+halves). Calibration: green spreads' shown chance runs 2-4 pts below their actual win rate (53.3% vs 55.6%, 54.6% vs 58.6%).
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).
