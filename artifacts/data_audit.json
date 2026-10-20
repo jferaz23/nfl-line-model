@@ -1,5 +1,5 @@
 {
- "built": "2026-10-20T14:49:12+00:00",
+ "built": "2026-10-20T16:40:36+00:00",
  "scores": {
   "ok": true,
   "games": 3121,
@@ -11,15 +11,13 @@
   "seasons": "2015-2026"
  },
  "lines": {
-  "ok": false,
+  "ok": true,
   "games": 3121,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
-  "favorite_disagree": [
-   "2026_06_NO_NYG"
-  ],
-  "n_favorite_disagree": 1,
+  "favorite_disagree": [],
+  "n_favorite_disagree": 0,
   "spread_result_corr": 0.437,
   "moneyline_entry_errors": [
    "2015_01_KC_HOU",
@@ -405,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 169,
+  "not_active": 165,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -425,7 +423,7 @@
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-20T14:49:23+00:00"
+  "checked": "2026-10-20T16:41:27+00:00"
  },
  "books": {
   "ok": true,

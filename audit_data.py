@@ -110,7 +110,7 @@ def audit_lines(sched: pd.DataFrame, start: int) -> dict:
     ml = s.dropna(subset=["home_moneyline", "away_moneyline", "spread_line"])
     same = ml[ml["home_moneyline"] == ml["away_moneyline"]]          # both sides equal: a moneyline entry error
     ml = ml[ml["home_moneyline"] != ml["away_moneyline"]]
-    ml = ml[ml["spread_line"].abs() >= 1.5]                       # near pick'em both can be favored by a hair
+    ml = ml[ml["spread_line"].abs() >= 2.5]   # at 1-2 pts the juice can flip the moneyline favorite (2026 NO@NYG: NYG +1.5 -125, ML -112)
     fav_ml_home = ml["home_moneyline"] < ml["away_moneyline"]
     fav_sp_home = ml["spread_line"] > 0
     disagree = ml[fav_ml_home != fav_sp_home]
