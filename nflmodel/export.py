@@ -25,7 +25,7 @@ GAME_COLS = ["game_id", "season", "week", "game_type", "home_team", "away_team",
              "away_travel_kmi", "h_miss_names", "a_miss_names", "h_off_cont", "h_def_cont", "a_off_cont",
              "a_def_cont", "spread_line", "total_line", "div_game", "model_margin", "model_total",
              "home_coach", "away_coach", "referee", "h_qb_new", "a_qb_new", "h_qb_delta", "a_qb_delta",
-             "gust_used", "wx_source"]
+             "gust_used", "wx_source", "d_mkt_rating"]
 
 
 def _clean(o):

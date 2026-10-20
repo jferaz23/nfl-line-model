@@ -49,7 +49,7 @@ def walk_forward(games, cfg, seasons, drop_groups=(), use_gbm=None, drop_m=None,
         mt = LineModel(cfg, "total", drop_groups=dt_, use_gbm=use_gbm).fit(train)
         keep = ["game_id", "season", "week", "home_team", "away_team", "result", "total", "spread_line", "total_line",
                 "home_spread_odds", "away_spread_odds", "over_odds", "under_odds", "home_moneyline", "away_moneyline",
-                "h_qb_new", "a_qb_new", "h_qb_delta", "a_qb_delta"]
+                "h_qb_new", "a_qb_new", "h_qb_delta", "a_qb_delta", "d_mkt_rating"]
         t = test[[c for c in keep if c in test.columns]].copy()     # closing prices grade the track record
         t["model_margin"], t["model_total"] = mm.predict(test), mt.predict(test)
         t["ridge_margin"], t["gbm_margin"] = mm.predict_parts(test)

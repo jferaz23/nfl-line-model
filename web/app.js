@@ -53,7 +53,7 @@
   const edgeTxt = e => fin(e) ? "+" + (Math.floor(Math.abs(e) * 10) / 10).toFixed(1) : "–";
   const recTxt = r => r && r.n ? `<span class="w">${r.w}</span>-<span class="l">${r.l}</span>${r.p ? `<span class="p">-${r.p}</span>` : ""}` : '<span class="dash">0-0</span>';
   const recSub = r => r && r.n ? `${pct(r.pct, 1)}${fin(r.units) ? ` · ${sgn(r.units, 1)}u` : ""}` : "no graded picks yet";
-  const GREEN_HELP = "Green = the chance to win is at least 1 point above what DraftKings' price needs to break even (−110 needs 52.4%), and the model's side has won more than it lost in that range. Ranked by that margin: the best bang for your buck. Top pick = any spread where the model is 4+ points off DraftKings' line (always shown green).";
+  const GREEN_HELP = "Green = the chance to win is at least 1 point above what DraftKings' price needs to break even (−110 needs 52.4%), the model's side has won more than it lost in that range, and both parts of the prediction (the model's own estimate and the market's view of the teams) are on the pick's side of the line. Ranked by that margin: the best bang for your buck. Top pick = any spread where the model is 4+ points off DraftKings' line (always shown green), with both parts agreeing.";
 
   // ------------------------------------------------------------------ data prep
   const weekKeys = Object.keys(S.weeks || {}).sort();
@@ -995,7 +995,7 @@
         <p><strong>Injuries:</strong> a Questionable player counts as playing 66% of the time (42% if he missed his last practice, 68% limited, 79% full) and Doubtful 1%, the rates measured from 41,663 past listings. A Questionable starting quarterback starts 57% of the time (37% / 53% / 85% by last practice), so his value is blended with the backup's.</p>`)}
       ${sec("3. From the model's number to a pick", `<p><strong>The pick</strong> is the model's side of DraftKings' number. Example: the model has Tampa Bay by 0.5 and DraftKings has Tampa Bay +3.5, so the model is 4 points off and the pick is Tampa Bay +3.5.</p>
         <p><strong>Chance</strong> comes from history, not the model's own confidence: of every past game where the model was that far off the closing line (0-2, 2-4 or 4+ points), how often its side won. It is pulled toward 50% so thin samples can't overstate it.</p>
-        <p><strong>Value</strong> = chance minus what the price needs to break even (-110 needs 52.4%). <strong>Green</strong> = at least 1 point of value. <strong>Top pick</strong> = any spread where the model is 4+ points off DraftKings (always green).</p>
+        <p><strong>Value</strong> = chance minus what the price needs to break even (-110 needs 52.4%). <strong>Green</strong> = at least 1 point of value. <strong>Top pick</strong> = any spread where the model is 4+ points off DraftKings (always green). A spread is only green or Top when both parts of the prediction, the model's own estimate and the market's view of the two teams, are on the pick's side of the line: when they split, the pick went 26-38 in the backtest.</p>
         <p><strong>Fair line</strong> (on the breakdown): about 90% the betting market and 10% the model, because the closing line is very hard to beat; the model's own error is ${num(B.spread_model, 2)} points per game vs ${num(B.spread_market, 2)} for the closing line.</p>`)}
       ${sec("4. The weekly card and other picks", `<ul>
         <li><strong>Top picks</strong>: ${esc(r(T))} since ${esc(String(REC.since || 2015))} at closing prices.</li>

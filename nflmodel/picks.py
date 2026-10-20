@@ -169,14 +169,38 @@ def qb_caution(side: str, h_new, a_new, h_delta, a_delta) -> bool:
         return False
 
 
+def _blend_weight() -> float:
+    from .config import Config
+    return float(getattr(Config(), "mkt_blend_margin", 0.0) or 0.0)
+
+
+def split_view(model_margin, mkt_margin, line_margin, mb: float | None = None) -> bool:
+    """True when the spread prediction's two parts disagree about the line: the model's own estimate and the
+    market-ratings forecast sit on opposite sides of it (the blend only tips one way). Such green picks lost in both
+    halves of the backtest (2015-20 20-25, 2021-26 6-13; all spreads 46.9% / 48.5%), so they are not green or Top
+    (Test 70, Oct 21, 2026)."""
+    mb = _blend_weight() if mb is None else mb
+    try:
+        mm, mk, ln = float(model_margin), float(mkt_margin) if mkt_margin is not None else 0.0, float(line_margin)
+    except (TypeError, ValueError):
+        return False
+    mk = 0.0 if not np.isfinite(mk) else mk
+    if not (np.isfinite(mm) and np.isfinite(ln)) or not 0.0 < mb < 1.0:
+        return False
+    e = np.sign(mm - ln)
+    raw = (mm - mb * mk) / (1.0 - mb)
+    return bool(np.sign(raw - ln) != e or np.sign(mk - ln) != e)
+
+
 def is_green(p: dict) -> bool:
     return bool(p["market"] != "winner" and np.isfinite(p["value"]) and p["value"] >= HIGHLIGHT
-                and p["chance"] >= MIN_SKILL and not (p.get("qb_caution") and p["edge"] < TOP_EDGE))
+                and p["chance"] >= MIN_SKILL and not (p.get("qb_caution") and p["edge"] < TOP_EDGE)
+                and not p.get("split"))
 
 
 def is_top(p: dict) -> bool:
     e = p.get("edge")
-    return bool(p["market"] == "spread" and e is not None and np.isfinite(e) and e >= TOP_EDGE)
+    return bool(p["market"] == "spread" and e is not None and np.isfinite(e) and e >= TOP_EDGE and not p.get("split"))
 
 
 def is_highlight(p: dict) -> bool:
@@ -230,6 +254,8 @@ def week_picks(games: list[dict], curves: dict) -> list[dict]:
         wn = winner_pick(g["home_team"], g["away_team"], g.get("p_home_win_model"), f("dk_home_ml"), f("dk_away_ml"))
         if sp:
             sp["qb_caution"] = qb_caution(sp["side"], g.get("h_qb_new"), g.get("a_qb_new"), g.get("h_qb_delta"), g.get("a_qb_delta"))
+            if "d_mkt_rating" in g:
+                sp["split"] = split_view(f("model_margin"), g.get("d_mkt_rating"), -float(hs))
         for p in (sp, tt, wn):
             if p:
                 p.update(base)
@@ -245,6 +271,7 @@ def history(oos: pd.DataFrame) -> dict:
 def history_rows(oos: pd.DataFrame) -> pd.DataFrame:
     """Every backtest game's picks graded at the closing line and price; curves fit walk-forward."""
     o = oos.dropna(subset=["result", "spread_line", "total_line"]).copy()
+    has_mkt, mb = "d_mkt_rating" in o.columns, _blend_weight()
     rows = []
     for s in sorted(o["season"].unique()):
         cv = curves_from_oos(o, before_season=int(s))
@@ -262,6 +289,8 @@ def history_rows(oos: pd.DataFrame) -> pd.DataFrame:
             if picks[0]:
                 picks[0]["qb_caution"] = qb_caution(picks[0]["side"], getattr(r, "h_qb_new", None), getattr(r, "a_qb_new", None),
                                                     getattr(r, "h_qb_delta", None), getattr(r, "a_qb_delta", None))
+                if has_mkt:
+                    picks[0]["split"] = split_view(float(r.model_margin), r.d_mkt_rating, ln, mb)
             for p in picks:
                 if not p:
                     continue
