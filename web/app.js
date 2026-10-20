@@ -1255,9 +1255,63 @@
     const bb = document.getElementById("bottombar"); if (!bb) return;
     bb.querySelectorAll("a").forEach(a => a.getAttribute("href") === "#" + currentRoute ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
     const more = document.getElementById("more-btn");
-    if (more) more.onclick = () => sheet(`<h3 style="margin-top:0">More</h3><div class="more-grid">${[["games", "Games"], ["live", "Gamecast"], ["picks", "Picks"], ["breakdown", "Breakdown"], ["alerts", "Alerts"], ["recap", "Weekly recap"], ["tools", "Parlay calculator and bet sizing"], ["futures", "Futures"], ["teams", "Teams"], ["players", "Players"], ["record", "Record"], ["bets", "Bets and P&L"], ["how", "How it works"], ["info", "Info"]].map(([k, l]) => `<a class="btn" href="#${k}" data-close-sheet>${l}</a>`).join("")}</div>`);
+    if (more) more.onclick = () => sheet(`<h3 style="margin-top:0">More</h3><div class="more-grid">${[["games", "Games"], ["live", "Gamecast"], ["picks", "Picks"], ["breakdown", "Breakdown"], ["wind", "Wind unders"], ["alerts", "Alerts"], ["recap", "Weekly recap"], ["tools", "Parlay calculator and bet sizing"], ["futures", "Futures"], ["teams", "Teams"], ["players", "Players"], ["record", "Record"], ["bets", "Bets and P&L"], ["how", "How it works"], ["info", "Info"]].map(([k, l]) => `<a class="btn" href="#${k}" data-close-sheet>${l}</a>`).join("")}</div>`);
   }
   if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+
+  // ---------- wind unders: one place for the rule, this week, this season at kickoff, and the history
+  function cumChart(cum, color, label) {
+    if (!cum || cum.length < 2) return '<p class="note">The chart starts after a second graded pick.</p>';
+    const W_ = 640, H_ = 150, pl = 40, pr = 10, pt = 10, pb = 20, v = cum.map(c => c[1]), lo = Math.min(0, ...v), hi = Math.max(0, ...v);
+    const x = i => pl + (W_ - pl - pr) * i / (cum.length - 1), y = q => pt + (H_ - pt - pb) * (hi - q) / Math.max(hi - lo, 1);
+    return `<svg class="chart" viewBox="0 0 ${W_} ${H_}" role="img" aria-label="${esc(label)}: units over time"><line x1="${pl}" x2="${W_ - pr}" y1="${y(0)}" y2="${y(0)}" stroke="var(--line)"/>
+      <polyline fill="none" stroke="${color}" stroke-width="2" points="${cum.map((c, i) => `${x(i).toFixed(1)},${y(c[1]).toFixed(1)}`).join(" ")}"/>
+      <text x="${pl - 5}" y="${y(hi) + 4}" text-anchor="end">${sgn(hi, 0)}u</text><text x="${pl - 5}" y="${y(lo) + 4}" text-anchor="end">${sgn(lo, 0)}u</text>
+      <text x="${pl}" y="${H_ - 4}">${esc(String(cum[0][0]))}</text><text x="${W_ - pr}" y="${H_ - 4}" text-anchor="end">${esc(String(cum[cum.length - 1][0]))}</text></svg>`;
+  }
+  function renderWind() {
+    const H = REC.wind || {}, F = H.forecast || {}, A = H.forecast_2018_21 || {}, All = H.all_outdoor_forecast_era || {};
+    const W = S.weeks[curKey] || { games: [], wind_unders: [] }, R = W.wind_rule || {};
+    const games = allGames();
+    const live = (REC.live || []).filter(p => p.market === "wind" && p.season === REC.current_season)
+      .sort((a, b) => (b.week - a.week) || (a.matchup || "").localeCompare(b.matchup || ""));
+    const done = live.filter(p => p.result);
+    const sum = l => { const w = l.filter(p => p.result === "W").length, lo = l.filter(p => p.result === "L").length;
+      return { w, l: lo, p: l.length - w - lo, n: l.length, pct: w + lo ? w / (w + lo) : null, units: l.reduce((s, p) => s + (p.units || 0), 0) }; };
+    const S26 = sum(done);
+    const mine = ((S.pnl || {}).slips || []).filter(x => x.source === "wind" && x.result);
+    const myP = mine.reduce((s, x) => s + (x.profit || 0), 0);
+    const kp = (label, x, sub, green) => `<div class="kpi${green ? " kpi-green" : ""}"><div class="kl">${label}</div><div class="kv">${x && x.n ? `${x.w}-${x.l}${x.p ? "-" + x.p : ""}` : "–"}</div><div class="ks">${x && x.n ? `${pct(x.pct, 1)} · ${sgn(x.units, 1)} units` : ""}</div><div class="ks">${sub}</div></div>`;
+    // this week: every outdoor game with its kickoff forecast and where it stands against the rule
+    const rows = (W.wind_unders || []).filter(x => games[x.game_id]).sort((a, b) => (b.wind || 0) - (a.wind || 0));
+    const status = x => {
+      if (x.highlight) { const f = finalFor(x.game_id), r = f ? gradePick(x, f[0], f[1]) : null; return `<span class="chip top">UNDER PICK</span>${r ? " " + resChip(r) : ""}`; }
+      const windy = (x.wind || 0) >= (R.wind_mph || 10) || (x.gust || 0) >= (R.gust_mph || 20);
+      return windy ? '<span class="small">windy, but the price leaves no value</span>' : '<span class="small muted">below the wind line</span>'; };
+    const wk = rows.length ? `<div class="tablewrap"><table><thead><tr><th>Game</th><th>Kickoff</th><th class="num">Wind</th><th class="num">Gusts</th><th>Under</th><th>Status</th></tr></thead><tbody>
+      ${rows.map(x => { const g = games[x.game_id]; return `<tr${x.highlight ? ' class="grow"' : ""}><td>${esc(g.away_team)} @ ${esc(g.home_team)}</td><td class="muted">${esc(kick(g))}</td>
+        <td class="num">${fin(x.wind) ? num(x.wind, 0) + " mph" : "–"}</td><td class="num">${fin(x.gust) ? num(x.gust, 0) + " mph" : "–"}</td><td>${x.bet ? esc(x.bet) + " " + am(x.price) : "–"}</td><td>${status(x)}</td></tr>`; }).join("")}</tbody></table></div>`
+      : '<p class="note">No outdoor-game forecasts yet this week.</p>';
+    const total = gid => { const f = finalFor(gid); return f ? f[0] + f[1] : null; };
+    const seasonRows = live.map(p => `<tr><td>${p.week}</td><td>${esc(p.matchup || "")}</td><td><strong>${esc(p.bet)}</strong> ${am(p.price)}</td>
+      <td class="num">${fin(p.wind) ? num(p.wind, 0) : "–"} / ${fin(p.gust) ? num(p.gust, 0) : "–"}</td><td class="num">${total(p.game_id) != null ? total(p.game_id) : "–"}</td>
+      <td class="num">${p.result ? resChip(p.result) : '<span class="muted">pending</span>'}</td><td class="num">${fin(p.units) ? sgn(p.units, 2) : ""}</td></tr>`).join("");
+    view.innerHTML = `<div class="panel"><h2>Wind unders</h2>
+      <p class="lede">Strong wind cuts scoring (passing and kicking get harder), and closing totals under-react to it. Rule: an outdoor game whose kickoff forecast (kickoff to 3 hours after) shows ${num(R.wind_mph || 10, 0)}+ mph wind or ${num(R.gust_mph || 20, 0)}+ mph gusts is an under pick, if DraftKings' price leaves at least 1 point of value (the same test as green picks). Domes and retractable roofs are left out. The pick is final at the update about 80 minutes before kickoff.</p>
+      <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin:10px 0 0">
+        ${kp(`${esc(String(REC.current_season || ""))} at kickoff`, S26, "as the site showed them, at that DraftKings price", true)}
+        ${kp(`Since ${esc(String(H.forecast_since || 2018))}`, F, "archived kickoff forecasts, closing prices")}
+        ${kp("2018-21 (independent check)", A, "seasons not used to choose the rule")}
+        ${kp("All outdoor unders, same seasons", All, "what betting every under did")}</div>
+      ${mine.length ? `<p class="note">Your wind-under bets: ${mine.filter(x => x.result === "W").length}-${mine.filter(x => x.result === "L").length}, ${myP >= 0 ? "+$" : "−$"}${Math.abs(myP).toFixed(2)}.</p>` : ""}</div>
+      <div class="panel"><h2>This week: outdoor games and their kickoff forecasts</h2>${wk}
+        <p class="note">Forecasts come from Open-Meteo and update with every model run; early in the week they can change a lot.</p></div>
+      <div class="panel"><h2>${esc(String(REC.current_season || ""))} wind unders, graded at kickoff</h2>
+        ${live.length ? `<div class="tablewrap"><table><thead><tr><th>Week</th><th>Game</th><th>Pick</th><th class="num">Wind / gusts (mph)</th><th class="num">Final total</th><th class="num">Result</th><th class="num">Units</th></tr></thead><tbody>${seasonRows}</tbody></table></div>`
+          : '<p class="empty">No wind unders yet this season.</p>'}
+        <p class="note">Each row is the under exactly as the site showed it at the last update before kickoff. Small samples swing a lot (${S26.n ? `${S26.n} graded so far` : "none graded yet"}); the long-run record below is the better guide.</p></div>
+      ${windRecord(cumChart)}`;
+  }
 
   // ---------- browser alert settings (which pick changes notify this device)
   const ASET = "nflmodel-alertset";
@@ -1282,7 +1336,7 @@
   const SCROLL = {};
 
   // ------------------------------------------------------------------ router
-  const ROUTES = { recap: renderRecap, tools: renderTools, how: renderHow, alerts: renderAlerts, games: renderGames, picks: renderPicks, breakdown: renderBreakdown, futures: renderFutures, teams: renderTeams,
+  const ROUTES = { wind: renderWind, recap: renderRecap, tools: renderTools, how: renderHow, alerts: renderAlerts, games: renderGames, picks: renderPicks, breakdown: renderBreakdown, futures: renderFutures, teams: renderTeams,
     players: renderPlayers, record: renderRecord, backtest: renderRecord, bets: renderBets, info: renderInfo, live: renderLive };
   function route() {
     const [name, arg] = (location.hash.replace(/^#/, "") || "games").split("/");
