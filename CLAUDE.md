@@ -29,16 +29,16 @@ DraftKings (the user's only sportsbook) to flag +EV bets. Full context, research
 - User-facing text: plain language, honest about small edges, "information only, not financial advice".
 
 ## Status (Oct 6, 2026)
-Backtest 2015-2026 (3092 games; 2015 uses ridge only, too little history for boosting): spread MAE
-model 9.92 vs close 9.80, fair-line blend 9.79 (model weight 18%); totals 10.57 vs 10.45 (weight 7%). Boosting weight
-spreads 0%, totals 20%. ATS at 4+ pts disagreement 56.5% (n=299), 3+ pts 57.6% (n=621). Widened tuning (tune.py --first 2019 --last 2024) found gains of ~0.005:
+Backtest 2015-2026 (3121 games; 2015 uses ridge only, too little history for boosting): spread MAE
+model 9.89 vs close 9.79, fair-line blend 9.78 (model weight 22%); totals 10.57 vs 10.45 (weight 5%). Boosting weight
+spreads 0%, totals 10%. ATS at 4+ pts disagreement 56.9% (n=269), 3+ pts 55.8% (n=548). Widened tuning (tune.py --first 2019 --last 2024) found gains of ~0.005:
 kept the validated settings in artifacts/tuned_config.json.
 Picks (nflmodel/picks.py, one rule for live and history): model's side of the number; chance = walk-
 forward hit rate by disagreement band (0-2, 2-4, 4+), shrunk to 50%, monotone; green = chance >=
 break-even + 1pt and chance >= 51%; Top pick = any spread with a 4+ pt edge, always shown green (since Oct 2, 2026;
 before, Top also had to pass the green test, which made it jumpy). Track record since 2015 at closing prices (chance rated
-on non-QB-caution games, with the market blend below): Top 169-130-12 (56.5%, +28.1u), green incl. Top 428-352-19
-(54.9%, +57.6u; totals 10-5-1), all spreads 51.3% (-18.7u); weekly card 514-371-16 (58.1%, +97.0u).
+on non-QB-caution games, with the market blend below): Top 153-116-10 (56.9%, +27.1u), green incl. Top 491-384-21
+(56.1%, +81.8u), all spreads 51.8% (+6.6u); weekly card 502-361-14 (58.2%, +95.5u).
 Market ratings (features._add_market_ratings, Oct 6, 2026, Test 41): half-life 2.5 weeks, penalty 0.1 (were 6 / 3.0), and
 the spread rating shifted by 0.75 x (this week's projected QB value - the QB value the earlier lines priced). Production
 spread MAE 9.9649 -> 9.9454 (2015-20 -0.026, 2021-26 -0.013), totals 10.5861 -> 10.5689 (both halves); pick signal
@@ -49,7 +49,11 @@ Injury-adjusted market ratings (Test 50, Oct 6): missing regular starters valued
 the lines priced. Spread MAE 9.9327 -> 9.9210 (-0.012 both halves), green 294-253 +31.4u -> 428-352 +57.6u, Top +38.0u ->
 +28.1u (inside noise); 2021-26 alone (not used for the fit): Top 76-58 -> 81-61, green 105-93 +7.0u -> 212-171 +28.1u,
 signal 0.033 -> 0.042. Rejected: blend weight 0.55 (Top -30u), totals QB adjustment (-0.0035), dropping QB caution.
-Market blend (config.mkt_blend_margin 0.25, model.LineModel._blend, Oct 2, 2026): spread prediction = 75% model + 25% the
+Market blend weight raised to 0.45 (Oct 20, Test 59, chosen on 2015-20; 0.35-0.55 all pass): spread MAE 9.9076 -> 9.8887
+(2015-20 -0.029, 2021-26 -0.009), green 432-353 +60.2u -> 491-384 +81.8u (2021-26 +31.7u -> +49.0u), Top +28.8u -> +27.1u;
+on 4 noise versions green rose 4/4 and Top fell 4/4 (-5..-12u). Rejected Oct 20: Top cutoff 4.5/5, QB_DOWN -3 (2 of 4 noise
+versions), health-neutral market ratings.
+Market blend (config.mkt_blend_margin, model.LineModel._blend, Oct 2, 2026 at 0.25): spread prediction = 75% model + 25% the
 market-implied ratings forecast (d_mkt_rating, earlier weeks' closes). At adoption spread MAE 9.9816 -> 9.9649 (2015-20 -0.022, 2021-26
 -0.010); passed the noise-aware rule. Margin cap +/-28 also passed alone but failed combined (units beyond noise).
 Questionable starting QB (features.QB_Q_START): last week's starter listed Questionable starts 57% (DNP 37 / limited 53 /
