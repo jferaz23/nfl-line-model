@@ -96,6 +96,9 @@ Suggested parlays (app.js parlayIdeas, Picks + Tools tabs): best 2-/3-leg combos
 not started), ranked by model value at standard parlay odds, filter spreads/totals, "Open in calculator".
 Rejected Oct 20 (evening): totals market blend (2021-26 worse), weather-neutral market totals (-0.001), per-team home field
 in the market ratings (MAE -0.007 but green -28.9u).
+Rejected Oct 21: Top cutoff 3.5 (2015-20 +35.4u vs +17.9u and 4/4 noise wins, but 2021-26 +6.1u vs +9.1u; re-check later),
+ratings-memory ensemble 3/5/9 wk (MAE +0.001, green -13.9u). Diagnostic: green picks by type (dog/fav, home/road, key
+numbers, division, primetime, season phase) are positive in both halves; no filter justified.
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).
