@@ -114,6 +114,9 @@ inconsistency (Fodor et al. 2012; corr +0.035/+0.038 both halves, but as a pick 
 Top improved +9.5u, a lead to re-check), juice skew (flips between halves), week 1-2 holdover bias (flips), DK vs sharp
 books (Pinnacle/LowVig/BetOnline/Novig/ProphetX are already in every odds snapshot; 13 differing games 4-7 so far, re-test
 at season end).
+Rejected Oct 21 (late): ESPN QBR as a second QB rating (corr 0.87 with the QB value; green -15.4u), Top by ML-adjusted
+edge (Top +9.5u but green -3.6u, 0/4 noise), salary-weighted missing starters via nflverse contracts (green -38.7u).
+College football: separate project at Desktop/cfb-line-model (own repo/site; brief in its CLAUDE.md).
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).
