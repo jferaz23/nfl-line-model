@@ -1,5 +1,5 @@
 {
- "built": "2026-10-21T15:50:14+00:00",
+ "built": "2026-10-21T20:48:26+00:00",
  "scores": {
   "ok": true,
   "games": 3121,
@@ -403,9 +403,15 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 168,
-  "matched_share": 0.996,
+  "not_active": 202,
+  "matched_share": 0.994,
   "unmatched": [
+   {
+    "team": "ATL",
+    "full_name": "Charles Snowden",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
    {
     "team": "CLE",
     "full_name": "Audric Estime",
@@ -425,19 +431,19 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 3,
+  "n_unmatched": 4,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-21T15:50:29+00:00"
+  "checked": "2026-10-21T20:48:40+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261021T155005Z.json",
+  "snapshot": "odds_20261021T204817Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
-   "fanduel": 28,
+   "fanduel": 27,
    "lowvig": 28,
    "betonlineag": 28,
    "betrivers": 28,

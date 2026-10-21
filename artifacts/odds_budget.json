@@ -1,13 +1,13 @@
 {
- "remaining": 212,
+ "remaining": 209,
  "first_seen": "2026-09-29T17:24:00-04:00",
- "remaining_at": "2026-10-21T11:50:05-04:00",
- "last_api_run": "2026-10-21T15:48:43+00:00",
- "last_model_run": "2026-10-21T18:59:45+00:00",
+ "remaining_at": "2026-10-21T16:48:17-04:00",
+ "last_api_run": "2026-10-21T20:47:03+00:00",
+ "last_model_run": "2026-10-21T20:47:03+00:00",
  "last_decision": {
-  "at": "2026-10-21T18:59:45+00:00",
-  "mode": "espn",
-  "reason": "model refresh (every 3 h, free)"
+  "at": "2026-10-21T20:47:03+00:00",
+  "mode": "api",
+  "reason": "mandatory: Wednesday injury report"
  },
  "done": [
   "injury-2026-09-30",
@@ -28,7 +28,8 @@
   "injury-2026-10-16",
   "pregame-20261018T1330",
   "pregame-20261018T2025",
-  "pregame-20261020T0015"
+  "pregame-20261020T0015",
+  "injury-2026-10-21"
  ],
  "reset_at": "2026-09-30T23:01:12-04:00"
 }
