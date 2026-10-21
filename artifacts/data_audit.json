@@ -1,5 +1,5 @@
 {
- "built": "2026-10-21T06:02:56+00:00",
+ "built": "2026-10-21T10:48:05+00:00",
  "scores": {
   "ok": true,
   "games": 3121,
@@ -404,14 +404,8 @@
   "ok": true,
   "listings": 700,
   "not_active": 168,
-  "matched_share": 0.994,
+  "matched_share": 0.996,
   "unmatched": [
-   {
-    "team": "CIN",
-    "full_name": "Josh Kattus",
-    "position": "TE",
-    "report_status": "ACTIVE"
-   },
    {
     "team": "CLE",
     "full_name": "Audric Estime",
@@ -431,15 +425,15 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 4,
+  "n_unmatched": 3,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-21T06:03:10+00:00"
+  "checked": "2026-10-21T10:48:23+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261021T060250Z.json",
+  "snapshot": "odds_20261021T104757Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
