@@ -109,6 +109,11 @@ Rejected Oct 21 (after the agreement filter): key-number cover-probability bands
 curve fit without split games (1/4 noise), third-opinion filters (Elo/points/EPA disagreeing greens profitable both halves),
 market QB adj 0.5/1.0 and injury x0.75/1.25 inside the full model, teaser/wind filters by model agreement (inconsistent
 halves). Calibration: green spreads' shown chance runs 2-4 pts below their actual win rate (53.3% vs 55.6%, 54.6% vs 58.6%).
+External-factor research Oct 21 (literature: market broadly efficient; small time-varying biases): ML-vs-spread
+inconsistency (Fodor et al. 2012; corr +0.035/+0.038 both halves, but as a pick adjustment green -27.6u, 0/4 noise -> no;
+Top improved +9.5u, a lead to re-check), juice skew (flips between halves), week 1-2 holdover bias (flips), DK vs sharp
+books (Pinnacle/LowVig/BetOnline/Novig/ProphetX are already in every odds snapshot; 13 differing games 4-7 so far, re-test
+at season end).
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).
