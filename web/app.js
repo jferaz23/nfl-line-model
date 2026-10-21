@@ -714,6 +714,48 @@
 
   // ------------------------------------------------------------------ Teams
   let teamOpen = null;
+  // ------------------------------------------------------------------ every team against the spread (closing line)
+  let atsSort = "pct";
+  function atsTable() {
+    const games = ((S.schedule || {}).games || []).filter(g => g.game_type === "REG" || g.game_type == null);
+    const T = {};
+    const blank = () => ({ w: 0, l: 0, p: 0 });
+    const add = (r, x) => { x === "W" ? r.w++ : x === "L" ? r.l++ : r.p++; };
+    games.forEach(g => {
+      let hs = g.home_score, as = g.away_score;
+      const lv = liveFor(g);
+      if ((hs == null || as == null) && lv && lv.completed) { hs = lv.home_score; as = lv.away_score; }
+      if (hs == null || as == null || !fin(g.spread_line)) return;
+      [[g.home_team, true], [g.away_team, false]].forEach(([tm, home]) => {
+        const t = T[tm] = T[tm] || { team: tm, su: blank(), ats: blank(), fav: blank(), dog: blank(), home: blank(), road: blank(), ou: blank(), marg: 0, n: 0, last: [] };
+        const my = home ? hs : as, their = home ? as : hs, h = home ? -g.spread_line : g.spread_line;   // the team's handicap
+        const m = my - their + h, res = m > 0 ? "W" : m < 0 ? "L" : "P";
+        add(t.su, my > their ? "W" : my < their ? "L" : "P");
+        add(t.ats, res); add(h < 0 ? t.fav : h > 0 ? t.dog : t.fav, res); add(home ? t.home : t.road, res);
+        if (fin(g.total_line)) { const o = hs + as - g.total_line; add(t.ou, o > 0 ? "W" : o < 0 ? "L" : "P"); }
+        t.marg += m; t.n++; t.last.push({ wk: g.week, res });
+      });
+    });
+    const rows = Object.values(T).map(t => Object.assign(t, { pct: t.ats.w + t.ats.l ? t.ats.w / (t.ats.w + t.ats.l) : 0, avg: t.n ? t.marg / t.n : 0 }));
+    const key = { pct: (a, b) => b.pct - a.pct || b.avg - a.avg, avg: (a, b) => b.avg - a.avg, team: (a, b) => a.team.localeCompare(b.team),
+      over: (a, b) => (b.ou.w / Math.max(b.ou.w + b.ou.l, 1)) - (a.ou.w / Math.max(a.ou.w + a.ou.l, 1)) }[atsSort];
+    rows.sort(key);
+    const r = x => `${x.w}-${x.l}${x.p ? "-" + x.p : ""}`;
+    const cell = x => x.w + x.l + x.p ? r(x) : '<span class="dash">–</span>';
+    const sortBtn = (k, l) => `<button type="button" data-ats="${k}" aria-pressed="${atsSort === k}">${l}</button>`;
+    const body = rows.map(t => `<tr class="teamrow" data-team="${esc(t.team)}"><td>${team(t.team)}</td><td class="num">${r(t.su)}</td>
+      <td class="num gcol"><strong>${r(t.ats)}</strong> <span class="small muted">${pct(t.pct, 0)}</span></td><td class="num ${t.avg > 0 ? "w" : t.avg < 0 ? "l" : ""}">${sgn(t.avg, 1)}</td>
+      <td class="num">${cell(t.fav)}</td><td class="num">${cell(t.dog)}</td><td class="num">${cell(t.home)}</td><td class="num">${cell(t.road)}</td>
+      <td class="num">${cell(t.ou)}</td><td class="small">${t.last.slice(-5).map(x => `<span class="chip ${x.res}" title="Week ${x.wk}">${x.res}</span>`).join(" ")}</td></tr>`).join("");
+    return `<div class="panel"><div class="toolbar" style="justify-content:space-between;margin:0"><div><h2>${esc(String(REC.current_season || ""))} against the spread</h2>
+      <p class="lede" style="margin:0">Every team's record covering the closing spread this season, by role, plus over/under. Cover margin = points per game better (+) or worse than the spread.</p></div>
+      <div class="seg" role="group" aria-label="Sort">${sortBtn("pct", "Cover %")}${sortBtn("avg", "Cover margin")}${sortBtn("over", "Over %")}${sortBtn("team", "Team")}</div></div>
+      ${rows.length ? `<div class="tablewrap"><table><thead><tr><th>Team</th><th class="num">Record</th><th class="num gcol">ATS</th><th class="num">Cover margin</th><th class="num">As favorite</th>
+        <th class="num">As underdog</th><th class="num">Home</th><th class="num">Road</th><th class="num">Over-under</th><th>Last 5 ATS</th></tr></thead><tbody>${body}</tbody></table></div>`
+        : '<p class="empty">No graded games yet.</p>'}
+      <p class="note">Graded at the consensus closing spread and total (nflverse), regular season. Over-under shows overs-unders-pushes. Past covering records do not predict future covers well on their own; the model's picks already account for team strength. Click a team for its schedule.</p></div>`;
+  }
+
   function renderTeams(sel) {
     const W = S.weeks[curKey], sim = S.season_sim;
     if (sel) teamOpen = sel;
@@ -750,10 +792,11 @@
         ${st ? `<p class="gd-sub">Projected ${num(st.wins_mean)} wins · playoffs ${pct(st.p_playoffs)} · division ${pct(st.p_div)} · Super Bowl ${pct(st.p_sb, 1)}</p>` : ""}
         <div class="tablewrap"><table><thead><tr><th>Week</th><th>Opponent</th><th class="num">Result</th><th class="num">Line</th><th>ATS</th></tr></thead><tbody>${grow}</tbody></table></div></div>`;
     }
-    view.innerHTML = detail + `<div class="panel"><h2>Power ratings</h2><p class="lede">Points per game better than an average team on a neutral field. Click a team for its schedule and results.</p>
+    view.innerHTML = detail + atsTable() + `<div class="panel"><h2>Power ratings</h2><p class="lede">Points per game better than an average team on a neutral field. Click a team for its schedule and results.</p>
       <div class="tablewrap"><table><thead><tr><th class="num">#</th><th>Team</th><th class="num">Rating</th><th class="num">Market</th><th class="num">Model</th><th class="num">Offense</th><th class="num">Defense</th><th>Projected QB</th><th class="num">Returning snaps</th><th>This week</th></tr></thead><tbody>${rows}</tbody></table></div>
       <p class="note">Rating = market rating blended with the model's by the backtest weight (used for the season simulation). Market = rating implied by closing spreads. Model, Offense, Defense = the model's opponent-adjusted points ratings (defense positive = allows fewer). Returning snaps = share of last season's snaps by players still on the roster.</p></div>`;
     view.querySelectorAll("[data-team]").forEach(r => r.onclick = () => { location.hash = "teams/" + r.dataset.team; });
+    view.querySelectorAll("[data-ats]").forEach(b => b.onclick = () => { atsSort = b.dataset.ats; renderTeams(); });
     const c = view.querySelector("[data-tclose]"); if (c) c.onclick = () => { teamOpen = null; location.hash = "teams"; };
     if (sel) { const el = document.getElementById("teamdetail"); if (el) el.scrollIntoView({ block: "start" }); }
   }

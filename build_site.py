@@ -838,8 +838,8 @@ def main() -> int:
         early=early_value(cur, sched, lines, finals), timing=bet_timing(finals), pnl=my_pnl(sched, lines),
     )
     if PUBLIC.exists():
-        shutil.rmtree(PUBLIC)
-    shutil.copytree(WEB, PUBLIC)
+        shutil.rmtree(PUBLIC, ignore_errors=True)   # OneDrive can briefly lock folders on Windows; copy over what is left
+    shutil.copytree(WEB, PUBLIC, dirs_exist_ok=True)
     (PUBLIC / "data").mkdir(exist_ok=True)
     (PUBLIC / "data" / "site.js").write_text("window.SITE=" + json.dumps(_clean(site), separators=(",", ":")) + ";",
                                              encoding="utf-8")
