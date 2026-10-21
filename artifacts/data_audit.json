@@ -1,5 +1,5 @@
 {
- "built": "2026-10-21T10:48:05+00:00",
+ "built": "2026-10-21T15:50:14+00:00",
  "scores": {
   "ok": true,
   "games": 3121,
@@ -429,11 +429,11 @@
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-21T10:48:23+00:00"
+  "checked": "2026-10-21T15:50:29+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261021T104757Z.json",
+  "snapshot": "odds_20261021T155005Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
