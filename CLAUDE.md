@@ -18,12 +18,14 @@ DraftKings (the user's only sportsbook) to flag +EV bets. Full context, research
 - Features must be as-of kickoff (no information from the game itself or later games).
 - New factors: shrink toward zero, put them in a feature group, and let `backtest.py` pruning judge
   them. Never prune the protected groups (team_strength, home_field, quarterback, injuries, weather).
-- Pass rule for model changes (user-approved Oct 2, 2026), vs a fresh baseline on the same data: pruning keeps
-  the group; spread MAE improves by more than the noise floor (0.006 pts) and in both halves (2015-20, 2021-26);
-  Top/green units no worse than the noise range (not "not lower"). Noise floor = 20 runs adding a pure random
-  factor: spread MAE change mean +0.002, sd 0.003, range -0.005..+0.006 (2 of 20 improved both halves by chance);
-  Top units fell in 19/20 runs (mean -8.6u, min -36u), green in 16/20 (mean -11.4u). Pick-rule changes are judged
-  on the pick record itself, with the same perturbation check.
+- Pass rule (set Oct 21, 2026; the user asked Claude to choose the best rule and decide). Objective = the bets the site
+  recommends: green picks (incl. Top) and the weekly card. A model or pick-rule change goes live only if, vs the current
+  live model on the same data: (1) green units AND green win rate are higher overall, and green units are higher in
+  2021-26 (settings are always chosen on 2015-20 only); (2) no quality measure gets worse: Top win rate, Top return per
+  bet, weekly-card win rate and spread MAE are not worse (total Top units may fall only when Top picks get fewer but
+  better; those picks still count as green); (3) not luck: the gain shows up in >= 3 of 4 pure-noise model versions;
+  (4) the official production backtest (optimize.py --skip-tune) confirms it. State the rules in the research log before
+  each test. Noise reference: a random factor moves spread MAE by -0.005..+0.006 and Top units by up to 36u.
 - pandas 2.x/3.x compatible: `.loc` assignments, no chained assignment, avoid `groupby.apply`.
 - Run the demo commands after changes; they exercise the whole pipeline on the synthetic league.
 - User-facing text: plain language, honest about small edges, "information only, not financial advice".
