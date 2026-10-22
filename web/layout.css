@@ -1,0 +1,38 @@
+/* Site layout "Spotlight" (live since Oct 22, 2026): pick-of-the-week hero with a chance ring, floating glass dock for navigation */
+html:not([data-route="games"]):not([data-route="picks"]) .spotlight { display: none; }
+.spotlight { display: grid; grid-template-columns: 1.6fr auto 1fr; gap: 22px; align-items: center; margin: 18px 0 6px; padding: 22px 24px;
+  border-radius: 24px; border: 1px solid var(--line); background: linear-gradient(135deg, rgba(79, 240, 176, .16), rgba(143, 120, 255, .14));
+  backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%); box-shadow: 0 14px 40px rgba(0, 0, 0, .28); }
+.sp-kicker { font: 600 12px/1 "Outfit", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.sp-teams { display: flex; align-items: center; gap: 10px; margin: 10px 0 4px; color: var(--muted); font-weight: 600; }
+.sp-teams img { width: 34px; height: 34px; object-fit: contain; }
+.sp-bet { font: 700 44px/1.05 "Outfit", sans-serif; letter-spacing: -.02em; }
+.sp-bet span { font-size: 24px; color: var(--muted); font-weight: 600; }
+.sp-meta { margin-top: 8px; color: var(--muted); font-size: 14px; }
+.sp-cta { display: inline-block; margin-top: 14px; padding: 8px 14px; border-radius: 999px; background: var(--accent); color: #06261b; font-weight: 700; text-decoration: none; }
+.sp-ring { position: relative; width: 150px; height: 150px; }
+.sp-ring svg { width: 100%; height: 100%; }
+.sp-ring circle { fill: none; stroke-width: 10; }
+.sp-ring .trk { stroke: rgba(255, 255, 255, .12); }
+.sp-ring .val { stroke: var(--accent); stroke-linecap: round; filter: drop-shadow(0 0 6px rgba(79, 240, 176, .6)); }
+.sp-pct { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font: 700 30px/1 "Outfit", sans-serif; }
+.sp-pct small { font-size: 12px; font-weight: 500; color: var(--muted); margin-top: 4px; letter-spacing: .08em; text-transform: uppercase; }
+.sp-stats { display: grid; gap: 10px; }
+.sp-stats div { padding: 10px 14px; border-radius: 14px; background: rgba(255, 255, 255, .07); border: 1px solid var(--line); }
+.sp-stats b { display: block; font: 700 22px/1.1 "Outfit", sans-serif; }
+.sp-stats span { font-size: 12px; color: var(--muted); }
+@media (min-width: 641px) {
+  nav.tabs { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 40; margin: 0; padding: 8px 10px; border-radius: 999px;
+    background: rgba(12, 28, 45, .72); border: 1px solid var(--line); backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%);
+    box-shadow: 0 12px 34px rgba(0, 0, 0, .4); max-width: calc(100vw - 32px); }
+  .tgroup .gl { display: none; }
+  .tgroup { padding-right: 8px; margin-right: 8px; }
+  body { padding-bottom: 90px; }
+  header.top { padding-bottom: 12px; position: relative; backdrop-filter: none; -webkit-backdrop-filter: none; background: transparent; }  /* a blurred header would trap the fixed dock */
+}
+@media (max-width: 900px) { .spotlight { grid-template-columns: 1fr auto; } .sp-stats { grid-column: 1 / -1; grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px) {
+  .spotlight { grid-template-columns: 1fr; padding: 18px; text-align: left; }
+  .sp-bet { font-size: 34px; } .sp-ring { width: 120px; height: 120px; margin: 0 auto; }
+  .sp-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; } .sp-stats div { padding: 9px 10px; } .sp-stats b { font-size: 16px; white-space: nowrap; }
+}

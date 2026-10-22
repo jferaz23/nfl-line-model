@@ -1,0 +1,55 @@
+/* Site theme "Glass Field" (live since Oct 22, 2026; was a preview): gradient background, frosted-glass cards, mint accents */
+:root, :root[data-theme] {
+  --bg: #0b1d2a; --card: rgba(255, 255, 255, .07); --card2: rgba(255, 255, 255, .05); --ink: #f2f7fb; --muted: #a9bccb; --faint: #7f95a6;
+  --line: rgba(255, 255, 255, .13); --line2: rgba(255, 255, 255, .08); --accent: #4ff0b0; --accent-soft: rgba(79, 240, 176, .16); --accent-ink: #8df7cd;
+  --model: #8fb8ff; --model-soft: rgba(143, 184, 255, .18); --vegas: #ffb38a; --vegas-soft: rgba(255, 179, 138, .18); --hist: #a9bccb;
+  --win: #4ff0b0; --loss: #ff7b8a; --push: #a9bccb; --warn: #ffd27a; --warn-soft: rgba(255, 210, 122, .16);
+  --green-bg: rgba(79, 240, 176, .13); --green-line: rgba(79, 240, 176, .55); --green-ink: #a6f9d8;
+  --top-bg: rgba(255, 210, 122, .16); --top-line: #ffd27a;
+  --shadow: 0 8px 32px rgba(0, 0, 0, .25); --radius: 18px; color-scheme: dark;
+}
+body {
+  font-family: "Outfit", "Inter", system-ui, sans-serif;
+  background: linear-gradient(135deg, #0a2a33 0%, #10203f 45%, #251a46 100%) fixed;
+}
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(600px 400px at 15% 20%, rgba(79, 240, 176, .18), transparent 70%),
+              radial-gradient(700px 500px at 85% 70%, rgba(143, 120, 255, .20), transparent 70%); }
+h1, .panel h2, .kpi .kv, .bp .pick, .gcard .score, .gc-pts { font-family: "Outfit", sans-serif; }
+h1 { font-weight: 700; font-size: 30px; background: linear-gradient(90deg, #fff, var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.theme-btn { display: none; }
+header.top { background: rgba(10, 25, 40, .55); backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%); }
+header.top::after { background: var(--line); }
+.tgroup { border-right-color: var(--line); }
+.tgroup a { padding: 5px 11px 7px; border-radius: 12px; border-bottom: 0; }
+.tgroup .items { gap: 4px; }
+.tgroup a[aria-current="page"] { background: rgba(255, 255, 255, .14); color: #fff; box-shadow: inset 0 0 0 1px var(--line); }
+.panel, .gcard, .kpi, .gdetail, .bp, .sheet-card {
+  backdrop-filter: blur(16px) saturate(130%); -webkit-backdrop-filter: blur(16px) saturate(130%);
+  border: 1px solid var(--line); box-shadow: var(--shadow);
+}
+.kpi { border-left: 1px solid var(--line); }
+.kpi .kv { font-weight: 700; font-size: 24px; white-space: nowrap; }
+.kpi-green { background: var(--green-bg); border-color: var(--green-line); }
+.panel h2 { font-weight: 700; font-size: 21px; }
+.sheet-card { background: rgba(20, 35, 55, .92); }
+.gcard:hover { background: rgba(255, 255, 255, .10); transform: translateY(-2px); }
+.gcard.has-green { border-color: var(--green-line); }
+.bp.green { background: var(--green-bg); border-color: var(--green-line); }
+.bp.topcard { background: linear-gradient(135deg, rgba(255, 210, 122, .22), rgba(79, 240, 176, .10)); border-color: var(--top-line); }
+.bp .pick { font-size: 22px; font-weight: 700; }
+.chip { border-radius: 999px; padding: 0 8px; color: #06261b; }
+.chip.top { background: var(--top-line); color: #2a1d00; }
+.chip.L { color: #fff; }
+.pk { border-radius: 999px !important; }
+.conf { background: rgba(255, 255, 255, .12); }
+.conf i { background: linear-gradient(90deg, #2bd398, var(--accent)); }
+.btn, .seg, select, .fld input, .fld select, .chips button { background: rgba(255, 255, 255, .08); border-color: var(--line); color: var(--ink); border-radius: 12px; }
+.btn.primary, .seg button[aria-pressed="true"], .subtabs button[aria-pressed="true"], .chips button[aria-pressed="true"] { background: var(--accent); color: #06261b; }
+th { color: var(--muted); }
+tbody tr:hover td { background: rgba(255, 255, 255, .05); }
+tr.grow td { background: rgba(79, 240, 176, .08); }
+.bottombar { background: rgba(12, 28, 45, .7) !important; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.bottombar a[aria-current="page"] { color: var(--accent) !important; }
+
+@media (max-width: 640px) { .kpi .kv { font-size: 16px; } .bp .pick { font-size: 19px; } h1 { font-size: 22px; } .panel { padding: 14px; } }

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-layout="spotlight">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -7,7 +7,7 @@
 <meta name="description" content="Weekly NFL spreads, totals and moneylines priced by a model and compared with DraftKings.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='32' cy='32' rx='27' ry='17' fill='%232d7a4c' transform='rotate(-35 32 32)'/%3E%3Cpath d='M22 42 42 22M27 33l4 4M31 29l4 4M35 25l4 4' stroke='%23fff' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#131517">
+<meta name="theme-color" content="#0b1d2a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -15,8 +15,10 @@
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="layout.css">
 </head>
 <body>
 <div class="wrap">
@@ -42,8 +44,9 @@
   <a href="#games"><span class="bi">🏈</span>Games</a><a href="#picks"><span class="bi">✓</span>Picks</a><a href="#live"><span class="bi">●</span>Live</a><a href="#bets"><span class="bi">$</span>My bets</a><button type="button" id="more-btn"><span class="bi">☰</span>More</button>
 </nav>
 <div id="sheet" class="sheet" hidden></div>
-<script>try{var t=localStorage.getItem("nflmodel-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+
 <script src="data/site.js"></script>
 <script src="app.js"></script>
+<script src="layout-kit.js"></script>
 </body>
 </html>
