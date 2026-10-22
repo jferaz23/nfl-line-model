@@ -977,7 +977,7 @@
     const known = new Set(ALERTS.map(a => a.id)), told = new Set();
     setInterval(async () => {
       try {
-        const txt = await (await fetch("data/site.js?t=" + Date.now(), { cache: "no-store" })).text();
+        const txt = await (await fetch((window.SITE_DATA_URL || "data/site.js") + "?t=" + Date.now(), { cache: "no-store" })).text();
         const N = JSON.parse(txt.slice(txt.indexOf("=") + 1).replace(/;\s*$/, ""));
         if (!N.built || N.built === S.built) return;
         const fresh = (N.alerts || []).filter(a => a.level === "high" && !known.has(a.id) && !told.has(a.id));
@@ -1302,7 +1302,7 @@
     const more = document.getElementById("more-btn");
     if (more) more.onclick = () => sheet(`<h3 style="margin-top:0">More</h3><div class="more-grid">${[["games", "Games"], ["live", "Gamecast"], ["picks", "Picks"], ["breakdown", "Breakdown"], ["wind", "Wind unders"], ["alerts", "Alerts"], ["recap", "Weekly recap"], ["tools", "Parlay calculator and bet sizing"], ["futures", "Futures"], ["teams", "Teams"], ["players", "Players"], ["record", "Record"], ["bets", "Bets and P&L"], ["how", "How it works"], ["info", "Info"]].map(([k, l]) => `<a class="btn" href="#${k}" data-close-sheet>${l}</a>`).join("")}</div>`);
   }
-  if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+  if (!window.SITE_PREVIEW && "serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
 
   // ---------- wind unders: one place for the rule, this week, this season at kickoff, and the history
   function cumChart(cum, color, label) {

@@ -1,0 +1,51 @@
+/* Preview theme "Sunday Paper": light editorial, serif headlines, white cards on warm paper */
+:root, :root[data-theme] {
+  --bg: #f6f2ea; --card: #ffffff; --card2: #fbf8f2; --ink: #16181b; --muted: #5d6268; --faint: #8b9096;
+  --line: #e7e0d2; --line2: #efe9de; --accent: #0f6b45; --accent-soft: #e4f1ea; --accent-ink: #0b5536;
+  --model: #1f5fbf; --model-soft: #e3ecfa; --vegas: #b8481a; --vegas-soft: #f7e6dc; --hist: #6b6f73;
+  --win: #0f6b45; --loss: #b3261e; --push: #8a8f94; --warn: #9a5b00; --warn-soft: #f8ecd6;
+  --green-bg: #eaf5ee; --green-line: #9fceb2; --green-ink: #0b5536;
+  --top-bg: #fdf3e1; --top-line: #b3261e;
+  --shadow: 0 1px 2px rgba(30, 25, 15, .06), 0 8px 24px rgba(30, 25, 15, .06); --radius: 12px; color-scheme: light;
+}
+body { font-family: "Inter", system-ui, sans-serif; font-size: 15.5px; }
+h1, .panel h2, .bp .pick, .gd-head, .gc-pts { font-family: "Fraunces", Georgia, serif; }
+h1 { font-weight: 700; font-size: 32px; letter-spacing: -.02em; }
+h1::after { content: "Weekly picks · DraftKings lines · honest records"; display: block; font: 500 12px/1.6 "Inter", sans-serif; color: var(--muted);
+  letter-spacing: .02em; margin-top: 2px; }
+.theme-btn { display: none; }
+header.top { background: rgba(246, 242, 234, .92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 3px double var(--line); }
+header.top::after { display: none; }
+.tgroup .gl { color: var(--accent); }
+.tgroup a { font-weight: 500; color: var(--muted); }
+.tgroup a[aria-current="page"] { color: var(--ink); border-bottom: 2px solid var(--ink); }
+.kpi { border: 0; border-top: 3px solid var(--ink); border-radius: 0; background: transparent; box-shadow: none; padding: 10px 4px; }
+.kpi .kl { color: var(--muted); }
+.kpi .kv { font-family: "Fraunces", Georgia, serif; font-weight: 700; font-size: 22px; white-space: nowrap; letter-spacing: -.02em; }
+.kpi-green { border-top-color: var(--accent); background: transparent; }
+.panel { border: 0; padding: 20px 22px; }
+.panel h2 { font-size: 24px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 6px; }
+.panel h3 { color: var(--accent); }
+.panel p.lede { font-size: 14.5px; line-height: 1.55; }
+.gcard { border: 0; box-shadow: var(--shadow); padding: 14px 14px 12px 18px; }
+.gcard:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(30, 25, 15, .06), 0 14px 32px rgba(30, 25, 15, .10); }
+.gcard.has-green { box-shadow: 0 0 0 2px var(--green-line), var(--shadow); }
+.gcard .score { font-family: "Fraunces", Georgia, serif; font-size: 20px; }
+.bp { background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow); }
+.bp.green { background: #fff; border: 1px solid var(--green-line); border-left: 5px solid var(--accent); }
+.bp.topcard { background: var(--top-bg); border: 1px solid #ecd3a6; border-left: 5px solid var(--top-line); box-shadow: var(--shadow); }
+.bp .pick { font-size: 22px; font-weight: 700; }
+.bp .rank { color: var(--top-line); font-family: "Inter", sans-serif; }
+.chip { border-radius: 3px; }
+.chip.top { background: var(--top-line); color: #fff; }
+.conf { background: #ece6da; }
+th { color: var(--muted); border-bottom: 2px solid var(--ink); }
+td { border-bottom-color: var(--line2); }
+tr.grow td { background: #f1f8f3; }
+.seg button[aria-pressed="true"], .subtabs button[aria-pressed="true"], .chips button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.btn.primary { background: var(--ink); color: #fff; }
+.bottombar { background: rgba(255, 255, 255, .95) !important; }
+footer.site { font-family: "Fraunces", Georgia, serif; font-style: italic; }
+.preview-tag { background: var(--ink); color: #fff; }
+
+@media (max-width: 640px) { .kpi .kv { font-size: 16px; } .bp .pick { font-size: 19px; } h1 { font-size: 22px; } .panel { padding: 14px; } }

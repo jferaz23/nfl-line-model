@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Site design options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+<style>
+:root { --bg:#f4f5f7; --card:#fff; --ink:#111317; --muted:#5f6672; --line:#e3e6ec; color-scheme: light; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0f1113; --card:#181b1f; --ink:#eef0f2; --muted:#a2a7ad; --line:#2a2e33; color-scheme: dark; } }
+body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 Inter, system-ui, sans-serif; }
+.wrap { max-width:980px; margin:0 auto; padding:28px 16px 40px; }
+h1 { margin:0 0 4px; font-size:28px; font-weight:800; letter-spacing:-.02em; }
+p { color:var(--muted); margin:0 0 18px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; }
+.opt { display:flex; flex-direction:column; gap:8px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; text-decoration:none; color:inherit; }
+.opt:hover { transform:translateY(-2px); box-shadow:0 10px 26px rgba(0,0,0,.12); }
+.opt span:not(.sw) { color:var(--muted); font-size:13.5px; }
+.opt em { font-style:normal; font-weight:600; font-size:13px; margin-top:auto; }
+.sw { display:block; height:84px; border-radius:12px; }
+.sw-night { background: radial-gradient(120px 60px at 20% 20%, rgba(33,224,124,.45), transparent), linear-gradient(160deg,#131c2a,#070b12); box-shadow: inset 0 0 0 1px #1d2939; }
+.sw-paper { background: linear-gradient(#f6f2ea,#f6f2ea); box-shadow: inset 0 0 0 1px #e7e0d2, inset 0 -18px 0 #fff, inset 6px 0 0 #0f6b45; }
+.sw-glass { background: linear-gradient(135deg,#0a2a33,#10203f 45%,#251a46); box-shadow: inset 0 0 0 10px rgba(255,255,255,.08), inset 0 0 0 11px rgba(79,240,176,.5); }
+.sw-pro { background: #f2f3f7; box-shadow: inset 0 0 0 10px #fff, inset 0 0 0 11px #e3e6ec, inset 24px 0 0 10px #12b76a; }
+.cur { display:inline-block; margin-top:18px; font-weight:600; color:inherit; }
+</style></head><body><div class="wrap">
+<h1>Site design options</h1>
+<p>Same live picks and data in four different looks. Open each one (it works on your phone too), then tell me which you like most. The current site stays as it is until you choose.</p>
+<div class="grid"><a class="opt" href="night/"><span class="sw sw-night"></span><strong>1. Night Game</strong><span>Sportsbook-style dark: deep navy, neon-green picks, gold Top picks, bold condensed headlines.</span><em>Open preview →</em></a><a class="opt" href="paper/"><span class="sw sw-paper"></span><strong>2. Sunday Paper</strong><span>Light editorial: warm paper, serif headlines, roomy white cards, green and crimson accents.</span><em>Open preview →</em></a><a class="opt" href="glass/"><span class="sw sw-glass"></span><strong>3. Glass Field</strong><span>Modern gradient: teal-to-indigo background, frosted glass cards, mint accents, rounded shapes.</span><em>Open preview →</em></a><a class="opt" href="pro/"><span class="sw sw-pro"></span><strong>4. Clean Pro</strong><span>Crisp app look: light gray, white rounded cards, pill buttons, bright green and blue.</span><em>Open preview →</em></a></div>
+<a class="cur" href="../">← Back to the current site</a>
+</div></body></html>
