@@ -1,5 +1,5 @@
 {
- "built": "2026-10-22T01:35:03+00:00",
+ "built": "2026-10-22T07:00:28+00:00",
  "scores": {
   "ok": true,
   "games": 3121,
@@ -403,25 +403,13 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 243,
-  "matched_share": 0.994,
+  "not_active": 245,
+  "matched_share": 0.997,
   "unmatched": [
-   {
-    "team": "ATL",
-    "full_name": "Charles Snowden",
-    "position": "LB",
-    "report_status": "ACTIVE"
-   },
    {
     "team": "CLE",
     "full_name": "Audric Estime",
     "position": "RB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "LA",
-    "full_name": "Brandon McManus",
-    "position": "PK",
     "report_status": "ACTIVE"
    },
    {
@@ -431,15 +419,15 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 4,
+  "n_unmatched": 2,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-22T01:35:17+00:00"
+  "checked": "2026-10-22T07:00:40+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261022T013456Z.json",
+  "snapshot": "odds_20261022T070020Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
