@@ -117,6 +117,14 @@ at season end).
 Rejected Oct 21 (late): ESPN QBR as a second QB rating (corr 0.87 with the QB value; green -15.4u), Top by ML-adjusted
 edge (Top +9.5u but green -3.6u, 0/4 noise), salary-weighted missing starters via nflverse contracts (green -38.7u).
 College football: separate project at Desktop/cfb-line-model (own repo/site; brief in its CLAUDE.md).
+Site design (Oct 22, 2026, user's pick): Spotlight layout on the Glass Field palette (web/theme.css, web/layout.css,
+web/layout-kit.js builds the pick-of-the-week card from SITE; only games not yet started). Other designs: web/preview/.
+Player props research (Oct 22): ESPN core API has DraftKings prop LINES free (provider 100; 2024-25 ESPN BET = provider 58,
+main line = most common opening line per player/market), no prices. Projection model (nflverse weekly stats, walk-forward
+GBM) vs lines 2024-26: line MAE beats the projection in nearly every market; green props failed the pre-stated rule (2025
+52.2% -61u at -115; yardage markets z>=0.5 2025 51.5%, 2026 49.3%); apparent edges sit in pass TDs/receptions where unseen
+juice is skewed. Not recommended; info-only tracker at most. Research scripts: scratchpad night/props_*.py (cache in
+nfl_data_cache/props).
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).
