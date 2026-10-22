@@ -123,7 +123,9 @@ Player props research (Oct 22): ESPN core API has DraftKings prop LINES free (pr
 main line = most common opening line per player/market), no prices. Projection model (nflverse weekly stats, walk-forward
 GBM) vs lines 2024-26: line MAE beats the projection in nearly every market; green props failed the pre-stated rule (2025
 52.2% -61u at -115; yardage markets z>=0.5 2025 51.5%, 2026 49.3%); apparent edges sit in pass TDs/receptions where unseen
-juice is skewed. Not recommended; info-only tracker at most. Research scripts: scratchpad night/props_*.py (cache in
+juice is skewed. Not recommended; info-only tracker at most. Props v2 (role-change features: vacated targets/carries from snap counts,
+share of remaining volume, short-term form) also failed: green 2025 53.3% -4u, 2026 53.0% -6u, noise 1-2/4; yardage z>=0.5
+48.8%/48.6%. Leads only: big-edge unders (66%/56%/52% 2024-26) and pass TDs/receptions (need real prices to judge). Research scripts: scratchpad night/props_*.py (cache in
 nfl_data_cache/props).
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
