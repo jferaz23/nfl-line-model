@@ -1,5 +1,5 @@
 {
- "built": "2026-10-22T17:15:08+00:00",
+ "built": "2026-10-22T20:26:27+00:00",
  "scores": {
   "ok": true,
   "games": 3121,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 245,
+  "not_active": 239,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -420,14 +420,21 @@
    }
   ],
   "n_unmatched": 2,
-  "status_disagreements": [],
-  "n_status_disagree": 0,
+  "status_disagreements": [
+   {
+    "team": "NE",
+    "player": "Alijah Vera-Tucker",
+    "espn": "IR",
+    "league": "OUT"
+   }
+  ],
+  "n_status_disagree": 1,
   "qb_flags": [],
-  "checked": "2026-10-22T17:15:22+00:00"
+  "checked": "2026-10-22T20:26:39+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261022T171500Z.json",
+  "snapshot": "odds_20261022T202617Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
