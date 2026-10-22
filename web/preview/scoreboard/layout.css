@@ -1,0 +1,26 @@
+/* Layout "Scoreboard" (Night Game palette): ESPN-style strip of every game under the header, compact pill tabs */
+.ticker { position: sticky; top: var(--hdr, 0px); z-index: 19; margin: 0 -16px; padding: 8px 16px 10px; overflow-x: auto; scrollbar-width: none;
+  background: linear-gradient(180deg, rgba(7, 11, 18, .96), rgba(7, 11, 18, .85)); border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.ticker::-webkit-scrollbar { display: none; }
+.tk-track { display: flex; gap: 8px; width: max-content; }
+.tk-item { display: flex; flex-direction: column; gap: 3px; min-width: 150px; padding: 8px 10px; border-radius: 12px; text-decoration: none; color: var(--ink);
+  background: var(--card2); border: 1px solid var(--line); transition: transform .15s, border-color .15s; }
+.tk-item:hover { transform: translateY(-1px); border-color: rgba(255, 255, 255, .2); }
+.tk-item.has { border-color: var(--green-line); box-shadow: 0 0 16px rgba(33, 224, 124, .12); }
+.tk-st { font: 600 11px/1 "Barlow Condensed", sans-serif; letter-spacing: .05em; color: var(--faint); text-transform: uppercase; }
+.tk-st.live { color: var(--loss); }
+.tk-row { display: flex; align-items: center; gap: 6px; font: 600 14px/1.2 "Barlow Condensed", sans-serif; }
+.tk-row img { width: 18px; height: 18px; object-fit: contain; }
+.tk-sc { margin-left: auto; font-size: 15px; }
+.tk-pick { margin-top: 3px; font: 700 11px/1.5 "Barlow Condensed", sans-serif; letter-spacing: .04em; padding: 0 7px; border-radius: 999px; align-self: flex-start;
+  background: var(--green-bg); color: var(--green-ink); }
+.tk-pick.top { background: var(--warn); color: #1a1300; }
+.tk-pick.wind { background: var(--model-soft); color: var(--model); }
+.tk-pick.none { background: transparent; color: var(--faint); font-weight: 500; }
+header.top { position: relative; padding-bottom: 6px; }
+nav.tabs { margin-top: 8px; }
+.kpis { margin-top: 14px; }
+.gcard .row { margin: 1px 0; }
+.gcard { padding-top: 10px; padding-bottom: 8px; }
+@media (max-width: 640px) { .ticker { top: 0; } .tk-item { min-width: 132px; } }

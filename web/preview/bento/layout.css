@@ -1,0 +1,18 @@
+/* Layout "Bento" (Glass Field palette): Games page as a dashboard; this week's card on the left, compact game list on the right */
+@media (min-width: 1000px) {
+  .wrap { max-width: 1400px; }
+  html[data-route="games"] #view { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(330px, 1fr); gap: 16px; align-items: start; }
+  html[data-route="games"] #gdetail-slot { grid-column: 1 / -1; }
+  html[data-route="games"] #view > .panel { grid-column: 1; grid-row: 2 / span 2; margin: 0; }
+  html[data-route="games"] #view > .section-label { grid-column: 2; grid-row: 2; margin: 0 0 -6px; }
+  html[data-route="games"] .ggrid { grid-column: 2; grid-row: 3; grid-template-columns: 1fr; gap: 8px; max-height: calc(100vh - 220px); overflow-y: auto;
+    padding-right: 4px; scrollbar-width: thin; }
+  html[data-route="games"] .gcard { padding: 10px 12px 8px 16px; }
+  html[data-route="games"] .gcard .lmove { display: none; }
+  .kpis { grid-template-columns: 1.4fr repeat(5, minmax(0, 1fr)); }
+  .kpi:nth-child(2) { grid-row: span 1; }
+}
+.kpi { border-radius: 20px; }
+.panel { border-radius: 22px; }
+.best-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.bp { border-radius: 18px; }
