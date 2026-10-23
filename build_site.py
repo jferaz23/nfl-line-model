@@ -546,6 +546,47 @@ def early_value(week: dict, sched: dict, lines: pd.DataFrame | None, finals: dic
     return out
 
 
+TOTALS_EDGE = 3.0
+# Totals research (Oct 23, 2026): the model's side when it is 3+ points off the closing total went 367-320 (53.4%, +21.4u at
+# closing prices) 2015-26, both halves positive (2015-20 +7.1u, 2021-26 +14.3u), overs and unders both up, 7 of 12 seasons
+# up; 4+ points did not hold (-0.7u). A lead, not green: shown and tracked, graded at the last pre-kickoff update.
+TOTALS_BACKTEST = dict(w=367, l=320, units=21.4, first=dict(w=157, l=142, units=7.1), second=dict(w=210, l=178, units=14.3),
+                       over=dict(w=254, l=222, units=13.1), under=dict(w=113, l=98, units=8.3), seasons_up=7, seasons=12)
+
+
+def totals_watch(week: dict, finals: dict) -> dict:
+    """Information only: totals where the model is TOTALS_EDGE+ points off DraftKings' total (overs and unders), at the last
+    update before kickoff (the pick log), graded at that line and price; this week's from the current run."""
+    from nflmodel.picks import grade as pgrade, profit
+    out = dict(edge=TOTALS_EDGE, backtest=TOTALS_BACKTEST, week=[], record={})
+    lp = ART / "tracker" / "picks_log.csv"
+    rows = []
+    if lp.exists():
+        lg = read_log(lp)
+        lg = lg[lg["market"] == "total"].copy()
+        lg["t"] = pd.to_datetime(lg["run_at"], utc=True, errors="coerce", format="ISO8601")
+        lg["ko"] = pd.to_datetime(lg["kickoff_utc"], utc=True, errors="coerce", format="ISO8601")
+        last = lg[lg["t"] < lg["ko"]].sort_values("t").groupby("game_id").tail(1)
+        for r in last.itertuples(index=False):
+            if _f(r.edge) is None or r.edge < TOTALS_EDGE or _f(r.line) is None or r.ko > pd.Timestamp(NOW):
+                continue
+            f = finals.get(r.game_id)
+            res = pgrade("total", r.side, float(r.line), *f) if f else None
+            rows.append(dict(game_id=r.game_id, season=int(r.season), week=int(r.week), matchup=f"{r.away_team} @ {r.home_team}",
+                             bet=r.bet, side=r.side, line=float(r.line), price=_f(r.price), edge=_f(r.edge), result=res,
+                             units=profit(res, r.price) if res and _f(r.price) else None))
+    graded = [x for x in rows if x["result"] in ("W", "L", "P")]
+    w = sum(x["result"] == "W" for x in graded); l = sum(x["result"] == "L" for x in graded); pu = sum(x["result"] == "P" for x in graded)
+    out["record"] = dict(w=w, l=l, p=pu, n=w + l + pu, pct=w / max(w + l, 1), units=float(sum(x["units"] or 0 for x in graded)),
+                         since="2026 week 4")
+    out["all"] = rows
+    for p in (week or {}).get("picks", []):
+        if p.get("market") == "total" and (_f(p.get("edge")) or 0) >= TOTALS_EDGE:
+            out["week"].append(dict(game_id=p["game_id"], bet=p["bet"], side=p["side"], line=p["line"], price=p.get("price"),
+                                    edge=p["edge"], green=bool(p.get("highlight")), kickoff_utc=p.get("kickoff_utc")))
+    return out
+
+
 # ----------------------------------------------------------------------------- alerts
 def _am(x) -> str:
     x = _f(x)
@@ -836,6 +877,7 @@ def main() -> int:
         checks=checks, checks_ok=all(c[1] for c in checks), audit=_load(ART / "data_audit.json"),
         budget=_load(ART / "odds_budget.json"), alerts=alerts(cur, lines, kickoffs),
         early=early_value(cur, sched, lines, finals), timing=bet_timing(finals), pnl=my_pnl(sched, lines),
+        totals_watch=totals_watch(cur, finals),
         props=_load(ART / "props" / "week.json"),
     )
     if PUBLIC.exists():
@@ -849,7 +891,7 @@ def main() -> int:
     v = NOW.strftime("%Y%m%d%H%M%S")
     idx = PUBLIC / "index.html"
     html = idx.read_text(encoding="utf-8")
-    for f in ("style.css", "app.js", "data/site.js"):
+    for f in ("style.css", "theme.css", "layout.css", "app.js", "layout-kit.js", "data/site.js"):
         html = html.replace(f'"{f}"', f'"{f}?v={v}"')
     idx.write_text(html, encoding="utf-8")
     n_ok = sum(c[1] for c in checks)

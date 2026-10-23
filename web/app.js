@@ -312,6 +312,22 @@
       <p class="note">Using archived kickoff forecasts, these unders went ${F.w || 0}-${F.l || 0}${F.p ? "-" + F.p : ""} (${pct(F.pct, 1)}, ${sgn(F.units, 1)} units) since ${esc(String(H.forecast_since || 2018))}. The record is built on short-range forecasts, so a pick is final at the run about 80 minutes before kickoff; earlier in the week the forecast can change.</p>`;
   }
 
+  // ---------- totals lead (information only): model 3+ points off DraftKings' total, overs and unders
+  function totalsWatchBlock(W) {
+    const T = S.totals_watch || {}, B = T.backtest || {}, R = T.record || {};
+    const games = {}; W.games.forEach(g => games[g.game_id] = g);
+    const now = (T.week || []).filter(x => games[x.game_id] && new Date(x.kickoff_utc || games[x.game_id].kickoff_utc) > new Date());
+    const card = x => { const g = games[x.game_id], d = derive(W, g), p = d.tt;
+      return `<a class="bp" href="#breakdown/${esc(g.game_id)}"><div class="top"><span class="rank">TOTALS LEAD${x.green ? ' <span class="chip">GREEN</span>' : ""}</span><span class="small muted">${esc(kick(g))}</span></div>
+        <div class="pick">${esc(x.bet)} <span class="muted" style="font-weight:500">${am(x.price)}</span></div>
+        <div class="small muted">${esc(g.away_team)} @ ${esc(g.home_team)} · model ${num(g.model_total)} vs DK ${trim(x.line)} (${edgeTxt(x.edge)} pts ${x.side})</div>
+        ${p && whyShort(W, g, p) ? `<div class="small why1">${esc(whyShort(W, g, p))} · <u>why</u></div>` : ""}</a>`; };
+    const pc = (w, l) => pct(w / Math.max(w + l, 1), 1);
+    return `<h3 style="margin-top:14px">Totals lead: the model is ${num(T.edge || 3, 0)}+ points off DraftKings' total (overs and unders, not green)</h3>
+      ${now.length ? `<div class="best-grid">${now.map(card).join("")}</div>` : `<p class="note">None right now: no total is ${num(T.edge || 3, 0)}+ points off DraftKings' number.</p>`}
+      <p class="note">Tracked, not recommended. Since 2015 at closing prices these went ${B.w || 0}-${B.l || 0} (${pc(B.w, B.l)}, ${sgn(B.units, 1)} units): overs ${(B.over || {}).w}-${(B.over || {}).l}, unders ${(B.under || {}).w}-${(B.under || {}).l}; up in ${B.seasons_up} of ${B.seasons} seasons. That's barely above the ~52.4% a −110 bet needs, and 4+ point gaps did no better, so it isn't green unless the price itself leaves value. Live (last update before kickoff, from ${esc(R.since || "2026 week 4")}): ${R.n ? `${R.w}-${R.l}${R.p ? "-" + R.p : ""} (${pct(R.pct, 0)}, ${sgn(R.units, 1)} units)` : "no graded games yet"}. Also tested and rejected: primetime unders (lost 2024-26), divisional unders, fading teams' recent overs or unders, extreme totals, big-spread unders.</p>`;
+  }
+
   function bestPanel(W, compact) {
     const games = {}; W.games.forEach(g => games[g.game_id] = g);
     const all = (W.picks || []).filter(p => p.market !== "winner" && games[p.game_id]).sort((x, y) => (y.value || -1) - (x.value || -1));
@@ -335,6 +351,7 @@
       ${tops.length ? `<div class="best-grid">${tops.map(card).join("")}</div>` : `<p class="note">None right now: no spread is 4+ points off DraftKings' line. Prices update every 15 minutes.</p>`}
       ${teaserBlock(W)}
       ${windBlock(W)}
+      ${compact ? "" : totalsWatchBlock(W)}
       <h3 style="margin-top:14px">Green value picks</h3>
       ${greens.length ? `<div class="best-grid">${greens.map((p, i) => card(p, i + tops.length)).join("")}</div>` : `<p class="note">None right now.</p>`}
       <p class="note">${GREEN_HELP} Chance = how often picks with this much model disagreement won from ${esc(String(REC.since || 2015))} on.</p>
@@ -549,6 +566,7 @@
     early_down: "early-down efficiency", big_plays: "big plays", roster_continuity: "offseason roster turnover", calendar: "time of season",
     scoring_env: "this season's scoring level"
   };
+  const whyLabel = (k, g) => k === "weather" && g.indoor ? "playing indoors" : (WHY_PH[k] || GROUP_LABELS[k] || k);
   const MB = 0.45;   // config.mkt_blend_margin: the spread prediction is 55% the model's own estimate + 45% the market's view
   function whyPick(W, g, p) {
     if (!p || (p.market !== "spread" && p.market !== "total")) return "";
@@ -574,14 +592,14 @@
       out.push(`DraftKings has <b>${esc(favLine(h, a, dk))}</b>. The model makes it <b>${esc(favLine(h, a, g.model_margin))}</b>, ${edgeTxt(p.edge)} points better for ${esc(sideTeam)}.`);
       if (fin(m)) out.push(`That number blends two views: the model's own estimate (${esc(favLine(h, a, raw))}) and the market's recent ratings of both teams from earlier weeks' closing lines, updated for this week's quarterbacks and injuries (${esc(favLine(h, a, m))}). ${p.split ? `<b>They disagree on which side of ${esc(hcap(p.line))} ${esc(sideTeam)} lands</b>, so this pick can't be green.` : `Both are on ${esc(sideTeam)}'s side of the line.`}`);
       const dv = drivers(g.contrib_margin, s), pro = dv.filter(x => x[1] >= 0.3).slice(0, 3), con = dv.filter(x => x[1] <= -0.3).reverse().slice(0, 2);
-      if (pro.length) out.push(`Among the model's factors, the ones helping ${esc(sideTeam)} most: ${pro.map(([k, v]) => `${WHY_PH[k] || GROUP_LABELS[k] || k} (${sgn(v, 1)} pts${detail(k, 1)})`).join("; ")}.`);
-      if (con.length) out.push(`Working against ${esc(sideTeam)}: ${con.map(([k, v]) => `${WHY_PH[k] || GROUP_LABELS[k] || k} (${sgn(v, 1)} pts${detail(k, -1)})`).join("; ")}.`);
+      if (pro.length) out.push(`Among the model's factors, the ones helping ${esc(sideTeam)} most: ${pro.map(([k, v]) => `${whyLabel(k, g)} (${sgn(v, 1)} pts${detail(k, 1)})`).join("; ")}.`);
+      if (con.length) out.push(`Working against ${esc(sideTeam)}: ${con.map(([k, v]) => `${whyLabel(k, g)} (${sgn(v, 1)} pts${detail(k, -1)})`).join("; ")}.`);
     } else {
       out.push(`DraftKings' total is <b>${trim(p.line)}</b>. The model projects <b>${num(g.model_total)}</b> points, ${edgeTxt(p.edge)} ${p.side === "over" ? "above" : "below"} the line.`);
       const sg = p.side === "over" ? 1 : -1, dv = drivers(g.contrib_total, sg);
       const pro = dv.filter(x => x[1] >= 0.3).slice(0, 3), con = dv.filter(x => x[1] <= -0.3).reverse().slice(0, 2);
-      if (fin((g.contrib_total || {}).baseline)) out.push(`Starting from an average game (${num(g.contrib_total.baseline)} points), ${pro.length ? `the biggest pushes toward the ${p.side}: ${pro.map(([k, v]) => `${WHY_PH[k] || GROUP_LABELS[k] || k} (${sgn(v, 1)}${detail(k, 1)})`).join("; ")}` : `no single factor moves it much`}.`);
-      if (con.length) out.push(`Pulling the other way: ${con.map(([k, v]) => `${WHY_PH[k] || GROUP_LABELS[k] || k} (${sgn(v, 1)}${detail(k, -1)})`).join("; ")}.`);
+      if (fin((g.contrib_total || {}).baseline)) out.push(`Starting from an average game (${num(g.contrib_total.baseline)} points), ${pro.length ? `the biggest pushes toward the ${p.side}: ${pro.map(([k, v]) => `${whyLabel(k, g)} (${sgn(v, 1)}${detail(k, 1)})`).join("; ")}` : `no single factor moves it much`}.`);
+      if (con.length) out.push(`Pulling the other way: ${con.map(([k, v]) => `${whyLabel(k, g)} (${sgn(v, 1)}${detail(k, -1)})`).join("; ")}.`);
     }
     const kind = p.market === "spread" ? "Spread" : "Total";
     out.push(`${kind} picks with this much disagreement have won <b>${pct(p.chance, 1)}</b> of the time since ${esc(String(REC.since || 2015))} (shrunk toward 50%). DraftKings' ${am(p.price)} needs ${pct(p.breakeven, 1)} to break even, so the value is ${val(p)}.`);
@@ -599,7 +617,7 @@
     const s = p.side === "home" ? 1 : p.side === "away" ? -1 : p.side === "over" ? 1 : -1;
     const dv = Object.entries((p.market === "spread" ? g.contrib_margin : g.contrib_total) || {}).filter(([k]) => !["baseline", "market_view", "win_totals"].includes(k))
       .map(([k, v]) => [k, s * v]).sort((x, y) => y[1] - x[1]).filter(x => x[1] >= 0.3).slice(0, 2);
-    return dv.length ? `Mostly ${dv.map(([k]) => WHY_PH[k] || GROUP_LABELS[k] || k).join(" and ")}` : "";
+    return dv.length ? `Mostly ${dv.map(([k]) => whyLabel(k, g)).join(" and ")}` : "";
   }
   function contribBlock(g) {
     const block = (obj, title, unit) => {
