@@ -326,13 +326,15 @@
       ${rows ? `<div class="tablewrap"><table><thead><tr><th>Lean</th><th>Game</th><th class="num">Model total</th><th class="num">Gap</th></tr></thead><tbody>${rows}</tbody></table></div>` : ""}</details>`;
   }
 
+  const qbWarn = g => { const x = (S.qb_check || []).filter(q => q.game_id === g.game_id);
+    return x.length ? ` <span class="chip warn" title="${esc(x.map(q => `Model: ${q.model_qb} (${q.team}); DraftKings props: ${q.dk_qbs.join(", ")}`).join(" · "))}">⚠ QB?</span>` : ""; };
   function bestPanel(W, compact) {
     const games = {}; W.games.forEach(g => games[g.game_id] = g);
     const all = (W.picks || []).filter(p => p.market !== "winner" && games[p.game_id]).sort((x, y) => (y.value || -1) - (x.value || -1));
     const top = all.filter(p => p.highlight).sort((x, y) => (y.top ? 1 : 0) - (x.top ? 1 : 0) || y.value - x.value);
     const card = (p, i) => { const g = games[p.game_id], d = derive(W, g), r = d.res(p);
       return `<a class="bp green${p.top ? " topcard" : ""}" href="#breakdown/${esc(g.game_id)}"><div class="top"><span class="rank">#${i + 1}${p.top ? ' <span class="chip top">TOP PICK</span>' : ""}</span><span class="small muted">${esc(kick(g))}</span></div>
-        <div class="pick">${esc(p.bet)} <span class="muted" style="font-weight:500">${am(p.price)}</span>${resChip(r)}</div>
+        <div class="pick">${esc(p.bet)} <span class="muted" style="font-weight:500">${am(p.price)}</span>${resChip(r)}${qbWarn(g)}</div>
         <div class="small muted">${esc(g.away_team)} @ ${esc(g.home_team)} · ${p.market}</div>
         <div class="conf" title="Chance ${pct(p.chance, 1)} vs break-even ${pct(p.breakeven, 1)}"><i style="width:${Math.round(100 * p.chance)}%"></i><b style="left:${(100 * p.breakeven).toFixed(1)}%"></b></div>
         <div class="meta"><span>Chance <b>${pct(p.chance, 1)}</b></span><span>Needs <b>${pct(p.breakeven, 1)}</b></span><span>Value <b class="w">${val(p)}</b></span><span>Model ${edgeTxt(p.edge)} pts</span>${d.lv && d.lv.state !== "pre" ? "" : logBtn(p)}</div>
@@ -599,6 +601,7 @@
       if (fin((g.contrib_total || {}).baseline)) out.push(`Starting from an average game (${num(g.contrib_total.baseline)} points), ${pro.length ? `the biggest pushes toward the ${p.side}: ${pro.map(([k, v]) => `${whyLabel(k, g)} (${sgn(v, 1)}${detail(k, 1)})`).join("; ")}` : `no single factor moves it much`}.`);
       if (con.length) out.push(`Pulling the other way: ${con.map(([k, v]) => `${whyLabel(k, g)} (${sgn(v, 1)}${detail(k, -1)})`).join("; ")}.`);
     }
+    (S.qb_check || []).filter(x => x.game_id === g.game_id).forEach(x => out.unshift(`<b>⚠ Check the quarterback:</b> the model assumes ${esc(x.model_qb)} for ${esc(x.team)} (${esc(x.source || "")}), but DraftKings' player props list ${esc(x.dk_qbs.join(", "))}. If ${esc(x.dk_qbs[0])} starts, this pick may change; check the news before betting.`));
     const kind = p.market === "spread" ? "Spread" : "Total";
     out.push(`${kind} picks with this much disagreement have won <b>${pct(p.chance, 1)}</b> of the time since ${esc(String(REC.since || 2015))} (shrunk toward 50%). DraftKings' ${am(p.price)} needs ${pct(p.breakeven, 1)} to break even, so the value is ${val(p)}.`);
     let verdict;
@@ -1549,6 +1552,14 @@
     if (fin(r.imp)) parts.push(`DraftKings' spread and total imply ${r.team} scores about ${num(r.imp, 1)} points${r.imp >= 25 ? " (a high-scoring spot)" : r.imp <= 19 ? " (a low-scoring spot)" : ""}`);
     if (r.vac >= 2) parts.push(`teammates ruled out leave about ${num(r.vac, 0)} targets and carries a game to share`);
     if (parts.length) out.push(`What the projection uses: ${parts.join("; ")}.`);
+    if (fin(r.lg_share)) {      // his last game on the field, and why it was low if it was
+      const wk = `${r.lg_season === P.season ? "" : r.lg_season + " "}week ${r.lg_week} vs ${esc(r.lg_opp)}`;
+      const base = `In his last game (${wk}) he played ${pct(r.lg_share, 0)} of the offense's snaps${fin(r.lg_avg6) ? ` (usually ${pct(r.lg_avg6, 0)})` : ""} with ${r.lg_touches ? `${num(r.lg_touches, 0)} touch${r.lg_touches === 1 ? "" : "es"}` : "no touches"}`;
+      out.push(r.lg_cause === "usage" ? `${base}. He wasn't hurt during that game or on the injury report, so it looks like a <b>benching or a smaller role</b>; his averages may overstate his role this week.`
+        : r.lg_cause === "injured in game" ? `${base}. The play-by-play shows he <b>was injured during that game</b>, so it says little about his role if he's healthy now.`
+        : r.lg_cause === "on injury report" ? `${base}. He was <b>listed on that week's injury report</b> going in, so he was likely limited.`
+        : `${base}.`);
+    }
     if (r.note) out.push(`<b>⚠ ${esc(r.note)}.</b> His old usage may not apply, so this line is never green.`);
     else {
       const lost = r.band_n - r.band_w;

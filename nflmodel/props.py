@@ -128,6 +128,74 @@ def load_history(seasons):
     return st, sch, snaps, players
 
 
+INJ_RX = re.compile(r"([A-Z]{2,3})-(\d{1,2})-([A-Za-z\.\'\- ]+?) was injured")
+
+
+def ingame_injuries(seasons):
+    """(gsis_id, season, week) of players the play-by-play says were injured during a play ('LAC-15-L.McConkey was
+    injured during the play'), matched by team + jersey number in that week's roster and checked against the last name."""
+    import nflreadpy as nr
+    rows = []
+    for s in seasons:
+        p = _pd(_retry(nr.load_pbp, seasons=[s]))[["season", "week", "season_type", "desc"]]
+        p = p[p.season_type == "REG"]
+        for w, dsc in zip(p.week, p.desc.astype(str)):
+            for t, num, nm in INJ_RX.findall(dsc):
+                rows.append((s, int(w), FIX.get(t, t), int(num), nm.strip()))
+    if not rows:
+        return set()
+    I = pd.DataFrame(rows, columns=["season", "week", "team", "jersey", "name"]).drop_duplicates(["season", "week", "team", "jersey"])
+    R = _pd(_retry(nr.load_rosters_weekly, seasons=list(seasons)))[["season", "week", "team", "jersey_number", "gsis_id", "full_name"]]
+    R = R.dropna(subset=["jersey_number", "gsis_id"]).assign(team=lambda d: d.team.replace(FIX), jersey=lambda d: pd.to_numeric(d.jersey_number, errors="coerce"))
+    I = I.merge(R.drop_duplicates(["season", "week", "team", "jersey"]), on=["season", "week", "team", "jersey"], how="inner")
+    last = lambda n: (n.split(".")[-1].split() or [""])[0].lower()
+    I = I[[last(n) != "" and last(n) in str(f).lower() for n, f in zip(I.name, I.full_name)]]
+    return set(zip(I.gsis_id, I.season, I.week))
+
+
+def last_game_usage(st, snaps, players, inj_in, inj_rep, pids):
+    """Each player's most recent game on the field: snap share, touches, his previous-6 average share, and, when it was a
+    low-usage game (< 50% of his usual share, or no touches), why: hurt during the game (play-by-play), on that week's
+    injury report (Questionable/Doubtful), or neither (usage: a benching or a smaller role)."""
+    pl = players[["gsis_id", "pfr_id"]].dropna()
+    sn = snaps.merge(pl.rename(columns={"pfr_id": "pfr_player_id", "gsis_id": "player_id"}), on="pfr_player_id", how="inner")
+    sn = sn[sn.player_id.isin(pids)].sort_values(["season", "week"])
+    tch = st.assign(tch=st[["attempts", "carries", "targets"]].apply(pd.to_numeric, errors="coerce").fillna(0).sum(axis=1))
+    tch = dict(zip(zip(tch.player_id, tch.season, tch.week), tch.tch))
+    out = {}
+    for pid, g in sn.groupby("player_id"):
+        r = g.iloc[-1]; prev = g.offense_pct.iloc[-7:-1]
+        k = (pid, int(r.season), int(r.week)); share = float(r.offense_pct); avg6 = float(prev.mean()) if len(prev) >= 2 else None
+        touches = float(tch.get(k, 0.0))
+        low = (avg6 is not None and share < 0.5 * avg6) or touches == 0
+        cause = ("injured in game" if k in inj_in else "on injury report" if k in inj_rep else "usage") if low else ""
+        out[pid] = dict(season=k[1], week=k[2], opp=FIX.get(r.opponent, r.opponent), share=round(share, 2),
+                        avg6=(round(avg6, 2) if avg6 is not None else None), touches=touches, cause=cause)
+    return out
+
+
+def add_snap_games(st, snaps, players):
+    """nflverse's weekly stats leave out games where a player was on the field but recorded no stat (a benching or an
+    early exit with 0 touches, e.g. Cam Skattebo 2026 wk 6: 6 snaps, no carries). Add those games as zero-stat rows so
+    the history sees them."""
+    pos = players[["gsis_id", "pfr_id", "position"]].dropna(subset=["pfr_id"])
+    sn = snaps.merge(pos.rename(columns={"pfr_id": "pfr_player_id", "gsis_id": "player_id"}), on="pfr_player_id", how="inner")
+    sn["pos"] = sn.position_y.where(sn.position_y.isin(POS), sn.position_x) if "position_y" in sn.columns else sn.position
+    sn = sn[sn.pos.isin(POS)]
+    have = set(zip(st.player_id, st.season, st.week))
+    new = sn[[k not in have for k in zip(sn.player_id, sn.season, sn.week)]]
+    if new.empty:
+        return st
+    add = pd.DataFrame({"player_id": new.player_id.to_numpy(), "season": new.season.to_numpy(), "week": new.week.to_numpy(),
+                        "team": new.team.replace(FIX).to_numpy(), "opponent_team": new.opponent.replace(FIX).to_numpy(),
+                        "pos": new.pos.to_numpy(), "player_display_name": new.player.to_numpy(), "season_type": "REG"})
+    for c in ("passing_yards", "passing_tds", "attempts", "rushing_yards", "carries", "receiving_yards", "receptions", "targets",
+              "target_share"):
+        add[c] = 0.0
+    log.info("props: %d snap-only games added (on the field, no stats)", len(add))
+    return pd.concat([st, add], ignore_index=True)
+
+
 def implied(sch):
     s = sch.dropna(subset=["spread_line", "total_line"])
     a = s.assign(team=s.home_team, opp=s.away_team, home=1, imp_pts=(s.total_line + s.spread_line) / 2)

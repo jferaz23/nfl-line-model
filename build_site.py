@@ -598,6 +598,28 @@ def _num(x) -> str:
     return "" if x is None else (f"{x:+g}".replace("-", "−") if x != 0 else "PK")
 
 
+def qb_check(week: dict, props: dict | None) -> list:
+    """The model's projected QB for each team vs the QB DraftKings posts player props for (DraftKings lists props for the
+    QB it expects to start). A mismatch means one of the two is out of date: check the news before betting that game."""
+    if not week or not props:
+        return []
+    from nflmodel.availability import name_key
+    dk = {}
+    for r in props.get("props", []):
+        if r.get("pos") == "QB" and r.get("team"):
+            dk.setdefault(r["team"], set()).add(r["player"])
+    out = []
+    for g in week.get("games", []):
+        for side, team in (("h", g["home_team"]), ("a", g["away_team"])):
+            mq, names = g.get(f"{side}_qb_name_used"), dk.get(team)
+            if not mq or not names:
+                continue
+            last = name_key(mq).split()[-1] if name_key(mq) else ""
+            if not any(last and last in name_key(n).split() for n in names):
+                out.append(dict(game_id=g["game_id"], team=team, model_qb=mq, source=g.get(f"{side}_qb_source"), dk_qbs=sorted(names)))
+    return out
+
+
 def alerts(week: dict, lines: pd.DataFrame | None, kickoffs: dict) -> list:
     """What changed this week, newest first.
     pick: a spread/total turning green or Top (or losing it), a green pick switching sides, a wind under
@@ -879,6 +901,7 @@ def main() -> int:
         early=early_value(cur, sched, lines, finals), timing=bet_timing(finals), pnl=my_pnl(sched, lines),
         totals_watch=totals_watch(cur, finals),
         props=_load(ART / "props" / "week.json"),
+        qb_check=qb_check(cur, _load(ART / "props" / "week.json")),
     )
     if PUBLIC.exists():
         shutil.rmtree(PUBLIC, ignore_errors=True)   # OneDrive can briefly lock folders on Windows; copy over what is left

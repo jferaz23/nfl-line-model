@@ -187,6 +187,26 @@ def main(argv=None) -> int:
         W.loc[listed, "note"] = "returning from the injury list: snap count unknown"
         W.loc[stale | listed, "category"] = ""
         log.info("props: %d lines not flagged (stale or returning from the injury list)", int((stale | listed).sum()))
+    # ---------------- last game on the field: snap share, touches, and why it was low (hurt in the game / on the injury
+    # report / usage). Games with snaps but no stats count (nflverse's weekly stats leave them out, e.g. benchings).
+    st_all = P.add_snap_games(st, snaps, players)
+    if len(W):
+        inj_in, inj_rep = set(), set()
+        try:
+            inj_in = P.ingame_injuries([season])
+        except Exception as e:
+            log.warning("props: in-game injuries unavailable (%s)", e)
+        try:
+            import nflreadpy as nr
+            rp = P._pd(nr.load_injuries(seasons=[season]))
+            rp = rp[rp.report_status.isin(["Questionable", "Doubtful"])]
+            inj_rep = set(zip(rp.gsis_id, rp.season, rp.week))
+        except Exception as e:
+            log.warning("props: injury reports unavailable (%s)", e)
+        u = P.last_game_usage(st_all, snaps, players, inj_in, inj_rep, set(W.player_id))
+        for c in ("season", "week", "opp", "share", "avg6", "touches", "cause"):
+            W[f"lg_{c}"] = [(u.get(p) or {}).get(c) for p in W.player_id]
+        log.info("props: last games with low usage: %s", W.drop_duplicates("player_id").lg_cause.value_counts().to_dict())
     # ---------------- DraftKings prices (paid; budget-gated) for the props that could be green at a normal price
     if len(W):
         W["price"] = np.nan; W["price_line"] = np.nan
@@ -278,7 +298,7 @@ def main(argv=None) -> int:
     for t, m in (("green", ("green", "top")), ("top", ("top",))):     # green includes Top, as for spreads
         summary[t] = rec(graded[graded.tier.isin(m)]) if len(graded) and graded.tier.isin(m).any() else None
     curve = json.loads((OUT / "backtest_curve.json").read_text()) if (OUT / "backtest_curve.json").exists() else {}
-    glogs = game_logs(st, snaps, players, season, set(W.player_id) if len(W) else set())
+    glogs = game_logs(st_all, snaps, players, season, set(W.player_id) if len(W) else set())
     (OUT / "week.json").write_text(json.dumps(dict(generated=NOW.isoformat(), season=season, week=week, big_z=P.BIG_Z,
                                                    assumed_price=ASSUMED, props=json.loads(W.to_json(orient="records")) if len(W) else [],
                                                    summary=summary, backtest=curve, green_test=GREEN_TEST, logs=glogs),

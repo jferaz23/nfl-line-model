@@ -197,9 +197,15 @@ def _backup_qb(team, season, week, exclude, qg, rosters, wplays):
 # 37% if he missed his last practice, 53% limited, 85% full. His value is blended with the backup's at these odds.
 QB_Q_START = {"DNP": 0.37, "LIMITED": 0.53, "FULL": 0.85}
 QB_Q_START_DEFAULT = 0.57
+# When the team's REGULAR starter (4+ of its previous 8 starts) is not last week's starter and is listed QUESTIONABLE
+# (usually coming back from an injury) he started only 38% of the time (85 cases 2013-2025): limited practice 33% (61),
+# full 63% (19), DNP 0/3. Shrunk toward 38% with 10 cases of weight. Live only, like QB_Q_START (Oct 23, 2026; found when
+# DraftKings' props listed Baker Mayfield while the model kept Jalon Daniels).
+QB_RET_START = {"DNP": 0.29, "LIMITED": 0.34, "FULL": 0.55}
+QB_RET_START_DEFAULT = 0.38
 
 
-def _qb_questionable(qid, qname, team, season, week, injuries):
+def _qb_questionable(qid, qname, team, season, week, injuries, table=None, default=None):
     """Chance a QUESTIONABLE starter starts (None if he is not listed Questionable)."""
     if injuries is None or injuries.empty:
         return None
@@ -210,7 +216,7 @@ def _qb_questionable(qid, qname, team, season, week, injuries):
     if hit.empty or hit["report_status"].iloc[-1] != "QUESTIONABLE":
         return None
     prac = hit["practice_status"].iloc[-1] if "practice_status" in hit.columns else None
-    return QB_Q_START.get(practice_key(prac), QB_Q_START_DEFAULT)
+    return (table or QB_Q_START).get(practice_key(prac), QB_Q_START_DEFAULT if default is None else default)
 
 
 def project_starters(target, starters_hist, qg, injuries, rosters, qb_overrides, qmap_wplays):
@@ -246,6 +252,17 @@ def project_starters(target, starters_hist, qg, injuries, rosters, qb_overrides,
                         if b_id:
                             alt_id, p_start = b_id, pq
                             src = f"last starter, Questionable ({pq:.0%} to start; else {b_name})"
+                    else:
+                        # the regular starter coming back (listed Questionable) is blended in at his measured odds
+                        rec = h.tail(8)
+                        cnt = rec["qb_id"].value_counts()
+                        if len(cnt) and cnt.index[0] != last_id and cnt.iloc[0] >= 4:
+                            r_id = cnt.index[0]
+                            r_name = rec.loc[rec["qb_id"] == r_id, "qb_name"].iloc[-1]
+                            pr = _qb_questionable(r_id, r_name, team, g.season, g.week, injuries, QB_RET_START, QB_RET_START_DEFAULT)
+                            if pr is not None and _qb_unavailable(r_id, r_name, team, g.season, g.week, injuries, rosters) is None:
+                                qid, qname, alt_id, p_start = r_id, r_name, last_id, pr
+                                src = f"regular starter back, Questionable ({pr:.0%} to start; else {last_name})"
                 else:
                     qid, qname = _backup_qb(team, g.season, g.week, last_id, qg, rosters, qmap_wplays)
                     src = f"backup ({last_name}: {reason})" if last_id else "no recent starter found"
