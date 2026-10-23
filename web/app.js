@@ -314,18 +314,16 @@
 
   // ---------- totals lead (information only): model 3+ points off DraftKings' total, overs and unders
   function totalsWatchBlock(W) {
+    // tracked only (user, Oct 23: show picks only when there's real value); collapsed, no pick cards
     const T = S.totals_watch || {}, B = T.backtest || {}, R = T.record || {};
     const games = {}; W.games.forEach(g => games[g.game_id] = g);
     const now = (T.week || []).filter(x => games[x.game_id] && new Date(x.kickoff_utc || games[x.game_id].kickoff_utc) > new Date());
-    const card = x => { const g = games[x.game_id], d = derive(W, g), p = d.tt;
-      return `<a class="bp" href="#breakdown/${esc(g.game_id)}"><div class="top"><span class="rank">TOTALS LEAD${x.green ? ' <span class="chip">GREEN</span>' : ""}</span><span class="small muted">${esc(kick(g))}</span></div>
-        <div class="pick">${esc(x.bet)} <span class="muted" style="font-weight:500">${am(x.price)}</span></div>
-        <div class="small muted">${esc(g.away_team)} @ ${esc(g.home_team)} · model ${num(g.model_total)} vs DK ${trim(x.line)} (${edgeTxt(x.edge)} pts ${x.side})</div>
-        ${p && whyShort(W, g, p) ? `<div class="small why1">${esc(whyShort(W, g, p))} · <u>why</u></div>` : ""}</a>`; };
     const pc = (w, l) => pct(w / Math.max(w + l, 1), 1);
-    return `<h3 style="margin-top:14px">Totals lead: the model is ${num(T.edge || 3, 0)}+ points off DraftKings' total (overs and unders, not green)</h3>
-      ${now.length ? `<div class="best-grid">${now.map(card).join("")}</div>` : `<p class="note">None right now: no total is ${num(T.edge || 3, 0)}+ points off DraftKings' number.</p>`}
-      <p class="note">Tracked, not recommended. Since 2015 at closing prices these went ${B.w || 0}-${B.l || 0} (${pc(B.w, B.l)}, ${sgn(B.units, 1)} units): overs ${(B.over || {}).w}-${(B.over || {}).l}, unders ${(B.under || {}).w}-${(B.under || {}).l}; up in ${B.seasons_up} of ${B.seasons} seasons. That's barely above the ~52.4% a −110 bet needs, and 4+ point gaps did no better, so it isn't green unless the price itself leaves value. Live (last update before kickoff, from ${esc(R.since || "2026 week 4")}): ${R.n ? `${R.w}-${R.l}${R.p ? "-" + R.p : ""} (${pct(R.pct, 0)}, ${sgn(R.units, 1)} units)` : "no graded games yet"}. Also tested and rejected: primetime unders (lost 2024-26), divisional unders, fading teams' recent overs or unders, extreme totals, big-spread unders.</p>`;
+    const rows = now.map(x => { const g = games[x.game_id];
+      return `<tr><td>${esc(x.bet)} <span class="muted">${am(x.price)}</span></td><td>${esc(g.away_team)} @ ${esc(g.home_team)}</td><td class="num">${num(g.model_total)}</td><td class="num">${edgeTxt(x.edge)}</td></tr>`; }).join("");
+    return `<details class="leans"><summary>Totals research lead, not picks: the model ${num(T.edge || 3, 0)}+ points off DraftKings' total (${now.length} this week)</summary>
+      <p class="note">These are <strong>not picks</strong>; they're tracked to see whether an edge shows up. Since 2015 at closing prices they went ${B.w || 0}-${B.l || 0} (${pc(B.w, B.l)}, ${sgn(B.units, 1)} units), barely above the ~52.4% a −110 bet needs. Live from ${esc(R.since || "2026 week 4")}: ${R.n ? `${R.w}-${R.l}${R.p ? "-" + R.p : ""} (${sgn(R.units, 1)} units)` : "no graded games yet"}. A total only becomes a pick when it turns green: enough value at DraftKings' price. Wind unders are separate and stay on the card. Also tested and rejected: primetime unders (lost 2024-26), divisional unders, fading teams' recent overs or unders, extreme totals, big-spread unders.</p>
+      ${rows ? `<div class="tablewrap"><table><thead><tr><th>Lean</th><th>Game</th><th class="num">Model total</th><th class="num">Gap</th></tr></thead><tbody>${rows}</tbody></table></div>` : ""}</details>`;
   }
 
   function bestPanel(W, compact) {
@@ -351,10 +349,10 @@
       ${tops.length ? `<div class="best-grid">${tops.map(card).join("")}</div>` : `<p class="note">None right now: no spread is 4+ points off DraftKings' line. Prices update every 15 minutes.</p>`}
       ${teaserBlock(W)}
       ${windBlock(W)}
-      ${compact ? "" : totalsWatchBlock(W)}
       <h3 style="margin-top:14px">Green value picks</h3>
       ${greens.length ? `<div class="best-grid">${greens.map((p, i) => card(p, i + tops.length)).join("")}</div>` : `<p class="note">None right now.</p>`}
       <p class="note">${GREEN_HELP} Chance = how often picks with this much model disagreement won from ${esc(String(REC.since || 2015))} on.</p>
+      ${compact ? "" : totalsWatchBlock(W)}
       ${!compact && rows ? `<details class="leans"><summary>${next.length} other spread and total picks (below the green line)</summary><div class="tablewrap"><table><thead><tr><th>Pick</th><th>Game</th><th class="num">Chance</th><th class="num">Needs</th><th class="num">Value</th></tr></thead><tbody>${rows}</tbody></table></div></details>` : ""}</div>`;
   }
 
