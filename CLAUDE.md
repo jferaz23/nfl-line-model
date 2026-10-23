@@ -148,6 +148,23 @@ week.json also carries per-row "why" fields (avg, form, vol, allow, imp, band_w/
 5 prop stats, targets, carries, snap share); Props tab rows expand into the plain-English why + game log graded vs this
 week's DK lines. Spreads/totals: app.js whyPick (Breakdown + Games detail) / whyShort (pick cards) explain picks from
 contrib_*, d_mkt_rating (raw vs market view), QB deltas, injuries, weather, rest. Line charts show dates and every move.
+Totals research (Oct 23, user: value on overs AND unders beyond wind): tested at real closing prices 2015-26 (rules in the
+log first): model 3+ off the close 367-320 53.4% +21.4u (both halves +, 7/12 seasons, p=0.02; 4+ fails) and primetime
+unders (+15.3u/+17.6u but lost 2024-26) = leads only; divisional unders, fading recent overs/unders, extreme totals,
+big-spread unders rejected; model vs opener 3+ 2024-26 57.1% at the open (lead). User: picks only with real value -> no
+new totals picks; build_site.totals_watch shows the 3+ lead collapsed as "not picks" with its live record (5-5 wk4-6).
+QB fixes (Oct 23, found because DraftKings' QB props disagreed with the model): features.QB_RET_START: a team's regular
+starter (4+ of the previous 8 starts) who is not last week's starter and is listed Questionable started 38% (85 cases
+2013-25; limited 33%, full 63% n=19) -> blended at DNP .29 / limited .34 / full .55 / default .38 (live only). build_site
+.qb_check compares each team's model QB with the QB DraftKings posts props for; mismatches show as "⚠ QB?" on pick cards
+and in the why. overrides/starters.csv: 2026 wk7 NYG J.J. McCarthy (coach-confirmed per ESPN).
+Props playing time (Oct 23, user: late entries, mid-game injuries, benchings like Skattebo wk6: 6 snaps, 0 touches, missing
+from nflverse weekly stats): props.add_snap_games (games on the field with no stats), props.ingame_injuries (play-by-play
+"was injured", matched by team+jersey, name-checked), props.last_game_usage -> each prop's why names the last game's snap
+share, touches and cause (injured in game / injury report / usage = benching). Display only. Tested and NOT adopted (rules
+in the log): guards for partial recent games / QB change / part-timers / injury-shortened last game; zero games for all
+(pass_yds MAE worse), snap-weighted history, injury-only weights; zero games for RB/WR/TE only passed MAE both years but
+green 2026 -2.6u (strongest lead, re-test at season end).
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).
