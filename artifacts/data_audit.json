@@ -1,9 +1,9 @@
 {
- "built": "2026-10-23T03:28:34+00:00",
+ "built": "2026-10-23T08:20:11+00:00",
  "scores": {
   "ok": true,
-  "games": 3121,
-  "matched": 3121,
+  "games": 3122,
+  "matched": 3122,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3121,
+  "games": 3122,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -109,7 +109,7 @@
     "espn_venue": "Soldier Field",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": "grass",
+    "nflverse_surface": ",grass",
     "espn_current": true
    },
    {
@@ -402,8 +402,8 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 700,
-  "not_active": 240,
+  "listings": 650,
+  "not_active": 221,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -420,38 +420,25 @@
    }
   ],
   "n_unmatched": 2,
-  "status_disagreements": [
-   {
-    "team": "CHI",
-    "player": "T.J. Edwards",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "NE",
-    "player": "Alijah Vera-Tucker",
-    "espn": "IR",
-    "league": "OUT"
-   }
-  ],
-  "n_status_disagree": 2,
+  "status_disagreements": [],
+  "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-23T03:28:51+00:00"
+  "checked": "2026-10-23T08:20:24+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261023T032827Z.json",
-  "games": 26,
+  "snapshot": "odds_20261023T082002Z.json",
+  "games": 27,
   "books_seen": {
-   "draftkings": 26,
-   "fanduel": 26,
-   "betrivers": 26,
-   "novig": 26,
-   "prophetx": 15,
+   "draftkings": 27,
+   "fanduel": 27,
    "betmgm": 13,
    "betonlineag": 25,
    "lowvig": 25,
+   "betrivers": 25,
+   "novig": 27,
    "pinnacle": 13,
+   "prophetx": 14,
    "hardrockbet": 13
   },
   "configured_missing": []
