@@ -2,12 +2,12 @@
  "remaining": 182,
  "first_seen": "2026-09-29T17:24:00-04:00",
  "remaining_at": "2026-10-23T09:16:59-04:00",
- "last_api_run": "2026-10-23T13:15:44+00:00",
- "last_model_run": "2026-10-23T15:41:15+00:00",
+ "last_api_run": "2026-10-23T17:59:16+00:00",
+ "last_model_run": "2026-10-23T17:59:16+00:00",
  "last_decision": {
-  "at": "2026-10-23T15:41:15+00:00",
-  "mode": "espn",
-  "reason": "manual run"
+  "at": "2026-10-23T17:59:16+00:00",
+  "mode": "api",
+  "reason": "paced: every 4.4 h to last the month (182 credits left)"
  },
  "done": [
   "injury-2026-09-30",
