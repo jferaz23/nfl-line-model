@@ -131,7 +131,11 @@ vacated volume live from ESPN's injury list + nflverse; history from snap counts
 ET, Thu/Mon pre-primetime, Sunday 11 AM ET with --prices). Flag = |z| >= 0.5; categories pass_tds, receptions, under,
 over. Real DraftKings prices from The Odds API (event odds, DK only, ~1 credit per market per event) only for flagged
 leads, only from 2026-10-31 and while >= 250 credits remain. Outputs artifacts/props/ (week.json -> site.props, props_log.csv,
-props_graded.csv, backtest_curve.json). Props become green picks only if the priced live test holds up. Research scripts: scratchpad night/props_*.py (cache in
+props_graded.csv, backtest_curve.json). Props become green picks only if the priced live test holds up. Props v3 (Oct 23, user idea: player vs scheme): nflverse participation man/zone + Cover 0 per pass play
+(2016-25; 2026 not published until after the season) and FTN blitz (2022+): receiver target share vs man/zone x defense
+man rate. Strong matchups' overs went 48.0% / 43.5% / 52.8% (2024/25/26; strict version 48.5/46.2/55.7) -> priced in;
+as model features MAE mixed (rec_yds 2025 worse, pass_yds worse) -> not adopted. Lead: unfavorable-matchup unders 57% in
+2025-26 (vs ~53% base). Scripts night/props_model3.py. Research scripts: scratchpad night/props_*.py (cache in
 nfl_data_cache/props).
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
