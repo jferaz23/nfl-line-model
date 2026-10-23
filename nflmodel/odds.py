@@ -34,12 +34,17 @@ def fetch_odds(cfg, api_key: str | None = None):
     books = list(dict.fromkeys([cfg.target_book] + list(cfg.sharp_books) + list(cfg.extra_books)))[:20]
     params = {"apiKey": key, "markets": "h2h,spreads,totals", "oddsFormat": "american",
               "bookmakers": ",".join(books)}
-    r = requests.get(API_URL, params=params, timeout=30)
+    # never let the request URL (it carries the key) reach an error message, log or the public site
+    try:
+        r = requests.get(API_URL, params=params, timeout=30)
+    except requests.RequestException as e:
+        raise RuntimeError(f"The Odds API could not be reached ({type(e).__name__})") from None
     if r.status_code == 401:
         raise RuntimeError("The Odds API rejected the key (401). Check ODDS_API_KEY.")
     if r.status_code == 429:
         raise RuntimeError("The Odds API quota exhausted or rate-limited (429).")
-    r.raise_for_status()
+    if not r.ok:
+        raise RuntimeError(f"The Odds API returned {r.status_code} {r.reason}")
     meta = {h: r.headers.get(h) for h in ("x-requests-remaining", "x-requests-used", "x-requests-last")}
     return r.json(), meta
 

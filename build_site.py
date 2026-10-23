@@ -444,6 +444,8 @@ def line_history(lines: pd.DataFrame, week: dict) -> dict:
 
 # ----------------------------------------------------------------------------- early-week value
 EARLY_EDGE = 3.0
+EARLY_BACKTEST = [dict(period="2009-14", w=190, l=147, units=25.6), dict(period="2015-20", w=175, l=104, units=55.1),
+                  dict(period="2021-26", w=170, l=120, units=34.0)]
 
 
 def bet_timing(finals: dict) -> dict:
@@ -493,13 +495,13 @@ def bet_timing(finals: dict) -> dict:
 
 
 def early_value(week: dict, sched: dict, lines: pd.DataFrame | None, finals: dict) -> dict:
-    """Information only: each week's FIRST model run vs DraftKings, spreads EARLY_EDGE+ points off, graded at the
-    line and price of that run. Backtest (opening-time model vs openers, 2015-2026): 3+ point gaps won 56.3%
-    against nfelo's openers and 56.2% against ESPN BET's (2024-26), vs ~54% for the same bets at the close.
-    Unproven at DraftKings, so it is tracked here from 2026 week 4 (when the pick log starts)."""
+    """Early bets: each week's FIRST model run vs DraftKings, spreads EARLY_EDGE+ points off, graded at the line and
+    price of that run. Test 96 (Oct 23, 2026; rules stated first): an opening-time model (last week's QBs/injuries, no
+    wind) 3+ points off the market opener went 56.4% (2009-14), 62.7% (2015-20), 58.6% (2021-26) at the opener's price,
+    the close moving toward the model 61-64% of the time vs away 12-22%. Tracked at DraftKings from 2026 week 4."""
     from nflmodel.picks import grade as pgrade, profit
     from nflmodel.venues import kickoff_utc
-    out = dict(edge=EARLY_EDGE, week=[], record={})
+    out = dict(edge=EARLY_EDGE, week=[], record={}, backtest=EARLY_BACKTEST)
     lp = ART / "tracker" / "picks_log.csv"
     if not lp.exists():
         return out

@@ -136,7 +136,8 @@ def main(argv=None):
             notes.append("Model weight varies by game with each team's recent model-vs-market accuracy (nfelo-style).")
 
     dm, dt = fit_distributions(sched[sched["season"] >= cfg.first_season], cfg)
-    if args.espn_lines and not args.demo:
+
+    def espn_lines_file():
         from nflmodel import espn
         sb = espn.scoreboard(season, week)
         rows = [dict(home_team=r.home_team, away_team=r.away_team, book="draftkings", home_spread=r.home_spread,
@@ -145,7 +146,9 @@ def main(argv=None):
                 for r in sb.itertuples(index=False) if r.state == "pre" and r.home_spread is not None]
         lf = cfg.path("reports_dir") / "espn_lines.csv"
         pd.DataFrame(rows).to_csv(lf, index=False)
-        args.lines_file = str(lf)
+        return str(lf)
+    if args.espn_lines and not args.demo:
+        args.lines_file = espn_lines_file()
         notes.append("DraftKings lines from ESPN's scoreboard (model refresh between Odds API runs).")
     if args.odds_snapshot and not args.demo:
         import json as _json
@@ -156,9 +159,17 @@ def main(argv=None):
     try:
         odds, onotes = get_week_odds(cfg, target, lines_file=args.lines_file, no_odds=args.no_odds, events=events)
     except Exception as e:
-        log.warning("Odds unavailable: %s", e)
-        odds, onotes = get_week_odds(cfg, target, no_odds=True)
-        onotes = [f"Odds unavailable ({e}); model lines only."]
+        import re as _re0
+        err = _re0.sub(r"apiKey=[^&\s)]+", "apiKey=***", str(e))          # never publish the key
+        log.warning("Odds unavailable: %s", err)
+        try:                                   # fall back to DraftKings' line from ESPN (free) before model-only
+            if args.demo:
+                raise RuntimeError("demo")
+            odds, onotes = get_week_odds(cfg, target, lines_file=espn_lines_file())
+            onotes = [f"Odds API unavailable ({err}); DraftKings lines from ESPN's scoreboard instead."] + onotes
+        except Exception as e2:
+            odds, onotes = get_week_odds(cfg, target, no_odds=True)
+            onotes = [f"Odds unavailable ({err}); ESPN fallback failed ({type(e2).__name__}); model lines only."]
     notes += onotes
     # record the Odds API balance for scheduler.py (paces the month's credits)
     import re as _re

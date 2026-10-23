@@ -354,15 +354,22 @@ def dk_prices(api_key, events_needed, markets):
     import requests
     base = "https://api.the-odds-api.com/v4/sports/americanfootball_nfl"
     from .venues import team_from_name
-    evs = requests.get(f"{base}/events", params={"apiKey": api_key}, timeout=30).json()
+    try:                                   # errors must never carry the request URL (it holds the key)
+        evs = requests.get(f"{base}/events", params={"apiKey": api_key}, timeout=30).json()
+    except Exception as e:
+        log.warning("props prices: The Odds API could not be reached (%s)", type(e).__name__)
+        return pd.DataFrame(), 0
     rows, used = [], 0
     want = set(events_needed)
     for ev in evs:
         h, a = team_from_name(ev.get("home_team")), team_from_name(ev.get("away_team"))
         if (h, a) not in want:
             continue
-        r = requests.get(f"{base}/events/{ev['id']}/odds", params={"apiKey": api_key, "regions": "us", "bookmakers": "draftkings",
-                         "markets": ",".join(ODDS_KEYS[m] for m in markets), "oddsFormat": "american"}, timeout=30)
+        try:
+            r = requests.get(f"{base}/events/{ev['id']}/odds", params={"apiKey": api_key, "regions": "us", "bookmakers": "draftkings",
+                             "markets": ",".join(ODDS_KEYS[m] for m in markets), "oddsFormat": "american"}, timeout=30)
+        except Exception as e:
+            log.warning("props prices: request failed (%s)", type(e).__name__); continue
         if not r.ok:
             log.warning("props prices: %s %s", r.status_code, r.text[:120]); continue
         used += int(r.headers.get("x-requests-last") or 0)
