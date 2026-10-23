@@ -125,7 +125,13 @@ GBM) vs lines 2024-26: line MAE beats the projection in nearly every market; gre
 52.2% -61u at -115; yardage markets z>=0.5 2025 51.5%, 2026 49.3%); apparent edges sit in pass TDs/receptions where unseen
 juice is skewed. Not recommended; info-only tracker at most. Props v2 (role-change features: vacated targets/carries from snap counts,
 share of remaining volume, short-term form) also failed: green 2025 53.3% -4u, 2026 53.0% -6u, noise 1-2/4; yardage z>=0.5
-48.8%/48.6%. Leads only: big-edge unders (66%/56%/52% 2024-26) and pass TDs/receptions (need real prices to judge). Research scripts: scratchpad night/props_*.py (cache in
+48.8%/48.6%. Leads only: big-edge unders (66%/56%/52% 2024-26) and pass TDs/receptions (need real prices to judge).
+Props tab (Oct 23, INFORMATION ONLY, user-approved plan): props_run.py + nflmodel/props.py (v2 role-change projections;
+vacated volume live from ESPN's injury list + nflverse; history from snap counts), .github/workflows/props.yml (daily 9 AM
+ET, Thu/Mon pre-primetime, Sunday 11 AM ET with --prices). Flag = |z| >= 0.5; categories pass_tds, receptions, under,
+over. Real DraftKings prices from The Odds API (event odds, DK only, ~1 credit per market per event) only for flagged
+leads, only from 2026-10-31 and while >= 250 credits remain. Outputs artifacts/props/ (week.json -> site.props, props_log.csv,
+props_graded.csv, backtest_curve.json). Props become green picks only if the priced live test holds up. Research scripts: scratchpad night/props_*.py (cache in
 nfl_data_cache/props).
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).

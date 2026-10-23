@@ -1,0 +1,57 @@
+# Player props, INFORMATION ONLY (props_run.py): DraftKings prop lines from ESPN (free), role-aware projections,
+# flagged disagreements logged and graded. Sunday's run also fetches DraftKings prices from The Odds API for the two
+# leads being tested (budget-gated in props_run.py: starts after the Oct 30 credit reset, keeps >= 250 credits).
+# The site picks up artifacts/props/week.json on the next Update run (every 15 minutes).
+name: Props
+
+on:
+  schedule:
+    - cron: "0 13 * * *"       # every morning, 9 AM ET: lines, projections, grading
+    - cron: "15 21 * * 4"      # Thursday 5:15 PM ET, before Thursday night
+    - cron: "0 15 * * 0"       # Sunday 11 AM ET, before the 1 PM games (with prices)
+    - cron: "15 21 * * 1"      # Monday 5:15 PM ET, before Monday night
+  workflow_dispatch:
+    inputs:
+      prices:
+        description: "Fetch DraftKings prices for the leads (costs Odds API credits; budget-gated)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nfl-props
+  cancel-in-progress: false
+
+jobs:
+  props:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Props (information only)
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: |
+          if [ "${{ github.event.schedule }}" = "0 15 * * 0" ] || [ "${{ inputs.prices }}" = "true" ]; then
+            python props_run.py --prices
+          else
+            python props_run.py
+          fi
+      - name: Save to the repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add artifacts/props artifacts/odds_budget.json
+          if git diff --cached --quiet; then echo "Nothing new"; exit 0; fi
+          git commit -m "props: lines, projections and grading ($(date -u +'%Y-%m-%d %H:%M UTC'))"
+          for i in 1 2 3; do
+            git -c rebase.autoStash=true pull --rebase -X theirs && git push && break
+            sleep 10
+          done

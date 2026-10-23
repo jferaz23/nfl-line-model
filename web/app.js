@@ -1300,7 +1300,7 @@
     const bb = document.getElementById("bottombar"); if (!bb) return;
     bb.querySelectorAll("a").forEach(a => a.getAttribute("href") === "#" + currentRoute ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
     const more = document.getElementById("more-btn");
-    if (more) more.onclick = () => sheet(`<h3 style="margin-top:0">More</h3><div class="more-grid">${[["games", "Games"], ["live", "Gamecast"], ["picks", "Picks"], ["breakdown", "Breakdown"], ["wind", "Wind unders"], ["alerts", "Alerts"], ["recap", "Weekly recap"], ["tools", "Parlay calculator and bet sizing"], ["futures", "Futures"], ["teams", "Teams"], ["players", "Players"], ["record", "Record"], ["bets", "Bets and P&L"], ["how", "How it works"], ["info", "Info"]].map(([k, l]) => `<a class="btn" href="#${k}" data-close-sheet>${l}</a>`).join("")}</div>`);
+    if (more) more.onclick = () => sheet(`<h3 style="margin-top:0">More</h3><div class="more-grid">${[["games", "Games"], ["live", "Gamecast"], ["picks", "Picks"], ["breakdown", "Breakdown"], ["wind", "Wind unders"], ["props", "Player props (info only)"], ["alerts", "Alerts"], ["recap", "Weekly recap"], ["tools", "Parlay calculator and bet sizing"], ["futures", "Futures"], ["teams", "Teams"], ["players", "Players"], ["record", "Record"], ["bets", "Bets and P&L"], ["how", "How it works"], ["info", "Info"]].map(([k, l]) => `<a class="btn" href="#${k}" data-close-sheet>${l}</a>`).join("")}</div>`);
   }
   if (!window.SITE_PREVIEW && "serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
 
@@ -1426,6 +1426,52 @@
     });
   }
 
+  // ---------- player props (information only; no proven edge in the 2024-26 backtest)
+  let propsFilter = "lead", propsQuery = "";
+  function renderProps() {
+    const P = S.props || {}, list = P.props || [], SM = P.summary || {}, BT = P.backtest || {};
+    const LBL = { pass_yds: "passing yards", pass_tds: "passing TDs", rush_yds: "rushing yards", rec_yds: "receiving yards", receptions: "receptions" };
+    const CAT = { pass_tds: "Passing TDs", receptions: "Receptions", under: "Big-edge unders", over: "Big-edge overs" };
+    const games = allGames();
+    const started = r => new Date(r.kickoff) <= new Date();
+    const rec = x => x && x.n ? `${x.w}-${x.l}${x.p ? "-" + x.p : ""} (${pct(x.pct, 0)})` : "–";
+    const bt = c => { const b = (BT.by_season || {})[c] || {}; return ["2024", "2025", "2026"].map(s => b[s] ? `${s}: ${b[s].w}-${b[s].l} ${pct(b[s].pct, 0)}` : "").filter(Boolean).join(" · "); };
+    const leadRow = c => { const x = SM[c]; return `<tr><td><strong>${CAT[c]}</strong></td><td class="num">${rec(x)}</td>
+      <td class="num">${x && x.n ? sgn(x.units_assumed, 1) + "u" : "–"}</td><td class="num">${x && x.priced ? `${x.priced} priced · ${sgn(x.units_real, 1)}u` : '<span class="muted">from Oct 31</span>'}</td>
+      <td class="small muted">${esc(bt(c))}</td></tr>`; };
+    const q = propsQuery.trim().toLowerCase();
+    let rows = list.filter(r => !started(r));
+    if (propsFilter === "lead") rows = rows.filter(r => r.category === "pass_tds" || r.category === "receptions" || r.category === "under");
+    else if (propsFilter !== "all") rows = rows.filter(r => r.category === propsFilter);
+    if (q) rows = rows.filter(r => (r.player + " " + r.team + " " + LBL[r.market]).toLowerCase().includes(q));
+    rows.sort((a, b) => Math.abs(b.z) - Math.abs(a.z));
+    const shown = rows.slice(0, 150);
+    const body = shown.map(r => `<tr${r.category && r.category !== "over" ? ' class="grow"' : ""}><td><strong>${esc(r.player)}</strong> <span class="small muted">${esc(r.team)} ${esc(r.pos || "")}</span>
+        <div class="small muted">${esc(r.away)} @ ${esc(r.home)} · ${esc(fmtDay(dt(r.kickoff)))} ${esc(fmtTime(dt(r.kickoff)))}</div></td>
+      <td>${esc(LBL[r.market] || r.market)}</td><td class="num">${trim(r.line)}${fin(r.open_line) && r.open_line !== r.line ? ` <span class="small muted">(opened ${trim(r.open_line)})</span>` : ""}</td>
+      <td class="num">${num(r.proj, 1)}</td><td class="num"><strong>${r.side === "over" ? "Over" : "Under"}</strong> <span class="small muted">${sgn(r.edge, 1)}</span></td>
+      <td class="num">${num(Math.abs(r.z), 2)}</td><td class="num">${fin(r.price) ? am(r.price) : '<span class="muted">–</span>'}</td>
+      <td>${r.category ? `<span class="chip ${r.category === "over" ? "soft" : ""}">${esc(CAT[r.category])}</span>` : ""}${r.vac >= 4 ? ` <span class="small muted" title="Targets/carries per game left by teammates ruled out">+${num(r.vac, 0)} vacated</span>` : ""}</td></tr>`).join("");
+    const seg = [["lead", "Leads being tested"], ["pass_tds", "Passing TDs"], ["receptions", "Receptions"], ["under", "Unders"], ["over", "Overs"], ["all", "All lines"]]
+      .map(([k, l]) => `<button type="button" data-pf2="${k}" aria-pressed="${propsFilter === k}">${l}</button>`).join("");
+    view.innerHTML = `<div class="panel"><h2>Player props <span class="small muted">(information only)</span></h2>
+      <p class="lede" style="margin:0">DraftKings' player prop lines next to the model's projection for each player: recent usage and efficiency, the opponent, the expected game script, and targets or carries left behind by injured teammates. <strong>These are not recommendations.</strong> In a backtest of 2024-26 prop lines, DraftKings' lines were more accurate than the projections, and the model's picks did not beat the price overall. Two leads looked promising and are being tested live: big disagreements on passing TDs and receptions (those props often carry lopsided prices, so real DraftKings prices are pulled for them from Oct 31) and big-disagreement unders.</p></div>
+      <div class="panel"><h2>Leads being tested</h2>
+      <div class="tablewrap"><table><thead><tr><th>Lead</th><th class="num">Live record</th><th class="num">Units at −115</th><th class="num">At DraftKings' real price</th><th>Backtest (assumed −115)</th></tr></thead>
+      <tbody>${["pass_tds", "receptions", "under", "over"].map(leadRow).join("")}</tbody></table></div>
+      <p class="note">"Big" = the projection is at least ${num(P.big_z || 0.5, 1)} standard deviations from the line. Live record = flagged props graded after the game (did not play = void). Props turn into green picks only if the live test with real prices holds up over a meaningful sample.</p></div>
+      <div class="panel"><div class="toolbar" style="justify-content:space-between;margin:0 0 8px"><h2>This week, biggest disagreements first</h2>
+        <div class="seg" role="group" aria-label="Filter">${seg}</div></div>
+        <div class="toolbar"><label class="fld" style="min-width:220px">Search player or team<input id="props-q" value="${esc(propsQuery)}" placeholder="e.g. Lamb or DAL"></label>
+          <span class="small muted">${list.length ? `${list.length} DraftKings lines · updated ${esc(fmtDay(dt(P.generated)))} ${esc(fmtTime(dt(P.generated)))}` : ""}</span></div>
+        ${shown.length ? `<div class="tablewrap"><table><thead><tr><th>Player</th><th>Prop</th><th class="num">DK line</th><th class="num">Projection</th><th class="num">Model side</th><th class="num">Size</th><th class="num">DK price</th><th>Lead</th></tr></thead><tbody>${body}</tbody></table></div>`
+          : `<p class="empty">${list.length ? "No props match this filter." : "Props appear once DraftKings posts lines for this week's games."}</p>`}
+        <p class="note">Size = how far the projection is from the line, in standard deviations of the model's usual miss. Overs are shown for information; in the backtest, big-disagreement overs lost every season. Information only, not financial advice.</p></div>`;
+    view.querySelectorAll("[data-pf2]").forEach(b => b.onclick = () => { propsFilter = b.dataset.pf2; renderProps(); });
+    const inp = document.getElementById("props-q");
+    if (inp) inp.oninput = () => { propsQuery = inp.value; const pos = inp.selectionStart; renderProps(); const n = document.getElementById("props-q"); if (n) { n.focus(); n.setSelectionRange(pos, pos); } };
+  }
+
   // ---------- browser alert settings (which pick changes notify this device)
   const ASET = "nflmodel-alertset";
   function wantAlert(a) {
@@ -1449,7 +1495,7 @@
   const SCROLL = {};
 
   // ------------------------------------------------------------------ router
-  const ROUTES = { wind: renderWind, recap: renderRecap, tools: renderTools, how: renderHow, alerts: renderAlerts, games: renderGames, picks: renderPicks, breakdown: renderBreakdown, futures: renderFutures, teams: renderTeams,
+  const ROUTES = { props: renderProps, wind: renderWind, recap: renderRecap, tools: renderTools, how: renderHow, alerts: renderAlerts, games: renderGames, picks: renderPicks, breakdown: renderBreakdown, futures: renderFutures, teams: renderTeams,
     players: renderPlayers, record: renderRecord, backtest: renderRecord, bets: renderBets, info: renderInfo, live: renderLive };
   function route() {
     const [name, arg] = (location.hash.replace(/^#/, "") || "games").split("/");

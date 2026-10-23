@@ -836,6 +836,7 @@ def main() -> int:
         checks=checks, checks_ok=all(c[1] for c in checks), audit=_load(ART / "data_audit.json"),
         budget=_load(ART / "odds_budget.json"), alerts=alerts(cur, lines, kickoffs),
         early=early_value(cur, sched, lines, finals), timing=bet_timing(finals), pnl=my_pnl(sched, lines),
+        props=_load(ART / "props" / "week.json"),
     )
     if PUBLIC.exists():
         shutil.rmtree(PUBLIC, ignore_errors=True)   # OneDrive can briefly lock folders on Windows; copy over what is left
