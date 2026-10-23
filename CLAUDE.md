@@ -136,7 +136,18 @@ props_graded.csv, backtest_curve.json). Props become green picks only if the pri
 man rate. Strong matchups' overs went 48.0% / 43.5% / 52.8% (2024/25/26; strict version 48.5/46.2/55.7) -> priced in;
 as model features MAE mixed (rec_yds 2025 worse, pass_yds worse) -> not adopted. Lead: unfavorable-matchup unders 57% in
 2025-26 (vs ~53% base). Scripts night/props_model3.py. Research scripts: scratchpad night/props_*.py (cache in
-nfl_data_cache/props).
+nfl_data_cache/props). Props v4 (snap-share features) failed MAE; instead a guard: no appearance in the team's last 6 games
+or on ESPN's IR/out list -> ⚠ note, never flagged or green (Tank Dell, Oct 23).
+Props green/Top (Oct 23, user request, Test P5, EXPERIMENTAL on the site): chance = artifacts/props/curves.json (market x
+side x |z| band 0/.1/.2/.3/.5/1, shrink 200, monotone; from the v2 backtest 2024-26); green = chance >= break-even(price)
++1pt and >= 51%, Top = +3pt (props.tier). Walk-forward at -115: green 2025 382-305 +27.2u, 2026 224-180 +14.8u; Top
+97-69 / 75-56; yardage-only green 2026 just +0.7u; 3/4 noise versions profitable both years; every green was an under.
+Price = DraftKings' real price when --prices fetched it (line re-rated at DK's point), else -115 with worst_price ("value
+to"); prices fetched for candidates with chance >= break-even(-110)+1pt. Logged by tier, graded at the last pre-kickoff row.
+week.json also carries per-row "why" fields (avg, form, vol, allow, imp, band_w/n) and logs (last 12 games per player:
+5 prop stats, targets, carries, snap share); Props tab rows expand into the plain-English why + game log graded vs this
+week's DK lines. Spreads/totals: app.js whyPick (Breakdown + Games detail) / whyShort (pick cards) explain picks from
+contrib_*, d_mkt_rating (raw vs market view), QB deltas, injuries, weather, rest. Line charts show dates and every move.
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).

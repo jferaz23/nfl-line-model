@@ -40,8 +40,50 @@ FIX = {"LAR": "LA", "OAK": "LV", "SD": "LAC", "STL": "LA", "JAC": "JAX", "WSH": 
 POS = ["QB", "RB", "WR", "TE"]
 
 
+CURVES = Path(__file__).resolve().parent.parent / "artifacts" / "props" / "curves.json"
+GREEN_EDGE, TOP_EDGE, MIN_CHANCE = 0.01, 0.03, 0.51   # green / Top: chance beats DraftKings' break-even by 1 / 3 pts
+
+
 def _pd(x):
     return x.to_pandas() if hasattr(x, "to_pandas") else x
+
+
+# ----------------------------------------------------------------------------- chance, price, green / Top
+# Test P5 (Oct 23, 2026): hit rate of the model's side by market x side x |z| band (2024-26 prop lines), shrunk to 50%
+# with 200 props of weight, monotone in |z|. Walk-forward at an assumed -115: green 2025 382-305 (55.6%, +27.2u), 2026
+# 224-180 (55.4%, +14.8u); Top 97-69 / 75-56. Every green was an under, so the real price decides whether it is value.
+def load_curves(path=CURVES):
+    return json.loads(Path(path).read_text()) if Path(path).exists() else {}
+
+
+def band(curves, market, side, z):
+    """(chance, backtest wins, backtest props) for this market, side and |z| band."""
+    for lo, hi, ch, w, n in (curves.get("curves") or {}).get(f"{market}|{side}", []):
+        if lo <= abs(z) < hi:
+            return float(ch), int(w), int(n)
+    return 0.5, 0, 0
+
+
+def chance(curves, market, side, z):
+    return band(curves, market, side, z)[0]
+
+
+def break_even(price):
+    return -price / (-price + 100) if price < 0 else 100 / (price + 100)
+
+
+def worst_price(be):
+    """The worst American price whose break-even is still <= be."""
+    if be >= 0.5:
+        return -int(np.floor(100 * be / (1 - be)))
+    return int(np.ceil(100 / be - 100))
+
+
+def tier(ch, price):
+    be = break_even(price)
+    if ch >= be + TOP_EDGE and ch >= MIN_CHANCE:
+        return "top"
+    return "green" if ch >= be + GREEN_EDGE and ch >= MIN_CHANCE else ""
 
 
 def _ew(v, s, hl, season_mult):

@@ -380,3 +380,19 @@ ul.recap li:first-child { border-top: 0; }
   .two-fld { grid-template-columns: 1fr 1fr; }
 }
 @media print { .bottombar, .sheet, .logbtn, .star { display: none !important; } }
+/* plain-English pick explanations (spreads, totals, props) */
+.why { background: var(--card2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin: 0 0 10px; font-size: 13.5px; line-height: 1.5; }
+.why h4 { margin: 0 0 6px; font-size: 14px; }
+.why p { margin: 0 0 6px; }
+.why p:last-child { margin-bottom: 0; }
+.why1 { margin-top: 6px; color: var(--muted); }
+.why1 u { text-decoration-color: var(--faint); }
+/* props: click a row to open the game log */
+tr.prow { cursor: pointer; }
+tr.prow:hover td { background: var(--card2); }
+tr.pdet > td { background: var(--card2); padding: 10px 12px; white-space: normal; }
+.glog td.o, .glog th.o { text-align: center; }
+.glog .hit { color: var(--win); font-weight: 600; }
+.glog .miss { color: var(--loss); font-weight: 600; }
+.glog .push { color: var(--muted); }
+tr.pdet > td > .pbox { position: sticky; left: 0; max-width: min(860px, calc(100vw - 56px)); }

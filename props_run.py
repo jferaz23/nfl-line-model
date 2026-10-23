@@ -31,7 +31,31 @@ BUDGET = ROOT / "artifacts" / "odds_budget.json"
 MIN_CREDITS = 250                 # never let the props price test eat into the credits the spread/total updates need
 PRICE_TEST_FROM = "2026-10-31"    # the free quota resets around Oct 30; the test starts after that
 ASSUMED = -115                    # grading price when DraftKings' real price was not fetched
+STALE_GAMES = 6                   # no appearance in the team's last 6 games = no current role to project
 NOW = datetime.now(timezone.utc)
+
+
+# walk-forward backtest of the green/Top rule (Test P5, assumed -115; see nflmodel/props.py): [won, lost, units]
+GREEN_TEST = {"green": {"2025": [382, 305, 27.2], "2026": [224, 180, 14.8]}, "top": {"2025": [97, 69, 15.3], "2026": [75, 56, 9.2]},
+              "yardage_green": {"2025": [290, 237, 15.2], "2026": [110, 95, 0.7]}}
+LOG_COLS = ["passing_yards", "passing_tds", "rushing_yards", "receiving_yards", "receptions", "targets", "carries"]
+
+
+def game_logs(st, snaps, players, season, pids, n=12):
+    """Each player's last n games (any season): week, opponent, the five prop stats, targets, carries, snap share."""
+    pl = players[["gsis_id", "pfr_id"]].dropna()
+    sn = snaps.merge(pl.rename(columns={"pfr_id": "pfr_player_id", "gsis_id": "player_id"}), on="pfr_player_id", how="inner")
+    snp = dict(zip(zip(sn.player_id, sn.season, sn.week), sn.offense_pct))
+    d = st[st.player_id.isin(pids)].sort_values(["season", "week"])
+    out = {}
+    for pid, g in d.groupby("player_id"):
+        rows = []
+        for r in g.tail(n).itertuples(index=False):
+            sp = snp.get((pid, r.season, r.week))
+            rows.append([int(r.season), int(r.week), r.opponent_team] + [float(np.nan_to_num(getattr(r, c))) for c in LOG_COLS]
+                        + [round(float(sp), 2) if sp is not None and pd.notna(sp) else None])
+        out[pid] = rows
+    return {"cols": ["season", "week", "opp"] + LOG_COLS + ["snap"], "players": out}
 
 
 def current_week():
@@ -75,7 +99,7 @@ def main(argv=None) -> int:
             continue
         lines.append(d.assign(espn_event=e["espn_event"], kickoff=e["kickoff"], home=e["home"], away=e["away"]))
     L = pd.concat(lines, ignore_index=True) if lines else pd.DataFrame()
-    week_rows = []
+    week_rows, out_ids = [], set()
     if len(L):
         L = L.merge(pl.rename(columns={"espn_id": "espn_athlete", "gsis_id": "player_id"}), on="espn_athlete", how="left")
         L = L.dropna(subset=["player_id"])
@@ -118,6 +142,7 @@ def main(argv=None) -> int:
         log.info("props: %d players ruled out this week", len(out_ids))
         F = P.features(st, imp, snaps, players, upcoming=up, out_ids=frozenset(out_ids))
         U = P.project(F)
+        curves = P.load_curves()
         for r in L.itertuples(index=False):
             u = U[U.player_id == r.player_id]
             if u.empty or r.market not in P.MARKETS:
@@ -126,43 +151,106 @@ def main(argv=None) -> int:
             proj, sd = float(u[f"proj_{r.market}"]), float(u[f"sd_{r.market}"])
             z = (proj - r.line) / sd if sd > 0 else 0.0
             side = "over" if proj > r.line else "under"
+            stat, vol, _ = P.MARKETS[r.market]
+            _, bw, bn = P.band(curves, r.market, side, z)
+            num = lambda x, d=1: (round(float(x), d) if pd.notna(x) else None)
             week_rows.append(dict(season=season, week=week, espn_event=r.espn_event, kickoff=r.kickoff, home=r.home, away=r.away,
                                   player_id=r.player_id, player=r.display_name, team=r.team, pos=r.pos, market=r.market, line=r.line,
-                                  open_line=r.open_line, proj=round(proj, 1), edge=round(proj - r.line, 1), z=round(z, 2), side=side,
-                                  vac=round(float(u.vac_tgt + u.vac_car), 1), category=category(r.market, side, z)))
+                                  open_line=r.open_line, proj=round(proj, 1), sd=round(sd, 2), edge=round(proj - r.line, 1), z=round(z, 2),
+                                  side=side, chance=round(P.chance(curves, r.market, side, z), 4),
+                                  vac=round(float(u.vac_tgt + u.vac_car), 1), category=category(r.market, side, z),
+                                  # the "why": recency-weighted average, short-term form, volume, opponent allowed to his
+                                  # position (vs average), team implied points, and the backtest band's record
+                                  avg=num(u[f"ew_{stat}"]), form=num(u[f"st_{stat}"]), vol=num(u[f"ew_{vol}"]), vol_name=vol,
+                                  allow=num(u[f"allow_{stat}"]), imp=num(r.imp_pts), band_w=bw, band_n=bn))
     W = pd.DataFrame(week_rows)
-    # ---------------- DraftKings prices for the leads (paid; budget-gated)
+    # ---------------- data-validity guard (Oct 23, after Tank Dell's IR return): a player with no appearance in his
+    # team's last STALE_GAMES games, or listed on IR / PUP / out but still on the board, has no current usage to project
+    # from; he is shown with a note and never flagged
+    if len(W):
+        pl2 = players[["gsis_id", "pfr_id"]].dropna()
+        sn = snaps.merge(pl2.rename(columns={"pfr_id": "pfr_player_id", "gsis_id": "player_id"}), on="pfr_player_id", how="inner")
+        sn["team"] = sn.team.replace(P.FIX)
+        tgames = sn[["season", "week", "team"]].drop_duplicates()
+        last_app = sn.sort_values(["season", "week"]).groupby("player_id").tail(1).set_index("player_id")[["season", "week"]]
+        def missed(pid, team):
+            if pid not in last_app.index:
+                return 99
+            s0, w0 = last_app.loc[pid, "season"], last_app.loc[pid, "week"]
+            t = tgames[tgames.team == team]
+            return int(((t.season > s0) | ((t.season == s0) & (t.week > w0))).sum())
+        W["missed"] = [missed(p, t) for p, t in zip(W.player_id, W.team)]
+        W["note"] = ""
+        stale = W.missed >= STALE_GAMES
+        listed = W.player_id.isin(out_ids)
+        W.loc[stale, "note"] = "no games in his team's last " + W.missed.clip(upper=99).astype(str) + " (role unknown)"
+        W.loc[listed, "note"] = "returning from the injury list: snap count unknown"
+        W.loc[stale | listed, "category"] = ""
+        log.info("props: %d lines not flagged (stale or returning from the injury list)", int((stale | listed).sum()))
+    # ---------------- DraftKings prices (paid; budget-gated) for the props that could be green at a normal price
+    if len(W):
+        W["price"] = np.nan; W["price_line"] = np.nan
     if args.prices and len(W):
         b = json.loads(BUDGET.read_text()) if BUDGET.exists() else {}
         key = os.environ.get("ODDS_API_KEY")
         if not key or NOW.date().isoformat() < PRICE_TEST_FROM or int(b.get("remaining", 0)) < MIN_CREDITS:
             log.info("props prices skipped (key=%s, remaining=%s, starts %s)", bool(key), b.get("remaining"), PRICE_TEST_FROM)
         else:
-            lead = W[W.category != ""]
-            mk = sorted(set(lead.market))
-            need = sorted(set(zip(lead.home, lead.away)))
-            pr, used = P.dk_prices(key, need, mk)
+            cand = W[(W.note == "") & (W.chance >= P.break_even(-110) + P.GREEN_EDGE)]
+            pr, used = P.dk_prices(key, sorted(set(zip(cand.home, cand.away))), sorted(set(cand.market)))
             log.info("props prices: %d outcomes, %d credits", len(pr), used)
+            b["remaining"] = int(b.get("remaining", 0)) - used
+            BUDGET.write_text(json.dumps(b, indent=1))
             if len(pr):
                 pr["nk"] = pr.player_name.map(P.name_key)
-                W["nk"] = W.player.map(P.name_key)
-                W = W.merge(pr.rename(columns={"point": "price_line"})[["home", "away", "nk", "market", "side", "price_line", "price"]],
-                            on=["home", "away", "nk", "market", "side"], how="left").drop(columns=["nk"])
-                b["remaining"] = int(b.get("remaining", 0)) - used
-                BUDGET.write_text(json.dumps(b, indent=1))
-    if "price" not in W.columns:
-        W["price"] = np.nan; W["price_line"] = np.nan
+                pv = {}
+                for q in pr.itertuples(index=False):
+                    pv.setdefault((q.home, q.away, q.nk, q.market), {})[q.side] = (q.point, q.price)
+                for i, r in W.iterrows():
+                    o = pv.get((r.home, r.away, P.name_key(r.player), r.market))
+                    if not o or "over" not in o or "under" not in o or o["over"][0] != o["under"][0]:
+                        continue
+                    pt = float(o["over"][0])          # DraftKings' line at the moment of the price pull (may have moved)
+                    z = (r.proj - pt) / r.sd if r.sd > 0 else 0.0
+                    sd_ = "over" if r.proj > pt else "under"
+                    W.loc[i, ["price_line", "price", "z", "edge"]] = [pt, float(o[sd_][1]), round(z, 2), round(r.proj - pt, 1)]
+                    W.loc[i, "side"] = sd_
+                    ch, bw, bn = P.band(curves, r.market, sd_, z)
+                    W.loc[i, ["chance", "band_w", "band_n"]] = [round(ch, 4), bw, bn]
+    # ---------------- green / Top: chance vs the break-even of DraftKings' price (real when fetched, else assumed)
+    if len(W):
+        W["priced"] = W.price.notna()
+        W["tier"] = [P.tier(c, p if pd.notna(p) else ASSUMED) if n == "" else "" for c, p, n in zip(W.chance, W.price, W.note)]
+        W["worst_price"] = [P.worst_price(c - P.GREEN_EDGE) if c - P.GREEN_EDGE > 0.5 else None for c in W.chance]
+        log.info("props: %d green, %d Top", int((W.tier == "green").sum()), int((W.tier == "top").sum()))
     # ---------------- log flagged props (every run; the last row before kickoff is the one graded)
     logp = OUT / "props_log.csv"
-    flagged = W[W.category != ""].assign(run_at=NOW.isoformat()) if len(W) else W
-    if len(flagged):
-        flagged.to_csv(logp, mode="a", header=not logp.exists(), index=False)
+    flagged = W[(W.category != "") | (W.tier != "")].assign(run_at=NOW.isoformat()) if len(W) else W
+    if len(W) and logp.exists():
+        # props flagged by an earlier run but not any more: log them unflagged so the last pre-kickoff row decides
+        prev = pd.read_csv(logp)
+        prev = prev[prev.season == season].sort_values("run_at").groupby(["espn_event", "player_id", "market"]).tail(1)
+        prev = prev[(prev.category.fillna("") != "") | (prev.get("tier", pd.Series("", index=prev.index)).fillna("") != "")]
+        was = set(zip(prev.espn_event.astype(str), prev.player_id, prev.market))
+        now_keys = set(zip(flagged.espn_event.astype(str), flagged.player_id, flagged.market)) if len(flagged) else set()
+        drop = [k in was and k not in now_keys for k in zip(W.espn_event.astype(str), W.player_id, W.market)]
+        unflag = W[drop].assign(category="", tier="", run_at=NOW.isoformat())
+        if len(unflag):
+            log.info("props: %d earlier flags withdrawn", len(unflag))
+            flagged = pd.concat([flagged, unflag], ignore_index=True)
+    if len(flagged):                    # rewrite the whole log (columns can grow over time)
+        old = pd.read_csv(logp) if logp.exists() else pd.DataFrame()
+        pd.concat([old, flagged], ignore_index=True).to_csv(logp, index=False)
     # ---------------- grade finished games
     graded = pd.DataFrame()
     if logp.exists():
         lg = pd.read_csv(logp)
         lg["t"] = pd.to_datetime(lg.run_at, utc=True, format="ISO8601"); lg["ko"] = pd.to_datetime(lg.kickoff, utc=True, format="ISO8601")
         lg = lg[lg.t < lg.ko].sort_values("t").groupby(["espn_event", "player_id", "market"]).tail(1)
+        if "tier" not in lg.columns:
+            lg["tier"] = ""
+        lg["tier"] = lg.tier.fillna(""); lg["category"] = lg.category.fillna("")
+        lg = lg[(lg.category != "") | (lg.tier != "")]               # withdrawn before kickoff = not graded
         stats = st.set_index(["player_id", "season", "week"])
         res = []
         for r in lg.itertuples(index=False):
@@ -175,7 +263,7 @@ def main(argv=None) -> int:
             out = "P" if act == line else ("W" if (act > line) == (r.side == "over") else "L")
             price = float(r.price) if pd.notna(getattr(r, "price", np.nan)) else np.nan
             res.append(dict(season=r.season, week=r.week, player=r.player, team=r.team, market=r.market, side=r.side, line=line,
-                            proj=r.proj, z=r.z, category=r.category, actual=act, result=out, price=price,
+                            proj=r.proj, z=r.z, category=r.category, tier=r.tier, actual=act, result=out, price=price,
                             units_assumed=profit(out, ASSUMED), units_real=(profit(out, price) if pd.notna(price) else np.nan)))
         graded = pd.DataFrame(res)
         graded.to_csv(OUT / "props_graded.csv", index=False)
@@ -187,10 +275,14 @@ def main(argv=None) -> int:
     summary = {"all": rec(graded) if len(graded) else None}
     for c in ("under", "over", "pass_tds", "receptions"):
         summary[c] = rec(graded[graded.category == c]) if len(graded) and (graded.category == c).any() else None
+    for t, m in (("green", ("green", "top")), ("top", ("top",))):     # green includes Top, as for spreads
+        summary[t] = rec(graded[graded.tier.isin(m)]) if len(graded) and graded.tier.isin(m).any() else None
     curve = json.loads((OUT / "backtest_curve.json").read_text()) if (OUT / "backtest_curve.json").exists() else {}
+    glogs = game_logs(st, snaps, players, season, set(W.player_id) if len(W) else set())
     (OUT / "week.json").write_text(json.dumps(dict(generated=NOW.isoformat(), season=season, week=week, big_z=P.BIG_Z,
                                                    assumed_price=ASSUMED, props=json.loads(W.to_json(orient="records")) if len(W) else [],
-                                                   summary=summary, backtest=curve), separators=(",", ":")), encoding="utf-8")
+                                                   summary=summary, backtest=curve, green_test=GREEN_TEST, logs=glogs),
+                                              separators=(",", ":")), encoding="utf-8")
     log.info("props: %d lines this week, %d flagged, %d graded", len(W), int((W.category != "").sum()) if len(W) else 0, len(graded))
     return 0
 

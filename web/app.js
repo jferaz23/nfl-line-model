@@ -223,7 +223,7 @@
     const model = kind === "total" ? g.model_total : -g.model_margin;
     const now = Date.now(), ko = +new Date(g.kickoff_utc);
     pts.push({ t: Math.max(Math.min(now, ko), pts[pts.length - 1].t), v: pts[pts.length - 1].v });
-    const W_ = 560, H_ = 120, pl = 58, pr = 96, pt = 14, pb = 22;
+    const W_ = 560, H_ = 136, pl = 58, pr = 96, pt = 14, pb = 38;
     const t0 = pts[0].t, t1 = Math.max(pts[pts.length - 1].t, t0 + 1);
     const vals = pts.map(p => p.v).concat(fin(model) ? [model] : []);
     let lo = Math.min(...vals), hi = Math.max(...vals); if (hi - lo < 2) { lo -= 1; hi += 1; }
@@ -232,16 +232,26 @@
     for (let i = 1; i < pts.length; i++) d += `H${x(pts[i].t)}V${y(pts[i].v)}`;
     const lbl = v => kind === "total" ? trim(v) : `${g.home_team} ${hcap(v)}`;
     const last = pts[pts.length - 1].v;
+    // every move (a logged line different from the one before) with its time, and a tick at each midnight ET
+    const moves = []; for (let i = 1; i < pts.length - 1; i++) if (pts[i].v !== pts[i - 1].v) moves.push({ t: pts[i].t, from: pts[i - 1].v, v: pts[i].v });
+    const dayKey = t => new Date(t).toLocaleDateString("en-US", { ...ET, month: "numeric", day: "numeric" });
+    const ticks = []; for (let t = t0, k = dayKey(t0); t <= t1; t += 3600e3) { const k2 = dayKey(t); if (k2 !== k) { ticks.push(t); k = k2; } }
+    const md = t => new Date(t).toLocaleDateString("en-US", { ...ET, month: "numeric", day: "numeric" });
+    const every = Math.max(1, Math.ceil(64 / ((W_ - pl - pr) * 86400e3 / (t1 - t0))));   // keep date labels ~64 units apart
     return `<svg class="chart" viewBox="0 0 ${W_} ${H_}" role="img" aria-label="${kind} line history">
       ${fin(model) ? `<line x1="${pl}" x2="${W_ - pr}" y1="${y(model)}" y2="${y(model)}" stroke="var(--model)" stroke-dasharray="4 4" stroke-width="1.5"/>
       <text x="${W_ - pr + 4}" y="${y(model) + 4}" style="fill:var(--model)">Model ${esc(lbl(model))}</text>` : ""}
+      ${ticks.map((t, i) => `<line x1="${x(t)}" x2="${x(t)}" y1="${pt}" y2="${H_ - pb}" stroke="var(--line)" stroke-width="1"/>${i % every === 0 && x(t) > pl + 52 && x(t) < W_ - pr - 52 ? `<text x="${x(t)}" y="${H_ - pb + 16}" text-anchor="middle">${esc(md(t))}</text>` : ""}`).join("")}
       <path d="${d}" fill="none" stroke="var(--vegas)" stroke-width="2"/>
+      ${moves.map(m => `<circle cx="${x(m.t)}" cy="${y(m.v)}" r="3" fill="var(--vegas)"><title>${esc(fmtStamp(new Date(m.t)))}: ${esc(lbl(m.from))} to ${esc(lbl(m.v))}</title></circle>`).join("")}
       <text x="${pl - 4}" y="${y(pts[0].v) + 4}" text-anchor="end">${esc(lbl(pts[0].v))}</text>
       <text x="${W_ - pr + 4}" y="${y(last) + (Math.abs(y(last) - y(model)) < 12 ? 14 : 4)}" style="fill:var(--vegas)">DK ${esc(lbl(last))}</text>
-      <text x="${pl}" y="${H_ - 6}">${pts[0].open ? "Open" : esc(fmtStamp(new Date(t0)).replace(" ET", ""))}</text>
-      ${pts[0].open && pts.length > 2 ? `<text x="${x(pts[1].t)}" y="${H_ - 6}" text-anchor="middle">${esc(fmtStamp(new Date(pts[1].t)).replace(" ET", ""))}</text>` : ""}
-      <text x="${W_ - pr}" y="${H_ - 6}" text-anchor="end">${now < ko ? "now" : "kickoff"}</text>
-    </svg><div class="legend"><span><i style="background:var(--vegas)"></i>DraftKings line (via ESPN)</span><span><i style="background:var(--model)"></i>Model line</span>${fin(open) ? `<span>Opened this week ${esc(lbl(open))}</span>` : ""}${fin(first) && first !== open ? `<span class="muted">First posted before the season: ${esc(lbl(first))}</span>` : ""}</div>`;
+      <text x="${pl}" y="${H_ - pb + 16}" text-anchor="middle">${esc(md(t0))}</text>
+      <text x="${pl}" y="${H_ - 4}" text-anchor="middle">open</text>
+      <text x="${W_ - pr}" y="${H_ - pb + 16}" text-anchor="middle">${esc(md(pts[pts.length - 1].t))}</text>
+      <text x="${W_ - pr}" y="${H_ - 4}" text-anchor="middle">${now < ko ? "now" : "kickoff"}</text>
+    </svg><div class="legend"><span><i style="background:var(--vegas)"></i>DraftKings line (via ESPN)</span><span><i style="background:var(--model)"></i>Model line</span>${fin(open) ? `<span>Opened this week ${esc(lbl(open))}</span>` : ""}${fin(first) && first !== open ? `<span class="muted">First posted before the season: ${esc(lbl(first))}</span>` : ""}</div>
+    <p class="small muted" style="margin:4px 0 0">Opened ${esc(lbl(open))} on ${esc(fmtStamp(new Date(t0)))}. ${moves.length ? `Moves: ${moves.slice(-8).map(m => `${esc(fmtStamp(new Date(m.t)).replace(" ET", ""))} ${esc(lbl(m.from))} → ${esc(lbl(m.v))}`).join(" · ")}${moves.length > 8 ? ` (last 8 of ${moves.length})` : ""}. Times are Eastern; a move shows at the first update that saw it.` : "No moves since."}</p>`;
   }
 
   function booksTable(W, g) {
@@ -264,7 +274,7 @@
       <tr><td>Model</td><td class="m">${esc(favLine(h, a, g.model_margin))}</td><td class="m">${num(g.model_total)}</td><td class="m">${fin(g.p_home_win_model) ? esc((g.p_home_win_model >= .5 ? h : a) + " " + pct(Math.max(g.p_home_win_model, 1 - g.p_home_win_model))) : "–"}</td></tr>
       <tr><td>DraftKings</td><td class="v">${fin(d.dkMargin) ? esc(favLine(h, a, d.dkMargin)) : "–"}</td><td class="v">${fin(g.dk_total) ? trim(g.dk_total) : "–"}</td><td class="v">${fin(d.pHomeMkt) ? esc((d.pHomeMkt >= .5 ? h : a) + " " + pct(Math.max(d.pHomeMkt, 1 - d.pHomeMkt))) : "–"}</td></tr>
       <tr class="edge"><td>Pick</td><td>${pickCell(d, d.sp)}</td><td>${pickCell(d, d.tt)}</td><td>${pickCell(d, d.wn)}</td></tr>
-    </tbody></table></div><p class="note">${GREEN_HELP}</p>`;
+    </tbody></table></div>${[d.sp, d.tt].filter(Boolean).map(p => `<details class="fold"${p.highlight ? " open" : ""}><summary>Why ${esc(p.bet)}${p.highlight ? "" : " (not green)"}</summary>${whyPick(W, g, p)}</details>`).join("")}<p class="note">${GREEN_HELP}</p>`;
   }
 
   // ------------------------------------------------------------------ best picks of the week
@@ -311,7 +321,8 @@
         <div class="pick">${esc(p.bet)} <span class="muted" style="font-weight:500">${am(p.price)}</span>${resChip(r)}</div>
         <div class="small muted">${esc(g.away_team)} @ ${esc(g.home_team)} · ${p.market}</div>
         <div class="conf" title="Chance ${pct(p.chance, 1)} vs break-even ${pct(p.breakeven, 1)}"><i style="width:${Math.round(100 * p.chance)}%"></i><b style="left:${(100 * p.breakeven).toFixed(1)}%"></b></div>
-        <div class="meta"><span>Chance <b>${pct(p.chance, 1)}</b></span><span>Needs <b>${pct(p.breakeven, 1)}</b></span><span>Value <b class="w">${val(p)}</b></span><span>Model ${edgeTxt(p.edge)} pts</span>${d.lv && d.lv.state !== "pre" ? "" : logBtn(p)}</div></a>`; };
+        <div class="meta"><span>Chance <b>${pct(p.chance, 1)}</b></span><span>Needs <b>${pct(p.breakeven, 1)}</b></span><span>Value <b class="w">${val(p)}</b></span><span>Model ${edgeTxt(p.edge)} pts</span>${d.lv && d.lv.state !== "pre" ? "" : logBtn(p)}</div>
+        ${whyShort(W, g, p) ? `<div class="small why1">${esc(whyShort(W, g, p))} · <u>why</u></div>` : ""}</a>`; };
     const next = all.filter(p => !p.highlight).slice(0, compact ? 0 : 50);
     const rows = next.map(p => { const g = games[p.game_id];
       return `<tr><td><strong>${esc(p.bet)}</strong> ${am(p.price)}</td><td>${esc(g.away_team)} @ ${esc(g.home_team)}</td><td class="num">${pct(p.chance, 1)}</td><td class="num">${pct(p.breakeven, 1)}</td><td class="num muted">${val(p)}</td></tr>`; }).join("");
@@ -499,11 +510,11 @@
       <span class="small">${pct(p.chance, 1)} to win · needs ${pct(p.breakeven, 1)} · value ${val(p)}</span></div>` : `<div class="edgebox none">No DraftKings price</div>`;
     const other = (p, m) => !p ? "" : m === "total" ? (p.side === "over" ? "Under" : "Over") : (p.side === "home" ? a : h);
     const spCard = `<div class="bd-card"><h3>Spread</h3><dl class="kv"><dt>Model</dt><dd class="m">${esc(favLine(h, a, g.model_margin))}</dd><dt>DK</dt><dd class="v">${fin(d.dkMargin) ? esc(favLine(h, a, d.dkMargin)) : "–"}</dd><dt>Edge</dt><dd>${d.sp ? edgeTxt(d.sp.edge) + " pts toward " + esc(d.sp.team) : "–"}</dd></dl>
-      ${pickBox(d.sp)}
+      ${pickBox(d.sp)}${whyPick(W, g, d.sp)}
       ${d.sp ? `<div class="bars"><span class="lab">History</span>${bar("hist", d.sp.bet, d.sp.chance, other(d.sp, "spread"))}<span class="lab">Fair</span>${bar("model", d.sp.bet, d.fair(d.sp), other(d.sp, "spread"))}<span class="lab">DK</span>${bar("vegas", d.sp.bet, fin(d.sp.breakeven) ? d.sp.breakeven / (d.sp.breakeven + implied(d.sp.side === "home" ? g.dk_away_spread_price : g.dk_home_spread_price)) : NaN, other(d.sp, "spread"))}</div>` : ""}
       <div style="margin-top:10px">${lineChart(g.game_id, g, "spread")}</div></div>`;
     const ttCard = `<div class="bd-card"><h3>Total</h3><dl class="kv"><dt>Model</dt><dd class="m">${num(g.model_total)}</dd><dt>DK</dt><dd class="v">${fin(g.dk_total) ? trim(g.dk_total) : "–"}</dd><dt>Edge</dt><dd>${d.tt ? edgeTxt(d.tt.edge) + " pts " + (d.tt.side === "over" ? "over" : "under") : "–"}</dd></dl>
-      ${pickBox(d.tt)}
+      ${pickBox(d.tt)}${whyPick(W, g, d.tt)}
       ${d.tt ? `<div class="bars"><span class="lab">History</span>${bar("hist", d.tt.bet, d.tt.chance, other(d.tt, "total"))}<span class="lab">Fair</span>${bar("model", d.tt.bet, d.fair(d.tt), other(d.tt, "total"))}<span class="lab">DK</span>${bar("vegas", d.tt.bet, fin(d.tt.breakeven) ? d.tt.breakeven / (d.tt.breakeven + implied(d.tt.side === "over" ? g.dk_under_price : g.dk_over_price)) : NaN, other(d.tt, "total"))}</div>` : ""}
       <div style="margin-top:10px">${lineChart(g.game_id, g, "total")}</div></div>`;
     const ptCard = `<div class="bd-card"><h3>Points</h3><div class="tablewrap"><table><thead><tr><th></th><th class="num">${esc(a)}</th><th class="num">${esc(h)}</th></tr></thead><tbody>
@@ -528,6 +539,68 @@
     view.querySelectorAll("[data-bd]").forEach(b => b.onclick = () => { location.hash = "breakdown/" + b.dataset.bd; });
   }
 
+  // ---------- plain-English justification for a spread or total pick (built only from the numbers the model used)
+  const WHY_PH = {
+    team_strength: "team strength (season efficiency and ratings)", home_field: "home field", quarterback: "the quarterback matchup",
+    injuries: "injuries beyond the QB", weather: "the weather", rest_travel: "rest and travel", time_of_day: "kickoff time and body clock",
+    scheme_matchup: "how the offenses match up with the defenses", venue_history: "scoring at this stadium", surface_altitude: "surface and altitude",
+    coaching: "the coaches' track records", officials: "the officiating crew", history: "recent head-to-head and ATS history",
+    situational: "situational spots and luck", drive_efficiency: "drive efficiency", motivation: "late-season motivation",
+    early_down: "early-down efficiency", big_plays: "big plays", roster_continuity: "offseason roster turnover", calendar: "time of season",
+    scoring_env: "this season's scoring level"
+  };
+  const MB = 0.45;   // config.mkt_blend_margin: the spread prediction is 55% the model's own estimate + 45% the market's view
+  function whyPick(W, g, p) {
+    if (!p || (p.market !== "spread" && p.market !== "total")) return "";
+    const h = g.home_team, a = g.away_team, out = [];
+    const sideTeam = p.market === "spread" ? p.team : null, s = p.side === "home" ? 1 : -1;
+    const detail = (k, toward) => {
+      if (k === "quarterback") {
+        const q = [[g.a_qb_name_used, a, g.a_qb_delta, g.a_qb_new], [g.h_qb_name_used, h, g.h_qb_delta, g.h_qb_new]]
+          .filter(x => x[0]).map(([n, t, dl, nw]) => `${n} (${t}${fin(dl) && Math.abs(dl) >= 1 ? `, ${num(Math.abs(dl), 1)} pts/game ${dl < 0 ? "worse" : "better"} than ${t}'s usual starter` : ""}${nw >= 0.5 ? ", new to the job" : ""})`);
+        return q.length ? `: ${q.join(" vs ")}` : "";
+      }
+      if (k === "injuries") { const m = [g.a_miss_names && `${a}: ${g.a_miss_names}`, g.h_miss_names && `${h}: ${g.h_miss_names}`].filter(Boolean);
+        return m.length ? ` (${m.join("; ").slice(0, 220)}${m.join("; ").length > 220 ? "…" : ""})` : ""; }
+      if (k === "weather") return g.indoor ? " (indoors)" : ` (forecast ${fin(g.temp_used) ? Math.round(g.temp_used) + "°F, " : ""}wind ${num(g.wind_used, 0)} mph${fin(g.gust_used) ? `, gusts ${num(g.gust_used, 0)}` : ""})`;
+      if (k === "rest_travel") return ` (${a} ${g.away_rest} days of rest, ${h} ${g.home_rest}${fin(g.away_travel_kmi) && g.away_travel_kmi >= 1 ? `; ${a} travels ${num(g.away_travel_kmi, 1)}k miles` : ""})`;
+      return "";
+    };
+    const drivers = (obj, sign) => Object.entries(obj || {}).filter(([k]) => k !== "baseline" && k !== "market_view" && k !== "win_totals")
+      .map(([k, v]) => [k, sign * v]).sort((x, y) => y[1] - x[1]);
+    if (p.market === "spread") {
+      const dk = fin(g.dk_home_spread) ? -g.dk_home_spread : null, m = g.d_mkt_rating;
+      const raw = fin(m) ? (g.model_margin - MB * m) / (1 - MB) : g.model_margin;
+      out.push(`DraftKings has <b>${esc(favLine(h, a, dk))}</b>. The model makes it <b>${esc(favLine(h, a, g.model_margin))}</b>, ${edgeTxt(p.edge)} points better for ${esc(sideTeam)}.`);
+      if (fin(m)) out.push(`That number blends two views: the model's own estimate (${esc(favLine(h, a, raw))}) and the market's recent ratings of both teams from earlier weeks' closing lines, updated for this week's quarterbacks and injuries (${esc(favLine(h, a, m))}). ${p.split ? `<b>They disagree on which side of ${esc(hcap(p.line))} ${esc(sideTeam)} lands</b>, so this pick can't be green.` : `Both are on ${esc(sideTeam)}'s side of the line.`}`);
+      const dv = drivers(g.contrib_margin, s), pro = dv.filter(x => x[1] >= 0.3).slice(0, 3), con = dv.filter(x => x[1] <= -0.3).reverse().slice(0, 2);
+      if (pro.length) out.push(`Among the model's factors, the ones helping ${esc(sideTeam)} most: ${pro.map(([k, v]) => `${WHY_PH[k] || GROUP_LABELS[k] || k} (${sgn(v, 1)} pts${detail(k, 1)})`).join("; ")}.`);
+      if (con.length) out.push(`Working against ${esc(sideTeam)}: ${con.map(([k, v]) => `${WHY_PH[k] || GROUP_LABELS[k] || k} (${sgn(v, 1)} pts${detail(k, -1)})`).join("; ")}.`);
+    } else {
+      out.push(`DraftKings' total is <b>${trim(p.line)}</b>. The model projects <b>${num(g.model_total)}</b> points, ${edgeTxt(p.edge)} ${p.side === "over" ? "above" : "below"} the line.`);
+      const sg = p.side === "over" ? 1 : -1, dv = drivers(g.contrib_total, sg);
+      const pro = dv.filter(x => x[1] >= 0.3).slice(0, 3), con = dv.filter(x => x[1] <= -0.3).reverse().slice(0, 2);
+      if (fin((g.contrib_total || {}).baseline)) out.push(`Starting from an average game (${num(g.contrib_total.baseline)} points), ${pro.length ? `the biggest pushes toward the ${p.side}: ${pro.map(([k, v]) => `${WHY_PH[k] || GROUP_LABELS[k] || k} (${sgn(v, 1)}${detail(k, 1)})`).join("; ")}` : `no single factor moves it much`}.`);
+      if (con.length) out.push(`Pulling the other way: ${con.map(([k, v]) => `${WHY_PH[k] || GROUP_LABELS[k] || k} (${sgn(v, 1)}${detail(k, -1)})`).join("; ")}.`);
+    }
+    const kind = p.market === "spread" ? "Spread" : "Total";
+    out.push(`${kind} picks with this much disagreement have won <b>${pct(p.chance, 1)}</b> of the time since ${esc(String(REC.since || 2015))} (shrunk toward 50%). DraftKings' ${am(p.price)} needs ${pct(p.breakeven, 1)} to break even, so the value is ${val(p)}.`);
+    let verdict;
+    if (p.top) verdict = `<b>Top pick:</b> the model is 4+ points off DraftKings and both views agree. Spreads this far off have been the model's best bets.`;
+    else if (p.highlight) verdict = `<b>Green:</b> at least 1 point of value at DraftKings' price${p.market === "spread" ? ", and both views agree" : ""}.`;
+    else if (p.qb_caution) verdict = `Not green: ${esc(sideTeam)}'s quarterback is new or clearly worse than usual, and picks like that only broke even historically.`;
+    else if (p.split) verdict = `Not green: the two views disagree on the side.`;
+    else verdict = `Not green: the value is under the 1-point bar, so it's a lean at best.`;
+    out.push(verdict);
+    return `<div class="why"><h4>Why ${esc(p.bet)}</h4>${out.map(x => `<p>${x}</p>`).join("")}<p class="small muted">The factor amounts come from the model's linear part (points vs an average game); a pick's chance comes from how comparable picks did, not from any one factor. Information only, not financial advice.</p></div>`;
+  }
+  function whyShort(W, g, p) {
+    if (!p) return "";
+    const s = p.side === "home" ? 1 : p.side === "away" ? -1 : p.side === "over" ? 1 : -1;
+    const dv = Object.entries((p.market === "spread" ? g.contrib_margin : g.contrib_total) || {}).filter(([k]) => !["baseline", "market_view", "win_totals"].includes(k))
+      .map(([k, v]) => [k, s * v]).sort((x, y) => y[1] - x[1]).filter(x => x[1] >= 0.3).slice(0, 2);
+    return dv.length ? `Mostly ${dv.map(([k]) => WHY_PH[k] || GROUP_LABELS[k] || k).join(" and ")}` : "";
+  }
   function contribBlock(g) {
     const block = (obj, title, unit) => {
       if (!obj || !Object.keys(obj).length) return "";
@@ -1426,48 +1499,114 @@
     });
   }
 
-  // ---------- player props (information only; no proven edge in the 2024-26 backtest)
-  let propsFilter = "lead", propsQuery = "";
+  // ---------- player props: green / Top (experimental, Test P5), averages, game logs and the "why" for every line
+  let propsFilter = "green", propsQuery = "", propsOpen = null;
+  const PSTAT = { pass_yds: "passing_yards", pass_tds: "passing_tds", rush_yds: "rushing_yards", rec_yds: "receiving_yards", receptions: "receptions" };
+  const PLBL = { pass_yds: "passing yards", pass_tds: "passing TDs", rush_yds: "rushing yards", rec_yds: "receiving yards", receptions: "receptions" };
+  const PSHORT = { pass_yds: "Pass yds", pass_tds: "Pass TD", rush_yds: "Rush yds", rec_yds: "Rec yds", receptions: "Rec" };
+  const beOf = pr => pr < 0 ? -pr / (-pr + 100) : 100 / (pr + 100);
+  function propLog(P, pid) {
+    const L = P.logs || {}, cols = L.cols || [], rows = ((L.players || {})[pid] || []);
+    return rows.map(r => { const o = {}; cols.forEach((c, i) => o[c] = r[i]); return o; });
+  }
+  function propAvgs(P, r) {
+    const lg = propLog(P, r.player_id), c = PSTAT[r.market], mean = a => a.length ? a.reduce((s, x) => s + x, 0) / a.length : NaN;
+    const ss = lg.filter(x => x.season === P.season).map(x => x[c]), l5 = lg.slice(-5).map(x => x[c]), l10 = lg.slice(-10).map(x => x[c]);
+    return { season: mean(ss), nSeason: ss.length, l5: mean(l5), n5: l5.length,
+      over10: l10.filter(x => x > r.line).length, under10: l10.filter(x => x < r.line).length, n10: l10.length };
+  }
+  function propWhy(P, r) {
+    const A = propAvgs(P, r), lbl = PLBL[r.market], price = fin(r.price) ? r.price : (P.assumed_price || -115);
+    const be = beOf(price), side = r.side === "over" ? "Over" : "Under", out = [];
+    const vol = { targets: "targets", carries: "carries", attempts: "pass attempts" }[r.vol_name] || r.vol_name;
+    out.push(`DraftKings' line is <b>${trim(fin(r.price_line) ? r.price_line : r.line)} ${lbl}</b>. The model projects <b>${num(r.proj, 1)}</b>, so it leans <b>${side.toLowerCase()}</b> by ${num(Math.abs(r.edge), 1)}.`);
+    const hist = [];
+    if (fin(A.season)) hist.push(`${num(A.season, 1)} per game this season (${A.nSeason} game${A.nSeason === 1 ? "" : "s"})`);
+    if (fin(A.l5)) hist.push(`${num(A.l5, 1)} over his last ${A.n5}`);
+    if (A.n10) hist.push(`over ${trim(r.line)} in ${A.over10} of his last ${A.n10}${A.n10 - A.over10 - A.under10 ? ` (${A.n10 - A.over10 - A.under10} exactly on it)` : ""}`);
+    if (hist.length) out.push(`He has averaged ${hist.join(", ")}.`);
+    const parts = [];
+    if (fin(r.avg)) parts.push(`his usage-weighted average (recent games count most, last season less) is ${num(r.avg, 1)}${fin(r.form) && Math.abs(r.form - r.avg) >= 0.15 * Math.max(1, Math.abs(r.avg)) ? `, and his form over the last couple of games is ${r.form > r.avg ? "hotter" : "colder"} (${num(r.form, 1)})` : ""}`);
+    if (fin(r.vol)) parts.push(`he gets about ${num(r.vol, 1)} ${vol} a game`);
+    if (fin(r.allow) && Math.abs(r.allow) >= 0.05 * Math.max(1, Math.abs(r.avg || 1))) { const opp = r.team === r.home ? r.away : r.home;
+      parts.push(`${opp} allows ${num(Math.abs(r.allow), 1)} ${r.allow > 0 ? "more" : "fewer"} ${lbl} a game than average to ${r.pos}s as a group`); }
+    if (fin(r.imp)) parts.push(`DraftKings' spread and total imply ${r.team} scores about ${num(r.imp, 1)} points${r.imp >= 25 ? " (a high-scoring spot)" : r.imp <= 19 ? " (a low-scoring spot)" : ""}`);
+    if (r.vac >= 2) parts.push(`teammates ruled out leave about ${num(r.vac, 0)} targets and carries a game to share`);
+    if (parts.length) out.push(`What the projection uses: ${parts.join("; ")}.`);
+    if (r.note) out.push(`<b>⚠ ${esc(r.note)}.</b> His old usage may not apply, so this line is never green.`);
+    else {
+      const lost = r.band_n - r.band_w;
+      out.push(`In 2024-26 prop lines, ${lbl} ${r.side}s this far from the line went ${r.band_w}-${lost}${r.band_n ? ` (${pct(r.band_w / r.band_n, 0)})` : ""}. Pulled toward 50% for safety, the model gives it a <b>${pct(r.chance, 1)}</b> chance.`);
+      const verdict = r.tier === "top" ? "<b>Top prop:</b> at least 3 points above break-even." : r.tier === "green" ? "<b>Green:</b> at least 1 point above break-even." : "Not green: not enough above break-even.";
+      out.push(fin(r.price) ? `DraftKings pays ${am(r.price)} on the ${r.side}, which needs ${pct(be, 1)} to break even. ${verdict}`
+        : `DraftKings' price for this prop hasn't been pulled (ESPN's feed has lines only), so it's rated at a typical ${am(price)}, which needs ${pct(be, 1)}. ${verdict}${fin(r.worst_price) ? ` <b>Check the price in the DraftKings app: it's value only at ${am(r.worst_price)} or better.</b>` : ""}`);
+    }
+    out.push(`<span class="small muted">Experimental: green props held up in a 2025-26 backtest at an assumed −115, but every one was an under and the edge is small. Real prices decide it. Information only, not financial advice.</span>`);
+    return `<div class="why"><h4>Why ${side} ${trim(r.line)} ${esc(lbl)}</h4>${out.map(x => `<p>${x}</p>`).join("")}</div>`;
+  }
+  function propLogTable(P, r, list) {
+    const lg = propLog(P, r.player_id).slice().reverse();
+    if (!lg.length) return `<p class="note">No games on record in the stats feed.</p>`;
+    const mine = list.filter(x => x.player_id === r.player_id && x.espn_event === r.espn_event).sort((a, b) => Object.keys(PSTAT).indexOf(a.market) - Object.keys(PSTAT).indexOf(b.market));
+    // green = went the model's way for that prop this week, red = the other way
+    const cell = (v, x) => { const t = v > x.line ? "O" : v < x.line ? "U" : "P", ok = (t === "O") === (x.side === "over");
+      return `<td class="o"><span class="${t === "P" ? "push" : ok ? "hit" : "miss"}">${trim(v)} ${t}</span></td>`; };
+    const head = mine.map(x => `<th class="o">${PSHORT[x.market]}<br><span class="small muted">${x.side === "over" ? "O" : "U"} ${trim(x.line)}</span></th>`).join("");
+    const body = lg.map(g => `<tr><td>${g.season === P.season ? "" : g.season + " "}W${g.week}</td><td>${esc(g.opp)}</td><td class="num">${fin(g.snap) ? pct(g.snap, 0) : "–"}</td>
+      ${mine.map(x => cell(g[PSTAT[x.market]], x)).join("")}<td class="num small muted">${g.targets ? g.targets + " tgt" : ""}${g.carries ? (g.targets ? " · " : "") + g.carries + " car" : ""}</td></tr>`).join("");
+    const tally = mine.map(x => { const v = lg.map(g => g[PSTAT[x.market]]), o = v.filter(y => y > x.line).length, u = v.filter(y => y < x.line).length;
+      return `${PSHORT[x.market]} ${trim(x.line)}: over ${o}, under ${u}`; }).join(" · ");
+    return `<div class="tablewrap"><table class="glog"><thead><tr><th>Game</th><th>Opp</th><th class="num">Snaps</th>${head}<th class="num">Volume</th></tr></thead><tbody>${body}</tbody></table></div>
+      <p class="small muted">His last ${lg.length} games with stats, each graded against <b>this week's</b> DraftKings line (O = over, U = under; green = the way the model leans this week, red = the other way). ${esc(tally)}. Missed games are not listed; Snaps = share of the offense's snaps.</p>`;
+  }
   function renderProps() {
-    const P = S.props || {}, list = P.props || [], SM = P.summary || {}, BT = P.backtest || {};
-    const LBL = { pass_yds: "passing yards", pass_tds: "passing TDs", rush_yds: "rushing yards", rec_yds: "receiving yards", receptions: "receptions" };
-    const CAT = { pass_tds: "Passing TDs", receptions: "Receptions", under: "Big-edge unders", over: "Big-edge overs" };
-    const games = allGames();
+    const P = S.props || {}, list = P.props || [], SM = P.summary || {}, GT = P.green_test || {};
     const started = r => new Date(r.kickoff) <= new Date();
     const rec = x => x && x.n ? `${x.w}-${x.l}${x.p ? "-" + x.p : ""} (${pct(x.pct, 0)})` : "–";
-    const bt = c => { const b = (BT.by_season || {})[c] || {}; return ["2024", "2025", "2026"].map(s => b[s] ? `${s}: ${b[s].w}-${b[s].l} ${pct(b[s].pct, 0)}` : "").filter(Boolean).join(" · "); };
-    const leadRow = c => { const x = SM[c]; return `<tr><td><strong>${CAT[c]}</strong></td><td class="num">${rec(x)}</td>
+    const bt = k => ["2025", "2026"].map(s => { const b = (GT[k] || {})[s]; return b ? `${s}: ${b[0]}-${b[1]} ${pct(b[0] / (b[0] + b[1]), 1)}, ${sgn(b[2], 1)}u` : ""; }).filter(Boolean).join(" · ");
+    const recRow = (k, label) => { const x = SM[k]; return `<tr><td><strong>${label}</strong></td><td class="num">${rec(x)}</td>
       <td class="num">${x && x.n ? sgn(x.units_assumed, 1) + "u" : "–"}</td><td class="num">${x && x.priced ? `${x.priced} priced · ${sgn(x.units_real, 1)}u` : '<span class="muted">from Oct 31</span>'}</td>
-      <td class="small muted">${esc(bt(c))}</td></tr>`; };
+      <td class="small muted">${esc(bt(k))}</td></tr>`; };
     const q = propsQuery.trim().toLowerCase();
     let rows = list.filter(r => !started(r));
-    if (propsFilter === "lead") rows = rows.filter(r => r.category === "pass_tds" || r.category === "receptions" || r.category === "under");
-    else if (propsFilter !== "all") rows = rows.filter(r => r.category === propsFilter);
-    if (q) rows = rows.filter(r => (r.player + " " + r.team + " " + LBL[r.market]).toLowerCase().includes(q));
-    rows.sort((a, b) => Math.abs(b.z) - Math.abs(a.z));
-    const shown = rows.slice(0, 150);
-    const body = shown.map(r => `<tr${r.category && r.category !== "over" ? ' class="grow"' : ""}><td><strong>${esc(r.player)}</strong> <span class="small muted">${esc(r.team)} ${esc(r.pos || "")}</span>
-        <div class="small muted">${esc(r.away)} @ ${esc(r.home)} · ${esc(fmtDay(dt(r.kickoff)))} ${esc(fmtTime(dt(r.kickoff)))}</div></td>
-      <td>${esc(LBL[r.market] || r.market)}</td><td class="num">${trim(r.line)}${fin(r.open_line) && r.open_line !== r.line ? ` <span class="small muted">(opened ${trim(r.open_line)})</span>` : ""}</td>
-      <td class="num">${num(r.proj, 1)}</td><td class="num"><strong>${r.side === "over" ? "Over" : "Under"}</strong> <span class="small muted">${sgn(r.edge, 1)}</span></td>
-      <td class="num">${num(Math.abs(r.z), 2)}</td><td class="num">${fin(r.price) ? am(r.price) : '<span class="muted">–</span>'}</td>
-      <td>${r.category ? `<span class="chip ${r.category === "over" ? "soft" : ""}">${esc(CAT[r.category])}</span>` : ""}${r.vac >= 4 ? ` <span class="small muted" title="Targets/carries per game left by teammates ruled out">+${num(r.vac, 0)} vacated</span>` : ""}</td></tr>`).join("");
-    const seg = [["lead", "Leads being tested"], ["pass_tds", "Passing TDs"], ["receptions", "Receptions"], ["under", "Unders"], ["over", "Overs"], ["all", "All lines"]]
+    if (propsFilter === "green") rows = rows.filter(r => r.tier);
+    else if (propsFilter === "top") rows = rows.filter(r => r.tier === "top");
+    else if (propsFilter !== "all") rows = rows.filter(r => r.market === propsFilter);
+    if (q) rows = rows.filter(r => (r.player + " " + r.team + " " + PLBL[r.market]).toLowerCase().includes(q));
+    const rank = r => (r.tier === "top" ? 2 : r.tier === "green" ? 1 : 0);
+    rows.sort((a, b) => rank(b) - rank(a) || (b.chance || 0) - (a.chance || 0) || Math.abs(b.z) - Math.abs(a.z));
+    const shown = rows.slice(0, 200);
+    const key = r => r.espn_event + "|" + r.player_id + "|" + r.market;
+    const body = shown.map(r => { const A = propAvgs(P, r), k = key(r), open = propsOpen === k;
+      const price = fin(r.price) ? am(r.price) : `<span class="muted" title="Not pulled yet: rated at ${am(P.assumed_price || -115)}">est. ${am(P.assumed_price || -115)}</span>`;
+      const tierChip = r.tier === "top" ? '<span class="chip top">TOP</span>' : r.tier === "green" ? '<span class="chip">GREEN</span>' : "";
+      return `<tr class="prow${r.tier ? " grow" : ""}${r.tier === "top" ? " top" : ""}" data-pk="${esc(k)}" aria-expanded="${open}"><td><strong>${esc(r.player)}</strong> <span class="small muted">${esc(r.team)} ${esc(r.pos || "")}</span>
+          <div class="small muted">${esc(r.away)} @ ${esc(r.home)} · ${esc(fmtDay(dt(r.kickoff)))} ${esc(fmtTime(dt(r.kickoff)))}</div></td>
+        <td>${esc(PLBL[r.market] || r.market)}</td><td class="num">${trim(r.line)}${fin(r.open_line) && r.open_line !== r.line ? ` <span class="small muted">(opened ${trim(r.open_line)})</span>` : ""}</td>
+        <td class="num">${fin(A.season) ? num(A.season, 1) : "–"} <span class="small muted">/ ${fin(A.l5) ? num(A.l5, 1) : "–"}</span></td>
+        <td class="num">${num(r.proj, 1)}</td><td class="num"><strong>${r.side === "over" ? "Over" : "Under"}</strong></td>
+        <td class="num">${r.note ? "–" : pct(r.chance, 1)}</td><td class="num">${price}${!fin(r.price) && r.tier && fin(r.worst_price) ? `<div class="small muted">value to ${am(r.worst_price)}</div>` : ""}</td>
+        <td>${tierChip}${r.note ? ` <span class="chip warn" title="Not rated: the model has no current usage to project from">⚠ ${esc(r.note)}</span>` : ""} <span class="small muted">${open ? "▲" : "▼"}</span></td></tr>
+        ${open ? `<tr class="pdet"><td colspan="9"><div class="pbox">${propWhy(P, r)}${propLogTable(P, r, list)}</div></td></tr>` : ""}`; }).join("");
+    const seg = [["green", "Green and Top"], ["top", "Top"], ["receptions", "Receptions"], ["rec_yds", "Rec yds"], ["rush_yds", "Rush yds"], ["pass_yds", "Pass yds"], ["pass_tds", "Pass TDs"], ["all", "All lines"]]
       .map(([k, l]) => `<button type="button" data-pf2="${k}" aria-pressed="${propsFilter === k}">${l}</button>`).join("");
-    view.innerHTML = `<div class="panel"><h2>Player props <span class="small muted">(information only)</span></h2>
-      <p class="lede" style="margin:0">DraftKings' player prop lines next to the model's projection for each player: recent usage and efficiency, the opponent, the expected game script, and targets or carries left behind by injured teammates. <strong>These are not recommendations.</strong> In a backtest of 2024-26 prop lines, DraftKings' lines were more accurate than the projections, and the model's picks did not beat the price overall. Two leads looked promising and are being tested live: big disagreements on passing TDs and receptions (those props often carry lopsided prices, so real DraftKings prices are pulled for them from Oct 31) and big-disagreement unders.</p></div>
-      <div class="panel"><h2>Leads being tested</h2>
-      <div class="tablewrap"><table><thead><tr><th>Lead</th><th class="num">Live record</th><th class="num">Units at −115</th><th class="num">At DraftKings' real price</th><th>Backtest (assumed −115)</th></tr></thead>
-      <tbody>${["pass_tds", "receptions", "under", "over"].map(leadRow).join("")}</tbody></table></div>
-      <p class="note">"Big" = the projection is at least ${num(P.big_z || 0.5, 1)} standard deviations from the line. Live record = flagged props graded after the game (did not play = void). Props turn into green picks only if the live test with real prices holds up over a meaningful sample.</p></div>
-      <div class="panel"><div class="toolbar" style="justify-content:space-between;margin:0 0 8px"><h2>This week, biggest disagreements first</h2>
+    const nG = list.filter(r => !started(r) && r.tier).length, nT = list.filter(r => !started(r) && r.tier === "top").length;
+    view.innerHTML = `<div class="panel"><h2>Player props <span class="chip warn">EXPERIMENTAL</span></h2>
+      <p class="lede" style="margin:0">DraftKings' player prop lines next to the model's projection for each player. The projection uses recent usage and efficiency, the opponent, the expected game script, and targets or carries left behind by injured teammates. Props are rated the same way as spreads: <strong>chance</strong> = how often the model's side won in 2024-26 prop lines at this size of disagreement, pulled toward 50%. <strong>Green</strong> = the chance beats DraftKings' break-even by 1+ point; <strong>Top</strong> = by 3+ points. Tap any row for the reasons and the player's game log.</p>
+      <p class="note"><strong>Price matters most here.</strong> ESPN's free DraftKings feed has the lines but not the prices, so until real prices are pulled (Sundays from Oct 31, budget allowing), a prop is rated at a typical ${am(P.assumed_price || -115)} and shows the worst price at which it's still value. Prop unders are often priced −130 or worse; if DraftKings' price is worse than the "value to" number, skip it.</p></div>
+      <div class="panel"><h2>Track record</h2>
+      <div class="tablewrap"><table><thead><tr><th></th><th class="num">Live record</th><th class="num">Units at −115</th><th class="num">At DraftKings' real price</th><th>Backtest, rated walk-forward (−115)</th></tr></thead>
+      <tbody>${recRow("green", "Green (incl. Top)")}${recRow("top", "Top")}</tbody></table></div>
+      <p class="note">Backtest: each season rated with only earlier seasons' results. Yardage props alone (no lopsided prices) went ${esc(bt("yardage_green"))}: thin. Players coming off the injury list, or with no games in their team's last 6, are never rated. Live record starts Oct 23, 2026; did not play = void.</p></div>
+      <div class="panel"><div class="toolbar" style="justify-content:space-between;margin:0 0 8px"><h2>This week${nG ? ` · ${nG} green, ${nT} Top` : ""}</h2>
         <div class="seg" role="group" aria-label="Filter">${seg}</div></div>
         <div class="toolbar"><label class="fld" style="min-width:220px">Search player or team<input id="props-q" value="${esc(propsQuery)}" placeholder="e.g. Lamb or DAL"></label>
           <span class="small muted">${list.length ? `${list.length} DraftKings lines · updated ${esc(fmtDay(dt(P.generated)))} ${esc(fmtTime(dt(P.generated)))}` : ""}</span></div>
-        ${shown.length ? `<div class="tablewrap"><table><thead><tr><th>Player</th><th>Prop</th><th class="num">DK line</th><th class="num">Projection</th><th class="num">Model side</th><th class="num">Size</th><th class="num">DK price</th><th>Lead</th></tr></thead><tbody>${body}</tbody></table></div>`
+        ${shown.length ? `<div class="tablewrap"><table><thead><tr><th>Player</th><th>Prop</th><th class="num">DK line</th><th class="num">Avg <span class="small muted">season / last 5</span></th><th class="num">Projection</th><th class="num">Pick</th><th class="num">Chance</th><th class="num">DK price</th><th></th></tr></thead><tbody>${body}</tbody></table></div>`
           : `<p class="empty">${list.length ? "No props match this filter." : "Props appear once DraftKings posts lines for this week's games."}</p>`}
-        <p class="note">Size = how far the projection is from the line, in standard deviations of the model's usual miss. Overs are shown for information; in the backtest, big-disagreement overs lost every season. Information only, not financial advice.</p></div>`;
+        <p class="note">Avg = his per-game average this season and over his last 5 games played. Information only, not financial advice.</p></div>`;
     view.querySelectorAll("[data-pf2]").forEach(b => b.onclick = () => { propsFilter = b.dataset.pf2; renderProps(); });
+    view.querySelectorAll("[data-pk]").forEach(t => t.onclick = () => { propsOpen = propsOpen === t.dataset.pk ? null : t.dataset.pk; const y = window.scrollY; renderProps(); window.scrollTo(0, y); });
     const inp = document.getElementById("props-q");
     if (inp) inp.oninput = () => { propsQuery = inp.value; const pos = inp.selectionStart; renderProps(); const n = document.getElementById("props-q"); if (n) { n.focus(); n.setSelectionRange(pos, pos); } };
   }
