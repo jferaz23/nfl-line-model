@@ -551,7 +551,9 @@ TOTALS_EDGE = 3.0
 # closing prices) 2015-26, both halves positive (2015-20 +7.1u, 2021-26 +14.3u), overs and unders both up, 7 of 12 seasons
 # up; 4+ points did not hold (-0.7u). A lead, not green: shown and tracked, graded at the last pre-kickoff update.
 TOTALS_BACKTEST = dict(w=367, l=320, units=21.4, first=dict(w=157, l=142, units=7.1), second=dict(w=210, l=178, units=14.3),
-                       over=dict(w=254, l=222, units=13.1), under=dict(w=113, l=98, units=8.3), seasons_up=7, seasons=12)
+                       over=dict(w=254, l=222, units=13.1), under=dict(w=113, l=98, units=8.3), seasons_up=7, seasons=12,
+                       # Oct 23 extended history (model rebuilt from 2003, never used to choose anything): 2006-14
+                       early=dict(w=300, l=214, units=72.8))
 
 
 def totals_watch(week: dict, finals: dict) -> dict:

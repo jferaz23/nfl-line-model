@@ -176,6 +176,12 @@ Rejected Oct 23 (main model, rules in the log): chance-curve SHRINK 100 (chosen 
 -14.7u), team penalties (-10.1u), 4th-down aggressiveness (MAE -0.0045 inside noise, Top +4.9u, green -11.5u), totals
 scoring-trend lag (following the league's recent over/under residual: 48.5% / 49.8%). Closing totals under-priced
 scoring 2024-26 by 1.1-1.5 pts/game (overs hit), but recent-trend rules did not predict it.
+Extended history (Oct 23): feature table rebuilt from 2003 (scratchpad night/ext_build.py, ext_run.py; no snap counts before
+2013, so a CHECK only), walk-forward 2006-26. In 2006-14 (never used for any choice) the live rules held: green 53.6% +62.3u,
+Top 54.7% +15.4u, teaser legs 74.7% (needs 73.9%). Totals model 3+ off the close 2006-14 300-214 58.4% +72.8u (lead now
+positive in all 3 periods; still not green: recent seasons ~54%). Model vs opener 3+ 56.0 / 61.7 / 60.7%. Primetime unders
+fail 2006-14 (47.9%). Training on 2004+ history (Test 95/95b): spread MAE 9.8887 -> 9.8616 but green win% lower and
+2021-26 green units lower -> not adopted. Props history cannot be extended: ESPN's pre-2024 props are TD scorers/tackles only.
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).
