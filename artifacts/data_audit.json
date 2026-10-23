@@ -1,5 +1,5 @@
 {
- "built": "2026-10-22T22:50:37+00:00",
+ "built": "2026-10-23T03:28:34+00:00",
  "scores": {
   "ok": true,
   "games": 3121,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 233,
+  "not_active": 240,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -422,31 +422,37 @@
   "n_unmatched": 2,
   "status_disagreements": [
    {
+    "team": "CHI",
+    "player": "T.J. Edwards",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
+   },
+   {
     "team": "NE",
     "player": "Alijah Vera-Tucker",
     "espn": "IR",
     "league": "OUT"
    }
   ],
-  "n_status_disagree": 1,
+  "n_status_disagree": 2,
   "qb_flags": [],
-  "checked": "2026-10-22T22:50:54+00:00"
+  "checked": "2026-10-23T03:28:51+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261022T225028Z.json",
-  "games": 28,
+  "snapshot": "odds_20261023T032827Z.json",
+  "games": 26,
   "books_seen": {
-   "draftkings": 28,
-   "fanduel": 28,
-   "lowvig": 28,
-   "betonlineag": 28,
-   "betrivers": 28,
-   "novig": 28,
-   "betmgm": 14,
-   "pinnacle": 14,
-   "prophetx": 14,
-   "hardrockbet": 14
+   "draftkings": 26,
+   "fanduel": 26,
+   "betrivers": 26,
+   "novig": 26,
+   "prophetx": 15,
+   "betmgm": 13,
+   "betonlineag": 25,
+   "lowvig": 25,
+   "pinnacle": 13,
+   "hardrockbet": 13
   },
   "configured_missing": []
  }
