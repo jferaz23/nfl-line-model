@@ -1580,10 +1580,10 @@
       return `<td class="o"><span class="${t === "P" ? "push" : ok ? "hit" : "miss"}">${trim(v)} ${t}</span></td>`; };
     const head = mine.map(x => `<th class="o">${PSHORT[x.market]}<br><span class="small muted">${x.side === "over" ? "O" : "U"} ${trim(x.line)}</span></th>`).join("");
     const body = lg.map(g => `<tr><td>${g.season === P.season ? "" : g.season + " "}W${g.week}</td><td>${esc(g.opp)}</td><td class="num">${fin(g.snap) ? pct(g.snap, 0) : "–"}</td>
-      ${mine.map(x => cell(g[PSTAT[x.market]], x)).join("")}<td class="num small muted">${g.targets ? g.targets + " tgt" : ""}${g.carries ? (g.targets ? " · " : "") + g.carries + " car" : ""}</td></tr>`).join("");
+      ${mine.map(x => cell(g[PSTAT[x.market]], x)).join("")}<td class="num small">${g.targets ? `${g.receptions} catch${g.receptions === 1 ? "" : "es"} / ${g.targets} tgt` : ""}${g.carries ? (g.targets ? " · " : "") + g.carries + " car" : ""}${!g.targets && !g.carries && !g.passing_yards ? '<span class="muted">no touches</span>' : ""}</td></tr>`).join("");
     const tally = mine.map(x => { const v = lg.map(g => g[PSTAT[x.market]]), o = v.filter(y => y > x.line).length, u = v.filter(y => y < x.line).length;
       return `${PSHORT[x.market]} ${trim(x.line)}: over ${o}, under ${u}`; }).join(" · ");
-    return `<div class="tablewrap"><table class="glog"><thead><tr><th>Game</th><th>Opp</th><th class="num">Snaps</th>${head}<th class="num">Volume</th></tr></thead><tbody>${body}</tbody></table></div>
+    return `<div class="tablewrap"><table class="glog"><thead><tr><th>Game</th><th>Opp</th><th class="num">Snaps</th>${head}<th class="num">Catches / targets · carries</th></tr></thead><tbody>${body}</tbody></table></div>
       <p class="small muted">His last ${lg.length} games with stats, each graded against <b>this week's</b> DraftKings line (O = over, U = under; green = the way the model leans this week, red = the other way). ${esc(tally)}. Missed games are not listed; Snaps = share of the offense's snaps.</p>`;
   }
   function renderProps() {
