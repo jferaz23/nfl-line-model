@@ -171,6 +171,11 @@ air yards/CPOE/EPA per dropback/sack rate) improves MAE in both years on 5/5 see
 history vs the opponent, past-game context (vacated volume and QB quality then vs now), DK line movement as a filter
 (moves against the model did better) and scheme matchups (v3) all fail; usage+team+ctx raises green on 4/5 seeds but
 2025 MAE is worse every seed (lead). Seed alone moves props green by ~+-20u -> props.project now uses random_state=0.
+Rejected Oct 23 (main model, rules in the log): chance-curve SHRINK 100 (chosen on 2015-20; green +105.4u but win rate
+57.2% vs 57.3%), DK/nfelo line movement as a green/Top filter (flips between halves), kicker FG over expected (green
+-14.7u), team penalties (-10.1u), 4th-down aggressiveness (MAE -0.0045 inside noise, Top +4.9u, green -11.5u), totals
+scoring-trend lag (following the league's recent over/under residual: 48.5% / 49.8%). Closing totals under-priced
+scoring 2024-26 by 1.1-1.5 pts/game (overs hit), but recent-trend rules did not predict it.
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).
