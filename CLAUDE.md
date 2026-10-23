@@ -165,6 +165,12 @@ share, touches and cause (injured in game / injury report / usage = benching). D
 in the log): guards for partial recent games / QB change / part-timers / injury-shortened last game; zero games for all
 (pass_yds MAE worse), snap-weighted history, injury-only weights; zero games for RB/WR/TE only passed MAE both years but
 green 2026 -2.6u (strongest lead, re-test at season end).
+Props factor research (Oct 23, P9/P10, 5 GBM seeds, rules in the log): usage (air-yards share, WOPR, air yards; QB
+air yards/CPOE/EPA per dropback/sack rate) improves MAE in both years on 5/5 seeds but not green units; team offense
+(pace, PROE, EPA), opponent defense (EPA allowed, pressure, sacks, pace), weather, game script (spread, division, rest),
+history vs the opponent, past-game context (vacated volume and QB quality then vs now), DK line movement as a filter
+(moves against the model did better) and scheme matchups (v3) all fail; usage+team+ctx raises green on 4/5 seeds but
+2025 MAE is worse every seed (lead). Seed alone moves props green by ~+-20u -> props.project now uses random_state=0.
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).

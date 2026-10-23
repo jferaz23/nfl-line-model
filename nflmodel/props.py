@@ -288,7 +288,9 @@ def project(st, first_season=2015):
         if pos:
             d = d[d.pos == pos]
         d = d[d[f"ew_{vol}"].fillna(0) > 0.5]
-        mdl = HistGradientBoostingRegressor(max_iter=300, learning_rate=0.05, max_leaf_nodes=24, min_samples_leaf=60, l2_regularization=1.0)
+        # fixed seed: early stopping's validation split is random, so an unseeded fit rated props green or not by chance
+        # between runs on the same data (Oct 23 P9: +-20 units of green across seeds)
+        mdl = HistGradientBoostingRegressor(max_iter=300, learning_rate=0.05, max_leaf_nodes=24, min_samples_leaf=60, l2_regularization=1.0, random_state=0)
         mdl.fit(d[fc], d[stat].fillna(0))
         up[f"proj_{m}"] = mdl.predict(up[fc])
         up[f"sd_{m}"] = float(np.std(d[stat].fillna(0) - mdl.predict(d[fc])))
