@@ -182,6 +182,12 @@ Top 54.7% +15.4u, teaser legs 74.7% (needs 73.9%). Totals model 3+ off the close
 positive in all 3 periods; still not green: recent seasons ~54%). Model vs opener 3+ 56.0 / 61.7 / 60.7%. Primetime unders
 fail 2006-14 (47.9%). Training on 2004+ history (Test 95/95b): spread MAE 9.8887 -> 9.8616 but green win% lower and
 2021-26 green units lower -> not adopted. Props history cannot be extended: ESPN's pre-2024 props are TD scorers/tackles only.
+Early bets (Oct 23, Test 96): an opening-time model (last week's QB/injuries, no wind) 3+ points off the market opener won
+56.4% (2009-14), 62.7% (2015-20), 58.6% (2021-26) at the opener's price; the close moved toward the model 61-64% vs away
+12-22% -> the Picks-tab early panel (build_site.early_value, first run of the week 3+ off DraftKings) is now a
+recommendation ("bet early"), live 6-3 from week 4. Test 97: buying half points (DK-style -10/-25 on 3/-15 on 7) lowers
+units for green/Top in both halves -> never buy points. Odds API failures (Oct 23 502 incident): errors never include
+the request URL (it holds the key); run_week falls back to ESPN's DraftKings lines before model-only.
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).
