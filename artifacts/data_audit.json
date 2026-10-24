@@ -1,5 +1,5 @@
 {
- "built": "2026-10-24T19:27:41+00:00",
+ "built": "2026-10-24T23:50:40+00:00",
  "scores": {
   "ok": true,
   "games": 3122,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 170,
+  "not_active": 155,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -423,20 +423,32 @@
   "status_disagreements": [
    {
     "team": "ATL",
-    "player": "A.J. Terrell Jr.",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "ATL",
     "player": "Beaux Collins",
     "espn": "IR",
     "league": "QUESTIONABLE"
    },
    {
     "team": "ATL",
+    "player": "Michael Jerrell",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "ATL",
     "player": "Cameron Williams",
     "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "BAL",
+    "player": "Tavius Robinson",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "BAL",
+    "player": "Lamar Jackson",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
@@ -447,9 +459,9 @@
    },
    {
     "team": "CAR",
-    "player": "Bam Martin-Scott",
+    "player": "Thomas Incoom",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "CLE",
@@ -471,27 +483,15 @@
    },
    {
     "team": "DEN",
-    "player": "Jonah Coleman",
+    "player": "Tyler Badie",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
-    "team": "DET",
-    "player": "Cade Mays",
+    "team": "DEN",
+    "player": "Jonah Elliss",
     "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "DET",
-    "player": "Brian Branch",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "HOU",
-    "player": "Tank Dell",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "IND",
@@ -518,10 +518,10 @@
     "league": "OUT"
    },
    {
-    "team": "MIN",
-    "player": "Jordan Mason",
+    "team": "NYG",
+    "player": "Tremaine Edmunds",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "NYG",
@@ -536,22 +536,10 @@
     "league": "QUESTIONABLE"
    },
    {
-    "team": "NYG",
-    "player": "Paulson Adebo",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
     "team": "NYJ",
     "player": "Francisco Mauigoa",
     "espn": "IR",
     "league": "OUT"
-   },
-   {
-    "team": "SF",
-    "player": "Christian Kirk",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
    },
    {
     "team": "TEN",
@@ -560,13 +548,13 @@
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 23,
+  "n_status_disagree": 21,
   "qb_flags": [],
-  "checked": "2026-10-24T19:27:55+00:00"
+  "checked": "2026-10-24T23:50:54+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261024T192737Z.json",
+  "snapshot": "odds_20261024T235033Z.json",
   "games": 27,
   "books_seen": {
    "draftkings": 27,
