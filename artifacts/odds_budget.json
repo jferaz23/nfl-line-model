@@ -3,11 +3,11 @@
  "first_seen": "2026-09-29T17:24:00-04:00",
  "remaining_at": "2026-10-23T21:26:39-04:00",
  "last_api_run": "2026-10-24T01:25:22+00:00",
- "last_model_run": "2026-10-24T01:25:22+00:00",
+ "last_model_run": "2026-10-24T04:58:46+00:00",
  "last_decision": {
-  "at": "2026-10-24T01:25:22+00:00",
-  "mode": "api",
-  "reason": "paced: every 4.3 h to last the month (179 credits left)"
+  "at": "2026-10-24T04:58:46+00:00",
+  "mode": "espn",
+  "reason": "model refresh (every 3 h, free)"
  },
  "done": [
   "injury-2026-09-30",
