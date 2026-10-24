@@ -1,5 +1,5 @@
 {
- "built": "2026-10-24T10:26:59+00:00",
+ "built": "2026-10-24T14:56:48+00:00",
  "scores": {
   "ok": true,
   "games": 3122,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 176,
+  "not_active": 175,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -530,12 +530,6 @@
     "league": "QUESTIONABLE"
    },
    {
-    "team": "PIT",
-    "player": "DeShon Elliott",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
     "team": "SF",
     "player": "Christian Kirk",
     "espn": "IR",
@@ -548,13 +542,13 @@
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 21,
+  "n_status_disagree": 20,
   "qb_flags": [],
-  "checked": "2026-10-24T10:27:12+00:00"
+  "checked": "2026-10-24T14:57:03+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261024T102654Z.json",
+  "snapshot": "odds_20261024T145641Z.json",
   "games": 27,
   "books_seen": {
    "draftkings": 27,
