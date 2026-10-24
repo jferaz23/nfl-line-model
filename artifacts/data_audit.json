@@ -1,5 +1,5 @@
 {
- "built": "2026-10-24T06:01:40+00:00",
+ "built": "2026-10-24T10:26:59+00:00",
  "scores": {
   "ok": true,
   "games": 3122,
@@ -420,14 +420,141 @@
    }
   ],
   "n_unmatched": 2,
-  "status_disagreements": [],
-  "n_status_disagree": 0,
+  "status_disagreements": [
+   {
+    "team": "ATL",
+    "player": "A.J. Terrell Jr.",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "ATL",
+    "player": "Beaux Collins",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "ATL",
+    "player": "Cameron Williams",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "BAL",
+    "player": "T.J. Tampa",
+    "espn": "IR",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "CAR",
+    "player": "Bam Martin-Scott",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "CLE",
+    "player": "Dillon Gabriel",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "CLE",
+    "player": "Kalia Davis",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "CLE",
+    "player": "Dylan Sampson",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DEN",
+    "player": "Jonah Coleman",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DET",
+    "player": "Cade Mays",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DET",
+    "player": "Brian Branch",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "HOU",
+    "player": "Tank Dell",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "KC",
+    "player": "Cooper McDonald",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LV",
+    "player": "Dont'e Thornton Jr.",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "LV",
+    "player": "Carter Runyon",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "MIA",
+    "player": "Kyle Louis",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "MIN",
+    "player": "Jordan Mason",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NYG",
+    "player": "Paulson Adebo",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "PIT",
+    "player": "DeShon Elliott",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "SF",
+    "player": "Christian Kirk",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "TEN",
+    "player": "Dorian Mausi",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   }
+  ],
+  "n_status_disagree": 21,
   "qb_flags": [],
-  "checked": "2026-10-24T06:01:52+00:00"
+  "checked": "2026-10-24T10:27:12+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261024T060131Z.json",
+  "snapshot": "odds_20261024T102654Z.json",
   "games": 27,
   "books_seen": {
    "draftkings": 27,
