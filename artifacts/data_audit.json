@@ -1,5 +1,5 @@
 {
- "built": "2026-10-24T14:56:48+00:00",
+ "built": "2026-10-24T19:27:41+00:00",
  "scores": {
   "ok": true,
   "games": 3122,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 175,
+  "not_active": 170,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -453,6 +453,12 @@
    },
    {
     "team": "CLE",
+    "player": "Teven Jenkins",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "CLE",
     "player": "Dillon Gabriel",
     "espn": "IR",
     "league": "OUT"
@@ -462,12 +468,6 @@
     "player": "Kalia Davis",
     "espn": "IR",
     "league": "OUT"
-   },
-   {
-    "team": "CLE",
-    "player": "Dylan Sampson",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
    },
    {
     "team": "DEN",
@@ -494,10 +494,16 @@
     "league": "QUESTIONABLE"
    },
    {
-    "team": "KC",
-    "player": "Cooper McDonald",
-    "espn": "IR",
+    "team": "IND",
+    "player": "CJ Allen",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
+   },
+   {
+    "team": "KC",
+    "player": "Brashard Smith",
+    "espn": "IR",
+    "league": "OUT"
    },
    {
     "team": "LV",
@@ -512,12 +518,6 @@
     "league": "OUT"
    },
    {
-    "team": "MIA",
-    "player": "Kyle Louis",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
     "team": "MIN",
     "player": "Jordan Mason",
     "espn": "IR",
@@ -525,9 +525,27 @@
    },
    {
     "team": "NYG",
+    "player": "Theo Johnson",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "NYG",
+    "player": "Jevon Holland",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NYG",
     "player": "Paulson Adebo",
     "espn": "IR",
     "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NYJ",
+    "player": "Francisco Mauigoa",
+    "espn": "IR",
+    "league": "OUT"
    },
    {
     "team": "SF",
@@ -542,13 +560,13 @@
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 20,
+  "n_status_disagree": 23,
   "qb_flags": [],
-  "checked": "2026-10-24T14:57:03+00:00"
+  "checked": "2026-10-24T19:27:55+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261024T145641Z.json",
+  "snapshot": "odds_20261024T192737Z.json",
   "games": 27,
   "books_seen": {
    "draftkings": 27,
