@@ -1,9 +1,9 @@
 {
- "built": "2026-10-25T19:02:17+00:00",
+ "built": "2026-10-25T23:05:38+00:00",
  "scores": {
   "ok": true,
-  "games": 3123,
-  "matched": 3123,
+  "games": 3130,
+  "matched": 3130,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,13 +12,13 @@
  },
  "lines": {
   "ok": true,
-  "games": 3123,
+  "games": 3130,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
   "favorite_disagree": [],
   "n_favorite_disagree": 0,
-  "spread_result_corr": 0.437,
+  "spread_result_corr": 0.436,
   "moneyline_entry_errors": [
    "2015_01_KC_HOU",
    "2015_15_TB_STL",
@@ -76,7 +76,7 @@
     "espn_venue": "M&T Bank Stadium",
     "espn_grass": true,
     "espn_indoor": false,
-    "nflverse_surface": "grass",
+    "nflverse_surface": ",grass",
     "espn_current": true
    },
    {
@@ -98,7 +98,7 @@
     "espn_venue": "Bank of America Stadium",
     "espn_grass": false,
     "espn_indoor": false,
-    "nflverse_surface": "grass",
+    "nflverse_surface": ",grass",
     "espn_current": true
    },
    {
@@ -186,7 +186,7 @@
     "espn_venue": "Reliant Stadium",
     "espn_grass": false,
     "espn_indoor": true,
-    "nflverse_surface": "astroturf",
+    "nflverse_surface": ",astroturf",
     "espn_current": true
    },
    {
@@ -274,7 +274,7 @@
     "espn_venue": "U.S. Bank Stadium",
     "espn_grass": false,
     "espn_indoor": true,
-    "nflverse_surface": "sportturf",
+    "nflverse_surface": ",sportturf",
     "espn_current": true
    },
    {
@@ -402,16 +402,10 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 600,
-  "not_active": 185,
-  "matched_share": 0.997,
+  "listings": 250,
+  "not_active": 86,
+  "matched_share": 0.996,
   "unmatched": [
-   {
-    "team": "CLE",
-    "full_name": "Audric Estime",
-    "position": "RB",
-    "report_status": "OUT"
-   },
    {
     "team": "PHI",
     "full_name": "AJ Epenesa",
@@ -419,7 +413,7 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 2,
+  "n_unmatched": 1,
   "status_disagreements": [
    {
     "team": "ARI",
@@ -432,78 +426,6 @@
     "player": "Carson Beck",
     "espn": "OUT",
     "league": "QUESTIONABLE"
-   },
-   {
-    "team": "ATL",
-    "player": "Avieon Terrell",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "ATL",
-    "player": "Olamide Zaccheaus",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "ATL",
-    "player": "Michael Jerrell",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "ATL",
-    "player": "Beaux Collins",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "ATL",
-    "player": "Cameron Williams",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "BAL",
-    "player": "Broderick Washington Jr.",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "BAL",
-    "player": "Tavius Robinson",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "BAL",
-    "player": "T.J. Tampa",
-    "espn": "IR",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "CAR",
-    "player": "Thomas Incoom",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "CLE",
-    "player": "Teven Jenkins",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "CLE",
-    "player": "Dillon Gabriel",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "CLE",
-    "player": "Kalia Davis",
-    "espn": "IR",
-    "league": "OUT"
    },
    {
     "team": "DAL",
@@ -536,8 +458,8 @@
     "league": "OUT"
    },
    {
-    "team": "IND",
-    "player": "Bryce Boettcher",
+    "team": "GB",
+    "player": "Benjamin St-Juste",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
@@ -560,58 +482,10 @@
     "league": "OUT"
    },
    {
-    "team": "MIA",
-    "player": "Rob Beal Jr.",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "MIA",
-    "player": "Willie Gay Jr.",
+    "team": "LA",
+    "player": "Trent McDuffie",
     "espn": "OUT",
     "league": "QUESTIONABLE"
-   },
-   {
-    "team": "NYG",
-    "player": "Marcus Mbow",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "NYG",
-    "player": "Tremaine Edmunds",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "NYG",
-    "player": "Theo Johnson",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "NYJ",
-    "player": "Dylan Parham",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "NYJ",
-    "player": "Kene Nwangwu",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "NYJ",
-    "player": "Breece Hall",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "NYJ",
-    "player": "Francisco Mauigoa",
-    "espn": "IR",
-    "league": "OUT"
    },
    {
     "team": "PHI",
@@ -632,43 +506,37 @@
     "league": "QUESTIONABLE"
    },
    {
-    "team": "TEN",
-    "player": "Calvin Ridley",
+    "team": "SEA",
+    "player": "Drew Lock",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
-    "team": "TEN",
-    "player": "Tyjae Spears",
+    "team": "SEA",
+    "player": "Connor O'Toole",
     "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "TEN",
-    "player": "Dorian Mausi",
-    "espn": "IR",
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 38,
+  "n_status_disagree": 17,
   "qb_flags": [],
-  "checked": "2026-10-25T19:02:30+00:00"
+  "checked": "2026-10-25T23:05:52+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261025T190211Z.json",
+  "snapshot": "odds_20261025T230532Z.json",
   "games": 12,
   "books_seen": {
    "draftkings": 12,
    "fanduel": 12,
-   "betrivers": 12,
    "novig": 12,
+   "betrivers": 12,
    "betmgm": 12,
-   "prophetx": 12,
-   "hardrockbet": 12,
-   "pinnacle": 10,
-   "betonlineag": 5,
-   "lowvig": 5
+   "prophetx": 11,
+   "hardrockbet": 11,
+   "pinnacle": 4,
+   "betonlineag": 2,
+   "lowvig": 2
   },
   "configured_missing": []
  }
