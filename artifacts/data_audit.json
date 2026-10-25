@@ -1,5 +1,5 @@
 {
- "built": "2026-10-25T04:04:27+00:00",
+ "built": "2026-10-25T08:32:27+00:00",
  "scores": {
   "ok": true,
   "games": 3122,
@@ -404,7 +404,7 @@
   "ok": true,
   "listings": 650,
   "not_active": 155,
-  "matched_share": 0.997,
+  "matched_share": 0.995,
   "unmatched": [
    {
     "team": "CLE",
@@ -417,9 +417,15 @@
     "full_name": "Mike Reid",
     "position": "CB",
     "report_status": "ACTIVE"
+   },
+   {
+    "team": "PHI",
+    "full_name": "AJ Epenesa",
+    "position": "DE",
+    "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 2,
+  "n_unmatched": 3,
   "status_disagreements": [
    {
     "team": "ATL",
@@ -431,25 +437,19 @@
     "team": "ATL",
     "player": "Beaux Collins",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "ATL",
     "player": "Cameron Williams",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "BAL",
     "player": "Tavius Robinson",
     "espn": "IR",
     "league": "OUT"
-   },
-   {
-    "team": "BAL",
-    "player": "Lamar Jackson",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
    },
    {
     "team": "BAL",
@@ -482,6 +482,18 @@
     "league": "OUT"
    },
    {
+    "team": "DAL",
+    "player": "Marist Liufau",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DAL",
+    "player": "P.J. Locke",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "DEN",
     "player": "Tyler Badie",
     "espn": "IR",
@@ -492,12 +504,6 @@
     "player": "Jonah Elliss",
     "espn": "IR",
     "league": "OUT"
-   },
-   {
-    "team": "IND",
-    "player": "CJ Allen",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
    },
    {
     "team": "KC",
@@ -530,16 +536,28 @@
     "league": "DOUBTFUL"
    },
    {
-    "team": "NYG",
-    "player": "Jevon Holland",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
     "team": "NYJ",
     "player": "Francisco Mauigoa",
     "espn": "IR",
     "league": "OUT"
+   },
+   {
+    "team": "PHI",
+    "player": "Landon Dickerson",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "PHI",
+    "player": "Eli Stowers",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "PHI",
+    "player": "Grant Calcaterra",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
    },
    {
     "team": "TEN",
@@ -548,13 +566,13 @@
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 21,
+  "n_status_disagree": 23,
   "qb_flags": [],
-  "checked": "2026-10-25T04:04:39+00:00"
+  "checked": "2026-10-25T08:32:39+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261025T040418Z.json",
+  "snapshot": "odds_20261025T083218Z.json",
   "games": 27,
   "books_seen": {
    "draftkings": 27,
