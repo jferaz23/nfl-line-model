@@ -1,5 +1,5 @@
 {
- "built": "2026-10-25T12:09:12+00:00",
+ "built": "2026-10-25T16:28:12+00:00",
  "scores": {
   "ok": true,
   "games": 3122,
@@ -403,20 +403,20 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 155,
+  "not_active": 194,
   "matched_share": 0.995,
   "unmatched": [
    {
     "team": "CLE",
     "full_name": "Audric Estime",
     "position": "RB",
-    "report_status": "ACTIVE"
+    "report_status": "OUT"
    },
    {
     "team": "NO",
     "full_name": "Mike Reid",
     "position": "CB",
-    "report_status": "ACTIVE"
+    "report_status": "OUT"
    },
    {
     "team": "PHI",
@@ -427,6 +427,18 @@
   ],
   "n_unmatched": 3,
   "status_disagreements": [
+   {
+    "team": "ATL",
+    "player": "Avieon Terrell",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "ATL",
+    "player": "Olamide Zaccheaus",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
    {
     "team": "ATL",
     "player": "Michael Jerrell",
@@ -444,6 +456,12 @@
     "player": "Cameron Williams",
     "espn": "IR",
     "league": "OUT"
+   },
+   {
+    "team": "BAL",
+    "player": "Broderick Washington Jr.",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
    },
    {
     "team": "BAL",
@@ -506,8 +524,20 @@
     "league": "OUT"
    },
    {
+    "team": "IND",
+    "player": "Bryce Boettcher",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "KC",
     "player": "Brashard Smith",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "LV",
+    "player": "Carter Runyon",
     "espn": "IR",
     "league": "OUT"
    },
@@ -518,10 +548,34 @@
     "league": "OUT"
    },
    {
-    "team": "LV",
-    "player": "Carter Runyon",
-    "espn": "IR",
-    "league": "OUT"
+    "team": "MIA",
+    "player": "Rob Beal Jr.",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "MIA",
+    "player": "Willie Gay Jr.",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NO",
+    "player": "Nathan Shepherd",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NO",
+    "player": "Cesar Ruiz",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NYG",
+    "player": "Marcus Mbow",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
    },
    {
     "team": "NYG",
@@ -534,6 +588,24 @@
     "player": "Theo Johnson",
     "espn": "OUT",
     "league": "DOUBTFUL"
+   },
+   {
+    "team": "NYJ",
+    "player": "Dylan Parham",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NYJ",
+    "player": "Kene Nwangwu",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NYJ",
+    "player": "Breece Hall",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
    },
    {
     "team": "NYJ",
@@ -561,30 +633,42 @@
    },
    {
     "team": "TEN",
+    "player": "Calvin Ridley",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "TEN",
+    "player": "Tyjae Spears",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "TEN",
     "player": "Dorian Mausi",
     "espn": "IR",
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 23,
+  "n_status_disagree": 37,
   "qb_flags": [],
-  "checked": "2026-10-25T12:09:28+00:00"
+  "checked": "2026-10-25T16:28:28+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261025T120903Z.json",
-  "games": 27,
+  "snapshot": "odds_20261025T162803Z.json",
+  "games": 26,
   "books_seen": {
-   "draftkings": 27,
-   "fanduel": 27,
+   "draftkings": 26,
+   "fanduel": 26,
    "betmgm": 13,
-   "betonlineag": 26,
-   "lowvig": 26,
-   "betrivers": 27,
-   "novig": 27,
+   "betrivers": 26,
+   "novig": 26,
    "pinnacle": 13,
    "prophetx": 14,
-   "hardrockbet": 13
+   "hardrockbet": 13,
+   "lowvig": 12,
+   "betonlineag": 12
   },
   "configured_missing": []
  }
