@@ -3,11 +3,11 @@
  "first_seen": "2026-09-29T17:24:00-04:00",
  "remaining_at": "2026-10-25T08:09:03-04:00",
  "last_api_run": "2026-10-25T12:07:46+00:00",
- "last_model_run": "2026-10-25T12:07:46+00:00",
+ "last_model_run": "2026-10-25T15:26:28+00:00",
  "last_decision": {
-  "at": "2026-10-25T12:07:46+00:00",
-  "mode": "api",
-  "reason": "mandatory: inactives, Sun 09:30 AM ET kickoff"
+  "at": "2026-10-25T15:26:28+00:00",
+  "mode": "espn",
+  "reason": "model refresh (every 3 h, free)"
  },
  "done": [
   "injury-2026-09-30",
