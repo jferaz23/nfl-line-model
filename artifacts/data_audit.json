@@ -1,9 +1,9 @@
 {
- "built": "2026-10-25T23:05:38+00:00",
+ "built": "2026-10-26T03:17:27+00:00",
  "scores": {
   "ok": true,
-  "games": 3130,
-  "matched": 3130,
+  "games": 3133,
+  "matched": 3133,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,13 +12,13 @@
  },
  "lines": {
   "ok": true,
-  "games": 3130,
+  "games": 3133,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
   "favorite_disagree": [],
   "n_favorite_disagree": 0,
-  "spread_result_corr": 0.436,
+  "spread_result_corr": 0.437,
   "moneyline_entry_errors": [
    "2015_01_KC_HOU",
    "2015_15_TB_STL",
@@ -164,7 +164,7 @@
     "espn_venue": "Ford Field",
     "espn_grass": false,
     "espn_indoor": true,
-    "nflverse_surface": "fieldturf",
+    "nflverse_surface": ",fieldturf",
     "espn_current": true
    },
    {
@@ -402,9 +402,9 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 250,
-  "not_active": 86,
-  "matched_share": 0.996,
+  "listings": 100,
+  "not_active": 35,
+  "matched_share": 0.99,
   "unmatched": [
    {
     "team": "PHI",
@@ -415,18 +415,6 @@
   ],
   "n_unmatched": 1,
   "status_disagreements": [
-   {
-    "team": "ARI",
-    "player": "Max Melton",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "ARI",
-    "player": "Carson Beck",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
    {
     "team": "DAL",
     "player": "P.J. Locke",
@@ -440,52 +428,10 @@
     "league": "QUESTIONABLE"
    },
    {
-    "team": "DEN",
-    "player": "Pat Surtain II",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "DEN",
-    "player": "Tyler Badie",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "DEN",
-    "player": "Jonah Elliss",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "GB",
-    "player": "Benjamin St-Juste",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
     "team": "KC",
     "player": "Brashard Smith",
     "espn": "IR",
     "league": "OUT"
-   },
-   {
-    "team": "LV",
-    "player": "Carter Runyon",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "LV",
-    "player": "Dont'e Thornton Jr.",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "LA",
-    "player": "Trent McDuffie",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
    },
    {
     "team": "PHI",
@@ -507,36 +453,36 @@
    },
    {
     "team": "SEA",
-    "player": "Drew Lock",
+    "player": "Connor O'Toole",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
     "team": "SEA",
-    "player": "Connor O'Toole",
+    "player": "Drew Lock",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 17,
+  "n_status_disagree": 8,
   "qb_flags": [],
-  "checked": "2026-10-25T23:05:52+00:00"
+  "checked": "2026-10-26T03:17:43+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261025T230532Z.json",
-  "games": 12,
+  "snapshot": "odds_20261026T031724Z.json",
+  "games": 14,
   "books_seen": {
-   "draftkings": 12,
-   "fanduel": 12,
-   "novig": 12,
-   "betrivers": 12,
-   "betmgm": 12,
-   "prophetx": 11,
-   "hardrockbet": 11,
-   "pinnacle": 4,
-   "betonlineag": 2,
-   "lowvig": 2
+   "draftkings": 14,
+   "fanduel": 14,
+   "novig": 14,
+   "betrivers": 14,
+   "betmgm": 14,
+   "pinnacle": 11,
+   "prophetx": 14,
+   "hardrockbet": 13,
+   "betonlineag": 12,
+   "lowvig": 12
   },
   "configured_missing": []
  }
