@@ -25,3 +25,7 @@ date,season,week,type,bet,price,stake,result,payout,source,game_id,market,side,l
 2026-10-13,2026,6,single,CHI @ ATL: ATL +3,100,10,L,,top,2026_06_CHI_ATL,spread,home,3
 2026-10-18,2026,6,single,ARI @ LA: ARI +12.5,-108,10,W,19.26,green,2026_06_ARI_LA,spread,away,12.5
 2026-10-18,2026,6,parlay,"2 legs: DAL @ GB Under (SNF), WAS @ SF Under (MNF)",249,10,W,34.90,parlay,,,,
+2026-10-20,2026,7,single,CIN @ BAL: CIN +3,-118,10,W,18.47,green,2026_07_CIN_BAL,spread,away,3
+2026-10-20,2026,7,single,TB @ CAR: CAR -3.5,-105,10,L,,top,2026_07_TB_CAR,spread,home,-3.5
+2026-10-20,2026,7,single,GB @ DET: DET -3,-108,10,P,10.00,green,2026_07_GB_DET,spread,home,-3
+2026-10-20,2026,7,single,LA @ LV: LV +4.5,-115,10,L,,green,2026_07_LA_LV,spread,home,4.5
