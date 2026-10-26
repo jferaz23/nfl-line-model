@@ -1,5 +1,5 @@
 {
- "built": "2026-10-26T17:55:36+00:00",
+ "built": "2026-10-26T22:06:30+00:00",
  "scores": {
   "ok": true,
   "games": 3134,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 50,
-  "not_active": 16,
+  "not_active": 13,
   "matched_share": 0.98,
   "unmatched": [
    {
@@ -426,33 +426,15 @@
     "player": "Marist Liufau",
     "espn": "IR",
     "league": "QUESTIONABLE"
-   },
-   {
-    "team": "PHI",
-    "player": "Landon Dickerson",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "PHI",
-    "player": "Eli Stowers",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "PHI",
-    "player": "Grant Calcaterra",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 5,
+  "n_status_disagree": 2,
   "qb_flags": [],
-  "checked": "2026-10-26T17:55:52+00:00"
+  "checked": "2026-10-26T22:06:41+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261026T175531Z.json",
+  "snapshot": "odds_20261026T220625Z.json",
   "games": 15,
   "books_seen": {
    "draftkings": 15,
