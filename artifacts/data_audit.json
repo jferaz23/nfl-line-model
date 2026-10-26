@@ -1,9 +1,9 @@
 {
- "built": "2026-10-26T08:02:29+00:00",
+ "built": "2026-10-26T13:32:26+00:00",
  "scores": {
   "ok": true,
-  "games": 3133,
-  "matched": 3133,
+  "games": 3134,
+  "matched": 3134,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3133,
+  "games": 3134,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -402,9 +402,9 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 100,
-  "not_active": 35,
-  "matched_share": 0.99,
+  "listings": 50,
+  "not_active": 16,
+  "matched_share": 0.98,
   "unmatched": [
    {
     "team": "PHI",
@@ -428,12 +428,6 @@
     "league": "QUESTIONABLE"
    },
    {
-    "team": "KC",
-    "player": "Brashard Smith",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
     "team": "PHI",
     "player": "Landon Dickerson",
     "espn": "IR",
@@ -450,33 +444,21 @@
     "player": "Grant Calcaterra",
     "espn": "IR",
     "league": "QUESTIONABLE"
-   },
-   {
-    "team": "SEA",
-    "player": "Connor O'Toole",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "SEA",
-    "player": "Drew Lock",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 8,
+  "n_status_disagree": 5,
   "qb_flags": [],
-  "checked": "2026-10-26T08:02:41+00:00"
+  "checked": "2026-10-26T13:32:38+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261026T080224Z.json",
+  "snapshot": "odds_20261026T133221Z.json",
   "games": 15,
   "books_seen": {
    "draftkings": 15,
    "fanduel": 15,
-   "betonlineag": 12,
-   "lowvig": 12,
+   "betonlineag": 14,
+   "lowvig": 14,
    "novig": 15,
    "betrivers": 15,
    "betmgm": 15,
