@@ -1,5 +1,5 @@
 {
- "built": "2026-10-27T10:11:00+00:00",
+ "built": "2026-10-27T14:19:33+00:00",
  "scores": {
   "ok": true,
   "games": 3135,
@@ -401,159 +401,15 @@
   ]
  },
  "injuries": {
-  "ok": false,
+  "ok": true,
   "listings": 700,
-  "not_active": 164,
-  "matched_share": 0.854,
+  "not_active": 160,
+  "matched_share": 0.996,
   "unmatched": [
-   {
-    "team": "BUF",
-    "full_name": "C.J. Gardner-Johnson",
-    "position": "S",
-    "report_status": "SUSPENDED"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Sam Franklin Jr.",
-    "position": "S",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Dorian Williams",
-    "position": "LB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Davison Igbinosun",
-    "position": "CB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Dawson Knox",
-    "position": "TE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "DJ Moore",
-    "position": "WR",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Ed Oliver",
-    "position": "DT",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Tyler Bass",
-    "position": "PK",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Ty Johnson",
-    "position": "RB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Joshua Palmer",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Ray Davis",
-    "position": "RB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Dalton Kincaid",
-    "position": "TE",
-    "report_status": "ACTIVE"
-   },
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Jude Bowry",
-    "position": "OT",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Ar'maj Reed-Adams",
-    "position": "G",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Keon Coleman",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Khalil Shakir",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Josh Allen",
-    "position": "QB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "James Cook III",
-    "position": "RB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Bradley Chubb",
-    "position": "LB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Dee Alford",
-    "position": "CB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "T.J. Sanders",
-    "position": "DT",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Spencer Brown",
-    "position": "OT",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Landon Jackson",
-    "position": "DE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BUF",
-    "full_name": "Christian Benford",
-    "position": "CB",
     "report_status": "ACTIVE"
    },
    {
@@ -563,106 +419,28 @@
     "report_status": "ACTIVE"
    },
    {
-    "team": "JAX",
-    "full_name": "Anton Harrison",
-    "position": "OT",
-    "report_status": "IR"
-   },
-   {
-    "team": "JAX",
-    "full_name": "Foyesade Oluokun",
-    "position": "LB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "JAX",
-    "full_name": "Ross Matiscik",
-    "position": "LS",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "JAX",
-    "full_name": "Montaric Brown",
-    "position": "CB",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "JAX",
-    "full_name": "Josh Cameron",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "JAX",
-    "full_name": "Cam Little",
-    "position": "PK",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "JAX",
-    "full_name": "Nate Boerkircher",
-    "position": "TE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "JAX",
-    "full_name": "Jalen Huskey",
-    "position": "S",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "JAX",
-    "full_name": "Albert Regis",
-    "position": "DT",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "JAX",
-    "full_name": "Wesley Williams",
+    "team": "PHI",
+    "full_name": "AJ Epenesa",
     "position": "DE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "JAX",
-    "full_name": "CJ Williams",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "JAX",
-    "full_name": "Brenton Strange",
-    "position": "TE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "JAX",
-    "full_name": "Chris Rodriguez Jr.",
-    "position": "RB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "JAX",
-    "full_name": "Travis Hunter",
-    "position": "WR",
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 102,
+  "n_unmatched": 3,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-27T10:11:14+00:00"
+  "checked": "2026-10-27T14:19:47+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261027T101054Z.json",
+  "snapshot": "odds_20261027T141925Z.json",
   "games": 14,
   "books_seen": {
    "draftkings": 14,
    "fanduel": 14,
-   "betrivers": 12,
-   "lowvig": 12,
-   "betonlineag": 12,
+   "betrivers": 14,
+   "lowvig": 14,
+   "betonlineag": 14,
    "novig": 14,
    "prophetx": 14,
    "betmgm": 14,
