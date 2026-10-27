@@ -1,5 +1,5 @@
 {
- "built": "2026-10-26T22:06:30+00:00",
+ "built": "2026-10-27T02:08:22+00:00",
  "scores": {
   "ok": true,
   "games": 3134,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 50,
-  "not_active": 13,
+  "not_active": 16,
   "matched_share": 0.98,
   "unmatched": [
    {
@@ -426,27 +426,33 @@
     "player": "Marist Liufau",
     "espn": "IR",
     "league": "QUESTIONABLE"
+   },
+   {
+    "team": "PHI",
+    "player": "Jakorian Bennett",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 2,
+  "n_status_disagree": 3,
   "qb_flags": [],
-  "checked": "2026-10-26T22:06:41+00:00"
+  "checked": "2026-10-27T02:08:37+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261026T220625Z.json",
-  "games": 15,
+  "snapshot": "odds_20261027T020819Z.json",
+  "games": 13,
   "books_seen": {
-   "draftkings": 15,
-   "fanduel": 15,
-   "betonlineag": 15,
-   "lowvig": 15,
-   "novig": 15,
-   "betrivers": 15,
-   "betmgm": 15,
-   "prophetx": 15,
-   "hardrockbet": 15,
-   "pinnacle": 11
+   "draftkings": 13,
+   "fanduel": 13,
+   "novig": 13,
+   "betrivers": 13,
+   "betmgm": 13,
+   "prophetx": 13,
+   "hardrockbet": 13,
+   "pinnacle": 11,
+   "lowvig": 12,
+   "betonlineag": 12
   },
   "configured_missing": []
  }
