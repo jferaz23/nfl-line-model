@@ -1,9 +1,9 @@
 {
- "built": "2026-10-27T02:08:22+00:00",
+ "built": "2026-10-27T06:07:39+00:00",
  "scores": {
   "ok": true,
-  "games": 3134,
-  "matched": 3134,
+  "games": 3135,
+  "matched": 3135,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3134,
+  "games": 3135,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -401,58 +401,273 @@
   ]
  },
  "injuries": {
-  "ok": true,
-  "listings": 50,
-  "not_active": 16,
-  "matched_share": 0.98,
+  "ok": false,
+  "listings": 700,
+  "not_active": 164,
+  "matched_share": 0.854,
   "unmatched": [
    {
-    "team": "PHI",
-    "full_name": "AJ Epenesa",
+    "team": "BUF",
+    "full_name": "C.J. Gardner-Johnson",
+    "position": "S",
+    "report_status": "SUSPENDED"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Sam Franklin Jr.",
+    "position": "S",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Dorian Williams",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Davison Igbinosun",
+    "position": "CB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Dawson Knox",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "DJ Moore",
+    "position": "WR",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Ed Oliver",
+    "position": "DT",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Tyler Bass",
+    "position": "PK",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Ty Johnson",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Joshua Palmer",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Ray Davis",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Dalton Kincaid",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Mike Danna",
     "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Jude Bowry",
+    "position": "OT",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Ar'maj Reed-Adams",
+    "position": "G",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Keon Coleman",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Khalil Shakir",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Josh Allen",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "James Cook III",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Bradley Chubb",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Dee Alford",
+    "position": "CB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "T.J. Sanders",
+    "position": "DT",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Spencer Brown",
+    "position": "OT",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Landon Jackson",
+    "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BUF",
+    "full_name": "Christian Benford",
+    "position": "CB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CLE",
+    "full_name": "Audric Estime",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "JAX",
+    "full_name": "Anton Harrison",
+    "position": "OT",
+    "report_status": "IR"
+   },
+   {
+    "team": "JAX",
+    "full_name": "Foyesade Oluokun",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "JAX",
+    "full_name": "Ross Matiscik",
+    "position": "LS",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "JAX",
+    "full_name": "Montaric Brown",
+    "position": "CB",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "JAX",
+    "full_name": "Josh Cameron",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "JAX",
+    "full_name": "Cam Little",
+    "position": "PK",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "JAX",
+    "full_name": "Nate Boerkircher",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "JAX",
+    "full_name": "Jalen Huskey",
+    "position": "S",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "JAX",
+    "full_name": "Albert Regis",
+    "position": "DT",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "JAX",
+    "full_name": "Wesley Williams",
+    "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "JAX",
+    "full_name": "CJ Williams",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "JAX",
+    "full_name": "Brenton Strange",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "JAX",
+    "full_name": "Chris Rodriguez Jr.",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "JAX",
+    "full_name": "Travis Hunter",
+    "position": "WR",
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 1,
-  "status_disagreements": [
-   {
-    "team": "DAL",
-    "player": "P.J. Locke",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "DAL",
-    "player": "Marist Liufau",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "PHI",
-    "player": "Jakorian Bennett",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   }
-  ],
-  "n_status_disagree": 3,
+  "n_unmatched": 102,
+  "status_disagreements": [],
+  "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-27T02:08:37+00:00"
+  "checked": "2026-10-27T06:07:54+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261027T020819Z.json",
-  "games": 13,
+  "snapshot": "odds_20261027T060732Z.json",
+  "games": 14,
   "books_seen": {
-   "draftkings": 13,
-   "fanduel": 13,
-   "novig": 13,
-   "betrivers": 13,
-   "betmgm": 13,
-   "prophetx": 13,
-   "hardrockbet": 13,
-   "pinnacle": 11,
+   "draftkings": 14,
+   "fanduel": 14,
+   "betrivers": 12,
    "lowvig": 12,
-   "betonlineag": 12
+   "betonlineag": 12,
+   "novig": 14,
+   "prophetx": 14,
+   "betmgm": 14,
+   "pinnacle": 10,
+   "hardrockbet": 14
   },
   "configured_missing": []
  }
