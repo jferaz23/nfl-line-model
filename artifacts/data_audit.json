@@ -1,5 +1,5 @@
 {
- "built": "2026-10-27T18:38:16+00:00",
+ "built": "2026-10-27T22:47:32+00:00",
  "scores": {
   "ok": true,
   "games": 3135,
@@ -403,13 +403,19 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 162,
-  "matched_share": 0.996,
+  "not_active": 163,
+  "matched_share": 0.994,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CIN",
+    "full_name": "Cam Grandy",
+    "position": "TE",
     "report_status": "ACTIVE"
    },
    {
@@ -425,23 +431,23 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 3,
+  "n_unmatched": 4,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-27T18:38:28+00:00"
+  "checked": "2026-10-27T22:47:48+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261027T183807Z.json",
-  "games": 14,
+  "snapshot": "odds_20261027T224725Z.json",
+  "games": 29,
   "books_seen": {
-   "draftkings": 14,
-   "fanduel": 14,
-   "betrivers": 14,
-   "lowvig": 14,
-   "betonlineag": 14,
-   "novig": 14,
+   "draftkings": 29,
+   "fanduel": 29,
+   "betrivers": 29,
+   "lowvig": 29,
+   "betonlineag": 29,
+   "novig": 29,
    "prophetx": 14,
    "betmgm": 14,
    "pinnacle": 14,
