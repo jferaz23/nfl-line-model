@@ -1,5 +1,5 @@
 {
- "built": "2026-10-28T02:40:51+00:00",
+ "built": "2026-10-28T06:41:28+00:00",
  "scores": {
   "ok": true,
   "games": 3135,
@@ -403,19 +403,13 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 160,
-  "matched_share": 0.996,
+  "not_active": 158,
+  "matched_share": 0.997,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CIN",
-    "full_name": "Cam Grandy",
-    "position": "TE",
     "report_status": "ACTIVE"
    },
    {
@@ -425,15 +419,15 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 3,
+  "n_unmatched": 2,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-28T02:41:04+00:00"
+  "checked": "2026-10-28T06:41:40+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261028T024043Z.json",
+  "snapshot": "odds_20261028T064119Z.json",
   "games": 29,
   "books_seen": {
    "draftkings": 29,
