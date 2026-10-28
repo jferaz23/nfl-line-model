@@ -1,5 +1,5 @@
 {
- "built": "2026-10-27T22:47:32+00:00",
+ "built": "2026-10-28T02:40:51+00:00",
  "scores": {
   "ok": true,
   "games": 3135,
@@ -403,8 +403,8 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 163,
-  "matched_share": 0.994,
+  "not_active": 160,
+  "matched_share": 0.996,
   "unmatched": [
    {
     "team": "BUF",
@@ -423,23 +423,17 @@
     "full_name": "Audric Estime",
     "position": "RB",
     "report_status": "ACTIVE"
-   },
-   {
-    "team": "PHI",
-    "full_name": "AJ Epenesa",
-    "position": "DE",
-    "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 4,
+  "n_unmatched": 3,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-27T22:47:48+00:00"
+  "checked": "2026-10-28T02:41:04+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261027T224725Z.json",
+  "snapshot": "odds_20261028T024043Z.json",
   "games": 29,
   "books_seen": {
    "draftkings": 29,
