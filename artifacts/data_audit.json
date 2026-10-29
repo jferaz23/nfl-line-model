@@ -1,5 +1,5 @@
 {
- "built": "2026-10-28T20:58:33+00:00",
+ "built": "2026-10-29T00:41:34+00:00",
  "scores": {
   "ok": true,
   "games": 3135,
@@ -403,8 +403,8 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 184,
-  "matched_share": 0.996,
+  "not_active": 227,
+  "matched_share": 0.997,
   "unmatched": [
    {
     "team": "BUF",
@@ -417,23 +417,17 @@
     "full_name": "Audric Estime",
     "position": "RB",
     "report_status": "ACTIVE"
-   },
-   {
-    "team": "MIN",
-    "full_name": "Bryson Nesbit",
-    "position": "TE",
-    "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 3,
+  "n_unmatched": 2,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-28T20:58:50+00:00"
+  "checked": "2026-10-29T00:41:51+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261028T205828Z.json",
+  "snapshot": "odds_20261029T004125Z.json",
   "games": 29,
   "books_seen": {
    "draftkings": 29,
