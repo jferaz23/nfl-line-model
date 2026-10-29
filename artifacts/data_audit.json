@@ -1,5 +1,5 @@
 {
- "built": "2026-10-29T11:59:11+00:00",
+ "built": "2026-10-29T15:46:15+00:00",
  "scores": {
   "ok": true,
   "games": 3135,
@@ -404,12 +404,18 @@
   "ok": true,
   "listings": 700,
   "not_active": 232,
-  "matched_share": 0.997,
+  "matched_share": 0.996,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Jeffery Simmons",
+    "position": "DT",
     "report_status": "ACTIVE"
    },
    {
@@ -419,15 +425,15 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 2,
+  "n_unmatched": 3,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-29T11:59:26+00:00"
+  "checked": "2026-10-29T15:46:31+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261029T115906Z.json",
+  "snapshot": "odds_20261029T154610Z.json",
   "games": 29,
   "books_seen": {
    "draftkings": 29,
