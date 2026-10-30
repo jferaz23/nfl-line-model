@@ -1,5 +1,5 @@
 {
- "built": "2026-10-29T19:26:30+00:00",
+ "built": "2026-10-30T00:03:21+00:00",
  "scores": {
   "ok": true,
   "games": 3135,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 234,
+  "not_active": 225,
   "matched_share": 0.996,
   "unmatched": [
    {
@@ -426,21 +426,34 @@
    }
   ],
   "n_unmatched": 3,
-  "status_disagreements": [],
-  "n_status_disagree": 0,
+  "status_disagreements": [
+   {
+    "team": "CAR",
+    "player": "Bobby Brown III",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "CAR",
+    "player": "Akayleb Evans",
+    "espn": "IR",
+    "league": "OUT"
+   }
+  ],
+  "n_status_disagree": 2,
   "qb_flags": [],
-  "checked": "2026-10-29T19:26:43+00:00"
+  "checked": "2026-10-30T00:03:34+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261029T192622Z.json",
+  "snapshot": "odds_20261030T000312Z.json",
   "games": 29,
   "books_seen": {
    "draftkings": 29,
    "fanduel": 29,
    "betrivers": 29,
-   "lowvig": 29,
-   "betonlineag": 29,
+   "lowvig": 27,
+   "betonlineag": 27,
    "novig": 29,
    "prophetx": 14,
    "betmgm": 14,
