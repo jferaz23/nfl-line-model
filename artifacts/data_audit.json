@@ -1,5 +1,5 @@
 {
- "built": "2026-10-30T11:41:33+00:00",
+ "built": "2026-10-30T17:15:35+00:00",
  "scores": {
   "ok": true,
   "games": 3136,
@@ -403,19 +403,13 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 210,
-  "matched_share": 0.995,
+  "not_active": 209,
+  "matched_share": 0.997,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "CHI",
-    "full_name": "Jeffery Simmons",
-    "position": "DT",
     "report_status": "ACTIVE"
    },
    {
@@ -425,18 +419,19 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 3,
+  "n_unmatched": 2,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-10-30T11:41:46+00:00"
+  "checked": "2026-10-30T17:15:48+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261030T114124Z.json",
+  "snapshot": "odds_20261030T171530Z.json",
   "games": 26,
   "books_seen": {
    "draftkings": 26,
+   "fanduel": 26,
    "betrivers": 26,
    "lowvig": 26,
    "betonlineag": 26,
@@ -446,8 +441,6 @@
    "hardrockbet": 13,
    "pinnacle": 13
   },
-  "configured_missing": [
-   "fanduel"
-  ]
+  "configured_missing": []
  }
 }
