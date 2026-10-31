@@ -1,5 +1,5 @@
 {
- "built": "2026-10-31T01:06:14+00:00",
+ "built": "2026-10-31T07:01:25+00:00",
  "scores": {
   "ok": true,
   "games": 3136,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 158,
+  "not_active": 159,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -420,14 +420,75 @@
    }
   ],
   "n_unmatched": 2,
-  "status_disagreements": [],
-  "n_status_disagree": 0,
+  "status_disagreements": [
+   {
+    "team": "ATL",
+    "player": "Beaux Collins",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "BAL",
+    "player": "Adam Randall",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "BAL",
+    "player": "T.J. Tampa",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DAL",
+    "player": "Jonathan Bullard",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DAL",
+    "player": "P.J. Locke",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DAL",
+    "player": "Marist Liufau",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LV",
+    "player": "Carter Runyon",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "LV",
+    "player": "Jack Bech",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "TEN",
+    "player": "Dorian Mausi",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "WAS",
+    "player": "Jer'Zhan Newton",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   }
+  ],
+  "n_status_disagree": 10,
   "qb_flags": [],
-  "checked": "2026-10-31T01:06:31+00:00"
+  "checked": "2026-10-31T07:01:37+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261031T010605Z.json",
+  "snapshot": "odds_20261031T070116Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
