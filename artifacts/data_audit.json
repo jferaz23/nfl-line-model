@@ -1,5 +1,5 @@
 {
- "built": "2026-10-31T17:57:33+00:00",
+ "built": "2026-10-31T21:16:47+00:00",
  "scores": {
   "ok": true,
   "games": 3136,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 159,
+  "not_active": 155,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -423,19 +423,25 @@
   "status_disagreements": [
    {
     "team": "ATL",
+    "player": "Billy Bowman Jr.",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "ATL",
     "player": "Beaux Collins",
     "espn": "IR",
     "league": "QUESTIONABLE"
    },
    {
-    "team": "BAL",
-    "player": "Adam Randall",
-    "espn": "IR",
+    "team": "ATL",
+    "player": "Divine Deablo",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
     "team": "BAL",
-    "player": "T.J. Tampa",
+    "player": "Adam Randall",
     "espn": "IR",
     "league": "QUESTIONABLE"
    },
@@ -447,25 +453,43 @@
    },
    {
     "team": "DAL",
-    "player": "P.J. Locke",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "DAL",
     "player": "Marist Liufau",
     "espn": "IR",
     "league": "QUESTIONABLE"
    },
    {
-    "team": "LV",
-    "player": "Jack Bech",
+    "team": "DEN",
+    "player": "RJ Harvey",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "KC",
+    "player": "L'Jarius Sneed",
     "espn": "IR",
     "league": "QUESTIONABLE"
    },
    {
+    "team": "KC",
+    "player": "Mansoor Delane",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LV",
+    "player": "Patrick Johnson",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
     "team": "LV",
     "player": "Carter Runyon",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "LAC",
+    "player": "Derwin James Jr.",
     "espn": "IR",
     "league": "OUT"
    },
@@ -482,6 +506,12 @@
     "league": "QUESTIONABLE"
    },
    {
+    "team": "NYJ",
+    "player": "T'Vondre Sweat",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
     "team": "TEN",
     "player": "Dorian Mausi",
     "espn": "IR",
@@ -494,13 +524,13 @@
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 12,
+  "n_status_disagree": 17,
   "qb_flags": [],
-  "checked": "2026-10-31T17:57:45+00:00"
+  "checked": "2026-10-31T21:17:01+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261031T175724Z.json",
+  "snapshot": "odds_20261031T211641Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
