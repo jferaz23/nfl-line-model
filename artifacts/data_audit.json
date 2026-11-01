@@ -1,5 +1,5 @@
 {
- "built": "2026-11-01T00:20:54+00:00",
+ "built": "2026-11-01T06:40:16+00:00",
  "scores": {
   "ok": true,
   "games": 3136,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 150,
+  "not_active": 153,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -423,7 +423,19 @@
   "status_disagreements": [
    {
     "team": "ATL",
+    "player": "Cameron Williams",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "ATL",
     "player": "Billy Bowman Jr.",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "ATL",
+    "player": "Divine Deablo",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
@@ -431,12 +443,6 @@
     "team": "ATL",
     "player": "Beaux Collins",
     "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "ATL",
-    "player": "Divine Deablo",
-    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
@@ -512,6 +518,12 @@
     "league": "OUT"
    },
    {
+    "team": "PHI",
+    "player": "Jakorian Bennett",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "TEN",
     "player": "Dorian Mausi",
     "espn": "IR",
@@ -524,13 +536,13 @@
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 17,
+  "n_status_disagree": 19,
   "qb_flags": [],
-  "checked": "2026-11-01T00:21:06+00:00"
+  "checked": "2026-11-01T06:40:30+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261101T002046Z.json",
+  "snapshot": "odds_20261101T064010Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
