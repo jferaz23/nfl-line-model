@@ -158,6 +158,9 @@ starter (4+ of the previous 8 starts) who is not last week's starter and is list
 2013-25; limited 33%, full 63% n=19) -> blended at DNP .29 / limited .34 / full .55 / default .38 (live only). build_site
 .qb_check compares each team's model QB with the QB DraftKings posts props for; mismatches show as "⚠ QB?" on pick cards
 and in the why. overrides/starters.csv: 2026 wk7 NYG J.J. McCarthy (coach-confirmed per ESPN).
+QB_CLEARED_START (Nov 1): a regular starter who missed games listed Out/Doubtful (last 3 weeks) and is now off the report and
+on the active roster started 74% (50 cases 2013-25; still on IR 0/18) -> blended at 0.74 (live only). Found when the model
+kept Tyler Huntley after Lamar Jackson was cleared; wk8 BAL override = Lamar (coach-confirmed).
 Props playing time (Oct 23, user: late entries, mid-game injuries, benchings like Skattebo wk6: 6 snaps, 0 touches, missing
 from nflverse weekly stats): props.add_snap_games (games on the field with no stats), props.ingame_injuries (play-by-play
 "was injured", matched by team+jersey, name-checked), props.last_game_usage -> each prop's why names the last game's snap

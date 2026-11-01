@@ -203,6 +203,20 @@ QB_Q_START_DEFAULT = 0.57
 # DraftKings' props listed Baker Mayfield while the model kept Jalon Daniels).
 QB_RET_START = {"DNP": 0.29, "LIMITED": 0.34, "FULL": 0.55}
 QB_RET_START_DEFAULT = 0.38
+# ... and when he is CLEARED (off the injury report, on the active roster) after missing games listed Out/Doubtful, he
+# started 74% of the time (50 cases 2013-2025; 70% 2013-19, 78% 2020-25; still on IR: 0 of 18). Live only (Nov 1, 2026:
+# the model had kept Tyler Huntley when Lamar Jackson was cleared and confirmed for week 8).
+QB_CLEARED_START = 0.74
+
+
+def _qb_was_out(qid, qname, team, season, week, injuries, lookback=3):
+    """True if the QB was listed Out or Doubtful for one of his team's previous `lookback` weeks this season."""
+    if injuries is None or injuries.empty:
+        return False
+    inj = injuries[(injuries["season"] == season) & (injuries["week"] < week) & (injuries["week"] >= week - lookback)
+                   & (injuries["team"] == team)]
+    hit = inj[(inj["gsis_id"] == qid) | (inj["full_name"].map(qb_key) == qb_key(qname))]
+    return bool(hit["report_status"].astype(str).str.upper().isin(["OUT", "DOUBTFUL"]).any())
 
 
 def _qb_questionable(qid, qname, team, season, week, injuries, table=None, default=None):
@@ -263,6 +277,10 @@ def project_starters(target, starters_hist, qg, injuries, rosters, qb_overrides,
                             if pr is not None and _qb_unavailable(r_id, r_name, team, g.season, g.week, injuries, rosters) is None:
                                 qid, qname, alt_id, p_start = r_id, r_name, last_id, pr
                                 src = f"regular starter back, Questionable ({pr:.0%} to start; else {last_name})"
+                            elif (pr is None and _qb_was_out(r_id, r_name, team, g.season, g.week, injuries)
+                                  and _qb_unavailable(r_id, r_name, team, g.season, g.week, injuries, rosters) is None):
+                                qid, qname, alt_id, p_start = r_id, r_name, last_id, QB_CLEARED_START
+                                src = f"regular starter back, cleared ({QB_CLEARED_START:.0%} to start; else {last_name})"
                 else:
                     qid, qname = _backup_qb(team, g.season, g.week, last_id, qg, rosters, qmap_wplays)
                     src = f"backup ({last_name}: {reason})" if last_id else "no recent starter found"
