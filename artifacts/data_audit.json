@@ -1,5 +1,5 @@
 {
- "built": "2026-10-31T21:16:47+00:00",
+ "built": "2026-11-01T00:20:54+00:00",
  "scores": {
   "ok": true,
   "games": 3136,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 155,
+  "not_active": 150,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -465,14 +465,14 @@
    },
    {
     "team": "KC",
-    "player": "L'Jarius Sneed",
-    "espn": "IR",
+    "player": "Mansoor Delane",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
     "team": "KC",
-    "player": "Mansoor Delane",
-    "espn": "OUT",
+    "player": "L'Jarius Sneed",
+    "espn": "IR",
     "league": "QUESTIONABLE"
    },
    {
@@ -526,11 +526,11 @@
   ],
   "n_status_disagree": 17,
   "qb_flags": [],
-  "checked": "2026-10-31T21:17:01+00:00"
+  "checked": "2026-11-01T00:21:06+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261031T211641Z.json",
+  "snapshot": "odds_20261101T002046Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
