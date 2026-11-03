@@ -1,9 +1,9 @@
 {
- "built": "2026-11-02T19:31:10+00:00",
+ "built": "2026-11-03T08:40:26+00:00",
  "scores": {
   "ok": true,
-  "games": 3148,
-  "matched": 3148,
+  "games": 3149,
+  "matched": 3149,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3148,
+  "games": 3149,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -401,32 +401,273 @@
   ]
  },
  "injuries": {
-  "ok": true,
-  "listings": 50,
-  "not_active": 14,
-  "matched_share": 1.0,
-  "unmatched": [],
-  "n_unmatched": 0,
+  "ok": false,
+  "listings": 750,
+  "not_active": 200,
+  "matched_share": 0.865,
+  "unmatched": [
+   {
+    "team": "BUF",
+    "full_name": "Mike Danna",
+    "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Reed Blankenship",
+    "position": "S",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Naquan Jones",
+    "position": "DT",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "David Montgomery",
+    "position": "RB",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Jaylin Noel",
+    "position": "WR",
+    "report_status": "IR"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Azeez Al-Shaair",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Henry To'oTo'o",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "M.J. Stewart",
+    "position": "S",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Jalen Pitre",
+    "position": "S",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Blake Fisher",
+    "position": "OT",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Foster Moreau",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Dare Ogunbowale",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Tank Dell",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Kayshon Boutte",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Marlin Klein",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Febechi Nwaiwu",
+    "position": "G",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Nate Thomas",
+    "position": "OT",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Dalton Schultz",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Xavier Hutchinson",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Ka'imi Fairbairn",
+    "position": "PK",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Marvin Harrison Jr.",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "C.J. Stroud",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Woody Marks",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Nico Collins",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Brevin Jordan",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Logan Hall",
+    "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Travis Etienne Jr.",
+    "position": "RB",
+    "report_status": "IR"
+   },
+   {
+    "team": "NO",
+    "full_name": "Jordyn Tyson",
+    "position": "WR",
+    "report_status": "IR"
+   },
+   {
+    "team": "NO",
+    "full_name": "Carl Granderson",
+    "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Pete Werner",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Jonas Sanker",
+    "position": "S",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Cesar Ruiz",
+    "position": "G",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Nathan Shepherd",
+    "position": "DT",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Noah Fant",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Bryce Lance",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Kendre Miller",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Barion Brown",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Mike Reid",
+    "position": "CB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Tyree Wilson",
+    "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "John Ridgeway III",
+    "position": "DT",
+    "report_status": "ACTIVE"
+   }
+  ],
+  "n_unmatched": 101,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-11-02T19:31:23+00:00"
+  "checked": "2026-11-03T08:40:37+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261102T193105Z.json",
-  "games": 16,
+  "snapshot": "odds_20261103T084017Z.json",
+  "games": 15,
   "books_seen": {
-   "draftkings": 16,
-   "fanduel": 16,
-   "betrivers": 16,
-   "lowvig": 16,
-   "betonlineag": 16,
-   "novig": 16,
-   "betmgm": 16,
-   "pinnacle": 10,
-   "prophetx": 16,
-   "hardrockbet": 16
+   "draftkings": 15,
+   "fanduel": 15,
+   "betonlineag": 13,
+   "lowvig": 13,
+   "betrivers": 13,
+   "novig": 15,
+   "prophetx": 15,
+   "betmgm": 15,
+   "hardrockbet": 15,
+   "pinnacle": 15
   },
   "configured_missing": []
  }
