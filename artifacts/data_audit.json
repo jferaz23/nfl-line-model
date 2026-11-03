@@ -1,5 +1,5 @@
 {
- "built": "2026-11-03T08:40:26+00:00",
+ "built": "2026-11-03T16:38:13+00:00",
  "scores": {
   "ok": true,
   "games": 3149,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": false,
   "listings": 750,
-  "not_active": 200,
+  "not_active": 189,
   "matched_share": 0.865,
   "unmatched": [
    {
@@ -650,24 +650,30 @@
   "n_unmatched": 101,
   "status_disagreements": [],
   "n_status_disagree": 0,
-  "qb_flags": [],
-  "checked": "2026-11-03T08:40:37+00:00"
+  "qb_flags": [
+   {
+    "team": "BAL",
+    "qb": "Tyler Huntley",
+    "espn_status": "out/doubtful"
+   }
+  ],
+  "checked": "2026-11-03T16:38:27+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261103T084017Z.json",
+  "snapshot": "odds_20261103T163806Z.json",
   "games": 15,
   "books_seen": {
    "draftkings": 15,
    "fanduel": 15,
-   "betonlineag": 13,
-   "lowvig": 13,
-   "betrivers": 13,
+   "betonlineag": 15,
+   "lowvig": 15,
+   "betrivers": 15,
    "novig": 15,
    "prophetx": 15,
    "betmgm": 15,
    "hardrockbet": 15,
-   "pinnacle": 15
+   "pinnacle": 14
   },
   "configured_missing": []
  }
