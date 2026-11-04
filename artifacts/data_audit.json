@@ -1,5 +1,5 @@
 {
- "built": "2026-11-03T16:38:13+00:00",
+ "built": "2026-11-04T02:22:41+00:00",
  "scores": {
   "ok": true,
   "games": 3149,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": false,
   "listings": 750,
-  "not_active": 189,
+  "not_active": 186,
   "matched_share": 0.865,
   "unmatched": [
    {
@@ -564,6 +564,18 @@
    },
    {
     "team": "NO",
+    "full_name": "Charlie Smyth",
+    "position": "PK",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Audric Estime",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
     "full_name": "Travis Etienne Jr.",
     "position": "RB",
     "report_status": "IR"
@@ -633,18 +645,6 @@
     "full_name": "Mike Reid",
     "position": "CB",
     "report_status": "ACTIVE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Tyree Wilson",
-    "position": "DE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "NO",
-    "full_name": "John Ridgeway III",
-    "position": "DT",
-    "report_status": "ACTIVE"
    }
   ],
   "n_unmatched": 101,
@@ -657,23 +657,23 @@
     "espn_status": "out/doubtful"
    }
   ],
-  "checked": "2026-11-03T16:38:27+00:00"
+  "checked": "2026-11-04T02:22:53+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261103T163806Z.json",
-  "games": 15,
+  "snapshot": "odds_20261104T022231Z.json",
+  "games": 29,
   "books_seen": {
-   "draftkings": 15,
-   "fanduel": 15,
-   "betonlineag": 15,
-   "lowvig": 15,
+   "draftkings": 29,
+   "fanduel": 28,
+   "betonlineag": 29,
+   "lowvig": 29,
    "betrivers": 15,
-   "novig": 15,
+   "novig": 29,
    "prophetx": 15,
    "betmgm": 15,
    "hardrockbet": 15,
-   "pinnacle": 14
+   "pinnacle": 15
   },
   "configured_missing": []
  }
