@@ -1,13 +1,13 @@
 {
- "remaining": 400,
+ "remaining": 397,
  "first_seen": "2026-09-29T17:24:00-04:00",
- "remaining_at": "2026-11-05T13:55:23-05:00",
- "last_api_run": "2026-11-05T18:54:12+00:00",
- "last_model_run": "2026-11-05T18:54:12+00:00",
+ "remaining_at": "2026-11-05T18:58:27-05:00",
+ "last_api_run": "2026-11-05T23:57:40+00:00",
+ "last_model_run": "2026-11-05T23:57:40+00:00",
  "last_decision": {
-  "at": "2026-11-05T18:54:12+00:00",
+  "at": "2026-11-05T23:57:40+00:00",
   "mode": "api",
-  "reason": "paced: every 6.2 h to last the month (403 credits left)"
+  "reason": "mandatory: inactives, Thu 08:15 PM ET kickoff"
  },
  "done": [
   "injury-2026-09-30",
@@ -36,7 +36,8 @@
   "pregame-20261025T1330",
   "pregame-20261025T2025",
   "pregame-20261026T0020",
-  "injury-2026-10-28"
+  "injury-2026-10-28",
+  "pregame-20261106T0115"
  ],
  "reset_at": "2026-10-31T20:20:46-04:00"
 }
