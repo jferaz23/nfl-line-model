@@ -1,5 +1,5 @@
 {
- "built": "2026-11-05T03:20:10+00:00",
+ "built": "2026-11-05T11:24:50+00:00",
  "scores": {
   "ok": true,
   "games": 3149,
@@ -403,15 +403,9 @@
  "injuries": {
   "ok": false,
   "listings": 750,
-  "not_active": 246,
-  "matched_share": 0.863,
+  "not_active": 251,
+  "matched_share": 0.995,
   "unmatched": [
-   {
-    "team": "BAL",
-    "full_name": "Kedon Slovis",
-    "position": "QB",
-    "report_status": "ACTIVE"
-   },
    {
     "team": "BUF",
     "full_name": "Mike Danna",
@@ -419,243 +413,46 @@
     "report_status": "ACTIVE"
    },
    {
-    "team": "HOU",
-    "full_name": "Reed Blankenship",
-    "position": "S",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Azeez Al-Shaair",
-    "position": "LB",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Jalen Pitre",
+    "team": "NE",
+    "full_name": "Elliott Davison",
     "position": "S",
     "report_status": "ACTIVE"
    },
    {
-    "team": "HOU",
-    "full_name": "Braden Smith",
-    "position": "OT",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Brevin Jordan",
-    "position": "TE",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Blake Fisher",
-    "position": "OT",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "David Montgomery",
-    "position": "RB",
-    "report_status": "OUT"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Naquan Jones",
-    "position": "DT",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Jaylin Noel",
-    "position": "WR",
-    "report_status": "IR"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Henry To'oTo'o",
-    "position": "LB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "M.J. Stewart",
-    "position": "S",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Foster Moreau",
-    "position": "TE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Dare Ogunbowale",
-    "position": "RB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Tank Dell",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Kayshon Boutte",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Marlin Klein",
-    "position": "TE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Febechi Nwaiwu",
-    "position": "G",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Nate Thomas",
-    "position": "OT",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Dalton Schultz",
-    "position": "TE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Xavier Hutchinson",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Ka'imi Fairbairn",
-    "position": "PK",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Marvin Harrison Jr.",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "C.J. Stroud",
-    "position": "QB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Woody Marks",
-    "position": "RB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Nico Collins",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
     "team": "NO",
-    "full_name": "Justin Reid",
-    "position": "S",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "NO",
-    "full_name": "CJ Donaldson",
-    "position": "RB",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Nathan Shepherd",
-    "position": "DT",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Cesar Ruiz",
-    "position": "G",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Alvin Kamara",
-    "position": "RB",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Asim Richards",
-    "position": "OT",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Martin Emerson Jr.",
+    "full_name": "Mike Reid",
     "position": "CB",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Charlie Smyth",
-    "position": "PK",
     "report_status": "ACTIVE"
    },
    {
-    "team": "NO",
-    "full_name": "Jordyn Tyson",
+    "team": "SF",
+    "full_name": "Brandon Aiyuk",
     "position": "WR",
-    "report_status": "IR"
-   },
-   {
-    "team": "NO",
-    "full_name": "Travis Etienne Jr.",
-    "position": "RB",
-    "report_status": "IR"
-   },
-   {
-    "team": "NO",
-    "full_name": "Carl Granderson",
-    "position": "DE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Pete Werner",
-    "position": "LB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Jonas Sanker",
-    "position": "S",
-    "report_status": "ACTIVE"
+    "report_status": "OUT"
    }
   ],
-  "n_unmatched": 103,
-  "status_disagreements": [],
-  "n_status_disagree": 0,
-  "qb_flags": [],
-  "checked": "2026-11-05T03:20:22+00:00"
+  "n_unmatched": 4,
+  "status_disagreements": [
+   {
+    "team": "BAL",
+    "player": "Adam Randall",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   }
+  ],
+  "n_status_disagree": 1,
+  "qb_flags": [
+   {
+    "team": "BAL",
+    "qb": "Tyler Huntley",
+    "espn_status": "out/doubtful"
+   }
+  ],
+  "checked": "2026-11-05T11:25:04+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261105T032000Z.json",
+  "snapshot": "odds_20261105T112444Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
