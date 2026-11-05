@@ -1,5 +1,5 @@
 {
- "built": "2026-11-04T17:35:09+00:00",
+ "built": "2026-11-05T03:20:10+00:00",
  "scores": {
   "ok": true,
   "games": 3149,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": false,
   "listings": 750,
-  "not_active": 185,
+  "not_active": 246,
   "matched_share": 0.863,
   "unmatched": [
    {
@@ -426,27 +426,51 @@
    },
    {
     "team": "HOU",
-    "full_name": "Naquan Jones",
-    "position": "DT",
+    "full_name": "Azeez Al-Shaair",
+    "position": "LB",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Jalen Pitre",
+    "position": "S",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Braden Smith",
+    "position": "OT",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Brevin Jordan",
+    "position": "TE",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Blake Fisher",
+    "position": "OT",
     "report_status": "ACTIVE"
    },
    {
     "team": "HOU",
     "full_name": "David Montgomery",
     "position": "RB",
-    "report_status": "QUESTIONABLE"
+    "report_status": "OUT"
+   },
+   {
+    "team": "HOU",
+    "full_name": "Naquan Jones",
+    "position": "DT",
+    "report_status": "ACTIVE"
    },
    {
     "team": "HOU",
     "full_name": "Jaylin Noel",
     "position": "WR",
     "report_status": "IR"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Azeez Al-Shaair",
-    "position": "LB",
-    "report_status": "ACTIVE"
    },
    {
     "team": "HOU",
@@ -459,18 +483,6 @@
     "full_name": "M.J. Stewart",
     "position": "S",
     "report_status": "ACTIVE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Jalen Pitre",
-    "position": "S",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "HOU",
-    "full_name": "Blake Fisher",
-    "position": "OT",
-    "report_status": "QUESTIONABLE"
    },
    {
     "team": "HOU",
@@ -557,22 +569,46 @@
     "report_status": "ACTIVE"
    },
    {
-    "team": "HOU",
-    "full_name": "Brevin Jordan",
-    "position": "TE",
-    "report_status": "ACTIVE"
+    "team": "NO",
+    "full_name": "Justin Reid",
+    "position": "S",
+    "report_status": "QUESTIONABLE"
    },
    {
-    "team": "HOU",
-    "full_name": "Logan Hall",
-    "position": "DE",
+    "team": "NO",
+    "full_name": "CJ Donaldson",
+    "position": "RB",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Nathan Shepherd",
+    "position": "DT",
     "report_status": "ACTIVE"
    },
    {
     "team": "NO",
-    "full_name": "Jordyn Tyson",
-    "position": "WR",
-    "report_status": "IR"
+    "full_name": "Cesar Ruiz",
+    "position": "G",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Alvin Kamara",
+    "position": "RB",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Asim Richards",
+    "position": "OT",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Martin Emerson Jr.",
+    "position": "CB",
+    "report_status": "QUESTIONABLE"
    },
    {
     "team": "NO",
@@ -582,9 +618,9 @@
    },
    {
     "team": "NO",
-    "full_name": "Audric Estime",
-    "position": "RB",
-    "report_status": "ACTIVE"
+    "full_name": "Jordyn Tyson",
+    "position": "WR",
+    "report_status": "IR"
    },
    {
     "team": "NO",
@@ -609,61 +645,25 @@
     "full_name": "Jonas Sanker",
     "position": "S",
     "report_status": "ACTIVE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Cesar Ruiz",
-    "position": "G",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Nathan Shepherd",
-    "position": "DT",
-    "report_status": "QUESTIONABLE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Noah Fant",
-    "position": "TE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Bryce Lance",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Kendre Miller",
-    "position": "RB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Barion Brown",
-    "position": "WR",
-    "report_status": "ACTIVE"
    }
   ],
   "n_unmatched": 103,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-11-04T17:35:21+00:00"
+  "checked": "2026-11-05T03:20:22+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261104T173459Z.json",
-  "games": 29,
+  "snapshot": "odds_20261105T032000Z.json",
+  "games": 28,
   "books_seen": {
-   "draftkings": 29,
-   "fanduel": 28,
-   "betonlineag": 28,
-   "lowvig": 28,
-   "betrivers": 29,
-   "novig": 29,
+   "draftkings": 28,
+   "fanduel": 27,
+   "betonlineag": 27,
+   "lowvig": 27,
+   "betrivers": 28,
+   "novig": 28,
    "prophetx": 15,
    "betmgm": 15,
    "hardrockbet": 15,
