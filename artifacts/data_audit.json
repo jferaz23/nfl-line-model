@@ -1,9 +1,9 @@
 {
- "built": "2026-11-05T23:58:32+00:00",
+ "built": "2026-11-06T06:22:02+00:00",
  "scores": {
   "ok": true,
-  "games": 3149,
-  "matched": 3149,
+  "games": 3150,
+  "matched": 3150,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,13 +12,13 @@
  },
  "lines": {
   "ok": true,
-  "games": 3149,
+  "games": 3150,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
   "favorite_disagree": [],
   "n_favorite_disagree": 0,
-  "spread_result_corr": 0.437,
+  "spread_result_corr": 0.438,
   "moneyline_entry_errors": [
    "2015_01_KC_HOU",
    "2015_15_TB_STL",
@@ -401,10 +401,10 @@
   ]
  },
  "injuries": {
-  "ok": false,
-  "listings": 750,
-  "not_active": 252,
-  "matched_share": 0.995,
+  "ok": true,
+  "listings": 700,
+  "not_active": 237,
+  "matched_share": 0.994,
   "unmatched": [
    {
     "team": "BUF",
@@ -432,57 +432,26 @@
    }
   ],
   "n_unmatched": 4,
-  "status_disagreements": [
-   {
-    "team": "BAL",
-    "player": "Tyler Huntley",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "BAL",
-    "player": "Lamar Jackson",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "BAL",
-    "player": "Adam Randall",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "BAL",
-    "player": "Nate Wiggins",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   }
-  ],
-  "n_status_disagree": 4,
-  "qb_flags": [
-   {
-    "team": "BAL",
-    "qb": "Tyler Huntley",
-    "espn_status": "out/doubtful"
-   }
-  ],
-  "checked": "2026-11-05T23:58:48+00:00"
+  "status_disagreements": [],
+  "n_status_disagree": 0,
+  "qb_flags": [],
+  "checked": "2026-11-06T06:22:15+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261105T235827Z.json",
-  "games": 28,
+  "snapshot": "odds_20261106T062155Z.json",
+  "games": 27,
   "books_seen": {
-   "draftkings": 28,
-   "fanduel": 28,
-   "betonlineag": 26,
-   "lowvig": 26,
-   "betrivers": 28,
-   "novig": 28,
+   "draftkings": 27,
+   "fanduel": 27,
+   "betmgm": 14,
+   "betonlineag": 24,
+   "lowvig": 24,
+   "betrivers": 27,
+   "novig": 27,
    "prophetx": 15,
-   "betmgm": 15,
-   "hardrockbet": 15,
-   "pinnacle": 15
+   "hardrockbet": 14,
+   "pinnacle": 14
   },
   "configured_missing": []
  }
