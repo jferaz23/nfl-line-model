@@ -1,5 +1,5 @@
 {
- "built": "2026-11-06T06:22:02+00:00",
+ "built": "2026-11-06T14:31:25+00:00",
  "scores": {
   "ok": true,
   "games": 3150,
@@ -403,19 +403,13 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 237,
-  "matched_share": 0.994,
+  "not_active": 238,
+  "matched_share": 0.996,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "NE",
-    "full_name": "Elliott Davison",
-    "position": "S",
     "report_status": "ACTIVE"
    },
    {
@@ -431,15 +425,15 @@
     "report_status": "OUT"
    }
   ],
-  "n_unmatched": 4,
+  "n_unmatched": 3,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-11-06T06:22:15+00:00"
+  "checked": "2026-11-06T14:31:37+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261106T062155Z.json",
+  "snapshot": "odds_20261106T143119Z.json",
   "games": 27,
   "books_seen": {
    "draftkings": 27,
