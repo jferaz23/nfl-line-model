@@ -1,5 +1,5 @@
 {
- "built": "2026-11-07T06:27:19+00:00",
+ "built": "2026-11-07T13:28:32+00:00",
  "scores": {
   "ok": true,
   "games": 3150,
@@ -426,14 +426,129 @@
    }
   ],
   "n_unmatched": 3,
-  "status_disagreements": [],
-  "n_status_disagree": 0,
+  "status_disagreements": [
+   {
+    "team": "ARI",
+    "player": "Isaiah Adams",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "ATL",
+    "player": "Beaux Collins",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "ATL",
+    "player": "Yasir Abdullah",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "ATL",
+    "player": "Cameron Williams",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "CAR",
+    "player": "Brady Christensen",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DAL",
+    "player": "Jonathan Bullard",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DEN",
+    "player": "Pat Bryant",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "GB",
+    "player": "Chris Brooks",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LAC",
+    "player": "Denzel Perryman",
+    "espn": "IR",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "LAC",
+    "player": "David Njoku",
+    "espn": "IR",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "LA",
+    "player": "Terrance Ferguson",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "NE",
+    "player": "Mack Hollins",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NE",
+    "player": "Greg Van Roten",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NO",
+    "player": "Kelvin Banks Jr.",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NO",
+    "player": "Jordyn Tyson",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NYJ",
+    "player": "VJ Payne",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "SF",
+    "player": "Nate Hobbs",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "SF",
+    "player": "Demarcus Robinson",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "WAS",
+    "player": "Jer'Zhan Newton",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   }
+  ],
+  "n_status_disagree": 19,
   "qb_flags": [],
-  "checked": "2026-11-07T06:27:33+00:00"
+  "checked": "2026-11-07T13:28:49+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261107T062712Z.json",
+  "snapshot": "odds_20261107T132823Z.json",
   "games": 27,
   "books_seen": {
    "draftkings": 27,
@@ -445,7 +560,7 @@
    "novig": 27,
    "prophetx": 15,
    "hardrockbet": 14,
-   "pinnacle": 14
+   "pinnacle": 13
   },
   "configured_missing": []
  }
