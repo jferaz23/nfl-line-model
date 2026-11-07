@@ -1,5 +1,5 @@
 {
- "built": "2026-11-07T13:28:32+00:00",
+ "built": "2026-11-07T22:00:18+00:00",
  "scores": {
   "ok": true,
   "games": 3150,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 185,
+  "not_active": 178,
   "matched_share": 0.996,
   "unmatched": [
    {
@@ -435,6 +435,12 @@
    },
    {
     "team": "ATL",
+    "player": "Brian Robinson Jr.",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "ATL",
     "player": "Beaux Collins",
     "espn": "IR",
     "league": "QUESTIONABLE"
@@ -459,20 +465,20 @@
    },
    {
     "team": "DAL",
-    "player": "Jonathan Bullard",
+    "player": "Malachi Lawrence",
     "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "DEN",
-    "player": "Pat Bryant",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "GB",
     "player": "Chris Brooks",
     "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "IND",
+    "player": "A.J. Haulcy",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
@@ -489,15 +495,15 @@
    },
    {
     "team": "LA",
-    "player": "Terrance Ferguson",
+    "player": "Jaylen Watson",
     "espn": "IR",
     "league": "OUT"
    },
    {
-    "team": "NE",
-    "player": "Mack Hollins",
+    "team": "LA",
+    "player": "Terrance Ferguson",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "NE",
@@ -506,15 +512,15 @@
     "league": "QUESTIONABLE"
    },
    {
-    "team": "NO",
-    "player": "Kelvin Banks Jr.",
-    "espn": "IR",
+    "team": "NYJ",
+    "player": "Nahshon Wright",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
-    "team": "NO",
-    "player": "Jordyn Tyson",
-    "espn": "IR",
+    "team": "NYJ",
+    "player": "Joseph Ossai",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
@@ -531,24 +537,18 @@
    },
    {
     "team": "SF",
-    "player": "Demarcus Robinson",
+    "player": "Christian Kirk",
     "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "WAS",
-    "player": "Jer'Zhan Newton",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    }
   ],
   "n_status_disagree": 19,
   "qb_flags": [],
-  "checked": "2026-11-07T13:28:49+00:00"
+  "checked": "2026-11-07T22:00:33+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261107T132823Z.json",
+  "snapshot": "odds_20261107T220009Z.json",
   "games": 27,
   "books_seen": {
    "draftkings": 27,
@@ -560,7 +560,7 @@
    "novig": 27,
    "prophetx": 15,
    "hardrockbet": 14,
-   "pinnacle": 13
+   "pinnacle": 14
   },
   "configured_missing": []
  }
