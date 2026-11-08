@@ -1,9 +1,9 @@
 {
- "built": "2026-11-08T14:53:07+00:00",
+ "built": "2026-11-08T23:03:07+00:00",
  "scores": {
   "ok": true,
-  "games": 3150,
-  "matched": 3150,
+  "games": 3158,
+  "matched": 3158,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,13 +12,13 @@
  },
  "lines": {
   "ok": true,
-  "games": 3150,
+  "games": 3158,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
   "favorite_disagree": [],
   "n_favorite_disagree": 0,
-  "spread_result_corr": 0.438,
+  "spread_result_corr": 0.439,
   "moneyline_entry_errors": [
    "2015_01_KC_HOU",
    "2015_15_TB_STL",
@@ -402,26 +402,14 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 700,
-  "not_active": 181,
-  "matched_share": 0.994,
+  "listings": 300,
+  "not_active": 87,
+  "matched_share": 0.993,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Audric Estime",
-    "position": "RB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Mike Reid",
-    "position": "CB",
     "report_status": "ACTIVE"
    },
    {
@@ -431,20 +419,8 @@
     "report_status": "OUT"
    }
   ],
-  "n_unmatched": 4,
+  "n_unmatched": 2,
   "status_disagreements": [
-   {
-    "team": "ATL",
-    "player": "Cameron Williams",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "ATL",
-    "player": "Brian Robinson Jr.",
-    "espn": "IR",
-    "league": "OUT"
-   },
    {
     "team": "BUF",
     "player": "Tyrell Shavers",
@@ -458,40 +434,28 @@
     "league": "QUESTIONABLE"
    },
    {
-    "team": "CAR",
-    "player": "Brady Christensen",
-    "espn": "IR",
+    "team": "GB",
+    "player": "MarShawn Lloyd",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
-   },
-   {
-    "team": "DAL",
-    "player": "Jonathan Bullard",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "DAL",
-    "player": "Malachi Lawrence",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "DEN",
-    "player": "Eyioma Uwazurike",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "DET",
-    "player": "Jack Campbell",
-    "espn": "IR",
-    "league": "OUT"
    },
    {
     "team": "GB",
     "player": "Chris Brooks",
     "espn": "IR",
     "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LAC",
+    "player": "Kayode Awosika",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "LAC",
+    "player": "Brenen Thompson",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
    },
    {
     "team": "LAC",
@@ -506,26 +470,8 @@
     "league": "DOUBTFUL"
    },
    {
-    "team": "LA",
-    "player": "Jaylen Watson",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "LA",
-    "player": "Terrance Ferguson",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
     "team": "NE",
     "player": "Greg Van Roten",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "NYJ",
-    "player": "VJ Payne",
     "espn": "IR",
     "league": "OUT"
    },
@@ -540,33 +486,27 @@
     "player": "Christian Kirk",
     "espn": "IR",
     "league": "OUT"
-   },
-   {
-    "team": "WAS",
-    "player": "Dyami Brown",
-    "espn": "IR",
-    "league": "OUT"
    }
   ],
-  "n_status_disagree": 19,
+  "n_status_disagree": 11,
   "qb_flags": [],
-  "checked": "2026-11-08T14:53:18+00:00"
+  "checked": "2026-11-08T23:03:19+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261108T145300Z.json",
-  "games": 25,
+  "snapshot": "odds_20261108T230259Z.json",
+  "games": 20,
   "books_seen": {
-   "draftkings": 25,
-   "fanduel": 25,
-   "betmgm": 14,
-   "betrivers": 25,
-   "novig": 25,
-   "prophetx": 16,
-   "hardrockbet": 14,
-   "betonlineag": 21,
-   "lowvig": 21,
-   "pinnacle": 13
+   "draftkings": 20,
+   "fanduel": 11,
+   "betrivers": 10,
+   "novig": 20,
+   "prophetx": 18,
+   "betmgm": 20,
+   "hardrockbet": 6,
+   "pinnacle": 6,
+   "betonlineag": 2,
+   "lowvig": 2
   },
   "configured_missing": []
  }
