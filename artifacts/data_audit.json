@@ -1,5 +1,5 @@
 {
- "built": "2026-11-07T22:00:18+00:00",
+ "built": "2026-11-08T07:49:21+00:00",
  "scores": {
   "ok": true,
   "games": 3150,
@@ -404,12 +404,18 @@
   "ok": true,
   "listings": 700,
   "not_active": 178,
-  "matched_share": 0.996,
+  "matched_share": 0.994,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Audric Estime",
+    "position": "RB",
     "report_status": "ACTIVE"
    },
    {
@@ -425,13 +431,13 @@
     "report_status": "OUT"
    }
   ],
-  "n_unmatched": 3,
+  "n_unmatched": 4,
   "status_disagreements": [
    {
-    "team": "ARI",
-    "player": "Isaiah Adams",
+    "team": "ATL",
+    "player": "Cameron Williams",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "ATL",
@@ -440,20 +446,14 @@
     "league": "OUT"
    },
    {
-    "team": "ATL",
-    "player": "Beaux Collins",
-    "espn": "IR",
+    "team": "BUF",
+    "player": "Tyrell Shavers",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
-    "team": "ATL",
-    "player": "Yasir Abdullah",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "ATL",
-    "player": "Cameron Williams",
+    "team": "BUF",
+    "player": "Jordan Hancock",
     "espn": "IR",
     "league": "QUESTIONABLE"
    },
@@ -465,7 +465,25 @@
    },
    {
     "team": "DAL",
+    "player": "Jonathan Bullard",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DAL",
     "player": "Malachi Lawrence",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "DEN",
+    "player": "Eyioma Uwazurike",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "DET",
+    "player": "Jack Campbell",
     "espn": "IR",
     "league": "OUT"
    },
@@ -473,12 +491,6 @@
     "team": "GB",
     "player": "Chris Brooks",
     "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "IND",
-    "player": "A.J. Haulcy",
-    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
@@ -509,25 +521,13 @@
     "team": "NE",
     "player": "Greg Van Roten",
     "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "NYJ",
-    "player": "Nahshon Wright",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "NYJ",
-    "player": "Joseph Ossai",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "NYJ",
     "player": "VJ Payne",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "SF",
@@ -540,15 +540,21 @@
     "player": "Christian Kirk",
     "espn": "IR",
     "league": "OUT"
+   },
+   {
+    "team": "WAS",
+    "player": "Dyami Brown",
+    "espn": "IR",
+    "league": "OUT"
    }
   ],
   "n_status_disagree": 19,
   "qb_flags": [],
-  "checked": "2026-11-07T22:00:33+00:00"
+  "checked": "2026-11-08T07:49:33+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261107T220009Z.json",
+  "snapshot": "odds_20261108T074912Z.json",
   "games": 27,
   "books_seen": {
    "draftkings": 27,
@@ -560,7 +566,7 @@
    "novig": 27,
    "prophetx": 15,
    "hardrockbet": 14,
-   "pinnacle": 14
+   "pinnacle": 13
   },
   "configured_missing": []
  }
