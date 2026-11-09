@@ -1,9 +1,9 @@
 {
- "built": "2026-11-08T23:03:07+00:00",
+ "built": "2026-11-09T10:24:29+00:00",
  "scores": {
   "ok": true,
-  "games": 3158,
-  "matched": 3158,
+  "games": 3163,
+  "matched": 3163,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3158,
+  "games": 3163,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -402,24 +402,18 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 300,
-  "not_active": 87,
-  "matched_share": 0.993,
+  "listings": 50,
+  "not_active": 10,
+  "matched_share": 0.98,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
     "report_status": "ACTIVE"
-   },
-   {
-    "team": "SF",
-    "full_name": "Brandon Aiyuk",
-    "position": "WR",
-    "report_status": "OUT"
    }
   ],
-  "n_unmatched": 2,
+  "n_unmatched": 1,
   "status_disagreements": [
    {
     "team": "BUF",
@@ -432,81 +426,27 @@
     "player": "Jordan Hancock",
     "espn": "IR",
     "league": "QUESTIONABLE"
-   },
-   {
-    "team": "GB",
-    "player": "MarShawn Lloyd",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "GB",
-    "player": "Chris Brooks",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "LAC",
-    "player": "Kayode Awosika",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "LAC",
-    "player": "Brenen Thompson",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "LAC",
-    "player": "Denzel Perryman",
-    "espn": "IR",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "LAC",
-    "player": "David Njoku",
-    "espn": "IR",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "NE",
-    "player": "Greg Van Roten",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "SF",
-    "player": "Nate Hobbs",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "SF",
-    "player": "Christian Kirk",
-    "espn": "IR",
-    "league": "OUT"
    }
   ],
-  "n_status_disagree": 11,
+  "n_status_disagree": 2,
   "qb_flags": [],
-  "checked": "2026-11-08T23:03:19+00:00"
+  "checked": "2026-11-09T10:24:40+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261108T230259Z.json",
-  "games": 20,
+  "snapshot": "odds_20261109T102423Z.json",
+  "games": 15,
   "books_seen": {
-   "draftkings": 20,
-   "fanduel": 11,
-   "betrivers": 10,
-   "novig": 20,
-   "prophetx": 18,
-   "betmgm": 20,
-   "hardrockbet": 6,
-   "pinnacle": 6,
-   "betonlineag": 2,
-   "lowvig": 2
+   "draftkings": 15,
+   "fanduel": 15,
+   "betonlineag": 15,
+   "lowvig": 15,
+   "betrivers": 15,
+   "novig": 15,
+   "hardrockbet": 15,
+   "betmgm": 15,
+   "pinnacle": 12,
+   "prophetx": 15
   },
   "configured_missing": []
  }
