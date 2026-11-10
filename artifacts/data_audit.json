@@ -1,5 +1,5 @@
 {
- "built": "2026-11-09T20:59:12+00:00",
+ "built": "2026-11-10T03:25:23+00:00",
  "scores": {
   "ok": true,
   "games": 3163,
@@ -403,18 +403,42 @@
  "injuries": {
   "ok": true,
   "listings": 50,
-  "not_active": 10,
+  "not_active": 17,
   "matched_share": 0.98,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
-    "report_status": "ACTIVE"
+    "report_status": "OUT"
    }
   ],
   "n_unmatched": 1,
   "status_disagreements": [
+   {
+    "team": "BUF",
+    "player": "Josh Palmer",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "BUF",
+    "player": "Dion Dawkins",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "BUF",
+    "player": "Greg Gaines",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "BUF",
+    "player": "Alec Anderson",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
    {
     "team": "BUF",
     "player": "Tyrell Shavers",
@@ -426,27 +450,33 @@
     "player": "Jordan Hancock",
     "espn": "IR",
     "league": "QUESTIONABLE"
+   },
+   {
+    "team": "MIN",
+    "player": "Demond Claiborne",
+    "espn": "IR",
+    "league": "OUT"
    }
   ],
-  "n_status_disagree": 2,
+  "n_status_disagree": 7,
   "qb_flags": [],
-  "checked": "2026-11-09T20:59:26+00:00"
+  "checked": "2026-11-10T03:25:36+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261109T205908Z.json",
-  "games": 15,
+  "snapshot": "odds_20261110T032518Z.json",
+  "games": 13,
   "books_seen": {
-   "draftkings": 15,
-   "fanduel": 15,
-   "betonlineag": 15,
-   "lowvig": 15,
-   "betrivers": 15,
-   "novig": 15,
-   "hardrockbet": 15,
-   "betmgm": 15,
-   "pinnacle": 13,
-   "prophetx": 15
+   "draftkings": 13,
+   "fanduel": 13,
+   "betrivers": 13,
+   "novig": 13,
+   "hardrockbet": 13,
+   "betmgm": 13,
+   "prophetx": 13,
+   "betonlineag": 12,
+   "lowvig": 12,
+   "pinnacle": 12
   },
   "configured_missing": []
  }
