@@ -1,0 +1,46 @@
+# Kickoff keeper (keeper.py): GitHub often starts the 15-minute Update schedule late or skips it, which missed the
+# runs that matter most (about 80 minutes before kickoff, after inactives; Wed-Fri injury reports). This short job
+# starts before those windows, waits, and dispatches Update at the right minute. Several start times so one late or
+# skipped start is covered; only one keeper runs at a time. Times are UTC and cover Eastern standard and daylight time.
+name: Kickoff keeper
+
+on:
+  schedule:
+    - cron: "35 12 * * 0"        # Sunday: international morning games, then the 1 PM window
+    - cron: "5 15 * * 0"         # Sunday: 1 PM and 4 PM windows
+    - cron: "35 15 * * 0"
+    - cron: "20 18 * * 0"        # Sunday: 4 PM windows if the earlier keeper was skipped
+    - cron: "35 22 * * 0,1,4"    # Sunday / Monday / Thursday night games
+    - cron: "10 23 * * 0,1,4"
+    - cron: "30 20 * * 3,4,5"    # Wed-Fri injury reports (4:40 PM ET)
+    - cron: "10 21 * * 3,4,5"
+    - cron: "5 15 * * 6"         # Saturday games (December, January)
+    - cron: "10 19 * * 6"
+  workflow_dispatch:
+    inputs:
+      test:
+        description: "Dispatch Update once right now (checks the token)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: kickoff-keeper
+  cancel-in-progress: false
+
+jobs:
+  keep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dispatch Update at each must-run moment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python keeper.py ${{ inputs.test && '--test' || '' }}

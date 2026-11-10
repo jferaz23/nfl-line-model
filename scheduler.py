@@ -30,7 +30,7 @@ CREDITS_PER_RUN = 3
 RESERVE = 12                      # never spend the last few credits
 MANDATORY_PER_WEEK = 9            # injury reports (3) + kickoff windows (~6)
 ESPN_REFRESH_HOURS = 3.0
-PRE_KICK = (timedelta(minutes=88), timedelta(minutes=70))   # window before kickoff: after inactives (T-90)
+PRE_KICK = (timedelta(minutes=88), timedelta(minutes=12))   # after inactives (T-90); late-started runs still count
 
 
 def load_state() -> dict:
@@ -89,7 +89,7 @@ def decide(now: datetime, s: dict) -> tuple[str, str, str | None]:
     can_api = remaining is None or remaining - CREDITS_PER_RUN >= RESERVE
     et = now.astimezone(ET)
     # 1) injury reports (Wed/Thu/Fri ~4:30 PM ET)
-    if et.weekday() in (2, 3, 4) and 16 * 60 + 20 <= et.hour * 60 + et.minute <= 17 * 60 + 5:
+    if et.weekday() in (2, 3, 4) and 16 * 60 + 20 <= et.hour * 60 + et.minute <= 18 * 60 + 30:   # late starts still count
         tag = f"injury-{et.date()}"
         if tag not in done:
             return ("api" if can_api else "espn"), f"mandatory: {et:%A} injury report", tag
