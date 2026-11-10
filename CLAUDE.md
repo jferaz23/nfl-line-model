@@ -191,6 +191,10 @@ Early bets (Oct 23, Test 96): an opening-time model (last week's QB/injuries, no
 recommendation ("bet early"), live 6-3 from week 4. Test 97: buying half points (DK-style -10/-25 on 3/-15 on 7) lowers
 units for green/Top in both halves -> never buy points. Odds API failures (Oct 23 502 incident): errors never include
 the request URL (it holds the key); run_week falls back to ESPN's DraftKings lines before model-only.
+Research log: docs/research_log.md (from Nov 10, 2026; the earlier scratch log was wiped). Kicker props (Nov 10): ESPN has
+kicking points / FG made / XP made lines 2024-26; projections no better than the lines and no green on any of 5 seeds;
+FG-made overs hit ~54% but are priced ~-120 -> not adopted. Kickoff keeper (Nov 10): GitHub skipped most 15-minute Update
+runs from Oct 30, so keeper.yml/keeper.py dispatch Update at T-80 min before each kickoff and at the Wed-Fri injury reports.
 Kalshi (kalshi_watch.py, every update run): public NFL game/spread/total prices -> artifacts/kalshi/kalshi_nfl.csv;
 logging only, not in the model until it passes a backtest (history starts Sept 30, 2026).
 Opening-line history: data_cache/line_history.xlsx (user download, personal use, never committed).

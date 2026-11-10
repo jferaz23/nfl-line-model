@@ -16,3 +16,14 @@ Pass (same as the other props, P5): chance by market x side x |z| band from earl
 green = chance >= break-even(-115) + 1pt. Kicker props become green picks only if green wins > 53.5% with positive units
 at -115 in BOTH 2025 and 2026, Top (break-even + 3pt) beats green's win rate, and the result holds on >= 4 of 5 GBM seeds.
 Also reported: the line vs the projection's accuracy (MAE), and over/under hit rates of the lines themselves.
+Result (kicker props, 5 seeds): no green or Top kicker prop in 2025 or 2026 on any seed (the model's side never reached
+break-even + 1pt in any band) -> NOT adopted. Projection MAE ~ the line's (kicking points 2.83/2.90/3.03 vs line
+2.83/2.96/2.99; FG made 1.03/0.96/1.02 vs 1.04/1.01/1.03). Lines: FG made (1.5 almost always) went over 54% / 53% / 54%,
+but overs are priced about -120 (needs 54.5%): +5.6u 2024, -18.2u 2025 at real prices -> priced in. Kicking points and
+XP lines ~50/50. Data: nfl_data_cache/props/kicker_lines.csv (680 games 2024-26), kicker_backtest.csv.
+
+## Nov 10, 2026: automation. GitHub fired the 15-minute Update schedule only 3-5x/day from Oct 30 (30-40x before), so
+pre-kickoff runs after inactives were missed (Nov 8: last update before the 1 PM games at 9:51 AM ET). Added
+.github/workflows/keeper.yml + keeper.py (dispatches Update at T-80 min before each kickoff and the Wed-Fri 4:40 PM
+injury report; several start times; test dispatch worked) and widened scheduler windows (pre-kick T-88..T-12, injury
+report until 6:30 PM ET).
