@@ -1,9 +1,9 @@
 {
- "built": "2026-11-10T03:25:23+00:00",
+ "built": "2026-11-10T11:36:13+00:00",
  "scores": {
   "ok": true,
-  "games": 3163,
-  "matched": 3163,
+  "games": 3164,
+  "matched": 3164,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3163,
+  "games": 3164,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -402,80 +402,271 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 50,
-  "not_active": 17,
-  "matched_share": 0.98,
+  "listings": 700,
+  "not_active": 189,
+  "matched_share": 0.919,
   "unmatched": [
+   {
+    "team": "BAL",
+    "full_name": "Jacoby Brissett",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
     "report_status": "OUT"
+   },
+   {
+    "team": "DET",
+    "full_name": "Andre Cisco",
+    "position": "S",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "JAX",
+    "full_name": "Davon Godchaux",
+    "position": "DT",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Mike Reid",
+    "position": "CB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "NO",
+    "full_name": "Audric Estime",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Doneiko Slaughter",
+    "position": "CB",
+    "report_status": "OUT"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Ben Skowronek",
+    "position": "WR",
+    "report_status": "OUT"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Brandin Echols",
+    "position": "CB",
+    "report_status": "OUT"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Chris Boswell",
+    "position": "PK",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Will Howard",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Drew Allar",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Eli Heidenreich",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Michael Pittman Jr.",
+    "position": "WR",
+    "report_status": "IR"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Germie Bernard",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Pat Freiermuth",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Darnell Washington",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Rico Dowdle",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "DK Metcalf",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Aaron Rodgers",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Jaylen Warren",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Brandon Smith",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Alex Highsmith",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Jalen Ramsey",
+    "position": "CB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Payton Wilson",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Patrick Queen",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Terell Smith",
+    "position": "CB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "DeShon Elliott",
+    "position": "S",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Mason Rudolph",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "T.J. Watt",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "PIT",
+    "full_name": "Sebastian Joseph-Day",
+    "position": "DT",
+    "report_status": "IR"
+   },
+   {
+    "team": "SF",
+    "full_name": "Brandon Aiyuk",
+    "position": "WR",
+    "report_status": "OUT"
+   },
+   {
+    "team": "TEN",
+    "full_name": "James Williams Sr.",
+    "position": "LB",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "TEN",
+    "full_name": "Dorian Mausi",
+    "position": "LB",
+    "report_status": "IR"
+   },
+   {
+    "team": "TEN",
+    "full_name": "Nicholas Singleton",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "TEN",
+    "full_name": "Calvin Ridley",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "TEN",
+    "full_name": "Tony Pollard",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "TEN",
+    "full_name": "Tommy Townsend",
+    "position": "P",
+    "report_status": "OUT"
+   },
+   {
+    "team": "TEN",
+    "full_name": "Tyjae Spears",
+    "position": "RB",
+    "report_status": "OUT"
+   },
+   {
+    "team": "TEN",
+    "full_name": "Carnell Tate",
+    "position": "WR",
+    "report_status": "OUT"
    }
   ],
-  "n_unmatched": 1,
-  "status_disagreements": [
-   {
-    "team": "BUF",
-    "player": "Josh Palmer",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "BUF",
-    "player": "Dion Dawkins",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "BUF",
-    "player": "Greg Gaines",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "BUF",
-    "player": "Alec Anderson",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "BUF",
-    "player": "Tyrell Shavers",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "BUF",
-    "player": "Jordan Hancock",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "MIN",
-    "player": "Demond Claiborne",
-    "espn": "IR",
-    "league": "OUT"
-   }
-  ],
-  "n_status_disagree": 7,
+  "n_unmatched": 57,
+  "status_disagreements": [],
+  "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-11-10T03:25:36+00:00"
+  "checked": "2026-11-10T11:36:24+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261110T032518Z.json",
-  "games": 13,
+  "snapshot": "odds_20261110T113606Z.json",
+  "games": 14,
   "books_seen": {
-   "draftkings": 13,
-   "fanduel": 13,
-   "betrivers": 13,
-   "novig": 13,
-   "hardrockbet": 13,
-   "betmgm": 13,
-   "prophetx": 13,
+   "draftkings": 14,
+   "fanduel": 14,
    "betonlineag": 12,
    "lowvig": 12,
+   "novig": 14,
+   "betrivers": 14,
+   "prophetx": 14,
+   "betmgm": 14,
+   "hardrockbet": 14,
    "pinnacle": 12
   },
   "configured_missing": []
