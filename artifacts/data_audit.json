@@ -1,5 +1,5 @@
 {
- "built": "2026-11-10T18:52:22+00:00",
+ "built": "2026-11-11T05:38:35+00:00",
  "scores": {
   "ok": true,
   "games": 3164,
@@ -403,13 +403,43 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 185,
-  "matched_share": 0.996,
+  "not_active": 178,
+  "matched_share": 0.989,
   "unmatched": [
+   {
+    "team": "ARI",
+    "full_name": "Joey Aguilar",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "ARI",
+    "full_name": "Josh Johnson",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "ATL",
+    "full_name": "Andrew Vorhees",
+    "position": "G",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BAL",
+    "full_name": "Ryan Neuzil",
+    "position": "C",
+    "report_status": "ACTIVE"
+   },
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "LA",
+    "full_name": "Xavier Smith",
+    "position": "WR",
     "report_status": "ACTIVE"
    },
    {
@@ -425,27 +455,27 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 3,
+  "n_unmatched": 8,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-11-10T18:52:36+00:00"
+  "checked": "2026-11-11T05:38:48+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261110T185217Z.json",
-  "games": 14,
+  "snapshot": "odds_20261111T053828Z.json",
+  "games": 27,
   "books_seen": {
-   "draftkings": 14,
-   "fanduel": 14,
-   "betonlineag": 14,
-   "lowvig": 14,
+   "draftkings": 27,
+   "fanduel": 27,
+   "betonlineag": 26,
+   "lowvig": 26,
    "novig": 14,
-   "betrivers": 14,
+   "betrivers": 27,
    "prophetx": 14,
    "betmgm": 14,
    "hardrockbet": 14,
-   "pinnacle": 13
+   "pinnacle": 14
   },
   "configured_missing": []
  }
