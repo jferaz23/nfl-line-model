@@ -1,5 +1,5 @@
 {
- "built": "2026-11-11T12:59:15+00:00",
+ "built": "2026-11-11T20:11:18+00:00",
  "scores": {
   "ok": true,
   "games": 3164,
@@ -403,8 +403,8 @@
  "injuries": {
   "ok": true,
   "listings": 700,
-  "not_active": 178,
-  "matched_share": 0.989,
+  "not_active": 186,
+  "matched_share": 0.987,
   "unmatched": [
    {
     "team": "ARI",
@@ -443,6 +443,12 @@
     "report_status": "ACTIVE"
    },
    {
+    "team": "MIN",
+    "full_name": "Kirk Cousins",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
     "team": "NO",
     "full_name": "Mike Reid",
     "position": "CB",
@@ -455,15 +461,15 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 8,
+  "n_unmatched": 9,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-11-11T12:59:28+00:00"
+  "checked": "2026-11-11T20:11:31+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261111T125908Z.json",
+  "snapshot": "odds_20261111T201113Z.json",
   "games": 27,
   "books_seen": {
    "draftkings": 27,
