@@ -1,5 +1,5 @@
 {
- "built": "2026-11-12T17:43:54+00:00",
+ "built": "2026-11-12T22:53:53+00:00",
  "scores": {
   "ok": true,
   "games": 3164,
@@ -403,13 +403,19 @@
  "injuries": {
   "ok": false,
   "listings": 700,
-  "not_active": 262,
-  "matched_share": 0.996,
+  "not_active": 263,
+  "matched_share": 0.994,
   "unmatched": [
    {
     "team": "ARI",
     "full_name": "Josh Johnson",
     "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "BAL",
+    "full_name": "Riley Patterson",
+    "position": "PK",
     "report_status": "ACTIVE"
    },
    {
@@ -425,7 +431,7 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 3,
+  "n_unmatched": 4,
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [
@@ -435,11 +441,11 @@
     "espn_status": "out/doubtful"
    }
   ],
-  "checked": "2026-11-12T17:44:07+00:00"
+  "checked": "2026-11-12T22:54:07+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261112T174347Z.json",
+  "snapshot": "odds_20261112T225348Z.json",
   "games": 27,
   "books_seen": {
    "draftkings": 27,
