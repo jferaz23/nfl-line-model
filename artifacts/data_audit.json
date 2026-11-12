@@ -1,5 +1,5 @@
 {
- "built": "2026-11-12T01:55:34+00:00",
+ "built": "2026-11-12T09:29:54+00:00",
  "scores": {
   "ok": true,
   "games": 3164,
@@ -401,33 +401,15 @@
   ]
  },
  "injuries": {
-  "ok": true,
+  "ok": false,
   "listings": 700,
-  "not_active": 265,
-  "matched_share": 0.987,
+  "not_active": 262,
+  "matched_share": 0.996,
   "unmatched": [
-   {
-    "team": "ARI",
-    "full_name": "Joey Aguilar",
-    "position": "QB",
-    "report_status": "ACTIVE"
-   },
    {
     "team": "ARI",
     "full_name": "Josh Johnson",
     "position": "QB",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "ATL",
-    "full_name": "Andrew Vorhees",
-    "position": "G",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "BAL",
-    "full_name": "Ryan Neuzil",
-    "position": "C",
     "report_status": "ACTIVE"
    },
    {
@@ -437,39 +419,27 @@
     "report_status": "ACTIVE"
    },
    {
-    "team": "LA",
-    "full_name": "Xavier Smith",
-    "position": "WR",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "MIN",
-    "full_name": "Kirk Cousins",
-    "position": "QB",
-    "report_status": "ACTIVE"
-   },
-   {
     "team": "NO",
     "full_name": "Mike Reid",
     "position": "CB",
     "report_status": "ACTIVE"
-   },
-   {
-    "team": "NO",
-    "full_name": "Audric Estime",
-    "position": "RB",
-    "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 9,
+  "n_unmatched": 3,
   "status_disagreements": [],
   "n_status_disagree": 0,
-  "qb_flags": [],
-  "checked": "2026-11-12T01:55:50+00:00"
+  "qb_flags": [
+   {
+    "team": "LV",
+    "qb": "Aidan O'Connell",
+    "espn_status": "out/doubtful"
+   }
+  ],
+  "checked": "2026-11-12T09:30:07+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261112T015529Z.json",
+  "snapshot": "odds_20261112T092944Z.json",
   "games": 27,
   "books_seen": {
    "draftkings": 27,
