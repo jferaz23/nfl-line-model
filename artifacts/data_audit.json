@@ -1,5 +1,5 @@
 {
- "built": "2026-11-13T11:27:00+00:00",
+ "built": "2026-11-13T18:41:33+00:00",
  "scores": {
   "ok": true,
   "games": 3165,
@@ -403,15 +403,9 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 229,
-  "matched_share": 0.995,
+  "not_active": 228,
+  "matched_share": 0.997,
   "unmatched": [
-   {
-    "team": "BAL",
-    "full_name": "Riley Patterson",
-    "position": "PK",
-    "report_status": "ACTIVE"
-   },
    {
     "team": "BUF",
     "full_name": "Mike Danna",
@@ -425,23 +419,30 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 3,
-  "status_disagreements": [],
-  "n_status_disagree": 0,
+  "n_unmatched": 2,
+  "status_disagreements": [
+   {
+    "team": "NE",
+    "player": "Reggie Gilliam",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   }
+  ],
+  "n_status_disagree": 1,
   "qb_flags": [],
-  "checked": "2026-11-13T11:27:14+00:00"
+  "checked": "2026-11-13T18:41:46+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261113T112650Z.json",
+  "snapshot": "odds_20261113T184123Z.json",
   "games": 26,
   "books_seen": {
    "draftkings": 26,
    "fanduel": 26,
    "betmgm": 13,
-   "betonlineag": 25,
-   "lowvig": 25,
-   "novig": 25,
+   "betonlineag": 24,
+   "lowvig": 24,
+   "novig": 26,
    "betrivers": 26,
    "prophetx": 14,
    "pinnacle": 13,
