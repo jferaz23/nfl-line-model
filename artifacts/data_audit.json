@@ -1,9 +1,9 @@
 {
- "built": "2026-11-12T22:53:53+00:00",
+ "built": "2026-11-13T11:27:00+00:00",
  "scores": {
   "ok": true,
-  "games": 3164,
-  "matched": 3164,
+  "games": 3165,
+  "matched": 3165,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3164,
+  "games": 3165,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -401,17 +401,11 @@
   ]
  },
  "injuries": {
-  "ok": false,
-  "listings": 700,
-  "not_active": 263,
-  "matched_share": 0.994,
+  "ok": true,
+  "listings": 650,
+  "not_active": 229,
+  "matched_share": 0.995,
   "unmatched": [
-   {
-    "team": "ARI",
-    "full_name": "Josh Johnson",
-    "position": "QB",
-    "report_status": "ACTIVE"
-   },
    {
     "team": "BAL",
     "full_name": "Riley Patterson",
@@ -431,33 +425,27 @@
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 4,
+  "n_unmatched": 3,
   "status_disagreements": [],
   "n_status_disagree": 0,
-  "qb_flags": [
-   {
-    "team": "LV",
-    "qb": "Aidan O'Connell",
-    "espn_status": "out/doubtful"
-   }
-  ],
-  "checked": "2026-11-12T22:54:07+00:00"
+  "qb_flags": [],
+  "checked": "2026-11-13T11:27:14+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261112T225348Z.json",
-  "games": 27,
+  "snapshot": "odds_20261113T112650Z.json",
+  "games": 26,
   "books_seen": {
-   "draftkings": 27,
-   "fanduel": 27,
-   "betonlineag": 26,
-   "lowvig": 26,
-   "novig": 26,
-   "betrivers": 27,
+   "draftkings": 26,
+   "fanduel": 26,
+   "betmgm": 13,
+   "betonlineag": 25,
+   "lowvig": 25,
+   "novig": 25,
+   "betrivers": 26,
    "prophetx": 14,
-   "betmgm": 14,
-   "hardrockbet": 14,
-   "pinnacle": 14
+   "pinnacle": 13,
+   "hardrockbet": 13
   },
   "configured_missing": []
  }
