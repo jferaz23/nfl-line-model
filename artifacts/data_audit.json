@@ -1,5 +1,5 @@
 {
- "built": "2026-11-14T12:32:16+00:00",
+ "built": "2026-11-14T18:31:33+00:00",
  "scores": {
   "ok": true,
   "games": 3165,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 183,
+  "not_active": 184,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -476,6 +476,12 @@
     "league": "DOUBTFUL"
    },
    {
+    "team": "CLE",
+    "player": "Michael Burton",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
     "team": "DAL",
     "player": "Devin Moore",
     "espn": "IR",
@@ -495,20 +501,32 @@
    },
    {
     "team": "HOU",
+    "player": "David Montgomery",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "HOU",
     "player": "Jaylin Smith",
     "espn": "IR",
     "league": "QUESTIONABLE"
    },
    {
-    "team": "HOU",
-    "player": "Jacob Hummel",
+    "team": "IND",
+    "player": "Akeem Davis-Gaither",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "IND",
-    "player": "Arden Key",
+    "player": "Mo Alie-Cox",
     "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "IND",
+    "player": "Will Mallory",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
@@ -516,6 +534,12 @@
     "player": "BJ Green II",
     "espn": "IR",
     "league": "OUT"
+   },
+   {
+    "team": "KC",
+    "player": "Kenneth Walker III",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
    },
    {
     "team": "LA",
@@ -560,13 +584,13 @@
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 23,
+  "n_status_disagree": 27,
   "qb_flags": [],
-  "checked": "2026-11-14T12:32:29+00:00"
+  "checked": "2026-11-14T18:31:49+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261114T123211Z.json",
+  "snapshot": "odds_20261114T183127Z.json",
   "games": 26,
   "books_seen": {
    "draftkings": 26,
