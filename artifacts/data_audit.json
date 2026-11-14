@@ -1,5 +1,5 @@
 {
- "built": "2026-11-14T05:34:24+00:00",
+ "built": "2026-11-14T12:32:16+00:00",
  "scores": {
   "ok": true,
   "games": 3165,
@@ -422,31 +422,163 @@
   "n_unmatched": 2,
   "status_disagreements": [
    {
+    "team": "ARI",
+    "player": "Zachary Carter",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "ARI",
+    "player": "Hunter Long",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "BUF",
+    "player": "Tyrell Shavers",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "CAR",
+    "player": "Mike Jackson",
+    "espn": "IR",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "CAR",
+    "player": "Xavier Legette",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "CAR",
+    "player": "Jonathon Brooks",
+    "espn": "IR",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "CIN",
+    "player": "Andrei Iosivas",
+    "espn": "IR",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "CIN",
+    "player": "Brian Parker II",
+    "espn": "IR",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "CIN",
+    "player": "Jalen Davis",
+    "espn": "IR",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "DAL",
+    "player": "Devin Moore",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "GB",
+    "player": "Skyy Moore",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "GB",
+    "player": "Chris Brooks",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "HOU",
+    "player": "Jaylin Smith",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "HOU",
+    "player": "Jacob Hummel",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "IND",
+    "player": "Arden Key",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "JAX",
+    "player": "BJ Green II",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "LA",
+    "player": "Terrance Ferguson",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "MIA",
+    "player": "Darrell Baker Jr.",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "NE",
     "player": "Reggie Gilliam",
     "espn": "IR",
     "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NO",
+    "player": "Travis Etienne Jr.",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NYJ",
+    "player": "VJ Payne",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "PIT",
+    "player": "Derrick Harmon",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "SF",
+    "player": "C.J. West",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 1,
+  "n_status_disagree": 23,
   "qb_flags": [],
-  "checked": "2026-11-14T05:34:37+00:00"
+  "checked": "2026-11-14T12:32:29+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261114T053418Z.json",
+  "snapshot": "odds_20261114T123211Z.json",
   "games": 26,
   "books_seen": {
    "draftkings": 26,
    "fanduel": 26,
    "betmgm": 13,
+   "betonlineag": 24,
+   "lowvig": 24,
    "novig": 26,
    "betrivers": 26,
    "prophetx": 14,
    "pinnacle": 13,
-   "hardrockbet": 13,
-   "betonlineag": 11,
-   "lowvig": 11
+   "hardrockbet": 13
   },
   "configured_missing": []
  }
