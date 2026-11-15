@@ -1,9 +1,9 @@
 {
- "built": "2026-11-15T16:52:36+00:00",
+ "built": "2026-11-15T19:45:58+00:00",
  "scores": {
   "ok": true,
-  "games": 3165,
-  "matched": 3165,
+  "games": 3166,
+  "matched": 3166,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3165,
+  "games": 3166,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -402,8 +402,8 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 650,
-  "not_active": 199,
+  "listings": 600,
+  "not_active": 192,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -421,6 +421,12 @@
   ],
   "n_unmatched": 2,
   "status_disagreements": [
+   {
+    "team": "ARI",
+    "player": "Jayden Williams",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
    {
     "team": "ARI",
     "player": "Zachary Carter",
@@ -567,13 +573,13 @@
    },
    {
     "team": "KC",
-    "player": "Kenneth Walker III",
+    "player": "Jaydn Ott",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
     "team": "KC",
-    "player": "Jaydn Ott",
+    "player": "Kenneth Walker III",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
@@ -620,24 +626,6 @@
     "league": "QUESTIONABLE"
    },
    {
-    "team": "NE",
-    "player": "Brenden Schooler",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "NE",
-    "player": "Walter Rouse",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "NE",
-    "player": "TreVeyon Henderson",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
     "team": "NO",
     "player": "Christen Miller",
     "espn": "IR",
@@ -660,27 +648,39 @@
     "player": "Nate Hobbs",
     "espn": "IR",
     "league": "QUESTIONABLE"
+   },
+   {
+    "team": "TEN",
+    "player": "Tommy Townsend",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "TEN",
+    "player": "Peter Skoronski",
+    "espn": "IR",
+    "league": "OUT"
    }
   ],
-  "n_status_disagree": 42,
+  "n_status_disagree": 40,
   "qb_flags": [],
-  "checked": "2026-11-15T16:52:48+00:00"
+  "checked": "2026-11-15T19:46:10+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261115T165227Z.json",
-  "games": 25,
+  "snapshot": "odds_20261115T194553Z.json",
+  "games": 13,
   "books_seen": {
-   "draftkings": 25,
-   "fanduel": 25,
-   "betmgm": 13,
-   "novig": 25,
-   "betrivers": 25,
-   "prophetx": 14,
-   "pinnacle": 13,
-   "hardrockbet": 13,
-   "betonlineag": 12,
-   "lowvig": 12
+   "draftkings": 13,
+   "fanduel": 12,
+   "novig": 13,
+   "betrivers": 12,
+   "prophetx": 12,
+   "betmgm": 12,
+   "hardrockbet": 12,
+   "pinnacle": 10,
+   "lowvig": 5,
+   "betonlineag": 5
   },
   "configured_missing": []
  }
