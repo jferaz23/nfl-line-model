@@ -1,5 +1,5 @@
 {
- "built": "2026-11-15T19:45:58+00:00",
+ "built": "2026-11-15T20:06:08+00:00",
  "scores": {
   "ok": true,
   "games": 3166,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 600,
-  "not_active": 192,
+  "not_active": 203,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -584,6 +584,24 @@
     "league": "QUESTIONABLE"
    },
    {
+    "team": "LV",
+    "player": "Thomas Booker IV",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LV",
+    "player": "Dont'e Thornton Jr.",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LAC",
+    "player": "Ladd McConkey",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "LAC",
     "player": "Trey Pipkins III",
     "espn": "IR",
@@ -599,6 +617,12 @@
     "team": "LAC",
     "player": "David Njoku",
     "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LA",
+    "player": "Joe Cardona",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
@@ -633,42 +657,18 @@
    },
    {
     "team": "NYJ",
-    "player": "Jarvis Brownlee Jr.",
+    "player": "Omar Cooper Jr.",
     "espn": "OUT",
     "league": "QUESTIONABLE"
-   },
-   {
-    "team": "SF",
-    "player": "C.J. West",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "SF",
-    "player": "Nate Hobbs",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "TEN",
-    "player": "Tommy Townsend",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "TEN",
-    "player": "Peter Skoronski",
-    "espn": "IR",
-    "league": "OUT"
    }
   ],
-  "n_status_disagree": 40,
+  "n_status_disagree": 45,
   "qb_flags": [],
-  "checked": "2026-11-15T19:46:10+00:00"
+  "checked": "2026-11-15T20:06:20+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261115T194553Z.json",
+  "snapshot": "odds_20261115T200601Z.json",
   "games": 13,
   "books_seen": {
    "draftkings": 13,
@@ -678,7 +678,7 @@
    "prophetx": 12,
    "betmgm": 12,
    "hardrockbet": 12,
-   "pinnacle": 10,
+   "pinnacle": 11,
    "lowvig": 5,
    "betonlineag": 5
   },
