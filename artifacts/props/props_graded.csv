@@ -100,10 +100,10 @@ season,week,player,team,market,side,line,proj,z,category,tier,actual,result,pric
 2026,8,Trevor Lawrence,JAX,pass_yds,over,241.5,277.8,0.54,over,,210.0,L,,-1.0,
 2026,8,Bijan Robinson,ATL,receptions,under,4.5,3.5,-0.56,receptions,,0.0,W,-166.0,0.8695652173913043,0.6024096385542169
 2026,8,Bijan Robinson,ATL,rush_yds,under,81.5,74.7,-0.29,,green,76.0,W,-114.0,0.8695652173913043,0.8771929824561403
-2026,8,Bam Knight,ARI,rush_yds,over,19.5,34.4,0.64,over,,8.0,L,,-1.0,
+2026,8,Quinshon Judkins,CLE,receptions,over,1.5,2.5,0.56,receptions,,2.0,W,-156.0,0.8695652173913043,0.6410256410256411
 2026,8,Sean Tucker,TB,rush_yds,over,7.5,22.5,0.64,over,,0.0,L,-104.0,-1.0,-1.0
 2026,8,Kyler Murray,MIN,pass_tds,under,1.5,0.9,-0.7,pass_tds,,2.0,L,-142.0,-1.0,-1.0
-2026,8,Bucky Irving,TB,rush_yds,under,69.5,67.6,-0.08,,green,170.0,L,-110.0,-1.0,-1.0
+2026,8,Bam Knight,ARI,rush_yds,over,19.5,34.4,0.64,over,,8.0,L,,-1.0,
 2026,8,Tyler Allgeier,ARI,rush_yds,over,13.5,30.3,0.72,over,,147.0,W,-105.0,0.8695652173913043,0.9523809523809523
 2026,8,Reggie Virgil,ARI,receptions,over,0.5,2.1,0.9,receptions,,0.0,L,-226.0,-1.0,-1.0
 2026,8,Reggie Virgil,ARI,rec_yds,over,11.5,26.0,0.59,over,,0.0,L,-114.0,-1.0,-1.0
@@ -134,7 +134,7 @@ season,week,player,team,market,side,line,proj,z,category,tier,actual,result,pric
 2026,8,Justin Jefferson,MIN,receptions,under,6.5,4.8,-0.96,receptions,,5.0,W,-138.0,0.8695652173913043,0.7246376811594203
 2026,8,Kendrick Bourne,ARI,receptions,under,3.5,3.3,-0.11,,green,1.0,W,101.0,0.8695652173913043,1.01
 2026,8,Aaron Jones,MIN,rush_yds,over,29.5,58.0,1.22,over,,22.0,L,-114.0,-1.0,-1.0
-2026,8,Quinshon Judkins,CLE,receptions,over,1.5,2.5,0.56,receptions,,2.0,W,-156.0,0.8695652173913043,0.6410256410256411
+2026,8,Bucky Irving,TB,rush_yds,under,69.5,67.6,-0.08,,green,170.0,L,-110.0,-1.0,-1.0
 2026,8,Blake Whiteheart,CLE,rec_yds,over,0.5,6.6,0.25,,top,9.0,W,141.0,0.8695652173913043,1.41
 2026,8,Germie Bernard,PIT,rec_yds,under,41.5,35.8,-0.23,,green,30.0,W,-110.0,0.8695652173913043,0.9090909090909091
 2026,8,Kyle Pitts,ATL,receptions,under,3.5,3.5,0.0,,green,2.0,W,-103.0,0.8695652173913043,0.970873786407767
