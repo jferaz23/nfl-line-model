@@ -1,5 +1,5 @@
 {
- "built": "2026-11-15T02:28:22+00:00",
+ "built": "2026-11-15T09:49:30+00:00",
  "scores": {
   "ok": true,
   "games": 3165,
@@ -403,7 +403,7 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 188,
+  "not_active": 189,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -432,6 +432,12 @@
     "player": "Divine Deablo",
     "espn": "OUT",
     "league": "DOUBTFUL"
+   },
+   {
+    "team": "BAL",
+    "player": "Adam Randall",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
    },
    {
     "team": "BUF",
@@ -542,6 +548,24 @@
     "league": "QUESTIONABLE"
    },
    {
+    "team": "LAC",
+    "player": "Trey Pipkins III",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LAC",
+    "player": "Denzel Perryman",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LAC",
+    "player": "David Njoku",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "LA",
     "player": "Terrance Ferguson",
     "espn": "IR",
@@ -590,13 +614,13 @@
     "league": "OUT"
    }
   ],
-  "n_status_disagree": 28,
+  "n_status_disagree": 32,
   "qb_flags": [],
-  "checked": "2026-11-15T02:28:34+00:00"
+  "checked": "2026-11-15T09:49:39+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261115T022817Z.json",
+  "snapshot": "odds_20261115T094924Z.json",
   "games": 26,
   "books_seen": {
    "draftkings": 26,
