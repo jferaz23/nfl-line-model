@@ -1,9 +1,9 @@
 {
- "built": "2026-11-15T20:06:08+00:00",
+ "built": "2026-11-16T00:01:25+00:00",
  "scores": {
   "ok": true,
-  "games": 3166,
-  "matched": 3166,
+  "games": 3174,
+  "matched": 3174,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,13 +12,13 @@
  },
  "lines": {
   "ok": true,
-  "games": 3166,
+  "games": 3174,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
   "favorite_disagree": [],
   "n_favorite_disagree": 0,
-  "spread_result_corr": 0.439,
+  "spread_result_corr": 0.441,
   "moneyline_entry_errors": [
    "2015_01_KC_HOU",
    "2015_15_TB_STL",
@@ -35,9 +35,10 @@
    "2023_02_IND_HOU",
    "2023_03_LAC_MIN",
    "2024_11_CIN_LAC",
-   "2025_10_PHI_GB"
+   "2025_10_PHI_GB",
+   "2026_10_CAR_NO"
   ],
-  "n_moneyline_entry_errors": 16,
+  "n_moneyline_entry_errors": 17,
   "note": "nflverse closing lines; spread sign = home favored when positive"
  },
  "venues": {
@@ -402,78 +403,17 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 600,
-  "not_active": 203,
-  "matched_share": 0.997,
-  "unmatched": [
-   {
-    "team": "BUF",
-    "full_name": "Mike Danna",
-    "position": "DE",
-    "report_status": "OUT"
-   },
-   {
-    "team": "NO",
-    "full_name": "Mike Reid",
-    "position": "CB",
-    "report_status": "OUT"
-   }
-  ],
-  "n_unmatched": 2,
+  "listings": 200,
+  "not_active": 62,
+  "matched_share": 1.0,
+  "unmatched": [],
+  "n_unmatched": 0,
   "status_disagreements": [
-   {
-    "team": "ARI",
-    "player": "Jayden Williams",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "ARI",
-    "player": "Zachary Carter",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "ATL",
-    "player": "Divine Deablo",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
-   },
    {
     "team": "BAL",
     "player": "Adam Randall",
     "espn": "IR",
     "league": "QUESTIONABLE"
-   },
-   {
-    "team": "BUF",
-    "player": "Tyrell Shavers",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "CAR",
-    "player": "Will Lee III",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "CAR",
-    "player": "Brady Christensen",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "CAR",
-    "player": "Mike Jackson",
-    "espn": "IR",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "CAR",
-    "player": "Jonathon Brooks",
-    "espn": "IR",
-    "league": "DOUBTFUL"
    },
    {
     "team": "CIN",
@@ -494,10 +434,10 @@
     "league": "DOUBTFUL"
    },
    {
-    "team": "CLE",
-    "player": "Michael Burton",
-    "espn": "IR",
-    "league": "OUT"
+    "team": "DAL",
+    "player": "Juanyeh Thomas",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
    },
    {
     "team": "DAL",
@@ -509,78 +449,6 @@
     "team": "DAL",
     "player": "Devin Moore",
     "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "GB",
-    "player": "Kevin Zeitler",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "GB",
-    "player": "Zaire Franklin",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "GB",
-    "player": "Josh Whyle",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "HOU",
-    "player": "Wyatt Teller",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "HOU",
-    "player": "David Montgomery",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "HOU",
-    "player": "Jaylin Smith",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "IND",
-    "player": "Akeem Davis-Gaither",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "IND",
-    "player": "Mo Alie-Cox",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "IND",
-    "player": "Will Mallory",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "JAX",
-    "player": "BJ Green II",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "KC",
-    "player": "Jaydn Ott",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "KC",
-    "player": "Kenneth Walker III",
-    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
@@ -620,67 +488,37 @@
     "league": "QUESTIONABLE"
    },
    {
-    "team": "LA",
-    "player": "Joe Cardona",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "LA",
-    "player": "Terrance Ferguson",
+    "team": "SF",
+    "player": "C.J. West",
     "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "MIA",
-    "player": "Chris Bell",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "MIA",
-    "player": "Darrell Baker Jr.",
-    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
-    "team": "MIN",
-    "player": "Jordan Addison",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "NO",
-    "player": "Christen Miller",
+    "team": "SF",
+    "player": "Nate Hobbs",
     "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "NYJ",
-    "player": "Omar Cooper Jr.",
-    "espn": "OUT",
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 45,
+  "n_status_disagree": 15,
   "qb_flags": [],
-  "checked": "2026-11-15T20:06:20+00:00"
+  "checked": "2026-11-16T00:01:38+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261115T200601Z.json",
-  "games": 13,
+  "snapshot": "odds_20261116T000119Z.json",
+  "games": 18,
   "books_seen": {
-   "draftkings": 13,
-   "fanduel": 12,
-   "novig": 13,
-   "betrivers": 12,
-   "prophetx": 12,
-   "betmgm": 12,
-   "hardrockbet": 12,
-   "pinnacle": 11,
-   "lowvig": 5,
-   "betonlineag": 5
+   "draftkings": 18,
+   "fanduel": 18,
+   "novig": 18,
+   "prophetx": 15,
+   "betmgm": 18,
+   "hardrockbet": 4,
+   "pinnacle": 5,
+   "betrivers": 16,
+   "lowvig": 7,
+   "betonlineag": 7
   },
   "configured_missing": []
  }
