@@ -1,9 +1,9 @@
 {
- "built": "2026-11-17T02:25:09+00:00",
+ "built": "2026-11-17T11:00:17+00:00",
  "scores": {
   "ok": true,
-  "games": 3177,
-  "matched": 3177,
+  "games": 3178,
+  "matched": 3178,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3177,
+  "games": 3178,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -402,69 +402,273 @@
   ]
  },
  "injuries": {
-  "ok": true,
-  "listings": 50,
-  "not_active": 16,
-  "matched_share": 1.0,
-  "unmatched": [],
-  "n_unmatched": 0,
-  "status_disagreements": [
+  "ok": false,
+  "listings": 650,
+  "not_active": 162,
+  "matched_share": 0.842,
+  "unmatched": [
    {
-    "team": "BAL",
-    "player": "Adam Randall",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
+    "team": "BUF",
+    "full_name": "Mike Danna",
+    "position": "DE",
+    "report_status": "ACTIVE"
    },
    {
-    "team": "LAC",
-    "player": "Brenen Thompson",
-    "espn": "OUT",
-    "league": "DOUBTFUL"
+    "team": "CHI",
+    "full_name": "Luther Burden III",
+    "position": "WR",
+    "report_status": "QUESTIONABLE"
    },
    {
-    "team": "LAC",
-    "player": "Justin Eboigbe",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
+    "team": "CHI",
+    "full_name": "Kyle Monangai",
+    "position": "RB",
+    "report_status": "OUT"
    },
    {
-    "team": "LAC",
-    "player": "Ladd McConkey",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
+    "team": "CHI",
+    "full_name": "Jaylon Johnson",
+    "position": "CB",
+    "report_status": "ACTIVE"
    },
    {
-    "team": "LAC",
-    "player": "Trey Pipkins III",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
+    "team": "CHI",
+    "full_name": "Cam Lewis",
+    "position": "CB",
+    "report_status": "ACTIVE"
    },
    {
-    "team": "LAC",
-    "player": "Branson Taylor",
-    "espn": "IR",
-    "league": "OUT"
+    "team": "CHI",
+    "full_name": "Jeffery Simmons",
+    "position": "DT",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Zavion Thomas",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Sam Roush",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Roschon Johnson",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Kalif Raymond",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Cairo Santos",
+    "position": "PK",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Jayden Loving",
+    "position": "DT",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Keyshaun Elliott",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Colston Loveland",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Rome Odunze",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "D'Andre Swift",
+    "position": "RB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Caleb Williams",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Tyrique Stevenson Sr.",
+    "position": "CB",
+    "report_status": "QUESTIONABLE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Malik Muhammad II",
+    "position": "CB",
+    "report_status": "OUT"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Case Keenum",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Grady Jarrett",
+    "position": "DE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Theo Benedet",
+    "position": "OT",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "D'Marco Jackson",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Zavier Scott",
+    "position": "RB",
+    "report_status": "IR"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Kentavius Street",
+    "position": "DT",
+    "report_status": "IR"
+   },
+   {
+    "team": "CHI",
+    "full_name": "Braxton Jones",
+    "position": "OT",
+    "report_status": "IR"
+   },
+   {
+    "team": "DEN",
+    "full_name": "Alex Singleton",
+    "position": "LB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "DEN",
+    "full_name": "Adam Trautman",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "DEN",
+    "full_name": "Marvin Mims Jr.",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "DEN",
+    "full_name": "Troy Franklin",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "DEN",
+    "full_name": "Evan Engram",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "DEN",
+    "full_name": "Wil Lutz",
+    "position": "PK",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "DEN",
+    "full_name": "Brandon Jones",
+    "position": "S",
+    "report_status": "OUT"
+   },
+   {
+    "team": "DEN",
+    "full_name": "Talanoa Hufanga",
+    "position": "S",
+    "report_status": "OUT"
+   },
+   {
+    "team": "DEN",
+    "full_name": "Lil'Jordan Humphrey",
+    "position": "WR",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "DEN",
+    "full_name": "Dallen Bentley",
+    "position": "TE",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "DEN",
+    "full_name": "Sam Ehlinger",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "DEN",
+    "full_name": "Kris Abrams-Draine",
+    "position": "CB",
+    "report_status": "OUT"
+   },
+   {
+    "team": "DEN",
+    "full_name": "Kage Casey",
+    "position": "OT",
+    "report_status": "ACTIVE"
+   },
+   {
+    "team": "DEN",
+    "full_name": "J.K. Dobbins",
+    "position": "RB",
+    "report_status": "ACTIVE"
    }
   ],
-  "n_status_disagree": 6,
+  "n_unmatched": 103,
+  "status_disagreements": [],
+  "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-11-17T02:25:21+00:00"
+  "checked": "2026-11-17T11:00:29+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261117T022504Z.json",
-  "games": 12,
+  "snapshot": "odds_20261117T110010Z.json",
+  "games": 13,
   "books_seen": {
-   "draftkings": 12,
-   "fanduel": 12,
-   "novig": 12,
-   "betrivers": 12,
-   "betmgm": 12,
-   "pinnacle": 12,
-   "hardrockbet": 12,
-   "prophetx": 12,
+   "draftkings": 13,
+   "fanduel": 13,
    "betonlineag": 11,
-   "lowvig": 11
+   "lowvig": 11,
+   "betrivers": 13,
+   "novig": 13,
+   "prophetx": 13,
+   "pinnacle": 11,
+   "betmgm": 13,
+   "hardrockbet": 13
   },
   "configured_missing": []
  }
