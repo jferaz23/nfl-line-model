@@ -1,5 +1,5 @@
 {
- "built": "2026-11-16T18:49:57+00:00",
+ "built": "2026-11-17T02:25:09+00:00",
  "scores": {
   "ok": true,
   "games": 3177,
@@ -404,7 +404,7 @@
  "injuries": {
   "ok": true,
   "listings": 50,
-  "not_active": 13,
+  "not_active": 16,
   "matched_share": 1.0,
   "unmatched": [],
   "n_unmatched": 0,
@@ -413,6 +413,18 @@
     "team": "BAL",
     "player": "Adam Randall",
     "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LAC",
+    "player": "Brenen Thompson",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "LAC",
+    "player": "Justin Eboigbe",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
@@ -429,36 +441,30 @@
    },
    {
     "team": "LAC",
-    "player": "Denzel Perryman",
+    "player": "Branson Taylor",
     "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "LAC",
-    "player": "David Njoku",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    }
   ],
-  "n_status_disagree": 5,
+  "n_status_disagree": 6,
   "qb_flags": [],
-  "checked": "2026-11-16T18:50:08+00:00"
+  "checked": "2026-11-17T02:25:21+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261116T184952Z.json",
-  "games": 14,
+  "snapshot": "odds_20261117T022504Z.json",
+  "games": 12,
   "books_seen": {
-   "draftkings": 14,
-   "fanduel": 14,
-   "lowvig": 14,
-   "betonlineag": 14,
-   "novig": 14,
-   "betrivers": 14,
-   "betmgm": 14,
+   "draftkings": 12,
+   "fanduel": 12,
+   "novig": 12,
+   "betrivers": 12,
+   "betmgm": 12,
    "pinnacle": 12,
-   "hardrockbet": 14,
-   "prophetx": 13
+   "hardrockbet": 12,
+   "prophetx": 12,
+   "betonlineag": 11,
+   "lowvig": 11
   },
   "configured_missing": []
  }
