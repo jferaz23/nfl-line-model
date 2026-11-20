@@ -1,5 +1,5 @@
 {
- "built": "2026-11-20T16:49:15+00:00",
+ "built": "2026-11-20T23:00:18+00:00",
  "scores": {
   "ok": true,
   "games": 3179,
@@ -404,7 +404,7 @@
  "injuries": {
   "ok": true,
   "listings": 600,
-  "not_active": 179,
+  "not_active": 146,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -424,7 +424,7 @@
   "status_disagreements": [],
   "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-11-20T16:49:26+00:00"
+  "checked": "2026-11-20T23:00:32+00:00"
  },
  "books": {
   "ok": true,
