@@ -1,5 +1,5 @@
 {
- "built": "2026-11-19T18:04:07+00:00",
+ "built": "2026-11-20T00:39:02+00:00",
  "scores": {
   "ok": true,
   "games": 3178,
@@ -404,7 +404,7 @@
  "injuries": {
   "ok": true,
   "listings": 650,
-  "not_active": 204,
+  "not_active": 193,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -424,18 +424,24 @@
   "status_disagreements": [
    {
     "team": "HOU",
-    "player": "Jaylin Smith",
-    "espn": "IR",
+    "player": "Wyatt Teller",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "IND",
+    "player": "Sauce Gardner",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 1,
+  "n_status_disagree": 2,
   "qb_flags": [],
-  "checked": "2026-11-19T18:04:22+00:00"
+  "checked": "2026-11-20T00:39:12+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261119T180401Z.json",
+  "snapshot": "odds_20261120T003852Z.json",
   "games": 29,
   "books_seen": {
    "draftkings": 29,
@@ -444,7 +450,7 @@
    "lowvig": 29,
    "betrivers": 29,
    "novig": 29,
-   "prophetx": 14,
+   "prophetx": 16,
    "pinnacle": 13,
    "betmgm": 14,
    "hardrockbet": 14
