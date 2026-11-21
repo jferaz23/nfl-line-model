@@ -1,5 +1,5 @@
 {
- "built": "2026-11-21T19:41:10+00:00",
+ "built": "2026-11-21T23:58:49+00:00",
  "scores": {
   "ok": true,
   "games": 3179,
@@ -436,15 +436,15 @@
    },
    {
     "team": "CAR",
-    "player": "Mike Jackson",
+    "player": "Jonathon Brooks",
     "espn": "IR",
     "league": "QUESTIONABLE"
    },
    {
     "team": "CAR",
-    "player": "Jonathon Brooks",
+    "player": "Isaiah Simmons",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "CAR",
@@ -471,6 +471,12 @@
     "league": "OUT"
    },
    {
+    "team": "DET",
+    "player": "Cade Mays",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
     "team": "JAX",
     "player": "BJ Green II",
     "espn": "IR",
@@ -484,9 +490,9 @@
    },
    {
     "team": "LAC",
-    "player": "Trey Pipkins III",
+    "player": "Rodney Shelley",
     "espn": "IR",
-    "league": "QUESTIONABLE"
+    "league": "OUT"
    },
    {
     "team": "NYJ",
@@ -496,7 +502,19 @@
    },
    {
     "team": "PHI",
-    "player": "Will Shipley",
+    "player": "Dontayvion Wicks",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "PHI",
+    "player": "Zack Baun",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "PIT",
+    "player": "Michael Pittman Jr.",
     "espn": "IR",
     "league": "QUESTIONABLE"
    },
@@ -508,25 +526,7 @@
    },
    {
     "team": "PIT",
-    "player": "Roman Wilson",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "PIT",
-    "player": "Michael Pittman Jr.",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "PIT",
     "player": "Gennings Dunker",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "SF",
-    "player": "C.J. West",
     "espn": "IR",
     "league": "QUESTIONABLE"
    },
@@ -557,17 +557,17 @@
   ],
   "n_status_disagree": 22,
   "qb_flags": [],
-  "checked": "2026-11-21T19:41:20+00:00"
+  "checked": "2026-11-21T23:59:06+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261121T194103Z.json",
+  "snapshot": "odds_20261121T235844Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
    "fanduel": 28,
-   "lowvig": 25,
-   "betonlineag": 25,
+   "lowvig": 26,
+   "betonlineag": 26,
    "betrivers": 28,
    "novig": 28,
    "prophetx": 17,
