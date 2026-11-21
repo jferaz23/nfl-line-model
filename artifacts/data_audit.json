@@ -1,5 +1,5 @@
 {
- "built": "2026-11-21T12:17:16+00:00",
+ "built": "2026-11-21T19:41:10+00:00",
  "scores": {
   "ok": true,
   "games": 3179,
@@ -404,7 +404,7 @@
  "injuries": {
   "ok": true,
   "listings": 600,
-  "not_active": 149,
+  "not_active": 148,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -422,6 +422,12 @@
   ],
   "n_unmatched": 2,
   "status_disagreements": [
+   {
+    "team": "ARI",
+    "player": "Carson Beck",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
    {
     "team": "ARI",
     "player": "Zachary Carter",
@@ -448,6 +454,12 @@
    },
    {
     "team": "DAL",
+    "player": "DaRon Bland",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "DAL",
     "player": "Jalen Thompson",
     "espn": "IR",
     "league": "QUESTIONABLE"
@@ -465,15 +477,15 @@
     "league": "OUT"
    },
    {
-    "team": "LAC",
-    "player": "Trey Pipkins III",
-    "espn": "IR",
+    "team": "JAX",
+    "player": "Danny Striggow",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
-    "team": "MIA",
-    "player": "Darrell Baker Jr.",
-    "espn": "OUT",
+    "team": "LAC",
+    "player": "Trey Pipkins III",
+    "espn": "IR",
     "league": "QUESTIONABLE"
    },
    {
@@ -486,6 +498,12 @@
     "team": "PHI",
     "player": "Will Shipley",
     "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "PIT",
+    "player": "Nick Herbig",
+    "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
@@ -526,24 +544,30 @@
    },
    {
     "team": "TEN",
+    "player": "Tyjae Spears",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "TEN",
     "player": "Fernando Carmona",
     "espn": "IR",
     "league": "OUT"
    }
   ],
-  "n_status_disagree": 18,
+  "n_status_disagree": 22,
   "qb_flags": [],
-  "checked": "2026-11-21T12:17:30+00:00"
+  "checked": "2026-11-21T19:41:20+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261121T121710Z.json",
+  "snapshot": "odds_20261121T194103Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
    "fanduel": 28,
-   "lowvig": 26,
-   "betonlineag": 26,
+   "lowvig": 25,
+   "betonlineag": 25,
    "betrivers": 28,
    "novig": 28,
    "prophetx": 17,
