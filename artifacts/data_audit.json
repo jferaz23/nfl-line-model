@@ -1,5 +1,5 @@
 {
- "built": "2026-11-21T03:54:33+00:00",
+ "built": "2026-11-21T12:17:16+00:00",
  "scores": {
   "ok": true,
   "games": 3179,
@@ -421,14 +421,123 @@
    }
   ],
   "n_unmatched": 2,
-  "status_disagreements": [],
-  "n_status_disagree": 0,
+  "status_disagreements": [
+   {
+    "team": "ARI",
+    "player": "Zachary Carter",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "CAR",
+    "player": "Mike Jackson",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "CAR",
+    "player": "Jonathon Brooks",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "CAR",
+    "player": "Brady Christensen",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DAL",
+    "player": "Jalen Thompson",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DEN",
+    "player": "Caleb Lohner",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "JAX",
+    "player": "BJ Green II",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "LAC",
+    "player": "Trey Pipkins III",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "MIA",
+    "player": "Darrell Baker Jr.",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NYJ",
+    "player": "David Onyemata",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "PHI",
+    "player": "Will Shipley",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "PIT",
+    "player": "Roman Wilson",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "PIT",
+    "player": "Michael Pittman Jr.",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "PIT",
+    "player": "Gennings Dunker",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "SF",
+    "player": "C.J. West",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "SF",
+    "player": "Nate Hobbs",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "TB",
+    "player": "Josh Hayes",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "TEN",
+    "player": "Fernando Carmona",
+    "espn": "IR",
+    "league": "OUT"
+   }
+  ],
+  "n_status_disagree": 18,
   "qb_flags": [],
-  "checked": "2026-11-21T03:54:44+00:00"
+  "checked": "2026-11-21T12:17:30+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261121T035425Z.json",
+  "snapshot": "odds_20261121T121710Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
@@ -439,7 +548,7 @@
    "novig": 28,
    "prophetx": 17,
    "betmgm": 13,
-   "hardrockbet": 17,
+   "hardrockbet": 16,
    "pinnacle": 12
   },
   "configured_missing": []
