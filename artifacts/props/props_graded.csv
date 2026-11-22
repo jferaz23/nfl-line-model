@@ -365,15 +365,16 @@ season,week,player,team,market,side,line,proj,z,category,tier,actual,result,pric
 2026,10,Germie Bernard,PIT,rec_yds,under,49.5,40.4,-0.37,,green,0.0,W,-113.0,0.8695652173913043,0.8849557522123894
 2026,10,Rico Dowdle,PIT,rush_yds,over,30.5,44.2,0.59,over,,26.0,L,-108.0,-1.0,-1.0
 2026,10,Ja'Marr Chase,CIN,receptions,under,7.5,6.7,-0.45,,top,11.0,L,-102.0,-1.0,-1.0
-2026,10,Germie Bernard,PIT,receptions,under,4.5,4.4,-0.06,,green,0.0,W,102.0,0.8695652173913043,1.02
-2026,10,Deebo Samuel Sr.,SF,rec_yds,over,37.5,50.3,0.52,over,,31.0,L,-109.0,-1.0,-1.0
+2026,10,Jordan Watkins,SF,rec_yds,over,24.5,37.7,0.53,over,,49.0,W,-111.0,0.8695652173913043,0.9009009009009009
+2026,10,Joe Burrow,CIN,pass_tds,under,2.5,2.0,-0.58,pass_tds,,4.0,L,-199.0,-1.0,-1.0
 2026,10,CeeDee Lamb,DAL,rec_yds,under,90.5,82.9,-0.31,,green,72.0,W,-112.0,0.8695652173913043,0.8928571428571429
 2026,10,Brock Purdy,SF,pass_yds,over,261.5,304.7,0.64,over,,389.0,W,,0.8695652173913043,
-2026,10,Jordan Watkins,SF,rec_yds,over,24.5,37.7,0.53,over,,49.0,W,-111.0,0.8695652173913043,0.9009009009009009
+2026,10,Deebo Samuel Sr.,SF,rec_yds,over,37.5,50.3,0.52,over,,31.0,L,-109.0,-1.0,-1.0
 2026,10,Tee Higgins,CIN,rec_yds,under,76.5,65.8,-0.43,,green,66.0,W,-111.0,0.8695652173913043,0.9009009009009009
-2026,10,Joe Burrow,CIN,pass_tds,under,2.5,2.0,-0.58,pass_tds,,4.0,L,-199.0,-1.0,-1.0
+2026,10,Germie Bernard,PIT,receptions,under,4.5,4.4,-0.06,,green,0.0,W,102.0,0.8695652173913043,1.02
 2026,10,Javonte Williams,DAL,receptions,under,2.5,2.0,-0.28,,top,1.0,W,116.0,0.8695652173913043,1.16
 2026,10,Javonte Williams,DAL,rush_yds,under,59.5,55.4,-0.18,,green,63.0,L,-110.0,-1.0,-1.0
+2026,10,Kyren Williams,LA,rush_yds,under,65.5,61.5,-0.17,,green,23.0,W,-109.0,0.8695652173913043,0.9174311926605505
 2026,10,Brevyn Spann-Ford,DAL,receptions,under,2.5,1.9,-0.34,,top,1.0,W,120.0,0.8695652173913043,1.2
 2026,10,Jalen Nailor,LV,receptions,over,1.5,2.3,0.45,,green,1.0,L,103.0,-1.0,-1.0
 2026,10,Jaxon Smith-Njigba,SEA,receptions,under,7.5,6.5,-0.56,receptions,,8.0,L,-139.0,-1.0,-1.0
@@ -387,20 +388,19 @@ season,week,player,team,market,side,line,proj,z,category,tier,actual,result,pric
 2026,10,Fernando Mendoza,LV,pass_yds,under,181.5,115.6,-0.98,under,,143.0,W,,0.8695652173913043,
 2026,10,Colby Parkinson,LA,receptions,under,3.5,2.9,-0.34,,top,2.0,W,-110.0,0.8695652173913043,0.9090909090909091
 2026,10,Deebo Samuel Sr.,SF,receptions,over,3.5,3.9,0.22,,top,3.0,L,113.0,-1.0,-1.0
-2026,10,Christian McCaffrey,SF,receptions,over,4.5,4.9,0.22,,top,4.0,L,122.0,-1.0,-1.0
 2026,10,Tyler Higbee,LA,receptions,under,3.5,2.6,-0.5,,top,3.0,W,-112.0,0.8695652173913043,0.8928571428571429
-2026,10,Tyler Higbee,LA,rec_yds,under,34.5,27.8,-0.27,,green,17.0,W,-109.0,0.8695652173913043,0.9174311926605505
-2026,10,Matthew Stafford,LA,pass_yds,over,208.5,252.3,0.65,over,,249.0,W,,0.8695652173913043,
 2026,10,Dak Prescott,DAL,pass_tds,over,1.5,2.0,0.58,pass_tds,,5.0,W,-204.0,0.8695652173913043,0.49019607843137253
+2026,10,Tyler Higbee,LA,rec_yds,under,34.5,27.8,-0.27,,green,17.0,W,-109.0,0.8695652173913043,0.9174311926605505
+2026,10,Christian McCaffrey,SF,receptions,over,4.5,4.9,0.22,,top,4.0,L,122.0,-1.0,-1.0
 2026,10,Colby Parkinson,LA,rec_yds,under,32.5,23.1,-0.38,,green,11.0,W,-114.0,0.8695652173913043,0.8771929824561403
 2026,10,Bam Knight,ARI,rush_yds,under,33.5,24.1,-0.4,,top,19.0,W,,0.8695652173913043,
 2026,10,Blake Corum,LA,rush_yds,under,57.5,52.5,-0.21,,green,100.0,L,-114.0,-1.0,-1.0
 2026,10,Trey McBride,ARI,receptions,under,6.5,5.8,-0.39,,green,5.0,W,-124.0,0.8695652173913043,0.8064516129032258
-2026,10,Kyren Williams,LA,rush_yds,under,65.5,61.5,-0.17,,green,23.0,W,-109.0,0.8695652173913043,0.9174311926605505
+2026,10,Matthew Stafford,LA,pass_yds,over,208.5,252.3,0.65,over,,249.0,W,,0.8695652173913043,
 2026,10,Tre Harris,LAC,rec_yds,under,43.5,33.4,-0.41,,green,86.0,L,,-1.0,
 2026,10,Oronde Gadsden II,LAC,rec_yds,over,10.5,23.7,0.53,over,,7.0,L,,-1.0,
-2026,10,Oronde Gadsden II,LAC,receptions,over,1.5,2.4,0.52,receptions,green,1.0,L,,-1.0,
 2026,10,Justin Herbert,LAC,pass_tds,over,0.5,1.0,0.58,pass_tds,,0.0,L,,-1.0,
+2026,10,Oronde Gadsden II,LAC,receptions,over,1.5,2.4,0.52,receptions,green,1.0,L,,-1.0,
 2026,10,Ja'Kobi Lane,BAL,receptions,under,2.5,1.5,-0.56,receptions,top,3.0,L,,-1.0,
 2026,10,Zay Flowers,BAL,receptions,under,5.5,4.3,-0.66,receptions,top,6.0,L,,-1.0,
 2026,10,Rashod Bateman,BAL,receptions,under,2.5,1.9,-0.32,,top,3.0,L,,-1.0,
