@@ -1,5 +1,5 @@
 {
- "built": "2026-11-21T23:58:49+00:00",
+ "built": "2026-11-22T06:13:39+00:00",
  "scores": {
   "ok": true,
   "games": 3179,
@@ -404,7 +404,7 @@
  "injuries": {
   "ok": true,
   "listings": 600,
-  "not_active": 148,
+  "not_active": 147,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -436,7 +436,7 @@
    },
    {
     "team": "CAR",
-    "player": "Jonathon Brooks",
+    "player": "Brady Christensen",
     "espn": "IR",
     "league": "QUESTIONABLE"
    },
@@ -448,7 +448,13 @@
    },
    {
     "team": "CAR",
-    "player": "Brady Christensen",
+    "player": "Jonathon Brooks",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DAL",
+    "player": "Jalen Thompson",
     "espn": "IR",
     "league": "QUESTIONABLE"
    },
@@ -457,12 +463,6 @@
     "player": "DaRon Bland",
     "espn": "IR",
     "league": "OUT"
-   },
-   {
-    "team": "DAL",
-    "player": "Jalen Thompson",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
    },
    {
     "team": "DEN",
@@ -478,15 +478,15 @@
    },
    {
     "team": "JAX",
-    "player": "BJ Green II",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "JAX",
     "player": "Danny Striggow",
     "espn": "OUT",
     "league": "QUESTIONABLE"
+   },
+   {
+    "team": "JAX",
+    "player": "BJ Green II",
+    "espn": "IR",
+    "league": "OUT"
    },
    {
     "team": "LAC",
@@ -502,13 +502,13 @@
    },
    {
     "team": "PHI",
-    "player": "Dontayvion Wicks",
+    "player": "Zack Baun",
     "espn": "IR",
     "league": "OUT"
    },
    {
     "team": "PHI",
-    "player": "Zack Baun",
+    "player": "Dontayvion Wicks",
     "espn": "IR",
     "league": "OUT"
    },
@@ -557,11 +557,11 @@
   ],
   "n_status_disagree": 22,
   "qb_flags": [],
-  "checked": "2026-11-21T23:59:06+00:00"
+  "checked": "2026-11-22T06:13:49+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261121T235844Z.json",
+  "snapshot": "odds_20261122T061330Z.json",
   "games": 28,
   "books_seen": {
    "draftkings": 28,
