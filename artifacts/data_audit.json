@@ -1,5 +1,5 @@
 {
- "built": "2026-11-22T14:41:23+00:00",
+ "built": "2026-11-22T20:06:34+00:00",
  "scores": {
   "ok": true,
   "games": 3179,
@@ -404,14 +404,14 @@
  "injuries": {
   "ok": true,
   "listings": 600,
-  "not_active": 147,
+  "not_active": 177,
   "matched_share": 0.997,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
-    "report_status": "ACTIVE"
+    "report_status": "OUT"
    },
    {
     "team": "NO",
@@ -433,6 +433,18 @@
     "player": "Zachary Carter",
     "espn": "IR",
     "league": "OUT"
+   },
+   {
+    "team": "BUF",
+    "player": "T.J. Sanders",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "BUF",
+    "player": "Dalton Kincaid",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
    },
    {
     "team": "CAR",
@@ -472,6 +484,12 @@
    },
    {
     "team": "DAL",
+    "player": "Jaishawn Barham",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DAL",
     "player": "Jalen Thompson",
     "espn": "IR",
     "league": "QUESTIONABLE"
@@ -487,6 +505,18 @@
     "player": "Caleb Lohner",
     "espn": "IR",
     "league": "OUT"
+   },
+   {
+    "team": "DET",
+    "player": "Ennis Rakestraw Jr.",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DET",
+    "player": "D.J. Reed",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
    },
    {
     "team": "DET",
@@ -507,16 +537,70 @@
     "league": "OUT"
    },
    {
+    "team": "KC",
+    "player": "Omarr Norman-Lott",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "KC",
+    "player": "Peter Woods",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LAC",
+    "player": "Tarheeb Still",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LAC",
+    "player": "Brenen Thompson",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
+   },
+   {
     "team": "LAC",
     "player": "Rodney Shelley",
     "espn": "IR",
     "league": "OUT"
    },
    {
+    "team": "MIA",
+    "player": "Jaylin Simpson",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "MIA",
+    "player": "Dante Trader Jr.",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "NO",
+    "player": "Pete Werner",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NYJ",
+    "player": "Trevin Wallace",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "NYJ",
     "player": "David Onyemata",
     "espn": "IR",
     "league": "OUT"
+   },
+   {
+    "team": "PHI",
+    "player": "Smael Mondon Jr.",
+    "espn": "OUT",
+    "league": "DOUBTFUL"
    },
    {
     "team": "PHI",
@@ -579,25 +663,25 @@
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 26,
+  "n_status_disagree": 40,
   "qb_flags": [],
-  "checked": "2026-11-22T14:41:36+00:00"
+  "checked": "2026-11-22T20:06:45+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261122T144118Z.json",
-  "games": 28,
+  "snapshot": "odds_20261122T200625Z.json",
+  "games": 13,
   "books_seen": {
-   "draftkings": 28,
-   "fanduel": 28,
-   "lowvig": 26,
-   "betonlineag": 26,
-   "betrivers": 28,
-   "novig": 28,
-   "prophetx": 17,
+   "draftkings": 13,
+   "fanduel": 12,
+   "betrivers": 13,
+   "novig": 13,
+   "prophetx": 13,
    "betmgm": 13,
-   "hardrockbet": 16,
-   "pinnacle": 12
+   "hardrockbet": 13,
+   "pinnacle": 11,
+   "lowvig": 5,
+   "betonlineag": 5
   },
   "configured_missing": []
  }
