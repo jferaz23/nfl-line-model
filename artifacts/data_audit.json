@@ -1,5 +1,5 @@
 {
- "built": "2026-11-22T20:06:34+00:00",
+ "built": "2026-11-22T20:51:36+00:00",
  "scores": {
   "ok": true,
   "games": 3179,
@@ -404,7 +404,7 @@
  "injuries": {
   "ok": true,
   "listings": 600,
-  "not_active": 177,
+  "not_active": 201,
   "matched_share": 0.997,
   "unmatched": [
    {
@@ -502,6 +502,12 @@
    },
    {
     "team": "DEN",
+    "player": "Brandon Jones",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DEN",
     "player": "Caleb Lohner",
     "espn": "IR",
     "league": "OUT"
@@ -526,6 +532,12 @@
    },
    {
     "team": "JAX",
+    "player": "Matt Dickerson",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "JAX",
     "player": "Danny Striggow",
     "espn": "OUT",
     "league": "QUESTIONABLE"
@@ -545,6 +557,12 @@
    {
     "team": "KC",
     "player": "Peter Woods",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "LV",
+    "player": "Brock Bowers",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
@@ -643,43 +661,25 @@
     "player": "Josh Hayes",
     "espn": "IR",
     "league": "OUT"
-   },
-   {
-    "team": "TEN",
-    "player": "Tyjae Spears",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "TEN",
-    "player": "Fernando Carmona",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "WAS",
-    "player": "Jacory Croskey-Merritt",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 40,
+  "n_status_disagree": 43,
   "qb_flags": [],
-  "checked": "2026-11-22T20:06:45+00:00"
+  "checked": "2026-11-22T20:51:47+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261122T200625Z.json",
+  "snapshot": "odds_20261122T205126Z.json",
   "games": 13,
   "books_seen": {
    "draftkings": 13,
    "fanduel": 12,
    "betrivers": 13,
    "novig": 13,
-   "prophetx": 13,
+   "prophetx": 12,
    "betmgm": 13,
    "hardrockbet": 13,
-   "pinnacle": 11,
+   "pinnacle": 10,
    "lowvig": 5,
    "betonlineag": 5
   },
