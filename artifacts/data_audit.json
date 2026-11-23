@@ -1,9 +1,9 @@
 {
- "built": "2026-11-23T00:07:49+00:00",
+ "built": "2026-11-23T09:41:42+00:00",
  "scores": {
   "ok": true,
-  "games": 3187,
-  "matched": 3187,
+  "games": 3190,
+  "matched": 3190,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3187,
+  "games": 3190,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -403,8 +403,8 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 200,
-  "not_active": 64,
+  "listings": 50,
+  "not_active": 12,
   "matched_share": 1.0,
   "unmatched": [],
   "n_unmatched": 0,
@@ -428,85 +428,31 @@
     "league": "QUESTIONABLE"
    },
    {
-    "team": "DEN",
-    "player": "Brandon Jones",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "DEN",
-    "player": "Caleb Lohner",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "JAX",
-    "player": "Matt Dickerson",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "JAX",
-    "player": "Danny Striggow",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "JAX",
-    "player": "BJ Green II",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "LV",
-    "player": "Brock Bowers",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "MIN",
-    "player": "Jay Ward",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "MIN",
-    "player": "Isaiah Rodgers",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "SF",
-    "player": "Nate Hobbs",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
     "team": "WAS",
     "player": "Jacory Croskey-Merritt",
     "espn": "IR",
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 13,
+  "n_status_disagree": 4,
   "qb_flags": [],
-  "checked": "2026-11-23T00:08:05+00:00"
+  "checked": "2026-11-23T09:41:52+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261123T000742Z.json",
-  "games": 20,
+  "snapshot": "odds_20261123T094137Z.json",
+  "games": 17,
   "books_seen": {
-   "draftkings": 20,
-   "fanduel": 20,
-   "betrivers": 20,
-   "novig": 20,
-   "prophetx": 18,
-   "betmgm": 20,
-   "hardrockbet": 5,
-   "pinnacle": 8,
-   "lowvig": 10,
-   "betonlineag": 10
+   "draftkings": 17,
+   "fanduel": 17,
+   "betonlineag": 15,
+   "lowvig": 15,
+   "betrivers": 17,
+   "novig": 17,
+   "betmgm": 17,
+   "hardrockbet": 17,
+   "pinnacle": 10,
+   "prophetx": 16
   },
   "configured_missing": []
  }
