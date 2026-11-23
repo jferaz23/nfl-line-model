@@ -1,5 +1,5 @@
 {
- "built": "2026-11-23T09:41:42+00:00",
+ "built": "2026-11-23T21:42:31+00:00",
  "scores": {
   "ok": true,
   "games": 3190,
@@ -404,11 +404,17 @@
  "injuries": {
   "ok": true,
   "listings": 50,
-  "not_active": 12,
+  "not_active": 11,
   "matched_share": 1.0,
   "unmatched": [],
   "n_unmatched": 0,
   "status_disagreements": [
+   {
+    "team": "CIN",
+    "player": "Jalen Davis",
+    "espn": "IR",
+    "league": "DOUBTFUL"
+   },
    {
     "team": "CIN",
     "player": "Andrei Iosivas",
@@ -420,38 +426,26 @@
     "player": "Oren Burks",
     "espn": "IR",
     "league": "OUT"
-   },
-   {
-    "team": "CIN",
-    "player": "Swayze Bozeman",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "WAS",
-    "player": "Jacory Croskey-Merritt",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 4,
+  "n_status_disagree": 3,
   "qb_flags": [],
-  "checked": "2026-11-23T09:41:52+00:00"
+  "checked": "2026-11-23T21:42:41+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261123T094137Z.json",
+  "snapshot": "odds_20261123T214227Z.json",
   "games": 17,
   "books_seen": {
    "draftkings": 17,
    "fanduel": 17,
-   "betonlineag": 15,
-   "lowvig": 15,
+   "betonlineag": 17,
+   "lowvig": 17,
    "betrivers": 17,
    "novig": 17,
    "betmgm": 17,
    "hardrockbet": 17,
-   "pinnacle": 10,
+   "pinnacle": 14,
    "prophetx": 16
   },
   "configured_missing": []
