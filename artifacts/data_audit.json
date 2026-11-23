@@ -1,5 +1,5 @@
 {
- "built": "2026-11-23T00:01:37+00:00",
+ "built": "2026-11-23T00:07:49+00:00",
  "scores": {
   "ok": true,
   "games": 3187,
@@ -464,6 +464,18 @@
     "league": "QUESTIONABLE"
    },
    {
+    "team": "MIN",
+    "player": "Jay Ward",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "MIN",
+    "player": "Isaiah Rodgers",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
     "team": "SF",
     "player": "Nate Hobbs",
     "espn": "IR",
@@ -476,13 +488,13 @@
     "league": "QUESTIONABLE"
    }
   ],
-  "n_status_disagree": 11,
+  "n_status_disagree": 13,
   "qb_flags": [],
-  "checked": "2026-11-23T00:01:47+00:00"
+  "checked": "2026-11-23T00:08:05+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261123T000130Z.json",
+  "snapshot": "odds_20261123T000742Z.json",
   "games": 20,
   "books_seen": {
    "draftkings": 20,
@@ -492,7 +504,7 @@
    "prophetx": 18,
    "betmgm": 20,
    "hardrockbet": 5,
-   "pinnacle": 9,
+   "pinnacle": 8,
    "lowvig": 10,
    "betonlineag": 10
   },
