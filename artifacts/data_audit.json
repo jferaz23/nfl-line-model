@@ -1,9 +1,9 @@
 {
- "built": "2026-11-23T21:42:31+00:00",
+ "built": "2026-11-24T05:35:58+00:00",
  "scores": {
   "ok": true,
-  "games": 3190,
-  "matched": 3190,
+  "games": 3191,
+  "matched": 3191,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,13 +12,13 @@
  },
  "lines": {
   "ok": true,
-  "games": 3190,
+  "games": 3191,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
   "favorite_disagree": [],
   "n_favorite_disagree": 0,
-  "spread_result_corr": 0.443,
+  "spread_result_corr": 0.442,
   "moneyline_entry_errors": [
    "2015_01_KC_HOU",
    "2015_15_TB_STL",
@@ -403,50 +403,44 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 50,
-  "not_active": 11,
-  "matched_share": 1.0,
-  "unmatched": [],
-  "n_unmatched": 0,
-  "status_disagreements": [
+  "listings": 800,
+  "not_active": 193,
+  "matched_share": 0.998,
+  "unmatched": [
    {
-    "team": "CIN",
-    "player": "Jalen Davis",
-    "espn": "IR",
-    "league": "DOUBTFUL"
+    "team": "BUF",
+    "full_name": "Mike Danna",
+    "position": "DE",
+    "report_status": "ACTIVE"
    },
    {
-    "team": "CIN",
-    "player": "Andrei Iosivas",
-    "espn": "IR",
-    "league": "DOUBTFUL"
-   },
-   {
-    "team": "CIN",
-    "player": "Oren Burks",
-    "espn": "IR",
-    "league": "OUT"
+    "team": "NO",
+    "full_name": "Mike Reid",
+    "position": "CB",
+    "report_status": "ACTIVE"
    }
   ],
-  "n_status_disagree": 3,
+  "n_unmatched": 2,
+  "status_disagreements": [],
+  "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-11-23T21:42:41+00:00"
+  "checked": "2026-11-24T05:36:10+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261123T214227Z.json",
-  "games": 17,
+  "snapshot": "odds_20261124T053551Z.json",
+  "games": 16,
   "books_seen": {
-   "draftkings": 17,
-   "fanduel": 17,
-   "betonlineag": 17,
-   "lowvig": 17,
-   "betrivers": 17,
-   "novig": 17,
-   "betmgm": 17,
-   "hardrockbet": 17,
-   "pinnacle": 14,
-   "prophetx": 16
+   "draftkings": 16,
+   "fanduel": 16,
+   "betmgm": 16,
+   "betrivers": 14,
+   "lowvig": 14,
+   "betonlineag": 14,
+   "novig": 16,
+   "prophetx": 16,
+   "hardrockbet": 16,
+   "pinnacle": 13
   },
   "configured_missing": []
  }
