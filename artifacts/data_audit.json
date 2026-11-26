@@ -1,5 +1,5 @@
 {
- "built": "2026-11-25T19:50:12+00:00",
+ "built": "2026-11-26T02:42:26+00:00",
  "scores": {
   "ok": true,
   "games": 3191,
@@ -404,9 +404,15 @@
  "injuries": {
   "ok": true,
   "listings": 800,
-  "not_active": 175,
-  "matched_share": 0.998,
+  "not_active": 221,
+  "matched_share": 0.996,
   "unmatched": [
+   {
+    "team": "ARI",
+    "full_name": "Kedon Slovis",
+    "position": "QB",
+    "report_status": "ACTIVE"
+   },
    {
     "team": "BUF",
     "full_name": "Mike Danna",
@@ -414,14 +420,26 @@
     "report_status": "ACTIVE"
    },
    {
-    "team": "NO",
-    "full_name": "Mike Reid",
+    "team": "TEN",
+    "full_name": "Corey Thornton",
     "position": "CB",
     "report_status": "ACTIVE"
    }
   ],
-  "n_unmatched": 2,
+  "n_unmatched": 3,
   "status_disagreements": [
+   {
+    "team": "GB",
+    "player": "Zaire Franklin",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "GB",
+    "player": "Josh Jacobs",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
    {
     "team": "LA",
     "player": "Terrance Ferguson",
@@ -429,25 +447,25 @@
     "league": "OUT"
    }
   ],
-  "n_status_disagree": 1,
+  "n_status_disagree": 3,
   "qb_flags": [],
-  "checked": "2026-11-25T19:50:25+00:00"
+  "checked": "2026-11-26T02:42:40+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261125T195002Z.json",
-  "games": 30,
+  "snapshot": "odds_20261126T024221Z.json",
+  "games": 28,
   "books_seen": {
-   "draftkings": 30,
-   "fanduel": 30,
+   "draftkings": 28,
+   "fanduel": 28,
    "betmgm": 16,
-   "betrivers": 30,
-   "lowvig": 30,
-   "betonlineag": 30,
-   "novig": 30,
+   "betrivers": 28,
+   "novig": 28,
    "prophetx": 16,
    "hardrockbet": 16,
-   "pinnacle": 16
+   "pinnacle": 16,
+   "betonlineag": 27,
+   "lowvig": 27
   },
   "configured_missing": []
  }
