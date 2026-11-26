@@ -1,5 +1,5 @@
 {
- "built": "2026-11-26T11:32:16+00:00",
+ "built": "2026-11-26T20:34:20+00:00",
  "scores": {
   "ok": true,
   "games": 3192,
@@ -404,17 +404,23 @@
  "injuries": {
   "ok": true,
   "listings": 750,
-  "not_active": 212,
-  "matched_share": 0.999,
+  "not_active": 219,
+  "matched_share": 0.997,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
     "report_status": "ACTIVE"
+   },
+   {
+    "team": "PHI",
+    "full_name": "AJ Epenesa",
+    "position": "DE",
+    "report_status": "OUT"
    }
   ],
-  "n_unmatched": 1,
+  "n_unmatched": 2,
   "status_disagreements": [
    {
     "team": "DAL",
@@ -424,30 +430,42 @@
    },
    {
     "team": "DET",
+    "player": "DJ Wonnum",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DET",
+    "player": "Chuck Clark",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "DET",
     "player": "Skyler Gill-Howard",
     "espn": "IR",
     "league": "OUT"
    }
   ],
-  "n_status_disagree": 2,
+  "n_status_disagree": 4,
   "qb_flags": [],
-  "checked": "2026-11-26T11:32:25+00:00"
+  "checked": "2026-11-26T20:34:32+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261126T113210Z.json",
-  "games": 29,
+  "snapshot": "odds_20261126T203414Z.json",
+  "games": 27,
   "books_seen": {
-   "draftkings": 29,
-   "fanduel": 29,
+   "draftkings": 27,
+   "fanduel": 27,
    "betmgm": 15,
-   "betrivers": 29,
-   "betonlineag": 27,
-   "lowvig": 27,
-   "novig": 29,
+   "betrivers": 27,
+   "novig": 27,
    "prophetx": 15,
    "hardrockbet": 15,
-   "pinnacle": 14
+   "pinnacle": 15,
+   "betonlineag": 26,
+   "lowvig": 26
   },
   "configured_missing": []
  }
