@@ -1,13 +1,13 @@
 {
- "remaining": 152,
+ "remaining": 149,
  "first_seen": "2026-09-29T17:24:00-04:00",
- "remaining_at": "2026-11-26T15:34:14-05:00",
- "last_api_run": "2026-11-26T20:33:17+00:00",
- "last_model_run": "2026-11-26T20:33:17+00:00",
+ "remaining_at": "2026-11-26T22:18:27-05:00",
+ "last_api_run": "2026-11-27T03:17:15+00:00",
+ "last_model_run": "2026-11-27T03:17:15+00:00",
  "last_decision": {
-  "at": "2026-11-26T20:33:17+00:00",
+  "at": "2026-11-27T03:17:15+00:00",
   "mode": "api",
-  "reason": "mandatory: inactives, Thu 04:30 PM ET kickoff"
+  "reason": "paced: every 2.2 h to last the month (152 credits left)"
  },
  "done": [
   "injury-2026-09-30",

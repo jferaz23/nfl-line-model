@@ -1,9 +1,9 @@
 {
- "built": "2026-11-26T20:34:20+00:00",
+ "built": "2026-11-27T03:18:36+00:00",
  "scores": {
   "ok": true,
-  "games": 3192,
-  "matched": 3192,
+  "games": 3194,
+  "matched": 3194,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3192,
+  "games": 3194,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -403,69 +403,51 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 750,
-  "not_active": 219,
-  "matched_share": 0.997,
+  "listings": 650,
+  "not_active": 190,
+  "matched_share": 0.998,
   "unmatched": [
    {
     "team": "BUF",
     "full_name": "Mike Danna",
     "position": "DE",
-    "report_status": "ACTIVE"
-   },
-   {
-    "team": "PHI",
-    "full_name": "AJ Epenesa",
-    "position": "DE",
     "report_status": "OUT"
    }
   ],
-  "n_unmatched": 2,
+  "n_unmatched": 1,
   "status_disagreements": [
    {
-    "team": "DAL",
-    "player": "Devin Moore",
-    "espn": "IR",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "DET",
-    "player": "DJ Wonnum",
+    "team": "BUF",
+    "player": "Christian Benford",
     "espn": "OUT",
     "league": "QUESTIONABLE"
    },
    {
-    "team": "DET",
-    "player": "Chuck Clark",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "DET",
-    "player": "Skyler Gill-Howard",
+    "team": "DEN",
+    "player": "Sai'vion Jones",
     "espn": "IR",
     "league": "OUT"
    }
   ],
-  "n_status_disagree": 4,
+  "n_status_disagree": 2,
   "qb_flags": [],
-  "checked": "2026-11-26T20:34:32+00:00"
+  "checked": "2026-11-27T03:18:46+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261126T203414Z.json",
-  "games": 27,
+  "snapshot": "odds_20261127T031827Z.json",
+  "games": 21,
   "books_seen": {
-   "draftkings": 27,
-   "fanduel": 27,
-   "betmgm": 15,
-   "betrivers": 27,
-   "novig": 27,
-   "prophetx": 15,
-   "hardrockbet": 15,
-   "pinnacle": 15,
-   "betonlineag": 26,
-   "lowvig": 26
+   "draftkings": 21,
+   "fanduel": 21,
+   "betmgm": 13,
+   "betrivers": 21,
+   "novig": 21,
+   "prophetx": 13,
+   "hardrockbet": 13,
+   "pinnacle": 13,
+   "betonlineag": 20,
+   "lowvig": 20
   },
   "configured_missing": []
  }
