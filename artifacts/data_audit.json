@@ -1,5 +1,5 @@
 {
- "built": "2026-11-27T12:59:12+00:00",
+ "built": "2026-11-27T21:55:24+00:00",
  "scores": {
   "ok": true,
   "games": 3195,
@@ -404,7 +404,7 @@
  "injuries": {
   "ok": true,
   "listings": 600,
-  "not_active": 176,
+  "not_active": 157,
   "matched_share": 1.0,
   "unmatched": [],
   "n_unmatched": 0,
@@ -423,6 +423,12 @@
    },
    {
     "team": "PIT",
+    "player": "Cole Holcomb",
+    "espn": "OUT",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "PIT",
     "player": "Gennings Dunker",
     "espn": "IR",
     "league": "OUT"
@@ -434,25 +440,25 @@
     "league": "OUT"
    }
   ],
-  "n_status_disagree": 4,
+  "n_status_disagree": 5,
   "qb_flags": [],
-  "checked": "2026-11-27T12:59:24+00:00"
+  "checked": "2026-11-27T21:55:34+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261127T125907Z.json",
-  "games": 26,
+  "snapshot": "odds_20261127T215517Z.json",
+  "games": 24,
   "books_seen": {
-   "draftkings": 26,
+   "draftkings": 24,
    "fanduel": 24,
    "betmgm": 12,
    "betrivers": 24,
-   "betonlineag": 20,
-   "lowvig": 20,
-   "novig": 26,
-   "hardrockbet": 12,
+   "novig": 24,
+   "hardrockbet": 13,
    "prophetx": 13,
-   "pinnacle": 12
+   "pinnacle": 12,
+   "lowvig": 19,
+   "betonlineag": 19
   },
   "configured_missing": []
  }
