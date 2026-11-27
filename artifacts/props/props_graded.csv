@@ -100,7 +100,7 @@ season,week,player,team,market,side,line,proj,z,category,tier,actual,result,pric
 2026,8,Bhayshul Tuten,JAX,rush_yds,under,67.5,57.9,-0.41,,top,104.0,L,-114.0,-1.0,-1.0
 2026,8,Bijan Robinson,ATL,receptions,under,4.5,3.5,-0.56,receptions,,0.0,W,-166.0,0.8695652173913043,0.6024096385542169
 2026,8,Bijan Robinson,ATL,rush_yds,under,81.5,74.7,-0.29,,green,76.0,W,-114.0,0.8695652173913043,0.8771929824561403
-2026,8,Baker Mayfield,TB,rush_yds,under,15.5,13.6,-0.08,,green,14.0,W,-109.0,0.8695652173913043,0.9174311926605505
+2026,8,Drake London,ATL,rec_yds,under,77.5,67.2,-0.42,,green,8.0,W,-113.0,0.8695652173913043,0.8849557522123894
 2026,8,Sean Tucker,TB,rush_yds,over,7.5,22.5,0.64,over,,0.0,L,-104.0,-1.0,-1.0
 2026,8,Bam Knight,ARI,rush_yds,over,19.5,34.4,0.64,over,,8.0,L,,-1.0,
 2026,8,Tyler Allgeier,ARI,rush_yds,over,13.5,30.3,0.72,over,,147.0,W,-105.0,0.8695652173913043,0.9523809523809523
@@ -135,7 +135,7 @@ season,week,player,team,market,side,line,proj,z,category,tier,actual,result,pric
 2026,8,Josh Allen,BUF,rush_yds,under,38.5,32.7,-0.25,,green,30.0,W,-112.0,0.8695652173913043,0.8928571428571429
 2026,8,Jahmyr Gibbs,DET,rec_yds,over,28.5,42.0,0.55,over,,15.0,L,-110.0,-1.0,-1.0
 2026,8,Justin Jefferson,MIN,receptions,under,6.5,4.8,-0.96,receptions,,5.0,W,-138.0,0.8695652173913043,0.7246376811594203
-2026,8,Drake London,ATL,rec_yds,under,77.5,67.2,-0.42,,green,8.0,W,-113.0,0.8695652173913043,0.8849557522123894
+2026,8,Baker Mayfield,TB,rush_yds,under,15.5,13.6,-0.08,,green,14.0,W,-109.0,0.8695652173913043,0.9174311926605505
 2026,8,Kenny Gainwell,TB,rush_yds,over,14.5,26.8,0.53,over,,140.0,W,-110.0,0.8695652173913043,0.9090909090909091
 2026,8,Austin Hooper,ATL,receptions,over,0.5,1.4,0.51,receptions,,1.0,W,-184.0,0.8695652173913043,0.5434782608695652
 2026,8,Tez Johnson,TB,rec_yds,under,32.5,27.4,-0.21,,green,0.0,W,-111.0,0.8695652173913043,0.9009009009009009
@@ -263,12 +263,12 @@ season,week,player,team,market,side,line,proj,z,category,tier,actual,result,pric
 2026,9,George Kittle,SF,rec_yds,under,70.5,63.5,-0.28,,green,58.0,W,-112.0,0.8695652173913043,0.8928571428571429
 2026,9,Kenny Gainwell,TB,rush_yds,over,22.5,47.4,1.07,over,,16.0,L,-112.0,-1.0,-1.0
 2026,9,Jordan Watkins,SF,rec_yds,over,26.5,40.7,0.57,over,,86.0,W,-111.0,0.8695652173913043,0.9009009009009009
-2026,9,Kayshon Boutte,HOU,receptions,over,1.5,2.1,0.34,,top,4.0,W,132.0,0.8695652173913043,1.32
+2026,9,Tank Dell,HOU,receptions,over,1.5,2.2,0.39,,top,4.0,W,122.0,0.8695652173913043,1.22
 2026,9,Jack Bech,LV,receptions,over,1.5,2.0,0.28,,green,1.0,L,103.0,-1.0,-1.0
 2026,9,Justin Herbert,LAC,pass_tds,over,0.5,1.7,1.4,pass_tds,,1.0,W,-247.0,0.8695652173913043,0.4048582995951417
 2026,9,Nico Collins,HOU,receptions,under,5.5,4.2,-0.73,receptions,,4.0,W,-157.0,0.8695652173913043,0.6369426751592356
-2026,9,Tank Dell,HOU,receptions,over,1.5,2.2,0.39,,top,4.0,W,122.0,0.8695652173913043,1.22
 2026,9,Brock Purdy,SF,pass_yds,over,240.5,274.9,0.51,over,,232.0,L,,-1.0,
+2026,9,Kayshon Boutte,HOU,receptions,over,1.5,2.1,0.34,,top,4.0,W,132.0,0.8695652173913043,1.32
 2026,9,Omarion Hampton,LAC,receptions,over,1.5,1.9,0.22,,green,0.0,L,101.0,-1.0,-1.0
 2026,9,Xavier Hutchinson,HOU,receptions,over,2.5,3.1,0.34,,top,3.0,W,145.0,0.8695652173913043,1.45
 2026,9,Tank Dell,HOU,rec_yds,over,15.5,32.6,0.69,over,,105.0,W,-112.0,0.8695652173913043,0.8928571428571429
@@ -346,21 +346,22 @@ season,week,player,team,market,side,line,proj,z,category,tier,actual,result,pric
 2026,10,Anthony Gould,IND,rec_yds,under,16.5,6.0,-0.42,,green,28.0,L,,-1.0,
 2026,10,Ollie Gordon II,MIA,rush_yds,under,75.5,64.4,-0.48,,top,76.0,L,,-1.0,
 2026,10,Anthony Gould,IND,receptions,under,1.5,0.6,-0.52,receptions,top,2.0,L,,-1.0,
-2026,10,Bryce Young,CAR,pass_tds,over,1.5,2.0,0.53,pass_tds,,0.0,L,,-1.0,
 2026,10,Ollie Gordon II,MIA,receptions,under,1.5,1.0,-0.31,,top,4.0,L,,-1.0,
 2026,10,Laquon Treadwell,IND,receptions,under,2.5,1.5,-0.54,receptions,top,3.0,L,,-1.0,
 2026,10,Jonathan Taylor,IND,receptions,under,3.5,2.7,-0.43,,top,2.0,W,,0.8695652173913043,
+2026,10,Bhayshul Tuten,JAX,rush_yds,under,67.5,59.4,-0.35,,top,88.0,L,,-1.0,
 2026,10,Tyler Warren,IND,receptions,under,5.5,4.8,-0.41,,top,2.0,W,,0.8695652173913043,
 2026,10,Brian Thomas Jr.,JAX,rec_yds,over,8.5,22.5,0.56,over,,29.0,W,,0.8695652173913043,
-2026,10,Bhayshul Tuten,JAX,rush_yds,under,67.5,59.4,-0.35,,top,88.0,L,,-1.0,
 2026,10,MarShawn Lloyd,GB,rush_yds,over,14.5,30.6,0.7,over,,13.0,L,,-1.0,
 2026,10,Kaleb Johnson,GB,rush_yds,over,28.5,43.9,0.67,over,,42.0,W,,0.8695652173913043,
 2026,10,Justin Jefferson,MIN,rec_yds,under,82.5,57.2,-1.02,under,top,74.0,W,,0.8695652173913043,
 2026,10,Jordan Mason,MIN,rush_yds,under,46.5,34.5,-0.52,under,top,59.0,L,,-1.0,
+2026,10,Bryce Young,CAR,pass_tds,over,1.5,2.0,0.53,pass_tds,,0.0,L,,-1.0,
 2026,10,Parker Washington,JAX,receptions,under,4.5,3.8,-0.4,,top,7.0,L,,-1.0,
 2026,10,Brian Thomas Jr.,JAX,receptions,over,0.5,1.8,0.72,receptions,green,3.0,W,,0.8695652173913043,
 2026,10,Gunnar Helm,TEN,receptions,under,3.5,2.8,-0.39,,top,4.0,L,,-1.0,
 2026,10,Cam Ward,TEN,pass_tds,over,0.5,1.3,0.95,pass_tds,,2.0,W,,0.8695652173913043,
+2026,10,Ja'Marr Chase,CIN,rec_yds,under,87.5,76.0,-0.46,,green,231.0,L,-114.0,-1.0,-1.0
 2026,10,Germie Bernard,PIT,rec_yds,under,49.5,40.4,-0.37,,green,0.0,W,-113.0,0.8695652173913043,0.8849557522123894
 2026,10,Rico Dowdle,PIT,rush_yds,over,30.5,44.2,0.59,over,,26.0,L,-108.0,-1.0,-1.0
 2026,10,Ja'Marr Chase,CIN,receptions,under,7.5,6.7,-0.45,,top,11.0,L,-102.0,-1.0,-1.0
@@ -369,12 +370,10 @@ season,week,player,team,market,side,line,proj,z,category,tier,actual,result,pric
 2026,10,CeeDee Lamb,DAL,rec_yds,under,90.5,82.9,-0.31,,green,72.0,W,-112.0,0.8695652173913043,0.8928571428571429
 2026,10,Brock Purdy,SF,pass_yds,over,261.5,304.7,0.64,over,,389.0,W,,0.8695652173913043,
 2026,10,Deebo Samuel Sr.,SF,rec_yds,over,37.5,50.3,0.52,over,,31.0,L,-109.0,-1.0,-1.0
-2026,10,Ja'Marr Chase,CIN,rec_yds,under,87.5,76.0,-0.46,,green,231.0,L,-114.0,-1.0,-1.0
-2026,10,Joe Burrow,CIN,pass_tds,under,2.5,2.0,-0.58,pass_tds,,4.0,L,-199.0,-1.0,-1.0
 2026,10,Tee Higgins,CIN,rec_yds,under,76.5,65.8,-0.43,,green,66.0,W,-111.0,0.8695652173913043,0.9009009009009009
+2026,10,Joe Burrow,CIN,pass_tds,under,2.5,2.0,-0.58,pass_tds,,4.0,L,-199.0,-1.0,-1.0
 2026,10,Javonte Williams,DAL,receptions,under,2.5,2.0,-0.28,,top,1.0,W,116.0,0.8695652173913043,1.16
 2026,10,Javonte Williams,DAL,rush_yds,under,59.5,55.4,-0.18,,green,63.0,L,-110.0,-1.0,-1.0
-2026,10,Matthew Stafford,LA,pass_yds,over,208.5,252.3,0.65,over,,249.0,W,,0.8695652173913043,
 2026,10,Brevyn Spann-Ford,DAL,receptions,under,2.5,1.9,-0.34,,top,1.0,W,120.0,0.8695652173913043,1.2
 2026,10,Jordan Watkins,SF,receptions,over,1.5,3.1,0.89,receptions,top,2.0,W,103.0,0.8695652173913043,1.03
 2026,10,Jalen Nailor,LV,receptions,over,1.5,2.3,0.45,,green,1.0,L,103.0,-1.0,-1.0
@@ -384,14 +383,15 @@ season,week,player,team,market,side,line,proj,z,category,tier,actual,result,pric
 2026,10,Ashton Jeanty,LV,rec_yds,over,25.5,38.3,0.52,over,,46.0,W,-113.0,0.8695652173913043,0.8849557522123894
 2026,10,Tre Tucker,LV,rec_yds,over,28.5,43.0,0.59,over,,9.0,L,-109.0,-1.0,-1.0
 2026,10,Ashton Jeanty,LV,rush_yds,under,37.5,27.9,-0.41,,top,18.0,W,-115.0,0.8695652173913043,0.8695652173913043
-2026,10,Matthew Stafford,LA,pass_tds,over,1.5,1.8,0.35,,top,3.0,W,106.0,0.8695652173913043,1.06
 2026,10,Fernando Mendoza,LV,pass_yds,under,181.5,115.6,-0.98,under,,143.0,W,,0.8695652173913043,
+2026,10,Matthew Stafford,LA,pass_tds,over,1.5,1.8,0.35,,top,3.0,W,106.0,0.8695652173913043,1.06
 2026,10,Colby Parkinson,LA,receptions,under,3.5,2.9,-0.34,,top,2.0,W,-110.0,0.8695652173913043,0.9090909090909091
 2026,10,Deebo Samuel Sr.,SF,receptions,over,3.5,3.9,0.22,,top,3.0,L,113.0,-1.0,-1.0
 2026,10,Christian McCaffrey,SF,receptions,over,4.5,4.9,0.22,,top,4.0,L,122.0,-1.0,-1.0
-2026,10,Tyler Higbee,LA,receptions,under,3.5,2.6,-0.5,,top,3.0,W,-112.0,0.8695652173913043,0.8928571428571429
-2026,10,Tyler Higbee,LA,rec_yds,under,34.5,27.8,-0.27,,green,17.0,W,-109.0,0.8695652173913043,0.9174311926605505
 2026,10,Dak Prescott,DAL,pass_tds,over,1.5,2.0,0.58,pass_tds,,5.0,W,-204.0,0.8695652173913043,0.49019607843137253
+2026,10,Tyler Higbee,LA,receptions,under,3.5,2.6,-0.5,,top,3.0,W,-112.0,0.8695652173913043,0.8928571428571429
+2026,10,Matthew Stafford,LA,pass_yds,over,208.5,252.3,0.65,over,,249.0,W,,0.8695652173913043,
+2026,10,Tyler Higbee,LA,rec_yds,under,34.5,27.8,-0.27,,green,17.0,W,-109.0,0.8695652173913043,0.9174311926605505
 2026,10,Colby Parkinson,LA,rec_yds,under,32.5,23.1,-0.38,,green,11.0,W,-114.0,0.8695652173913043,0.8771929824561403
 2026,10,Bam Knight,ARI,rush_yds,under,33.5,24.1,-0.4,,top,19.0,W,,0.8695652173913043,
 2026,10,Blake Corum,LA,rush_yds,under,57.5,52.5,-0.21,,green,100.0,L,-114.0,-1.0,-1.0
@@ -406,16 +406,17 @@ season,week,player,team,market,side,line,proj,z,category,tier,actual,result,pric
 2026,10,Zay Flowers,BAL,receptions,under,5.5,4.3,-0.66,receptions,top,6.0,L,,-1.0,
 2026,10,Derrick Henry,BAL,rush_yds,under,82.5,73.2,-0.4,,top,10.0,W,,0.8695652173913043,
 2026,11,David Montgomery,HOU,rush_yds,under,56.5,39.3,-0.74,under,top,107.0,L,,-1.0,
-2026,11,Daniel Jones,IND,pass_yds,over,179.5,221.1,0.61,over,,144.0,L,,-1.0,
-2026,11,Anthony Gould,IND,receptions,under,2.5,1.0,-0.85,receptions,top,2.0,W,,0.8695652173913043,
+2026,11,Anthony Gould,IND,rec_yds,under,20.5,10.3,-0.41,,green,48.0,L,,-1.0,
+2026,11,Nico Collins,HOU,rec_yds,under,71.5,63.3,-0.33,,green,58.0,W,,0.8695652173913043,
 2026,11,Jonathan Taylor,IND,receptions,under,3.5,2.7,-0.45,,top,4.0,L,,-1.0,
 2026,11,Foster Moreau,HOU,receptions,over,0.5,1.7,0.65,receptions,green,1.0,W,,0.8695652173913043,
 2026,11,Laquon Treadwell,IND,receptions,under,2.5,1.8,-0.41,,top,0.0,W,,0.8695652173913043,
 2026,11,Laquon Treadwell,IND,rec_yds,under,27.5,17.9,-0.39,,green,0.0,W,,0.8695652173913043,
 2026,11,Daniel Jones,IND,pass_tds,over,0.5,1.0,0.63,pass_tds,,0.0,L,,-1.0,
-2026,11,Anthony Gould,IND,rec_yds,under,20.5,10.3,-0.41,,green,48.0,L,,-1.0,
-2026,11,Nico Collins,HOU,rec_yds,under,71.5,63.3,-0.33,,green,58.0,W,,0.8695652173913043,
+2026,11,Daniel Jones,IND,pass_yds,over,179.5,221.1,0.61,over,,144.0,L,,-1.0,
+2026,11,Anthony Gould,IND,receptions,under,2.5,1.0,-0.85,receptions,top,2.0,W,,0.8695652173913043,
 2026,11,Brock Purdy,SF,pass_yds,over,241.5,285.2,0.65,over,,255.0,W,,0.8695652173913043,
+2026,11,Chuba Hubbard,CAR,rush_yds,under,72.5,61.5,-0.47,,top,120.0,L,,-1.0,
 2026,11,Amon-Ra St. Brown,DET,receptions,under,7.5,6.7,-0.45,,top,5.0,W,,0.8695652173913043,
 2026,11,Baker Mayfield,TB,pass_tds,under,1.5,1.0,-0.57,pass_tds,,2.0,L,,-1.0,
 2026,11,George Pickens,DAL,rec_yds,over,70.5,90.3,0.8,over,,102.0,W,,0.8695652173913043,
@@ -424,49 +425,48 @@ season,week,player,team,market,side,line,proj,z,category,tier,actual,result,pric
 2026,11,Brevyn Spann-Ford,DAL,receptions,under,2.5,1.8,-0.37,,top,2.0,W,,0.8695652173913043,
 2026,11,Dak Prescott,DAL,pass_tds,under,2.5,2.0,-0.56,pass_tds,,4.0,L,,-1.0,
 2026,11,Kenny Gainwell,TB,rush_yds,over,16.5,38.8,0.95,over,,16.0,L,,-1.0,
-2026,11,Tyler Shough,NO,pass_yds,under,236.5,198.3,-0.57,under,,222.0,W,,0.8695652173913043,
+2026,11,Alvin Kamara,NO,rush_yds,over,6.5,20.0,0.57,over,,1.0,L,,-1.0,
 2026,11,Jordyn Tyson,NO,receptions,under,5.5,4.9,-0.35,,top,1.0,W,,0.8695652173913043,
 2026,11,Kevin Coleman Jr.,MIA,rec_yds,over,1.5,16.0,0.59,over,,0.0,L,,-1.0,
 2026,11,Ray Davis,BUF,rush_yds,under,22.5,13.1,-0.4,,top,3.0,W,,0.8695652173913043,
 2026,11,Kevin Coleman Jr.,MIA,receptions,over,0.5,1.5,0.55,receptions,green,0.0,L,,-1.0,
 2026,11,Ollie Gordon II,MIA,receptions,under,2.5,1.5,-0.54,receptions,top,2.0,W,,0.8695652173913043,
-2026,11,Alvin Kamara,NO,rush_yds,over,6.5,20.0,0.57,over,,1.0,L,,-1.0,
+2026,11,Tyler Shough,NO,pass_yds,under,236.5,198.3,-0.57,under,,222.0,W,,0.8695652173913043,
 2026,11,Ted Hurst III,TB,rec_yds,over,8.5,21.0,0.51,over,,56.0,W,,0.8695652173913043,
 2026,11,Kyle Monangai,CHI,rush_yds,over,46.5,67.0,0.87,over,,18.0,L,,-1.0,
 2026,11,Simi Fehoko,ARI,receptions,under,1.5,0.8,-0.41,,top,1.0,W,,0.8695652173913043,
 2026,11,Patrick Mahomes,KC,pass_tds,over,1.5,2.2,0.84,pass_tds,,3.0,W,,0.8695652173913043,
-2026,11,Chuba Hubbard,CAR,rush_yds,under,72.5,61.5,-0.47,,top,120.0,L,,-1.0,
+2026,11,Derrick Henry,BAL,rush_yds,under,63.5,51.6,-0.51,under,top,94.0,L,,-1.0,
 2026,11,Mark Andrews,BAL,receptions,under,4.5,3.5,-0.58,receptions,top,2.0,W,,0.8695652173913043,
 2026,11,Zay Flowers,BAL,rec_yds,under,69.5,62.0,-0.3,,green,97.0,L,,-1.0,
-2026,11,Derrick Henry,BAL,rush_yds,under,63.5,51.6,-0.51,under,top,94.0,L,,-1.0,
-2026,11,Xavier Worthy,KC,rec_yds,over,25.5,38.4,0.52,over,,38.0,W,,0.8695652173913043,
 2026,11,Roman Wilson,PIT,rec_yds,over,10.5,28.2,0.72,over,,43.0,W,,0.8695652173913043,
-2026,11,Joe Milton III,PHI,rush_yds,under,36.5,26.3,-0.43,,top,7.0,W,,0.8695652173913043,
-2026,11,Saquon Barkley,PHI,rush_yds,under,55.5,37.2,-0.78,under,top,75.0,L,,-1.0,
-2026,11,Emmett Johnson,KC,rush_yds,under,87.5,52.8,-1.47,under,top,105.0,L,,-1.0,
-2026,11,Simi Fehoko,ARI,rec_yds,under,14.5,7.0,-0.3,,green,2.0,W,,0.8695652173913043,
-2026,11,Trey McBride,ARI,receptions,under,6.5,5.6,-0.5,receptions,top,9.0,L,,-1.0,
 2026,11,Zay Flowers,BAL,receptions,under,6.5,5.0,-0.86,receptions,top,8.0,L,,-1.0,
+2026,11,Trey McBride,ARI,receptions,under,6.5,5.6,-0.5,receptions,top,9.0,L,,-1.0,
+2026,11,Simi Fehoko,ARI,rec_yds,under,14.5,7.0,-0.3,,green,2.0,W,,0.8695652173913043,
+2026,11,Xavier Worthy,KC,rec_yds,over,25.5,38.4,0.52,over,,38.0,W,,0.8695652173913043,
+2026,11,Saquon Barkley,PHI,rush_yds,under,55.5,37.2,-0.78,under,top,75.0,L,,-1.0,
+2026,11,Joe Milton III,PHI,rush_yds,under,36.5,26.3,-0.43,,top,7.0,W,,0.8695652173913043,
+2026,11,Emmett Johnson,KC,rush_yds,under,87.5,52.8,-1.47,under,top,105.0,L,,-1.0,
 2026,11,J.K. Dobbins,DEN,rush_yds,over,22.5,40.8,0.78,over,,0.0,L,,-1.0,
 2026,11,Bhayshul Tuten,JAX,rush_yds,under,68.5,61.7,-0.29,,green,33.0,W,,0.8695652173913043,
-2026,11,Keenan Allen,SF,receptions,over,2.5,4.5,1.11,receptions,green,3.0,W,,0.8695652173913043,
 2026,11,Jordan Watkins,SF,receptions,over,0.5,2.2,0.96,receptions,green,1.0,W,,0.8695652173913043,
 2026,11,Christian McCaffrey,SF,rec_yds,over,33.5,47.5,0.57,over,,13.0,L,,-1.0,
 2026,11,Justin Jefferson,MIN,rec_yds,under,88.5,57.7,-1.25,under,top,86.0,W,,0.8695652173913043,
 2026,11,Keenan Allen,SF,rec_yds,over,26.5,50.7,0.98,over,,38.0,W,,0.8695652173913043,
 2026,11,Aaron Jones,MIN,rush_yds,over,31.5,45.8,0.61,over,,30.0,L,,-1.0,
 2026,11,Kaelon Black,SF,rush_yds,over,29.5,42.4,0.55,over,,8.0,L,,-1.0,
-2026,11,Jordan Watkins,SF,rec_yds,over,9.5,33.3,0.97,over,,19.0,W,,0.8695652173913043,
 2026,11,Mike Evans,SF,rec_yds,over,49.5,67.4,0.72,over,,109.0,W,,0.8695652173913043,
+2026,11,Keenan Allen,SF,receptions,over,2.5,4.5,1.11,receptions,green,3.0,W,,0.8695652173913043,
 2026,11,Justin Jefferson,MIN,receptions,under,7.5,5.2,-1.26,receptions,top,7.0,W,,0.8695652173913043,
+2026,11,Jordan Watkins,SF,rec_yds,over,9.5,33.3,0.97,over,,19.0,W,,0.8695652173913043,
 2026,11,Theo Johnson,NYG,rec_yds,over,6.5,19.9,0.54,over,,15.0,W,,0.8695652173913043,
+2026,11,Devin Singletary,NYG,rush_yds,over,9.5,25.0,0.66,over,,5.0,L,,-1.0,
 2026,11,Geno Smith,NYJ,pass_tds,under,1.5,1.0,-0.63,pass_tds,,3.0,L,,-1.0,
 2026,11,Garrett Wilson,NYJ,receptions,under,5.5,4.9,-0.31,,top,3.0,W,,0.8695652173913043,
 2026,11,Ladd McConkey,LAC,receptions,under,3.5,2.7,-0.46,,top,5.0,L,,-1.0,
 2026,11,David Njoku,LAC,receptions,over,1.5,2.7,0.66,receptions,green,2.0,W,,0.8695652173913043,
-2026,11,Devin Singletary,NYG,rush_yds,over,9.5,25.0,0.66,over,,5.0,L,,-1.0,
-2026,11,Braelon Allen,NYJ,rush_yds,over,34.5,53.8,0.82,over,,75.0,W,,0.8695652173913043,
 2026,11,David Njoku,LAC,rec_yds,over,11.5,27.4,0.65,over,,21.0,W,,0.8695652173913043,
+2026,11,Braelon Allen,NYJ,rush_yds,over,34.5,53.8,0.82,over,,75.0,W,,0.8695652173913043,
 2026,11,Jonah Coleman,DEN,receptions,under,3.5,2.4,-0.63,receptions,top,4.0,L,,-1.0,
 2026,11,Ashton Jeanty,LV,rush_yds,under,32.5,27.6,-0.21,,green,79.0,L,,-1.0,
 2026,11,Jonah Coleman,DEN,rush_yds,under,72.5,48.9,-1.0,under,top,111.0,L,,-1.0,
@@ -475,28 +475,42 @@ season,week,player,team,market,side,line,proj,z,category,tier,actual,result,pric
 2026,11,Theo Johnson,NYG,receptions,over,0.5,1.7,0.68,receptions,green,1.0,W,,0.8695652173913043,
 2026,11,Isaiah Likely,NYG,receptions,under,5.5,5.0,-0.3,,top,1.0,W,,0.8695652173913043,
 2026,11,Fernando Mendoza,LV,pass_tds,over,0.5,1.1,0.69,pass_tds,,3.0,W,,0.8695652173913043,
-2026,11,Jayden Daniels,WAS,rush_yds,under,42.5,29.6,-0.55,under,top,55.0,L,,-1.0,
 2026,11,Chase Brown,CIN,rush_yds,over,43.5,56.6,0.56,over,,6.0,L,,-1.0,
+2026,11,Jayden Daniels,WAS,rush_yds,under,42.5,29.6,-0.55,under,top,55.0,L,,-1.0,
 2026,11,Rachaad White,WAS,rush_yds,over,19.5,35.2,0.67,over,,0.0,L,,-1.0,
-2026,11,Ja'Marr Chase,CIN,rec_yds,under,101.5,77.6,-0.97,under,top,31.0,W,,0.8695652173913043,
-2026,11,Van Jefferson,WAS,rec_yds,over,6.5,29.0,0.91,over,,0.0,L,,-1.0,
 2026,11,Austin Ekeler,WAS,rush_yds,over,11.5,24.5,0.56,over,,41.0,W,,0.8695652173913043,
+2026,11,Van Jefferson,WAS,rec_yds,over,6.5,29.0,0.91,over,,0.0,L,,-1.0,
+2026,11,Ja'Marr Chase,CIN,rec_yds,under,101.5,77.6,-0.97,under,top,31.0,W,,0.8695652173913043,
 2026,11,Ja'Marr Chase,CIN,receptions,under,8.5,7.2,-0.76,receptions,top,5.0,W,,0.8695652173913043,
-2026,11,Van Jefferson,WAS,receptions,over,0.5,2.3,1.03,receptions,green,0.0,L,,-1.0,
 2026,11,Chig Okonkwo,WAS,receptions,under,4.5,3.9,-0.31,,top,4.0,W,,0.8695652173913043,
 2026,11,Antonio Williams,WAS,receptions,under,3.5,2.8,-0.41,,top,9.0,L,,-1.0,
 2026,11,Mike Gesicki,CIN,receptions,under,2.5,1.9,-0.33,,top,5.0,L,,-1.0,
+2026,11,Van Jefferson,WAS,receptions,over,0.5,2.3,1.03,receptions,green,0.0,L,,-1.0,
+2026,12,Kyren Williams,LA,receptions,under,3.5,2.9,-0.34,,top,4.0,L,,-1.0,
+2026,12,Joe Milton III,PHI,rush_yds,under,32.5,24.1,-0.36,,top,15.0,W,,0.8695652173913043,
+2026,12,Joe Milton III,PHI,pass_tds,under,1.5,0.8,-0.85,pass_tds,,3.0,L,,-1.0,
 2026,12,Caleb Williams,CHI,pass_yds,over,258.5,316.9,0.86,over,,345.0,W,,0.8695652173913043,
 2026,12,Kyle Monangai,CHI,rush_yds,over,33.5,46.3,0.55,over,,15.0,L,,-1.0,
 2026,12,Jahmyr Gibbs,DET,rush_yds,under,92.5,82.9,-0.41,,top,205.0,L,,-1.0,
 2026,12,Sam LaPorta,DET,receptions,under,4.5,3.7,-0.44,,top,4.0,W,,0.8695652173913043,
 2026,12,Amon-Ra St. Brown,DET,receptions,under,7.5,6.5,-0.53,receptions,top,7.0,W,,0.8695652173913043,
-2026,12,Jared Goff,DET,pass_tds,over,1.5,2.6,1.22,pass_tds,,1.0,L,,-1.0,
-2026,12,Christian Watson,GB,rec_yds,under,73.5,62.0,-0.47,,green,65.0,W,,0.8695652173913043,
+2026,12,Will Shipley,PHI,receptions,under,1.5,0.8,-0.37,,top,0.0,W,,0.8695652173913043,
+2026,12,Colston Loveland,CHI,receptions,under,5.5,4.8,-0.41,,top,1.0,W,,0.8695652173913043,
 2026,12,Xavier Smith,LA,receptions,over,0.5,1.6,0.61,receptions,green,1.0,W,,0.8695652173913043,
 2026,12,Kaleb Johnson,GB,rush_yds,under,31.5,23.2,-0.36,,top,13.0,W,,0.8695652173913043,
-2026,12,Kyren Williams,LA,receptions,under,3.5,2.9,-0.34,,top,4.0,L,,-1.0,
 2026,12,Chris Brooks,GB,receptions,under,1.5,0.9,-0.35,,top,4.0,L,,-1.0,
 2026,12,Tyler Higbee,LA,receptions,under,3.5,2.9,-0.34,,top,1.0,W,,0.8695652173913043,
 2026,12,Matthew Stafford,LA,pass_tds,over,1.5,2.0,0.6,pass_tds,,0.0,L,,-1.0,
-2026,12,Colston Loveland,CHI,receptions,under,5.5,4.8,-0.41,,top,1.0,W,,0.8695652173913043,
+2026,12,Christian Watson,GB,rec_yds,under,73.5,62.0,-0.47,,green,65.0,W,,0.8695652173913043,
+2026,12,Saquon Barkley,PHI,rush_yds,under,66.5,50.4,-0.69,under,top,7.0,W,,0.8695652173913043,
+2026,12,Jared Goff,DET,pass_tds,over,1.5,2.6,1.22,pass_tds,,1.0,L,,-1.0,
+2026,12,Zach Ertz,PHI,receptions,over,0.5,2.4,1.09,receptions,green,0.0,L,,-1.0,
+2026,12,Zach Ertz,PHI,rec_yds,over,0.5,24.3,0.96,over,,0.0,L,,-1.0,
+2026,12,Josh Allen,BUF,rush_yds,under,40.5,17.6,-0.99,under,top,43.0,L,,-1.0,
+2026,12,Xavier Worthy,KC,rec_yds,over,20.5,34.5,0.56,over,,0.0,L,,-1.0,
+2026,12,Rashee Rice,KC,rec_yds,over,45.5,59.7,0.57,over,,19.0,L,,-1.0,
+2026,12,Khalil Shakir,BUF,rec_yds,over,36.5,51.6,0.61,over,,33.0,L,,-1.0,
+2026,12,Josh Allen,BUF,pass_yds,over,216.5,253.3,0.54,over,,81.0,L,,-1.0,
+2026,12,Jaydn Ott,KC,rush_yds,over,5.5,26.3,0.9,over,,0.0,L,,-1.0,
+2026,12,Travis Kelce,KC,receptions,under,4.5,3.5,-0.54,receptions,top,4.0,W,,0.8695652173913043,
+2026,12,Emmett Johnson,KC,rush_yds,under,81.5,57.1,-1.05,under,top,72.0,W,,0.8695652173913043,
