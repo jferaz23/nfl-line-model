@@ -1,5 +1,5 @@
 {
- "built": "2026-11-28T03:47:56+00:00",
+ "built": "2026-11-28T12:48:36+00:00",
  "scores": {
   "ok": true,
   "games": 3196,
@@ -408,14 +408,99 @@
   "matched_share": 1.0,
   "unmatched": [],
   "n_unmatched": 0,
-  "status_disagreements": [],
-  "n_status_disagree": 0,
+  "status_disagreements": [
+   {
+    "team": "ARI",
+    "player": "Zachary Carter",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "CIN",
+    "player": "Jalen Davis",
+    "espn": "IR",
+    "league": "DOUBTFUL"
+   },
+   {
+    "team": "CIN",
+    "player": "Andrei Iosivas",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "CLE",
+    "player": "Raheim Sanders",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "IND",
+    "player": "Cam Taylor-Britt",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "JAX",
+    "player": "Patrick Mekari",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "JAX",
+    "player": "BJ Green II",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "LV",
+    "player": "Patrick Johnson",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "MIA",
+    "player": "Ronnie Harrison Jr.",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NE",
+    "player": "Romeo Doubs",
+    "espn": "IR",
+    "league": "OUT"
+   },
+   {
+    "team": "NE",
+    "player": "Alijah Vera-Tucker",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NYJ",
+    "player": "David Onyemata",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "NYJ",
+    "player": "T'Vondre Sweat",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   },
+   {
+    "team": "SF",
+    "player": "Austen Pleasants",
+    "espn": "IR",
+    "league": "QUESTIONABLE"
+   }
+  ],
+  "n_status_disagree": 14,
   "qb_flags": [],
-  "checked": "2026-11-28T03:48:11+00:00"
+  "checked": "2026-11-28T12:48:49+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261128T034747Z.json",
+  "snapshot": "odds_20261128T124830Z.json",
   "games": 22,
   "books_seen": {
    "draftkings": 22,
