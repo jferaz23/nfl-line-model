@@ -1,13 +1,13 @@
 {
- "remaining": 143,
+ "remaining": 140,
  "first_seen": "2026-09-29T17:24:00-04:00",
- "remaining_at": "2026-11-27T16:55:17-05:00",
- "last_api_run": "2026-11-27T21:54:21+00:00",
- "last_model_run": "2026-11-27T21:54:21+00:00",
+ "remaining_at": "2026-11-27T22:47:47-05:00",
+ "last_api_run": "2026-11-28T03:46:35+00:00",
+ "last_model_run": "2026-11-28T03:46:35+00:00",
  "last_decision": {
-  "at": "2026-11-27T21:54:21+00:00",
+  "at": "2026-11-28T03:46:35+00:00",
   "mode": "api",
-  "reason": "mandatory: Friday injury report"
+  "reason": "paced: every 1.7 h to last the month (143 credits left)"
  },
  "done": [
   "injury-2026-09-30",

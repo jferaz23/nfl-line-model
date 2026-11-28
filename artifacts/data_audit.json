@@ -1,9 +1,9 @@
 {
- "built": "2026-11-27T21:55:24+00:00",
+ "built": "2026-11-28T03:47:56+00:00",
  "scores": {
   "ok": true,
-  "games": 3195,
-  "matched": 3195,
+  "games": 3196,
+  "matched": 3196,
   "mismatches": [],
   "n_mismatch": 0,
   "unmatched": [],
@@ -12,7 +12,7 @@
  },
  "lines": {
   "ok": true,
-  "games": 3195,
+  "games": 3196,
   "missing_spread": 0,
   "missing_total": 0,
   "out_of_range": [],
@@ -403,62 +403,31 @@
  },
  "injuries": {
   "ok": true,
-  "listings": 600,
-  "not_active": 157,
+  "listings": 550,
+  "not_active": 126,
   "matched_share": 1.0,
   "unmatched": [],
   "n_unmatched": 0,
-  "status_disagreements": [
-   {
-    "team": "DEN",
-    "player": "Sai'vion Jones",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "DEN",
-    "player": "Caleb Lohner",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "PIT",
-    "player": "Cole Holcomb",
-    "espn": "OUT",
-    "league": "QUESTIONABLE"
-   },
-   {
-    "team": "PIT",
-    "player": "Gennings Dunker",
-    "espn": "IR",
-    "league": "OUT"
-   },
-   {
-    "team": "PIT",
-    "player": "Ben Skowronek",
-    "espn": "IR",
-    "league": "OUT"
-   }
-  ],
-  "n_status_disagree": 5,
+  "status_disagreements": [],
+  "n_status_disagree": 0,
   "qb_flags": [],
-  "checked": "2026-11-27T21:55:34+00:00"
+  "checked": "2026-11-28T03:48:11+00:00"
  },
  "books": {
   "ok": true,
-  "snapshot": "odds_20261127T215517Z.json",
-  "games": 24,
+  "snapshot": "odds_20261128T034747Z.json",
+  "games": 22,
   "books_seen": {
-   "draftkings": 24,
-   "fanduel": 24,
-   "betmgm": 12,
-   "betrivers": 24,
-   "novig": 24,
-   "hardrockbet": 13,
-   "prophetx": 13,
-   "pinnacle": 12,
-   "lowvig": 19,
-   "betonlineag": 19
+   "draftkings": 22,
+   "fanduel": 22,
+   "betrivers": 22,
+   "lowvig": 22,
+   "betonlineag": 22,
+   "novig": 22,
+   "prophetx": 12,
+   "betmgm": 11,
+   "hardrockbet": 12,
+   "pinnacle": 11
   },
   "configured_missing": []
  }
